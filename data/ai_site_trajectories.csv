@@ -1,0 +1,77 @@
+site,status,power_mw_it_current,power_mw_total_current,power_mw_total_peak,peak_date,pue,buildings_operational,capex_peak_usd_bn,water_mgd,observations
+Alibaba Zhangbei,operational,169.0,203.0,203.0,2026-01-03,1.2,6,6.4,,4
+Amazon Madison Mega Site,expanding,284.0,341.0,819.0,2028-03-15,1.2,5,25.87,,7
+Amazon Ridgeland,expanding,228.0,273.0,1008.0,2028-09-29,1.2,4,31.82,,5
+Anthropic-Amazon New Carlisle,expanding,910.0,1092.0,2310.0,2028-03-17,1.2,16,72.92,21.0,12
+Colossus 1,expanding,340.0,425.0,442.0,2025-07-22,1.25,1,12.88,,12
+Colossus 2,operational,946.0,1276.0,1276.0,2026-07-01,1.35,2,35.84,,6
+CoreWeave Chester VA,expanding,82.0,114.0,197.0,2027-06-30,1.39,2,4.28,,6
+CoreWeave Dalton 1 & 2,operational,28.0,40.0,40.0,2026-02-20,1.43,1,1.06,,4
+CoreWeave Denton TX,operational,262.0,366.8,366.8,2026-06-30,1.4,6,9.93,,6
+CoreWeave Ellendale ND,expanding,68.0,88.0,520.0,2027-06-01,1.29,1,15.15,,9
+CoreWeave Marble NC,operational,65.0,91.0,91.0,2026-05-06,1.4,1,2.46,,4
+CoreWeave Muskogee OK,under_construction,,,181.0,2027-12-31,,,5.8,,5
+Coreweave Helios,expanding,132.0,200.0,800.0,2029-01-01,1.52,1,20.0,,6
+Crusoe Abilene Expansion,under_construction,,,941.0,2027-11-11,,,25.46,,4
+DayOne Nusajaya,expanding,240.0,336.0,662.0,2026-10-02,1.4,6,17.92,,5
+EdgeCore Mesa PH03,under_construction,,,,,,,,,1
+Fluidstack Lake Mariner,expanding,100.0,117.0,509.0,2027-03-31,1.17,3,16.52,,7
+Goodnight,under_construction,,,1294.1,2027-10-01,,,38.11,,7
+Google Arcola,operational,77.0,93.0,93.0,2026-06-16,1.21,1,2.92,,4
+Google Bristow,operational,279.0,335.0,335.0,2026-05-20,1.2,3,10.57,,4
+Google Cedar Rapids,under_construction,,,314.0,2027-05-23,,,9.89,,7
+Google Columbus,expanding,303.0,364.0,464.0,2027-07-01,1.2,4,14.62,,8
+Google Council Bluffs (East),operational,237.0,282.0,282.0,2026-07-07,1.19,3,8.98,,6
+Google Fort Wayne,under_construction,,,1035.0,2028-04-01,,,32.69,,7
+Google Kansas City East,under_construction,,,126.0,2026-08-01,,,3.98,,7
+Google Lancaster,operational,137.0,164.0,164.0,2025-10-31,1.2,2,5.19,,5
+Google Lincoln,expanding,141.0,170.0,339.0,2027-10-01,1.21,1,10.72,,4
+Google Mesa,expanding,90.0,126.0,237.0,2026-08-15,1.4,1,6.93,,5
+Google Midlothian,operational,103.0,123.0,123.0,2026-07-01,1.19,1,3.9,,4
+Google New Albany,expanding,339.0,407.0,543.0,2026-08-16,1.2,4,17.16,0.97,8
+Google Omaha,expanding,237.0,284.0,474.0,2028-07-23,1.2,3,14.96,0.09,11
+Google Papillion,operational,237.0,284.0,284.0,2024-08-03,1.2,3,8.98,0.09,7
+Google Pryor (North),expanding,53.0,63.0,442.0,2026-08-24,1.19,1,13.94,2.28,5
+Google Red Oak,expanding,77.0,93.0,185.0,2026-12-01,1.21,1,5.83,,4
+Google Storey County,expanding,161.0,214.0,389.0,2027-06-30,1.33,2,11.36,,6
+Google The Dalles,operational,154.0,185.0,185.0,2026-04-29,1.2,2,5.83,,3
+Google Waltham Cross,operational,88.0,124.0,124.0,2025-09-01,1.41,1,3.33,,3
+Huawei Horinger,operational,241.8,278.0,278.0,2026-07-01,1.15,4,9.16,,10
+Meta Aiken,operational,142.0,185.0,185.0,2026-07-15,1.3,2,5.38,,3
+Meta Cheyenne,expanding,152.0,182.0,264.0,2027-02-15,1.2,2,8.33,,5
+Meta Eagle Mountain,operational,133.0,179.0,179.0,2025-12-07,1.35,2,5.04,,4
+Meta Gallatin,operational,87.0,114.0,114.0,2026-06-15,1.31,1,3.3,,3
+Meta Hyperion,under_construction,,,2262.0,2028-01-01,,,63.49,,5
+Meta Jeffersonville,operational,178.0,241.0,241.0,2026-06-04,1.35,2,6.74,,3
+Meta Kuna,operational,152.0,198.0,198.0,2026-06-01,1.3,2,5.76,70000.0,3
+Meta Los Lunas,operational,87.0,105.0,105.0,2026-03-01,1.21,1,3.3,,2
+Meta Montgomery,expanding,153.0,199.0,465.0,2027-02-23,1.3,2,13.56,,6
+Meta Prometheus,expanding,631.0,820.0,1110.0,2026-10-01,1.3,13,32.35,,11
+Meta Rosemount,operational,178.0,241.0,241.0,2026-06-19,1.35,2,6.74,,3
+Meta Sarpy,under_construction,,,105.0,2026-08-02,,,3.03,,3
+Meta Temple,expanding,152.0,198.0,231.0,2026-09-30,1.3,2,6.74,,6
+Microsoft Fairwater Atlanta,operational,636.0,859.0,859.0,2026-06-14,1.35,4,24.09,,5
+Microsoft Fairwater Wisconsin,expanding,369.0,442.0,2715.0,2028-05-13,1.2,1,85.73,0.01,7
+Microsoft Goodyear,operational,202.0,263.0,263.0,2025-09-01,1.3,4,7.65,,6
+Microsoft Project Osmium,operational,190.0,228.0,228.0,2025-03-01,1.2,4,7.2,,6
+Microsoft SAT14,operational,47.0,66.0,66.0,2026-03-31,1.4,2,1.78,,5
+Microsoft SAT40,operational,75.0,106.0,106.0,2025-12-01,1.41,2,2.84,,4
+OpenAI Stargate Abilene,expanding,421.0,590.0,1180.0,2026-11-01,1.4,4,31.93,,8
+OpenAI Stargate Lordstown,under_construction,,,,,,,,,2
+OpenAI Stargate Michigan,under_construction,,,1383.0,2028-12-31,,,37.43,,4
+OpenAI Stargate Milam,under_construction,,,1200.0,2028-12-31,,,32.46,,4
+OpenAI Stargate New Mexico,under_construction,,,2210.0,2028-12-31,,,59.78,0.02,3
+OpenAI Stargate Shackelford,under_construction,,,1960.0,2028-11-11,,,53.03,,13
+OpenAI Stargate UAE,under_construction,,,1400.0,2028-01-01,,,37.88,,4
+OpenAI Stargate Wisconsin,under_construction,,,1300.0,2028-12-31,,,34.17,,3
+Oracle Batam,operational,72.0,94.0,94.0,2026-04-17,1.31,3,2.73,,7
+QTS Cedar Rapids,under_construction,,,1587.0,2027-11-15,,,42.92,,6
+QTS Richmond 1,operational,238.0,333.0,333.0,2025-11-19,1.4,5,9.02,,9
+QTS Richmond 2,operational,180.0,252.0,252.0,2026-05-14,1.4,5,6.82,,8
+QTS Richmond 3,expanding,144.0,202.0,336.0,2027-02-13,1.4,3,9.09,,7
+STACK Infrastructure NVA02,expanding,85.0,118.0,487.0,2028-01-01,1.39,1,13.18,,4
+Southgate Melbourne,under_construction,,,57.0,2026-08-09,,,1.55,,4
+Start Campus Sines Data Campus,expanding,33.0,40.0,280.0,2027-09-30,1.21,1,8.83,,4
+Stream Phoenix,expanding,64.0,77.0,267.0,2030-01-01,1.2,1,8.33,,4
+VNET Bayin Ulanqab,expanding,221.0,252.0,798.0,2027-09-01,1.14,4,26.52,,9
+Vantage TX1,expanding,32.0,44.8,179.2,2027-08-31,1.4,1,4.85,,3

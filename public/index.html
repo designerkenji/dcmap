@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Centre Registry — Map</title>
+<link rel="stylesheet" href="/vendor/maplibre-gl.css">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="brand" id="dotcount" aria-live="polite">Data Centre Registry</span>
+  <div class="seg" role="tablist" aria-label="Map mode">
+    <button id="mode2d" role="tab" aria-selected="true">2D</button>
+    <button id="mode3d" role="tab" aria-selected="false">3D</button>
+  </div>
+  <button id="chip" class="chip" hidden></button>
+  <span class="spacer"></span>
+  <button id="opsBtn" class="themebtn opsbtn" aria-label="Operator directory"
+          title="Operators" aria-pressed="false"></button>
+  <button id="timeBtn" class="themebtn timebtn" aria-label="Timeline of data centre build-out"
+          title="Timeline" aria-pressed="false"></button>
+  <button id="searchBtn" class="themebtn searchbtn" aria-label="Search sites, operators, utilities, zones"
+          title="Search — ⌘K"></button>
+  <button id="themeBtn" class="themebtn" aria-label="Toggle day / night view"></button>
+</header>
+
+<aside class="layers panel" aria-label="Layers">
+  <h2>Layers</h2>
+  <label><input type="checkbox" id="lyr-facilities" checked> <i class="sw sw-fac"></i> Data Center Facilities</label>
+  <label><input type="checkbox" id="lyr-ai" checked> <i class="sw sw-ai"></i> AI Data Centers</label>
+  <label><input type="checkbox" id="lyr-ercot"> <i class="sw sw-ercot"></i> ERCOT Load Zones</label>
+  <label><input type="checkbox" id="lyr-pjm"> <i class="sw sw-pjm"></i> PJM Zones</label>
+  <label><input type="checkbox" id="lyr-nyiso"> <i class="sw sw-nyiso"></i> NYISO Load Zones</label>
+  <label><input type="checkbox" id="lyr-countries"> <i class="sw sw-cty"></i> Data Centres by Country</label>
+  <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes
+    <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
+  <p class="hint">Click a dot to open that site's page in a new tab.</p>
+</aside>
+
+<div id="map2d" class="mapfull"></div>
+<div id="map3d" class="mapfull" hidden></div>
+<div id="tip" class="tip" hidden></div>
+<div id="tl-pop" class="tl-pop panel" role="dialog" aria-label="Data centre details" hidden></div>
+
+<section id="timebar" class="timebar panel" aria-label="Build-out timeline" hidden>
+  <div class="tb-row">
+    <div class="seg" role="tablist" aria-label="View">
+      <button id="tview-snap" role="tab" aria-selected="true">Snapshot</button>
+      <button id="tview-line" role="tab" aria-selected="false">Timeline</button>
+    </div>
+    <div class="seg" id="tmode-seg" role="tablist" aria-label="Timeline mode">
+      <button id="tmode-cum" role="tab" aria-selected="true">Built by then</button>
+      <button id="tmode-year" role="tab" aria-selected="false">Built that year</button>
+      <button id="tmode-uc" role="tab" aria-selected="false">Under construction</button>
+    </div>
+    <div class="seg" id="tscale-seg" role="tablist" aria-label="Time resolution" hidden>
+      <button id="tres-q" role="tab" aria-selected="true">Quarters</button>
+      <button id="tres-d" role="tab" aria-selected="false">Days</button>
+    </div>
+    <span id="tq-label" class="tq-label mono"></span>
+    <span class="spacer"></span>
+    <button id="tchartBtn" class="tb-btn" aria-pressed="false" title="Top 15 by compute">▤ Top 15</button>
+    <button id="timeClose" class="tb-btn" aria-label="Close timeline">✕</button>
+  </div>
+  <div class="tb-row" id="trow-play">
+    <button id="tplay" class="tb-btn tb-play" aria-label="Play">▶</button>
+    <input id="tslider" type="range" min="0" max="44" step="1" value="30" aria-label="Quarter">
+  </div>
+  <p id="tq-count" class="hint tb-note"></p>
+</section>
+
+<section id="tline" class="tline panel" aria-label="Largest AI data centre by compute" hidden>
+  <div class="tl-head">
+    <h2>The largest AI data centre by compute</h2>
+    <span class="spacer"></span>
+    <span class="tl-cby">Colour by</span>
+    <div class="seg" role="tablist" aria-label="Colour by">
+      <button id="tcolor-none" role="tab" aria-selected="true">None</button>
+      <button id="tcolor-o" role="tab" aria-selected="false">Owner</button>
+      <button id="tcolor-pu" role="tab" aria-selected="false">Primary user</button>
+    </div>
+    <span class="tl-cby">Scale</span>
+    <div class="seg" role="tablist" aria-label="Scale">
+      <button id="tscale-lin" role="tab" aria-selected="true">Linear</button>
+      <button id="tscale-log" role="tab" aria-selected="false">Logarithmic</button>
+    </div>
+  </div>
+  <p class="hint">Each step is a change at that frontier's top — hover a dot for the site, click it
+    to open that site's page. Shaded region is future plans from Epoch projections.</p>
+  <div class="tl-body">
+    <div id="tline-chart" class="tline-chart"></div>
+    <ul id="tl-legend" class="tl-legend" hidden></ul>
+  </div>
+</section>
+
+<aside id="tchart" class="tchart panel" aria-label="Top data centres by compute" hidden>
+  <h2 id="tchart-title"></h2>
+  <p class="hint">AI sites only — compute is Epoch-observed H100 equivalents.
+    Click a bar to open that site's page.</p>
+  <ol id="tchart-rows" class="tchart-rows"></ol>
+</aside>
+
+<aside id="eqpanel" class="tchart eqpanel panel" aria-label="Sites shaken by the earthquake" hidden>
+  <div class="eq-head">
+    <h2 id="eq-title"></h2>
+    <button id="eq-close" class="tb-btn" aria-label="Close">✕</button>
+  </div>
+  <p class="hint" id="eq-sub"></p>
+  <div class="eq-bands" id="eq-bands"></div>
+  <button id="eq-only" class="tb-btn" aria-pressed="false">Show only these on the map</button>
+  <ol id="eq-rows" class="tchart-rows"></ol>
+</aside>
+
+<aside id="ops" class="ops panel" aria-label="Operator directory" hidden>
+  <div class="ops-head">
+    <h2 id="ops-title">Operators</h2>
+    <button id="ops-close" class="tb-btn" aria-label="Close">✕</button>
+  </div>
+
+  <div id="ops-list-view">
+    <div class="ops-search">
+      <input id="ops-q" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Filter operators…" aria-label="Filter operators">
+    </div>
+    <div class="seg ops-seg" id="ops-region-seg" role="tablist" aria-label="Region">
+      <button data-rg="" role="tab" aria-selected="true">All</button>
+    </div>
+    <p class="hint" id="ops-sub"></p>
+    <ol id="ops-rows" class="ops-rows"></ol>
+    <p class="hint ops-more" id="ops-more" hidden></p>
+  </div>
+
+  <div id="ops-detail" hidden>
+    <button id="ops-back" class="tb-btn ops-back">← All operators</button>
+    <div class="ops-hero">
+      <span class="ops-slot" id="ops-d-logo"></span>
+      <div>
+        <h3 id="ops-d-name"></h3>
+        <p class="ops-d-meta" id="ops-d-meta"></p>
+      </div>
+    </div>
+    <p class="ops-d-profile" id="ops-d-profile" hidden></p>
+    <p class="ops-d-links" id="ops-d-links"></p>
+    <button id="ops-d-show" class="tb-btn ops-show" aria-pressed="false">Show only these on the map</button>
+    <h4 class="ops-h4">By region</h4>
+    <ul id="ops-d-regions" class="ops-regions"></ul>
+    <h4 class="ops-h4">Sites <span class="dim" id="ops-d-count"></span></h4>
+    <ol id="ops-d-sites" class="tchart-rows ops-sites"></ol>
+  </div>
+</aside>
+
+<dialog id="palette" class="palette" aria-label="Search the registry">
+  <div class="pal-in">
+    <span class="pal-ico" aria-hidden="true"></span>
+    <input id="palq" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+           role="combobox" aria-expanded="true" aria-controls="palres" aria-autocomplete="list"
+           placeholder="Site, operator, utility, city, country, zone…">
+  </div>
+  <ul id="palres" class="pal-res" role="listbox" aria-label="Results"></ul>
+  <p id="palfoot" class="pal-foot">
+    <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+    <span><kbd>↵</kbd> go</span>
+    <span><kbd>⌘</kbd><kbd>↵</kbd> open site page</span>
+    <span><kbd>esc</kbd> close</span>
+  </p>
+</dialog>
+
+<script src="/vendor/maplibre-gl.js"></script>
+<script src="/vendor/globe.gl.min.js"></script>
+<script src="/theme.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

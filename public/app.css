@@ -1,0 +1,441 @@
+/* Shared tokens for the map app and site pages. Day is the default;
+   night is applied via html[data-theme=night], never by OS preference,
+   because the sun/moon toggle is the single source of truth. */
+:root {
+  --bg:#F3F5F7; --panel:#FFFFFF; --line:#D8DEE4; --line-soft:#E7ECF0;
+  --ink:#161C22; --ink-2:#4A5763; --ink-3:#77848F;
+  --accent:#2C6E8F; --accent-soft:#E3EDF2;
+  --fac:#0E8A7C; --ai:#B5761E; --ercot:#B5761E; --pjm:#3B82C4; --nyiso:#2E9E83; --cty:#7C5FBF;
+  --ocean:#DFE9F0; --land:#F6F8FA; --border:#C4CFD8;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+html[data-theme=night] {
+  --bg:#0D1117; --panel:#161D24; --line:#2A333D; --line-soft:#222A33;
+  --ink:#E7ECF1; --ink-2:#A3B0BC; --ink-3:#79868F;
+  --accent:#6FB4D6; --accent-soft:#1B2A34;
+  --fac:#40C4B4; --ai:#E0A75C; --ercot:#FFB03B; --pjm:#60A5EB; --nyiso:#4FD1AC; --cty:#A78BFA;
+  --ocean:#0A1016; --land:#151C24; --border:#2E3A46;
+}
+* { box-sizing:border-box }
+/* A class with its own display (flex/grid) silently beats the hidden
+   attribute; this already bit the filter chip once. End the bug class. */
+[hidden] { display:none !important }
+html, body { height:100% }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased }
+
+.topbar { position:fixed; top:0; left:0; right:0; z-index:30; height:52px;
+  display:flex; align-items:center; gap:14px; padding:0 16px;
+  background:var(--panel); border-bottom:1px solid var(--line) }
+.brand { font-weight:640; letter-spacing:-.01em; color:var(--ink); text-decoration:none }
+.spacer { flex:1 }
+.seg { display:inline-flex; border:1px solid var(--line); border-radius:7px; overflow:hidden }
+.seg button { font:inherit; font-size:13px; padding:5px 14px; border:0; cursor:pointer;
+  background:var(--panel); color:var(--ink-2) }
+.seg button[aria-selected=true] { background:var(--accent); color:var(--panel) }
+.themebtn { width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:var(--panel); cursor:pointer; font-size:16px; line-height:1 }
+.themebtn:hover { border-color:var(--accent) }
+a.themebtn { display:inline-flex; align-items:center; justify-content:center;
+  text-decoration:none }
+/* .themebtn is the round-button SHAPE, shared by every icon in the topbar.
+   Scope the sun/moon glyph to the theme button itself - as a class rule it
+   outranked .timebtn::before in night mode and turned the clock into a second
+   moon, and every future icon would have needed its own counter-override. */
+#themeBtn::before { content:"☀️" }
+html[data-theme=night] #themeBtn::before { content:"🌙" }
+.searchbtn::before { content:"🔍" }
+.timebtn::before { content:"🕐" }
+.timebtn[aria-pressed=true] { border-color:var(--accent); background:var(--accent-soft) }
+
+/* ---- build-out timeline ---- */
+.timebar { position:fixed; left:50%; transform:translateX(-50%); bottom:18px; z-index:26;
+  width:min(840px,calc(100vw - 24px)); padding:12px 16px 8px;
+  display:flex; flex-direction:column; gap:8px }
+/* Three modes plus the view seg overflow a narrow bar; wrap rather than
+   squeeze the segment buttons into unreadable two-line stacks. */
+.tb-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap }
+.seg button { white-space:nowrap }
+.tq-label { font-size:13px; font-weight:640; min-width:7ch }
+.tb-btn { font:inherit; font-size:12.5px; padding:4px 10px; cursor:pointer;
+  border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--ink-2) }
+.tb-btn:hover { border-color:var(--accent); color:var(--ink) }
+.tb-btn[aria-pressed=true] { background:var(--accent); border-color:var(--accent); color:var(--panel) }
+.tb-play { min-width:34px }
+#tslider { flex:1; accent-color:var(--accent) }
+.tb-note { max-width:none; margin:0 }
+
+/* ---- timeline (record) chart ---- */
+.tline { position:fixed; left:50%; transform:translateX(-50%); bottom:150px; z-index:26;
+  width:min(940px,calc(100vw - 24px)); padding:14px 18px 10px;
+  display:flex; flex-direction:column; gap:4px }
+.tline h2 { margin:0; font-size:15px; font-weight:640 }
+.tline .hint { max-width:none }
+.tl-head { display:flex; align-items:center; gap:10px }
+.tl-cby { font-size:12px; color:var(--ink-3) }
+.tl-body { display:flex; gap:14px; align-items:stretch }
+.tline-chart { flex:1; min-width:0 }
+.tline-chart svg { display:block; width:100% }
+.tl-legend { list-style:none; margin:0; padding:2px 0; width:150px; flex:none;
+  overflow-y:auto; max-height:380px; display:flex; flex-direction:column; gap:5px }
+.tl-legend li { display:flex; align-items:center; gap:7px; font-size:12px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.tl-legend .sw { width:10px; height:10px; border-radius:2px }
+.tl-grid { stroke:var(--line-soft); stroke-width:1 }
+.tl-axis { fill:var(--ink-3); font-size:11px; font-family:var(--mono) }
+.tl-future { fill:var(--accent-soft); opacity:.55 }
+.tl-flabel { fill:var(--ink-3); font-size:11.5px }
+.tl-path { fill:none; stroke:var(--fac); stroke-width:1.8 }
+.tl-path-future { stroke-dasharray:4 4 }
+.tl-dot { fill:var(--fac); cursor:pointer }
+.tl-dot:hover { stroke:var(--ink); stroke-width:1.5 }
+/* Click-to-highlight: the chosen frontier stays vivid, the rest recede. */
+.tl-dim { opacity:.15 }
+.tl-hot { stroke-width:2.6 }
+.tl-legend li { cursor:pointer }
+.tl-legend li:hover { color:var(--accent) }
+.tl-legend li.sel { font-weight:640 }
+.tl-pop { position:fixed; z-index:45; max-width:300px; padding:11px 13px;
+  box-shadow:0 10px 34px rgb(0 0 0 / 24%); font-size:12.5px;
+  display:flex; flex-direction:column; gap:3px }
+.tl-pop .t { font-weight:640; font-size:13px; padding-right:20px }
+.tl-pop .d { color:var(--ink-2) }
+.tl-pop a { font-weight:600; margin-top:3px }
+.tl-pop .x { position:absolute; top:6px; right:8px; border:0; background:none;
+  color:var(--ink-3); font-size:13px; cursor:pointer; padding:2px }
+.tl-pop .x:hover { color:var(--ink) }
+@media (max-height:640px) { .tline { display:none } }
+@media (max-width:720px) {
+  .tl-head { flex-wrap:wrap }
+  .tl-body { flex-direction:column }
+  .tl-legend { width:auto; max-height:none; flex-direction:row; flex-wrap:wrap; gap:5px 14px }
+}
+
+/* ---- top-15 compute chart ---- */
+.tchart { position:fixed; top:64px; right:12px; z-index:25; width:min(340px,calc(100vw - 24px));
+  padding:14px 16px; display:flex; flex-direction:column; gap:8px;
+  max-height:calc(100vh - 240px); overflow-y:auto }
+.tchart h2 { margin:0; font-size:14px; font-weight:640 }
+.tchart .hint { max-width:none }
+.tchart-rows { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px }
+.tchart-row { display:flex; flex-direction:column; gap:2px; cursor:pointer;
+  border-radius:6px; padding:3px 6px }
+.tchart-row:hover { background:var(--accent-soft) }
+.tcr-top { display:flex; align-items:baseline; gap:8px; font-size:12.5px }
+.tcr-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.tcr-val { font-family:var(--mono); font-size:11.5px; font-variant-numeric:tabular-nums;
+  color:var(--ink-2) }
+.tcr-bar { height:7px; border-radius:3px; background:var(--ai); opacity:.85; min-width:2px }
+@media (max-width:720px) { .tchart, #tchartBtn { display:none } }
+
+/* ---- earthquake exposure panel ---- */
+.eqpanel { max-height:calc(100vh - 96px) }
+.eq-head { display:flex; align-items:flex-start; gap:8px }
+.eq-head h2 { flex:1 }
+.eq-bands { display:flex; flex-direction:column; gap:3px; margin:2px 0 4px }
+.eq-band { display:flex; align-items:center; gap:8px; font-size:12px }
+.eq-band i { width:22px; height:10px; border-radius:2px; flex:none }
+.eq-band b { font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600 }
+.eq-band span { color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.eq-row { display:flex; align-items:center; gap:8px; cursor:pointer;
+  border-radius:6px; padding:4px 6px; font-size:12.5px }
+.eq-row:hover { background:var(--accent-soft) }
+.eq-row i { width:9px; height:9px; border-radius:50%; flex:none }
+.eq-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.eq-mmi { font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--ink-2) }
+.eq-km { font-family:var(--mono); font-size:11px; color:var(--ink-3); width:6ch; text-align:right }
+
+/* Active filter, shown next to the mode switch so it is never mistaken for
+   part of the map: the dot count on screen is a subset while this is set. */
+.chip { display:inline-flex; align-items:center; gap:7px; max-width:38ch;
+  font:inherit; font-size:12.5px; padding:4px 10px; cursor:pointer;
+  border:1px solid var(--accent); border-radius:999px;
+  background:var(--accent-soft); color:var(--ink) }
+.chip b { font-weight:620 } .chip span { color:var(--ink-3) }
+.chip::after { content:"✕"; color:var(--ink-3); font-size:11px }
+.chip:hover::after { color:var(--ink) }
+
+/* ---- search palette ---- */
+.palette { width:min(660px,calc(100vw - 24px)); padding:0; margin-top:12vh; border:0;
+  border-radius:12px; background:var(--panel); color:var(--ink);
+  box-shadow:0 24px 60px rgb(0 0 0 / 28%); overflow:hidden }
+.palette::backdrop { background:rgb(10 16 22 / 38%); backdrop-filter:blur(2px) }
+.pal-in { display:flex; align-items:center; gap:10px; padding:13px 16px;
+  border-bottom:1px solid var(--line) }
+.pal-ico::before { content:"🔍"; font-size:14px; opacity:.75 }
+#palq { flex:1; font:inherit; font-size:15px; border:0; outline:0; padding:0;
+  background:transparent; color:var(--ink) }
+#palq::placeholder { color:var(--ink-3) }
+.pal-res { list-style:none; margin:0; padding:6px; max-height:min(52vh,420px); overflow-y:auto }
+.pal-row { display:flex; align-items:baseline; gap:10px; padding:7px 10px; cursor:pointer;
+  border-radius:7px; scroll-margin:6px }
+.pal-row[aria-selected=true] { background:var(--accent-soft) }
+.pal-kind { flex:none; width:66px; font-family:var(--mono); font-size:9.5px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3) }
+.k-site { color:var(--fac) } .k-ai { color:var(--ai) }
+.k-operator, .k-utility { color:var(--accent) }
+.k-country { color:var(--cty) } .k-ercot { color:var(--ercot) } .k-pjm { color:var(--pjm) }
+.k-nyiso { color:var(--nyiso) }
+.pal-label { flex:none; max-width:34ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.pal-label mark { background:transparent; color:var(--accent); font-weight:640 }
+.pal-sub { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font-size:12.5px; color:var(--ink-3) }
+.pal-num { flex:none; font-family:var(--mono); font-size:12px; font-variant-numeric:tabular-nums;
+  color:var(--ink-2) }
+.pal-empty { padding:22px 16px; text-align:center; font-size:13px; color:var(--ink-3) }
+.pal-foot { display:flex; gap:16px; flex-wrap:wrap; margin:0; padding:9px 16px;
+  border-top:1px solid var(--line); font-size:11.5px; color:var(--ink-3) }
+.pal-foot kbd { font-family:var(--mono); font-size:10.5px; border:1px solid var(--line);
+  border-radius:4px; padding:1px 4px; margin-right:2px; color:var(--ink-2) }
+@media (max-width:620px) {
+  .pal-kind { width:52px } .pal-label { max-width:20ch }
+  .pal-sub, .pal-foot span:nth-child(n+3) { display:none }
+}
+
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:9px }
+.layers { position:fixed; top:64px; left:12px; z-index:25; padding:12px 14px;
+  display:flex; flex-direction:column; gap:8px; min-width:230px }
+.layers h2 { margin:0 0 2px; font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); font-weight:600 }
+.layers label { display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px }
+.layers input { accent-color:var(--accent) }
+.sw { width:11px; height:11px; border-radius:3px; flex:none }
+.sw-fac { background:var(--fac) } .sw-ai { background:var(--ai) }
+.sw-ercot { background:var(--ercot) }
+.sw-pjm { background:var(--pjm) } .sw-nyiso { background:var(--nyiso) }
+.sw-cty { background:var(--cty) }
+.sw-quake { background:#c00000 }
+/* Epicentre on the globe, matching the 2D marker exactly. */
+.epi-marker { border-radius:50%; background:rgb(154 167 178 / 35%);
+  border:1.5px solid #9aa7b2; box-shadow:0 0 5px rgb(0 0 0 / 50%); pointer-events:auto }
+/* Red only where the shaking actually reached a registry site. */
+.epi-marker.epi-hit { background:rgb(215 38 61 / 45%); border-color:#d7263d }
+.layers label { flex-wrap:wrap }
+.sublbl { width:100%; padding-left:19px; font-size:11px; color:var(--ink-3) }
+.hint { margin:4px 0 0; font-size:11.5px; color:var(--ink-3); max-width:22ch }
+
+.mapfull { position:fixed; inset:52px 0 0 0 }
+#map3d { background:var(--bg) }
+.tip { position:fixed; z-index:40; pointer-events:none; background:var(--panel);
+  border:1px solid var(--line); border-radius:7px; padding:7px 10px; font-size:12.5px;
+  box-shadow:0 6px 20px rgb(0 0 0 / 18%); max-width:280px }
+.tip .t { font-weight:620 }
+.tip .d { color:var(--ink-2) }
+
+/* ---- site detail pages ---- */
+.crumbs { font-size:12.5px; color:var(--ink-3); margin:0 0 10px }
+.crumbs a { color:var(--ink-3); text-decoration:none }
+.crumbs a:hover { color:var(--accent) }
+.crumbs b { color:var(--ink-3); font-weight:400 }
+.crumbs span { margin:0 6px; opacity:.6 }
+.updated { display:flex; align-items:center; gap:7px; margin:0 0 6px;
+  font-size:12.5px; color:var(--ink-2) }
+.updated i { width:9px; height:9px; border-radius:50%; background:var(--ink-3) }
+.subhead { margin:2px 0 0; font-size:14px; color:var(--ink-2) }
+.lede { margin:0; font-size:15.5px; line-height:1.6; max-width:70ch }
+
+.spec-hero { display:flex; flex-direction:column; gap:5px; padding-bottom:12px;
+  border-bottom:1px solid var(--line-soft); margin-bottom:4px }
+.spec-big { font-size:30px; font-weight:660; letter-spacing:-.02em; line-height:1.1 }
+.spec-big .dim { font-size:15px; font-weight:400 }
+.spec-bar { height:7px; border-radius:4px; background:var(--line-soft); overflow:hidden }
+.spec-bar i { display:block; height:100%; background:var(--fac) }
+
+/* ---- buildout ---- */
+.bo-body { display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap }
+.bo-chart { flex:1 1 380px; min-width:300px; max-width:600px }
+.bo-grid { stroke:var(--line-soft); stroke-width:1 }
+.bo-ax { fill:var(--ink-3); font-size:10.5px; font-family:var(--mono) }
+.bo-line { fill:none; stroke:var(--fac); stroke-width:2 }
+.bo-dot { fill:var(--fac) }
+.bo-time { flex:1 1 320px; min-width:280px; list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap:14px; max-height:460px; overflow-y:auto }
+.bo-time li { display:flex; flex-direction:column; gap:3px; padding-left:16px;
+  border-left:2px solid var(--line); position:relative }
+.bo-time li::before { content:""; position:absolute; left:-5px; top:5px; width:8px; height:8px;
+  border-radius:50%; background:var(--fac) }
+.bo-date { font-size:12.5px; font-weight:640 }
+.bo-what { font-size:12.5px; color:var(--ink-2); line-height:1.5 }
+.bo-nums { font-size:11.5px; color:var(--ink-3) }
+
+/* ---- land-change imagery ---- */
+.imgstrip { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px }
+.imgshot { margin:0; flex:none; width:260px }
+.imgshot img { width:100%; height:170px; object-fit:cover; border-radius:8px;
+  border:1px solid var(--line); background:var(--line-soft) }
+.imgshot figcaption { margin-top:5px; font-family:var(--mono); font-size:11.5px;
+  color:var(--ink-3) }
+.upform { display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-size:12.5px;
+  padding-top:10px; border-top:1px solid var(--line-soft) }
+.upform label { display:flex; align-items:center; gap:6px; color:var(--ink-2) }
+.upform input { font:inherit; font-size:12.5px; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:4px 7px }
+.srclist { margin:0; padding-left:20px; display:flex; flex-direction:column; gap:5px;
+  font-size:13px }
+
+.wrap { max-width:1080px; margin:0 auto; padding:76px 20px 64px;
+  display:flex; flex-direction:column; gap:18px }
+.sitehead h1 { margin:0 0 6px; font-size:24px; letter-spacing:-.02em; font-weight:650 }
+.badges { display:flex; gap:8px; flex-wrap:wrap }
+.badge { font-family:var(--mono); font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; padding:3px 9px; border-radius:999px;
+  border:1px solid var(--line); color:var(--ink-2) }
+.b-ai { border-color:var(--ai); color:var(--ai) }
+.b-trad { border-color:var(--fac); color:var(--fac) }
+.b-status { border-color:var(--accent); color:var(--accent) }
+.card { padding:16px 18px; display:flex; flex-direction:column; gap:10px }
+.card h2 { margin:0; font-size:15px; font-weight:620 }
+.facts { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px 22px }
+.fact { display:flex; flex-direction:column; gap:1px }
+.fk { font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-3) }
+.fv { font-size:13.5px }
+.note { font-size:12.5px; color:var(--ink-3); margin:0; max-width:80ch }
+.dim { color:var(--ink-3) }
+.mono { font-family:var(--mono); font-variant-numeric:tabular-nums }
+.tablewrap { overflow-x:auto }
+table { border-collapse:collapse; width:100%; min-width:640px }
+th { text-align:left; font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-3); padding:7px 8px; border-bottom:1px solid var(--line) }
+td { padding:6px 8px; border-bottom:1px solid var(--line-soft); vertical-align:top }
+.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap }
+.obs { font-size:12px; color:var(--ink-2); max-width:46ch }
+a { color:var(--accent) }
+
+/* ---- operator directory ---- */
+.opsbtn::before { content:"🏢" }
+.opsbtn[aria-pressed=true] { border-color:var(--accent); background:var(--accent-soft) }
+
+.ops { position:fixed; top:64px; right:12px; z-index:27;
+  width:min(390px,calc(100vw - 24px)); max-height:calc(100vh - 84px);
+  padding:12px 14px; display:flex; flex-direction:column; gap:9px; overflow-y:auto }
+.ops-head { display:flex; align-items:center; gap:10px }
+.ops-head h2 { margin:0; font-size:14px; font-weight:640; flex:1 }
+.ops .hint { max-width:none; margin:0 }
+.ops-search input { width:100%; box-sizing:border-box; font:inherit; font-size:13px;
+  padding:7px 10px; border:1px solid var(--line); border-radius:7px;
+  background:var(--bg); color:var(--ink) }
+.ops-search input:focus { outline:none; border-color:var(--accent) }
+/* Continents overflow one line at this width; wrapping keeps every region
+   reachable instead of clipping the last few. */
+.ops-seg { flex-wrap:wrap; border:0; gap:5px }
+.ops-seg button { border:1px solid var(--line); border-radius:6px; font-size:11.5px;
+  padding:3px 8px }
+
+.ops-rows { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px }
+.ops-row { display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;
+  text-align:left; font:inherit; padding:6px 7px; border:1px solid transparent;
+  border-radius:8px; background:none; color:var(--ink) }
+.ops-row:hover { background:var(--accent-soft); border-color:var(--line-soft) }
+
+/* Logos are supplied by the companies in every conceivable aspect ratio and
+   usually as dark-on-transparent. A fixed white tile with the mark contained
+   inside is the only treatment that survives all of them, and it stays white
+   in night mode on purpose - inverting a trademark is worse than a bright
+   square. */
+.ops-logo { flex:none; width:34px; height:34px; border-radius:7px;
+  border:1px solid var(--line); background:#fff; overflow:hidden;
+  display:inline-flex; align-items:center; justify-content:center }
+.ops-logo img { max-width:82%; max-height:82%; object-fit:contain }
+.ops-logo-lg { width:52px; height:52px; border-radius:9px }
+.ops-mono { background:hsl(var(--h) 42% 42%); color:#fff; border-color:transparent;
+  font-size:12.5px; font-weight:680; letter-spacing:.02em }
+.ops-logo-lg.ops-mono { font-size:18px }
+.ops-slot { display:contents }
+
+/* Name and badge share a line; the region caption sits under them. The badge
+   must live inside the <b>, not beside it - as a direct flex child it stretched
+   to the full row width and read as a progress bar. */
+.ops-name { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px;
+  font-size:13px; overflow:hidden }
+.ops-name b { font-weight:600; display:flex; align-items:center; gap:6px;
+  min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.ops-name em { font-style:normal; font-size:11.5px; font-weight:400; color:var(--ink-3);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.ops-ai { flex:none; font-style:normal; font-size:9.5px; font-weight:700;
+  letter-spacing:.04em; padding:1px 5px; border-radius:4px; background:var(--ai);
+  color:#fff }
+.ops-n { font-family:var(--mono); font-size:12.5px; color:var(--ink-2) }
+.ops-chev { color:var(--ink-3); font-size:15px }
+.ops-more { font-size:11.5px; color:var(--ink-3) }
+
+.ops-back { align-self:flex-start }
+.ops-hero { display:flex; align-items:center; gap:12px }
+.ops-hero h3 { margin:0; font-size:16px; font-weight:660 }
+.ops-d-meta { margin:2px 0 0; font-size:12px; color:var(--ink-3) }
+.ops-d-profile { margin:0; font-size:13px; line-height:1.5; color:var(--ink-2) }
+.ops-d-links { margin:0; font-size:12px }
+.ops-show { align-self:flex-start }
+.ops-h4 { margin:4px 0 0; font-size:11px; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--ink-3) }
+.ops-regions { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px }
+.ops-region { display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;
+  text-align:left; font:inherit; font-size:12.5px; padding:5px 7px; border:1px solid transparent;
+  border-radius:7px; background:none; color:var(--ink) }
+.ops-region:hover { background:var(--accent-soft); border-color:var(--line-soft) }
+.ops-region-n { font-family:var(--mono); min-width:3.5ch; text-align:right; color:var(--ink-2) }
+.ops-region span { display:flex; flex-direction:column; min-width:0 }
+.ops-region em { font-style:normal; font-size:11px; color:var(--ink-3);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.ops-sites { gap:2px }
+.ops-site { align-items:flex-start }
+.ops-site-n { font-size:12.5px; font-weight:560 }
+.ops-site-w { font-size:11px; color:var(--ink-3) }
+
+@media (max-width:720px) {
+  .ops { top:auto; bottom:0; right:0; left:0; width:auto; max-height:62vh;
+    border-radius:12px 12px 0 0 }
+}
+
+/* ---- operator's own page for this site ---- */
+.oplink { display:flex; align-items:center; gap:14px }
+.oplink > div { min-width:0 }
+.oplink h2 { margin:0 0 4px }
+.oplink p { margin:0 }
+.oplink-a { font-size:14px; font-weight:620 }
+.oplink-why { font-size:11.5px; margin-top:3px !important }
+
+/* ---- operator page ---- */
+.ops-logo-xl { width:64px; height:64px; border-radius:11px }
+.ops-logo-xl.ops-mono { font-size:22px }
+.opx-hero { display:flex; align-items:center; gap:16px; margin:6px 0 10px }
+.opx-hero h1 { margin:0 }
+.opx-meta { margin:3px 0 0; font-size:13px; color:var(--ink-3) }
+.opx-links { margin:5px 0 0; font-size:13px }
+.opx-nav { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 4px }
+.opx-chip { font-size:12px; padding:4px 10px; border:1px solid var(--line);
+  border-radius:20px; text-decoration:none; color:var(--ink-2); background:var(--panel) }
+.opx-chip:hover { border-color:var(--accent); color:var(--ink) }
+.opx-chip b { color:var(--ink-3); font-weight:640 }
+.opx-country { margin:14px 0 5px; font-size:12px; font-weight:700; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-3) }
+.opx-country:first-of-type { margin-top:4px }
+.opx-sites { list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:2px 18px }
+.opx-sites li { display:flex; align-items:baseline; gap:7px; padding:4px 0;
+  border-bottom:1px solid var(--line-soft); min-width:0 }
+.opx-name { font-size:13.5px; font-weight:560; text-decoration:none; color:var(--ink);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.opx-name:hover { color:var(--accent); text-decoration:underline }
+.opx-where { font-size:11.5px; color:var(--ink-3); flex:1; white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis }
+/* The outbound arrow is only rendered when a link was actually proven, so its
+   presence is meaningful - it must not look like decoration on every row. */
+.opx-out { flex:none; font-size:13px; text-decoration:none; color:var(--accent);
+  padding:0 3px; border-radius:4px }
+.opx-out:hover { background:var(--accent-soft) }
+
+/* Projections must never read as measurements. */
+.bo-line-future { stroke-dasharray:5 4; opacity:.75 }
+.bo-future { opacity:.72 }
+.bo-date i { font-style:normal; font-size:9.5px; font-weight:700; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--ink-3) }
+.spec-proj { margin:8px 0 0; font-size:12.5px; color:var(--ink-3) }
+
+/* ---- co-located facilities (carrier hotels) ---- */
+.mates { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px }
+.mates li { display:flex; align-items:baseline; gap:9px; padding:4px 0;
+  border-bottom:1px solid var(--line-soft) }
+.mates a { font-size:13.5px; font-weight:560 }
+.mates .dim { font-size:11.5px }
