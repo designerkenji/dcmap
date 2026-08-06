@@ -211,6 +211,35 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
   border:1.5px solid #9aa7b2; box-shadow:0 0 5px rgb(0 0 0 / 50%); pointer-events:auto }
 /* Red only where the shaking actually reached a registry site. */
 .epi-marker.epi-hit { background:rgb(215 38 61 / 45%); border-color:#d7263d }
+
+/* Close-range site markers on the globe. Below CLOSE_ALT the WebGL dots are
+   swapped for these: three-globe extrudes its points into cylinders with a
+   hard 0.1-unit floor on the height - 6.4 km on this globe - so from a few
+   kilometres up an off-centre dot is drawn as a streak lying across the
+   imagery instead of a disc on the roof. A DOM marker always faces the
+   camera and sits exactly on its coordinate. Hollow, so the building it
+   marks is still readable underneath. */
+/* Solid, and ringed in white. A marker has one job over satellite imagery and
+   that is to be found, which a translucent tint over a bright roof is not. The
+   white ring is what makes one colour work on both dark fields and pale
+   concrete - the dot reads against the ring, the ring reads against anything.
+   The dark drop underneath does the same for the ring itself. */
+.dc-marker { border-radius:50%; background:var(--fac); border:0;
+  box-shadow:0 0 0 2px rgb(255 255 255 / 92%), 0 1px 5px rgb(0 0 0 / 55%);
+  pointer-events:auto; cursor:pointer; box-sizing:border-box }
+.dc-marker:hover { box-shadow:0 0 0 3px #fff, 0 2px 8px rgb(0 0 0 / 65%) }
+.dc-marker.dc-ai { background:var(--ai) }
+/* Hollow still means "approximate": a town centroid, not a located building -
+   the same thing it means on the 2D dots. */
+.dc-marker.dc-town { background:transparent; border:2.5px solid var(--fac) }
+.dc-marker.dc-ai.dc-town { background:transparent; border-color:var(--ai) }
+
+/* Popups are reached from search, deep links and the operator directory, so
+   they carry their own way into the site page rather than pointing at a dot. */
+.maplibregl-popup-content .pop-open { display:inline-block; margin-top:6px;
+  font-weight:600; color:var(--accent); text-decoration:none }
+.maplibregl-popup-content .pop-open:hover { text-decoration:underline }
+
 .layers label { flex-wrap:wrap }
 .sublbl { width:100%; padding-left:19px; font-size:11px; color:var(--ink-3) }
 .hint { margin:4px 0 0; font-size:11.5px; color:var(--ink-3); max-width:22ch }
@@ -271,6 +300,101 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .upform label { display:flex; align-items:center; gap:6px; color:var(--ink-2) }
 .upform input { font:inherit; font-size:12.5px; color:var(--ink);
   background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:4px 7px }
+/* ---- Wayback: the same place, every year the archive has it ---- */
+.wb { margin:0 0 14px }
+.wb-frame { position:relative; width:100%; height:340px; overflow:hidden;
+  border-radius:9px; border:1px solid var(--line); background:var(--line-soft) }
+.wb-grid { position:absolute; left:50%; top:50% }
+.wb-frame img { position:absolute; width:256px; height:256px; display:block }
+/* The site itself, so you can see WHICH building appeared. It lives INSIDE the
+   grid, at the grid's origin, so that panning carries it with the ground
+   rather than leaving it stuck to the middle of the frame pointing at
+   whatever happens to be there. */
+.wb-x { position:absolute; left:0; top:0; width:15px; height:15px; margin:-7.5px 0 0 -7.5px;
+  border-radius:50%; border:2px solid var(--fac); background:transparent;
+  box-shadow:0 0 0 2px rgb(255 255 255 / 85%), 0 1px 5px rgb(0 0 0 / 55%);
+  pointer-events:none }
+
+.wb-frame { cursor:grab }
+.wb-frame.wb-drag { cursor:grabbing }
+.wb-tools { position:absolute; top:8px; right:8px; z-index:2; display:flex; gap:4px }
+/* Fixed dark on fixed white, NOT var(--ink): these chips sit on satellite
+   imagery, which looks the same in both themes, so a theme-aware ink turns
+   the labels invisible on the white chip the moment night mode is on. */
+.wb-tool { width:28px; height:28px; padding:0; font:inherit; font-size:15px; line-height:1;
+  cursor:pointer; color:#14202b; background:rgb(255 255 255 / 92%);
+  border:1px solid rgb(0 0 0 / 18%); border-radius:6px;
+  box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
+.wb-tool:hover { background:#fff; border-color:var(--accent) }
+
+/* Full screen is where the wheel earns its keep: the frame becomes the window
+   and the imagery finally has room to be zoomed into. */
+.wb:fullscreen { background:var(--bg); padding:14px; display:flex; flex-direction:column }
+.wb:fullscreen .wb-frame { flex:1; height:auto }
+.wb-bar { display:flex; align-items:center; gap:12px; margin-top:9px }
+.wb-track { position:relative; flex:1 }
+.wb-track input[type=range] { display:block; width:100%; margin:0 }
+
+/* The thumb is sized explicitly because the tick strip below has to line up
+   with it, and a range thumb's default width is a browser's business, not a
+   number you can rely on. Fixing it at 16 makes the arithmetic in buildScale()
+   true rather than approximately true. */
+.wb-track input[type=range] { -webkit-appearance:none; appearance:none;
+  height:16px; background:transparent; cursor:pointer }
+.wb-track input[type=range]::-webkit-slider-runnable-track { height:5px; border-radius:3px;
+  background:linear-gradient(to right, var(--accent) calc(var(--wbp,0) * 1%),
+                                       var(--line) calc(var(--wbp,0) * 1%)) }
+.wb-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;
+  width:16px; height:16px; margin-top:-5.5px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--panel); box-sizing:border-box;
+  box-shadow:0 1px 3px rgb(0 0 0 / 35%) }
+.wb-track input[type=range]::-moz-range-track { height:5px; border-radius:3px;
+  background:var(--line) }
+.wb-track input[type=range]::-moz-range-progress { height:5px; border-radius:3px;
+  background:var(--accent) }
+.wb-track input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--panel); box-sizing:border-box }
+
+/* One tick per capture, and the year written under the first capture of each
+   year - so the shape of the archive is visible at a glance: where captures
+   cluster, where they thin out, and roughly when you are. */
+.wb-scale { position:relative; height:22px; margin-top:3px }
+.wb-tick { position:absolute; top:0; width:1px; height:5px; background:var(--line);
+  margin-left:-0.5px }
+.wb-tick.on { background:var(--accent); width:2px; height:8px; margin-left:-1px }
+.wb-year { position:absolute; top:7px; transform:translateX(-50%); padding:0 2px;
+  font:inherit; font-family:var(--mono); font-size:10.5px; line-height:1.3;
+  color:var(--ink-3); background:none; border:0; cursor:pointer; white-space:nowrap }
+.wb-year:hover { color:var(--accent) }
+.wb-year.on { color:var(--ink); font-weight:640 }
+.wb-date { font-family:var(--mono); font-size:13px; font-weight:640; min-width:9ch }
+.wb-of { font-size:12px; color:var(--ink-3); white-space:nowrap }
+.wb-btn { font:inherit; font-size:12.5px; color:var(--ink); cursor:pointer;
+  background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:3px 9px }
+.wb-btn:hover { border-color:var(--accent) }
+.wb-loading { padding:14px 0; font-size:12.5px; color:var(--ink-3) }
+
+/* ---- correcting a site by hand ---- */
+.card-head { display:flex; align-items:baseline; gap:12px }
+.card-head h2 { flex:1 }
+/* Not a warning colour: a hand correction is better evidence than a scraped
+   one, not worse. It just has to be legible as a different KIND of fact. */
+.edited-note { border-top:1px solid var(--line-soft); padding-top:9px; margin-top:11px;
+  max-width:none }
+.editform { border-top:1px solid var(--line-soft); padding-top:11px; margin-top:11px;
+  display:flex; flex-direction:column; gap:11px }
+.editform .note { max-width:none }
+.editgrid { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+  gap:9px 14px }
+.editgrid label, .editnote { display:flex; flex-direction:column; gap:3px; font-size:12px;
+  color:var(--ink-3) }
+.editgrid input, .editgrid select, .editnote input { font:inherit; font-size:13px;
+  color:var(--ink); background:var(--panel); border:1px solid var(--line);
+  border-radius:6px; padding:5px 8px; width:100% }
+.editgrid input:focus, .editgrid select:focus, .editnote input:focus {
+  outline:none; border-color:var(--accent) }
+.editbar { display:flex; align-items:center; gap:10px }
+
 .srclist { margin:0; padding-left:20px; display:flex; flex-direction:column; gap:5px;
   font-size:13px }
 
@@ -439,3 +563,28 @@ a { color:var(--accent) }
   border-bottom:1px solid var(--line-soft) }
 .mates a { font-size:13.5px; font-weight:560 }
 .mates .dim { font-size:11.5px }
+
+/* ---- lifecycle status ---- */
+.st-h { margin:14px 0 6px !important }
+.st-row { display:flex; flex-direction:column; gap:4px }
+.st-chip { display:flex; align-items:center; gap:8px; width:100%; cursor:pointer;
+  font:inherit; font-size:12.5px; text-align:left; padding:5px 8px;
+  border:1px solid var(--line); border-radius:7px; background:var(--panel);
+  color:var(--ink) }
+.st-chip:hover { border-color:var(--accent) }
+.st-chip[aria-pressed=true] { background:var(--accent); border-color:var(--accent);
+  color:var(--panel) }
+.st-chip[aria-pressed=true] .st-n { color:var(--panel) }
+.st-dot { width:9px; height:9px; border-radius:50%; flex:none }
+.st-op { background:#2E9E6B }
+.st-uc { background:#3B82C4 }
+.st-un { background:transparent; border:1.5px solid var(--ink-3) }
+.st-lab { flex:1 }
+.st-n { font-family:var(--mono); font-size:12px; color:var(--ink-3) }
+.st-note { font-size:11px; margin-top:6px !important }
+
+/* ---- basemap switch ---- */
+.bm-seg { flex-wrap:wrap; border:0; gap:5px; margin-bottom:2px }
+.bm-seg button { border:1px solid var(--line); border-radius:6px; font-size:11.5px;
+  padding:3px 9px }
+.bm-note { font-size:10.5px; margin:6px 0 0 !important; line-height:1.45 }

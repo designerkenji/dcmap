@@ -26,7 +26,14 @@
 </header>
 
 <aside class="layers panel" aria-label="Layers">
-  <h2>Layers</h2>
+  <h2>Basemap</h2>
+  <div class="seg bm-seg" id="bm-seg" role="tablist" aria-label="Basemap">
+    <button data-bm="" role="tab" aria-selected="true">Map</button>
+  </div>
+
+  <p class="hint bm-note" id="bm-note" hidden></p>
+
+  <h2 class="st-h">Layers</h2>
   <label><input type="checkbox" id="lyr-facilities" checked> <i class="sw sw-fac"></i> Data Center Facilities</label>
   <label><input type="checkbox" id="lyr-ai" checked> <i class="sw sw-ai"></i> AI Data Centers</label>
   <label><input type="checkbox" id="lyr-ercot"> <i class="sw sw-ercot"></i> ERCOT Load Zones</label>
@@ -35,6 +42,11 @@
   <label><input type="checkbox" id="lyr-countries"> <i class="sw sw-cty"></i> Data Centres by Country</label>
   <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes
     <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
+
+  <h2 class="st-h">Status</h2>
+  <div class="st-row" id="st-row"></div>
+  <p class="hint st-note" id="st-note"></p>
+
   <p class="hint">Click a dot to open that site's page in a new tab.</p>
 </aside>
 

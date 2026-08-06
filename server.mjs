@@ -14,6 +14,8 @@ import path from 'node:path';
 import { loadAll, paths } from './lib/data.mjs';
 import { renderSitePage } from './lib/sitepage.mjs';
 import { renderOperatorPage } from './lib/operatorpage.mjs';
+import { captures, tileXY, ZOOM } from './lib/wayback.mjs';
+import { FIELDS, validate, appendOverrides } from './lib/overrides.mjs';
 
 const PORT = process.env.PORT || 8787;
 const PUB = path.join(import.meta.dirname, 'public');
@@ -32,19 +34,101 @@ const VENDOR = {
   '/vendor/globe.gl.min.js': path.join(NM, 'globe.gl', 'dist', 'globe.gl.min.js'),
 };
 
-const data = await loadAll();
+// Reassigned when a hand correction is saved. The derived payloads - map
+// dots, the search index, operator pages, country counts - are COPIES built
+// at load time, not references to the site objects, so patching a site in
+// place would fix the detail page and leave the map showing the old name.
+// Reloading everything is a second of CSV parsing and is the only version of
+// this that cannot go half-applied.
+let data = await loadAll();
 
-// Pre-serialise the payloads once; they are immutable for the process lifetime.
-const JSON_ROUTES = {
-  '/data/sites.json': JSON.stringify(data.mapSites),
-  '/data/ercot.json': JSON.stringify(data.ercot),
-  '/data/pjm.json': JSON.stringify(data.pjm),
-  '/data/nyiso.json': JSON.stringify(data.nyiso),
-  '/data/countries.json': JSON.stringify(data.countries),
-  '/data/basemap.json': JSON.stringify(data.basemap),
-  '/data/timeline.json': JSON.stringify(data.timelinePayload),
-  '/data/quakes.json': JSON.stringify(data.quakes),
-  '/data/operators.json': JSON.stringify(data.operatorsPayload),
+// Pre-serialised, because these are read on every page load and re-stringifying
+// six megabytes per request would be absurd. They were also, until sites became
+// editable, immutable for the process lifetime - so a correction has to
+// re-serialise them or the map keeps serving the name the registry no longer
+// holds. That is one function call rather than a rule to remember, which is the
+// point of it being here and not at each call site.
+let JSON_ROUTES;
+function serialiseRoutes() {
+  JSON_ROUTES = {
+    '/data/sites.json': JSON.stringify(data.mapSites),
+    '/data/ercot.json': JSON.stringify(data.ercot),
+    '/data/pjm.json': JSON.stringify(data.pjm),
+    '/data/nyiso.json': JSON.stringify(data.nyiso),
+    '/data/countries.json': JSON.stringify(data.countries),
+    '/data/basemap.json': JSON.stringify(data.basemap),
+    '/data/timeline.json': JSON.stringify(data.timelinePayload),
+    '/data/quakes.json': JSON.stringify(data.quakes),
+    '/data/operators.json': JSON.stringify(data.operatorsPayload),
+  };
+}
+serialiseRoutes();
+
+// ---- satellite basemap ----------------------------------------------------
+// Two providers, and which one you get depends on whether a key is present.
+//
+// esri     Publicly reachable without a key, which is NOT the same as free.
+//          Esri's terms of use (tou_summary.pdf, 21 Apr 2025) grant the right
+//          to use these basemaps to subscribers: "Use with Esri software and
+//          comply with its terms of use. If you do not have Esri software, you
+//          must purchase an ArcGIS Online subscription." They also say plainly
+//          "YOU MAY NOT ... Redistribute basemap tiles" or "Download,
+//          redistribute or self-host any content hosted by Esri."
+//
+//          MapLibre is not Esri software. So this default is fine for local
+//          development and evaluation, and a deployment needs either an ArcGIS
+//          subscription or a different provider. It is left as the default
+//          because it makes the feature work out of the box, and it is labelled
+//          in the UI rather than left for someone to discover later.
+//
+// google   Map Tiles API. NOT the Maps JavaScript API - Google's terms forbid
+//          putting Maps imagery in a third-party renderer like MapLibre, and
+//          Map Tiles is the product that is licensed for exactly that. Needs
+//          an API key AND an enabled billing account.
+//
+// THE KEY NEVER REACHES THE BROWSER. Google's tile URL carries the key as a
+// query parameter, so pointing MapLibre straight at it would publish the key
+// to anyone who opens devtools. Tiles are proxied through this server instead:
+// the key stays in the environment, and the client only ever sees /tiles/google.
+const GOOGLE_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
+
+let gSession = null;          // { session, expiresAt }
+
+async function googleSession() {
+  if (gSession && gSession.expiresAt > Date.now() + 60_000) return gSession.session;
+  const r = await fetch(`https://tile.googleapis.com/v1/createSession?key=${GOOGLE_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mapType: 'satellite', language: 'en-US', region: 'US' }),
+  });
+  if (!r.ok) throw new Error(`createSession ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  const j = await r.json();
+  // `expiry` is unix seconds. Cache until then rather than per request: a
+  // session is good for hours and creating one per tile would be absurd.
+  gSession = { session: j.session, expiresAt: (+j.expiry || 0) * 1000 || Date.now() + 3600_000 };
+  return gSession.session;
+}
+
+const PROVIDERS = {
+  esri: {
+    id: 'esri',
+    label: 'Satellite',
+    tiles: ['https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+    maxzoom: 19,
+    // Verbatim from the service's own accessInformation field. It says Vantor,
+    // not Maxar - Maxar renamed, and an attribution naming the wrong company
+    // is not attribution.
+    attribution: 'Imagery &copy; Esri, Vantor, Earthstar Geographics, and the GIS User Community',
+    licence: 'Esri Master License Agreement — requires an ArcGIS subscription for non-Esri apps',
+  },
+  google: {
+    id: 'google',
+    label: 'Satellite (Google)',
+    tiles: ['/tiles/google/{z}/{x}/{y}'],
+    maxzoom: 22,
+    attribution: '&copy; Google',
+    licence: 'Google Maps Platform — billed per tile request',
+  },
 };
 
 // ---- land-change imagery -------------------------------------------------
@@ -90,10 +174,33 @@ function send(res, code, body, type) {
 
 function sendFile(res, file) {
   if (!fs.existsSync(file)) return send(res, 404, 'not found', 'text/plain');
-  send(res, 200, fs.readFileSync(file), MIME[path.extname(file)] || 'application/octet-stream');
+  try {
+    send(res, 200, fs.readFileSync(file), MIME[path.extname(file)] || 'application/octet-stream');
+  } catch (err) {
+    // existsSync passing does not mean the read will succeed. A file readable
+    // at startup can stop being readable later - macOS revoked this app's
+    // Downloads access mid-session when Claude Code updated itself into a new
+    // versioned path, and every open after that returned EPERM. Whatever the
+    // cause, one unreadable file must not be fatal.
+    console.error(`[dcmap] ${err.code || 'read failed'} on ${file}`);
+    send(res, 500, 'could not read that file', 'text/plain');
+  }
 }
 
+// An uncaught throw inside a Node request handler takes the WHOLE PROCESS
+// down. That is how a single unreadable file turned into a dead server: the
+// app served fine, one request hit EPERM, and the process exited. One bad
+// request must cost one 500, not everyone else's session.
 const server = http.createServer(async (req, res) => {
+  try {
+    await handle(req, res);
+  } catch (err) {
+    console.error(`[dcmap] ${req.method} ${req.url} failed:`, err);
+    if (!res.headersSent) send(res, 500, 'server error', 'text/plain');
+  }
+});
+
+async function handle(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const p = url.pathname;
 
@@ -120,6 +227,113 @@ const server = http.createServer(async (req, res) => {
       mates: (data.byBuilding.get(site.building) || []).filter(x => x.site_id !== id),
     });
     return send(res, 200, html, MIME['.html']);
+  }
+
+  // Correct a site by hand. Writes to data/site_overrides.csv, which is a
+  // SOURCE the pipeline never rewrites, then re-applies it to the in-memory
+  // site so the change is live without a restart.
+  const ed = req.method === 'POST' && p.match(/^\/api\/site\/(site-[a-z0-9-]+)$/);
+  if (ed) {
+    const site = data.siteById.get(ed[1]);
+    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
+    let body;
+    try {
+      body = JSON.parse(await readBody(req, 64 * 1024));
+    } catch {
+      return send(res, 400, '{"error":"expected JSON"}', MIME['.json']);
+    }
+    const edits = {};
+    for (const [field, value] of Object.entries(body.fields || {})) {
+      const bad = validate(field, value);
+      if (bad) {
+        return send(res, 400, JSON.stringify({ error: field + ': ' + bad }), MIME['.json']);
+      }
+      // Only what actually differs. Re-asserting a value the pipeline already
+      // produces would pin it against future sources for no reason.
+      if (String(value) !== String(site[field] ?? '')) edits[field] = value;
+    }
+    if (!Object.keys(edits).length) {
+      return send(res, 200, '{"saved":0}', MIME['.json']);
+    }
+    const note = typeof body.note === 'string' ? body.note.slice(0, 300) : '';
+    try {
+      appendOverrides(paths.data, site.site_id, site, edits, note,
+                      new Date().toISOString().slice(0, 19) + 'Z');
+      data = await loadAll();     // see the note where `data` is declared
+      serialiseRoutes();
+      return send(res, 200, JSON.stringify({ saved: Object.keys(edits).length }),
+                  MIME['.json']);
+    } catch (err) {
+      console.error('[overrides] write failed:', err);
+      return send(res, 500, JSON.stringify({ error: err.message }), MIME['.json']);
+    }
+  }
+
+  // The dated imagery series for one site. Lazy on purpose: the scan behind it
+  // is 195 upstream requests, so it runs when the page asks rather than on
+  // every render, and the answer is cached per tile for the life of the
+  // process. An immutable-ish Cache-Control covers the reloads in between -
+  // the archive gains a release every few weeks, not every few minutes.
+  const wb = p.match(/^\/api\/wayback\/(site-[a-z0-9-]+)$/);
+  if (wb) {
+    const site = data.siteById.get(wb[1]);
+    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
+    if (site.lat == null || site.lon == null) {
+      return send(res, 200, JSON.stringify({ captures: [] }), MIME['.json']);
+    }
+    try {
+      const list = await captures(+site.lat, +site.lon);
+      const { x, y, z } = tileXY(+site.lat, +site.lon, ZOOM);
+      const body = JSON.stringify({ z, x, y, captures: list });
+      res.writeHead(200, { 'Content-Type': MIME['.json'],
+                           'Cache-Control': 'public, max-age=86400' });
+      return res.end(body);
+    } catch (err) {
+      // The page degrades to its uploaded screenshots, so this is a 200 with
+      // an empty series and a reason, not a 500 that shows the user a stack.
+      console.warn('[wayback] scan failed:', err.message);
+      return send(res, 200, JSON.stringify({ captures: [], error: err.message }),
+                  MIME['.json']);
+    }
+  }
+
+  // Which satellite providers this deployment can actually offer. Google only
+  // appears when a key is configured, so the UI never shows an option that
+  // would 500 on click.
+  if (p === '/api/basemaps') {
+    const list = [PROVIDERS.esri];
+    if (GOOGLE_KEY) list.push(PROVIDERS.google);
+    return send(res, 200, JSON.stringify(list), MIME['.json']);
+  }
+
+  const gt = p.match(/^\/tiles\/google\/(\d{1,2})\/(\d{1,7})\/(\d{1,7})$/);
+  if (gt) {
+    if (!GOOGLE_KEY) return send(res, 404, 'no Google key configured', 'text/plain');
+    const [, z, x, y] = gt;
+    try {
+      const session = await googleSession();
+      const r = await fetch(
+        `https://tile.googleapis.com/v1/2dtiles/${z}/${x}/${y}?session=${session}&key=${GOOGLE_KEY}`);
+      if (!r.ok) {
+        // A 401/403 here is almost always billing not enabled or the Map Tiles
+        // API not switched on - say which, rather than a bare status code.
+        const hint = r.status === 403 || r.status === 401
+          ? ' (check the key is valid, Map Tiles API is enabled, and billing is on)' : '';
+        console.error(`[dcmap] google tile ${z}/${x}/${y} -> ${r.status}${hint}`);
+        return send(res, 502, `google tile ${r.status}${hint}`, 'text/plain');
+      }
+      const buf = Buffer.from(await r.arrayBuffer());
+      res.writeHead(200, {
+        'Content-Type': r.headers.get('content-type') || 'image/jpeg',
+        // Tiles are immutable for a session; let the browser keep them.
+        'Cache-Control': 'public, max-age=86400',
+        'X-Content-Type-Options': 'nosniff',
+      });
+      return res.end(buf);
+    } catch (err) {
+      console.error('[dcmap] google tiles:', err.message);
+      return send(res, 502, 'google tiles unavailable', 'text/plain');
+    }
   }
 
   if (p.startsWith('/operator/')) {
@@ -204,6 +418,6 @@ const server = http.createServer(async (req, res) => {
     return sendFile(res, file);
   }
   send(res, 404, 'not found', 'text/plain');
-});
+}
 
 server.listen(PORT, () => console.log(`dcmap listening on http://localhost:${PORT}`));

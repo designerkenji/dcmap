@@ -25,17 +25,16 @@
       fac: '#0E8A7C', ai: '#B5761E', halo: '#FFFFFF',
       ercot: '#B5761E', pjm: '#3B82C4', nyiso: '#2E9E83', cty: '#7C5FBF',
       // The globe was night in both themes: one hard-coded texture and a black
-      // background in each palette. Day now gets a lit sky; night keeps
-      // worldmonitor's topo-bathy over black.
-      //
-      // earth-day over Blue Marble, despite Blue Marble being 4096x2048 against
-      // this one's 1600x800. Blue Marble is a true-colour satellite composite,
-      // so its oceans really are near-black and no amount of lighting lifts
-      // them - they are different cartographic products, not the same map at
-      // two exposures. The globe is an overview surface and 2D is where zooming
-      // happens, so a bright ocean beats sharp coastline here. It does go soft
-      // if you push the globe past about 0.4 altitude.
+      // background in each palette. Day now gets a lit sky; night stays dark.
       bg3d: '#CFE0EE', atmosphere: '#9FD0FF',
+      // The globe's basemap gets MORE contrast than the 2D one, not the same.
+      // 2D can separate #DFE9F0 ocean from #F6F8FA land because it is flat,
+      // evenly lit and viewed head-on. Wrap those two on a sphere behind an
+      // atmosphere and they are one colour. A globe needs a blue ocean.
+      globeOcean: '#A8CCE6', globeLand: '#F4F7F9', globeBorder: '#8FA9BE',
+      // Fallback only, for a browser that will not give us a 2D canvas
+      // context. The globe wore this photograph until people started reading
+      // it as satellite imagery - see globeMapTexture().
       globeTexture: '/textures/earth-day.jpg',
       // Added flat, not multiplied through the texture: a multiplicative lift
       // leaves dark pixels dark, which is the whole problem being solved.
@@ -47,7 +46,8 @@
       fac: '#40C4B4', ai: '#E0A75C', halo: '#0A1016',
       ercot: '#FFB03B', pjm: '#60A5EB', nyiso: '#4FD1AC', cty: '#A78BFA',
       bg3d: '#000000', atmosphere: '#274060',
-      globeTexture: '/textures/earth-topo-bathy.jpg',
+      globeOcean: '#0C1B2A', globeLand: '#22303C', globeBorder: '#44586B',
+      globeTexture: '/textures/earth-topo-bathy.jpg',   // fallback only
       // Night stays night - just enough lift to keep it from going muddy.
       globeLift: 0x0a0f14, ambient: 3.0, sun: 0.9,
       fac3d: 'rgba(64,196,180,0.85)', ai3d: 'rgba(224,167,92,0.95)',
@@ -138,6 +138,12 @@
   // while the timeline is open - its count line and Top-15 chart, which read
   // the same filters. Reassigned once the timeline module loads.
   let refreshView = () => { applyVisibility(); refreshGlobe(); };
+  // Declared here, not next to the basemap UI further down: styleGlobe() and
+  // initGlobe() are defined above that point and would hit the temporal dead
+  // zone reading it.
+  let currentBasemap = '';          // '' = our own vector basemap
+  let providers = [];
+  let globeAlt = 2.5;               // globe camera altitude; see pointRadius()
 
   const tip = document.getElementById('tip');
   function showTip(x, y, html) {
@@ -150,7 +156,7 @@
   const hideTip = () => { tip.hidden = true; };
 
   const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const siteTip = (p) => {
+  const siteFacts = (p) => {
     const bits = [p.o, p.ci || p.c, p.mw ? p.mw.toLocaleString() + ' MW' : '', p.u]
       .filter(Boolean).map(esc).join(' · ');
     return `<div class="t">${esc(p.n || p.o || 'Data centre')}</div>` +
@@ -158,11 +164,63 @@
            (p.gp === 'town' ? '<div class="d">approximate location — geocoded to the town, not the building</div>' : '') +
            (p.rv ? '<div class="d">unverified — PeeringDB listing with no networks, IXs or carriers</div>' : '') +
            (p.mmi ? `<div class="d">worst recent shaking: MMI ${(+p.mmi).toFixed(1)}` +
-             `${p.mmiEv ? ' — ' + esc(p.mmiEv) : ''}</div>` : '') +
-           `<div class="d">click to open site page</div>`;
+             `${p.mmiEv ? ' — ' + esc(p.mmiEv) : ''}</div>` : '');
   };
 
+  // Hovering a dot. "Click" means the dot under the cursor, which by
+  // definition exists - you are pointing at it.
+  const siteTip = (p) => siteFacts(p) + '<div class="d">click to open site page</div>';
+
+  // A popup is not a hover tip and cannot borrow its wording. Popups are
+  // opened by search, by a deep link and by the operator directory, and none
+  // of those need a dot on the map to work - switch the Data Center Facilities
+  // layer off, pick a site out of an operator's list, and the popup used to
+  // arrive telling you to click a dot that is not being drawn. Dead end.
+  //
+  // A real anchor rather than a click handler, so the site page can also be
+  // opened in a background tab or a new window the usual ways.
+  const sitePopup = (p) => siteFacts(p) +
+    `<a class="pop-open" href="/site/${encodeURIComponent(p.id)}" ` +
+    `target="_blank" rel="noopener">Open site page →</a>`;
+
   // ---- 2D: MapLibre ---------------------------------------------------------
+  // Site dots, solid at every zoom, ringed in the halo colour.
+  //
+  // They used to fade to a ring past z12, on the theory that over imagery a
+  // filled disc is a lid you cannot see the building through. That was true
+  // when the dot was the only thing marking the site and it was drawn far too
+  // big. It stopped being true once the dot got small enough to sit on a
+  // single roof - and a hollow ring over a bright roof is not a subtle marker,
+  // it is an invisible one. A marker's first job is to be found.
+  //
+  // Hollow now carries exactly one meaning, the one it carries on the globe:
+  // the coordinate is a town centroid, not a located building.
+  //
+  // The ring is the halo colour - white by day, near-black by night - which is
+  // what lets one dot colour work over a dark field and pale concrete alike.
+  function dotPaint(colour, halo, base) {
+    const town = ['==', ['get', 'gp'], 'town'];
+    // `zoom` HAS to be the top-level operand of the interpolate. Nesting it
+    // inside a `case` - which reads more naturally, town first then the rest -
+    // is a hard validation error in MapLibre, and it takes the whole layer with
+    // it: both dot layers rendered nothing at all until this was inverted.
+    // So interpolate is outermost and the per-feature `case` goes in the stops.
+    const z = (near, far) => ['interpolate', ['linear'], ['zoom'], 11, near, 14, far];
+    return {
+      'circle-color': ['case', town, 'rgba(0,0,0,0)', colour],
+      'circle-radius': z(base, base * 1.5),
+      // No zoom term: these are the same whether you are looking at the world
+      // or at one building.
+      'circle-opacity': ['case', town, 0, 0.92],
+      'circle-stroke-color': ['case', town, colour, halo],
+      // The ring thickens with zoom because it is proportionally thinner as
+      // the dot grows, and a town ring stays thicker than a halo since for
+      // town dots the ring IS the marker.
+      'circle-stroke-width': z(['case', town, 1.6, 0.8], ['case', town, 2.2, 1.8]),
+      'circle-stroke-opacity': 0.95,
+    };
+  }
+
   function buildStyle() {
     const c = pal();
     const clamp01 = (e) => ['min', 1, ['max', 0, e]];
@@ -210,13 +268,7 @@
         // ring says "somewhere in this settlement", not "this building".
         { id: 'sites', type: 'circle', source: 'sites',
           filter: ['!=', ['get', 'ft'], 'ai'],
-          paint: {
-            'circle-color': ['case', ['==', ['get', 'gp'], 'town'], 'rgba(0,0,0,0)', c.fac],
-            'circle-radius': 3.2,
-            'circle-opacity': 0.85,
-            'circle-stroke-color': ['case', ['==', ['get', 'gp'], 'town'], c.fac, c.halo],
-            'circle-stroke-width': ['case', ['==', ['get', 'gp'], 'town'], 1.6, 0.6],
-          } },
+          paint: dotPaint(c.fac, c.halo, 3.2) },
         { id: 'epicentre', type: 'circle', source: 'epicentre', layout: { visibility: 'none' },
           paint: {
             // Magnitude is logarithmic, so area should be too - a linear
@@ -233,13 +285,7 @@
           } },
         { id: 'sites-ai', type: 'circle', source: 'sites',
           filter: ['==', ['get', 'ft'], 'ai'],
-          paint: {
-            'circle-color': ['case', ['==', ['get', 'gp'], 'town'], 'rgba(0,0,0,0)', c.ai],
-            'circle-radius': 5,
-            'circle-opacity': 0.85,
-            'circle-stroke-color': ['case', ['==', ['get', 'gp'], 'town'], c.ai, c.halo],
-            'circle-stroke-width': ['case', ['==', ['get', 'gp'], 'town'], 1.8, 0.6],
-          } },
+          paint: dotPaint(c.ai, c.halo, 5) },
       ],
     };
   }
@@ -581,8 +627,13 @@
   function styleGlobe() {
     const c = pal();
     // Only reassign when it actually changes - globe.gl re-downloads and
-    // rebuilds the material on every call to globeImageUrl.
-    if (globe.globeImageUrl() !== c.globeTexture) globe.globeImageUrl(c.globeTexture);
+    // rebuilds the material on every call to globeImageUrl. Skipped entirely
+    // while a tile engine is running, or a theme toggle would drop live
+    // imagery back to the flat texture.
+    const tex = globeMapTexture();
+    if (!currentBasemap && globe.globeImageUrl() !== tex) {
+      globe.globeImageUrl(tex);
+    }
     globe.backgroundColor(c.bg3d)
       .atmosphereColor(c.atmosphere)
       .hexPolygonColor(d => {
@@ -594,7 +645,23 @@
         if (d.kind === 'nyiso') return hexA(c.nyiso, 0.28 + (d.z.share || 0) * 0.55);
         return hexA(c.cty, 0.18 + (d.z.share || 0) * 0.6);
       })
-      .pointColor(d => d.ft === 'ai' ? c.ai3d : c.fac3d);
+      .pointColor(pointColour);
+
+    // Lighting follows WHICH basemap is on the sphere, not the theme. The
+    // palette's values are a rescue job on a photograph - ambient 4.2 exists
+    // to drag a near-black true-colour ocean up to something readable. Point
+    // that at a drawn map and every colour clips to white. A drawn map wants
+    // to arrive as drawn: flat, evenly lit, no terminator, no lift.
+    //
+    // PI is not a fudge. three.js divides ambient irradiance by PI on its way
+    // through the Lambert BRDF, so an ambient intensity of PI renders a
+    // texture at exactly the colours it was authored in and nothing else
+    // touches it - no sun, so no terminator, and no emissive lift. The drawn
+    // map then matches the 2D map's palette to the byte. (It also explains the
+    // 4.2 above: that is PI plus a third, to drag a dark photograph up.)
+    const lit = currentBasemap
+      ? { ambient: c.ambient, sun: c.sun, lift: c.globeLift }
+      : { ambient: Math.PI, sun: 0, lift: 0x000000 };
 
     // three-globe nulls material.color once a texture loads, so the earth
     // cannot be tinted the usual way. `emissive` still works and is what
@@ -606,7 +673,7 @@
       // than sunlight. The earth is not glossy; take it off entirely.
       m.shininess = 0;
       m.specular?.setHex(0x000000);
-      m.emissive?.setHex(c.globeLift);
+      m.emissive?.setHex(lit.lift);
       m.needsUpdate = true;
     }
     // Reapplied on every call rather than once at init: swapping the texture
@@ -614,10 +681,123 @@
     // theme change.
     const lights = globe.lights();
     if (lights?.length >= 2) {
-      lights[0].intensity = c.ambient;   // ambient: most of the light, so there
-      lights[1].intensity = c.sun;       // is no terminator across the disc
+      lights[0].intensity = lit.ambient;   // ambient: most of the light, so there
+      lights[1].intensity = lit.sun;       // is no terminator across the disc
       globe.lights(lights);
     }
+  }
+
+  // ---- the globe's own basemap ----------------------------------------------
+  // Drawn, not photographed. The globe used to wear earth-day.jpg, and people
+  // zoomed in, saw a photograph and assumed they were looking at satellite
+  // imagery - which the Satellite basemap next to it actually is. A map that
+  // cannot be told apart from the imagery beside it is worse than a coarse
+  // one, so the Map basemap is now unmistakably a map: our own coastlines,
+  // our own palette, a graticule over the top.
+  //
+  // Same geometry and same colours as the 2D basemap, so switching between
+  // 2D and 3D is a change of projection and nothing else.
+  //
+  // Equirectangular is the projection three-globe wraps onto the sphere, so
+  // lon -> x and lat -> y IS drawing on the globe; no reprojection needed.
+  const GLOBE_TEX_W = 4096, GLOBE_TEX_H = 2048;      // ~10 km/px at the equator
+  const globeTexCache = new Map();
+
+  function globeMapTexture() {
+    const theme = document.documentElement.dataset.theme === 'night' ? 'night' : 'day';
+    const hit = globeTexCache.get(theme);
+    if (hit) return hit;
+
+    const c = pal();
+    const cv = document.createElement('canvas');
+    cv.width = GLOBE_TEX_W; cv.height = GLOBE_TEX_H;
+    const g = cv.getContext('2d');
+    if (!g) return c.globeTexture;            // fall back to the photograph
+    const X = lon => (lon + 180) / 360 * GLOBE_TEX_W;
+    const Y = lat => (90 - lat) / 180 * GLOBE_TEX_H;
+
+    g.fillStyle = c.globeOcean;
+    g.fillRect(0, 0, GLOBE_TEX_W, GLOBE_TEX_H);
+
+    // Rings are drawn into one path per polygon so the nonzero winding rule
+    // punches the holes out - GeoJSON winds exteriors and holes in opposite
+    // directions, which is exactly what nonzero wants. Filling ring by ring
+    // would paint the Caspian and every other hole solid land.
+    const ringPath = (poly, dx) => {
+      g.beginPath();
+      for (const ring of poly) {
+        for (let i = 0; i < ring.length; i++) {
+          const [lon, lat] = ring[i];
+          const x = X(lon) + dx, y = Y(lat);
+          i ? g.lineTo(x, y) : g.moveTo(x, y);
+        }
+        g.closePath();
+      }
+    };
+    const lonSpan = (poly) => {
+      let lo = Infinity, hi = -Infinity;
+      for (const ring of poly) for (const [lon] of ring) {
+        if (lon < lo) lo = lon;
+        if (lon > hi) hi = lon;
+      }
+      return [X(lo), X(hi)];
+    };
+
+    g.fillStyle = c.globeLand;
+    g.strokeStyle = c.globeBorder;
+    g.lineWidth = 1.5;
+    g.lineJoin = 'round';
+    for (const f of basemap.features) {
+      const geom = f.geometry;
+      if (!geom) continue;
+      const polys = geom.type === 'Polygon' ? [geom.coordinates]
+        : geom.type === 'MultiPolygon' ? geom.coordinates : [];
+      for (const poly of polys) {
+        // Drawn up to three times, shifted a full texture width each way. A
+        // country that crosses the antimeridian has vertices at both +179 and
+        // -179 and would otherwise be stretched right across the map; the
+        // copies mean whatever falls off one edge arrives at the other.
+        //
+        // Only where a copy would actually land on the canvas, though - this
+        // runs over every polygon in the basemap and blindly tripling the path
+        // work to serve the handful that touch 180 is most of the cost of
+        // building the texture.
+        const [lo, hi] = lonSpan(poly);
+        for (const dx of [-GLOBE_TEX_W, 0, GLOBE_TEX_W]) {
+          if (lo + dx > GLOBE_TEX_W || hi + dx < 0) continue;
+          ringPath(poly, dx);
+          g.fill();
+          g.stroke();
+        }
+      }
+    }
+
+    // The graticule is what makes it read as a map at a glance rather than on
+    // inspection - no satellite image has lines of latitude on it.
+    g.strokeStyle = c.globeBorder;
+    g.globalAlpha = 0.55;
+    g.lineWidth = 1;
+    for (let lon = -180; lon <= 180; lon += 30) {
+      g.beginPath(); g.moveTo(X(lon), 0); g.lineTo(X(lon), GLOBE_TEX_H); g.stroke();
+    }
+    for (let lat = -60; lat <= 60; lat += 30) {
+      g.beginPath(); g.moveTo(0, Y(lat)); g.lineTo(GLOBE_TEX_W, Y(lat)); g.stroke();
+    }
+    // Equator and tropics dashed, as they are drawn on a printed map.
+    g.setLineDash([14, 10]);
+    g.lineWidth = 1.6;
+    g.globalAlpha = 0.75;
+    for (const lat of [0, 23.4363, -23.4363]) {
+      g.beginPath(); g.moveTo(0, Y(lat)); g.lineTo(GLOBE_TEX_W, Y(lat)); g.stroke();
+    }
+    g.setLineDash([]);
+    g.globalAlpha = 1;
+
+    // Flat colours, so PNG is both small and exact - a JPEG would ring along
+    // every coastline.
+    const url = cv.toDataURL('image/png');
+    globeTexCache.set(theme, url);
+    return url;
   }
 
   // The MMI contours are open lines, not rings, so on the globe they go to
@@ -632,20 +812,235 @@
     try {
       globe.hexPolygonsData(globeHexes());
       globe.pathsData(quakePaths());
-      // Every epicentre on the globe, the open event's marked.
-      globe.htmlElementsData(state.layers.quake
-        ? quakes.map(q => ({ lat: q.lat, lng: q.lon, q })) : []);
       globe.pointsData([]);   // force pointRadius to re-evaluate against the filter
-      globe.pointsData(shown());
+      drawDots();
       styleGlobe();
     } catch (err) {
       console.error('[globe] refresh failed:', err);
     }
   }
 
+  // Point radius is in DEGREES OF ARC, not pixels, so a dot that reads well
+  // from orbit covers a whole town from 0.05 altitude - with imagery underneath
+  // that means the marker hides the building it marks. Scaling the radius with
+  // altitude holds the dot at roughly a constant SCREEN size instead, and the
+  // floor keeps it visible when the camera is right down on a roof.
+  //
+  // globeAlt is fed by onZoom below; before the first camera event it is the
+  // starting altitude, so the very first render is sized correctly too.
+  // Declared at the top of the IIFE with the other shared state - styleGlobe()
+  // reads it and is defined above this point.
+
+  // Radius is in DEGREES OF ARC - a distance on the GROUND, not on screen.
+  // The camera makes the conversion: measured against this globe, one degree
+  // of arc covers about 12.5 / altitude pixels, so a dot's screen size is
+  //
+  //     px = 2 * radius / altitude * 12.5
+  //
+  // WATCH THE UNITS. An earlier version floored the radius at 0.012 "to keep
+  // the dot visible". That is 1.3 km. Every dot clamped to a 2.7 km blob that
+  // swallowed the town it was marking. A floor expressed in degrees is a floor
+  // expressed in kilometres.
+  //
+  // WHY A POWER LAW, NOT A PROPORTION
+  // radius proportional to altitude is the obvious answer, and it is wrong: it
+  // cancels the altitude term above exactly, pinning every dot at one screen
+  // size forever. Tuned for the world view that is ~1 px, which reads as a fine
+  // speckle across 6,249 sites but leaves a single region looking empty; tuned
+  // for a region it is a lid over every building on the globe. There is no
+  // constant that is right at both ends.
+  //
+  // An exponent below 1 lets the dot grow slowly on screen as you descend while
+  // still shrinking on the ground - which is the actual requirement. You cannot
+  // tell which dot is which building until the dot is smaller than the building:
+  //
+  //     altitude   view      ground diameter   on screen
+  //     2.5        world     20 km             ~1 px    speckle
+  //     0.15       1,700 km  3.0 km            ~2 px
+  //     0.033      375 km    1.1 km            ~4 px
+  //     0.008      91 km     400 m             ~6 px    campus-sized
+  //     0.002      23 km     156 m             ~9 px    one hall
+  //     0.0005     5.7 km    62 m              ~14 px   sits ON the building
+  //
+  // 0.68 is where the ground size crosses building scale at roughly the zoom
+  // where buildings become legible in the imagery.
+  const GLOBE_REF_ALT = 2.5;        // the default world view, where base is tuned
+  const GLOBE_SIZE_EXP = 0.68;
+  function pointRadius(d) {
+    const base = d.ft === 'ai' ? 0.18 : 0.09;
+    // Sparse filtered sets still get bigger dots - a lone site on a globe has
+    // to be findable at all.
+    const spread = state.filter ? Math.min(7, Math.max(2, 700 / state.filter.count)) : 1;
+    // Guard the base of the power: altitude 0 would collapse every dot to
+    // nothing rather than to something small.
+    const alt = Math.max(1e-5, globeAlt) / GLOBE_REF_ALT;
+    return base * spread * Math.pow(alt, GLOBE_SIZE_EXP);
+  }
+
+  // three-globe points are extruded CYLINDERS, not decals, and pointAltitude
+  // is how far they stand off the surface measured in globe RADII. It cannot
+  // be made small: three-globe floors the height at 0.1 scene units to keep
+  // the transform matrix invertible, and 0.1 of a 100-unit globe is 0.001
+  // radii - 6.4 km. From orbit that is a third of a pixel. From four
+  // kilometres up it is a tower, and any dot away from the view centre is
+  // drawn as a streak lying across the imagery rather than a disc on a roof.
+  //
+  // So below CLOSE_ALT the dots in view are handed to DOM markers instead
+  // (see closeSites) - which always face the camera and sit exactly on their
+  // coordinate - and pointAltitude only has to serve the far view.
+  function pointAltitude() {
+    return Math.max(2e-6, Math.min(0.002, globeAlt * 0.0008));
+  }
+
+  // How close the camera may come, as an altitude in globe radii.
+  //
+  // It used to stop at 5.5e-4 - a 6.3 km view - with the tile engine capped at
+  // level 17. That cap was INERT, and it is worth knowing why before touching
+  // any of this. three-slippy-map-globe picks the level from altitude alone:
+  //
+  //     level = smallest i where 8 / 2^i <= altitude
+  //
+  // Level 17 needs altitude <= 6.1e-5. The camera could not get below 5.5e-4,
+  // which selects level 14 - 6.5 m/px, slightly COARSER than the 4.9 m/px that
+  // closest view could display. So the imagery was mildly under-resolved and
+  // the 17 cap never clamped anything; raising it alone would have done
+  // nothing whatsoever.
+  //
+  // The actual limit was the NEAR PLANE. globe.gl fixes camera.near at 0.05
+  // scene units - 3.2 km on a 100-unit globe - and the camera sat 3.5 km off
+  // the surface. Three hundred metres of clearance before the planet gets
+  // sliced open by its own clipping plane. Pull the near plane in with the
+  // camera and the floor moves with it.
+  //
+  // 3e-5 is a ~340 m view at 0.27 m/px, and selects level 19 at 0.2 m/px.
+  // Going closer would only magnify the same pixels.
+  const MIN_ALT = 3e-5;
+
+  // three.js clips anything nearer than camera.near. Only ever pulled IN from
+  // globe.gl's 0.05, never pushed out, so the depth range at planetary zoom -
+  // where a huge near/far ratio would cost precision - is what it always was.
+  function setCameraNear(alt) {
+    const cam = globe.camera();
+    if (!cam) return;
+    const near = Math.min(0.05, Math.max(2e-4, alt * globe.getGlobeRadius() * 0.25));
+    if (cam.near !== near) { cam.near = near; cam.updateProjectionMatrix(); }
+  }
+
+  // Below this the WebGL dots are streaks, so the ones in view become DOM
+  // markers. ~115 km of view, well before a building is legible.
+  const CLOSE_ALT = 0.015;
+  // DOM markers, not GPU instances, so this is bounded - but the bound has to
+  // clear the densest metro in the registry or the overflow keeps its WebGL
+  // pin and you get rings and streaks side by side in one view. Measured at
+  // CLOSE_ALT: Ashburn 124, London 193, Amsterdam 110, Frankfurt 70. 400 is
+  // twice the worst case, and the count falls off as the square of altitude,
+  // so it can only ever bind at the very top of the close range.
+  const CLOSE_CAP = 400;
+
+  // Half the viewport in DEGREES OF ARC. Falls out of the same 12.5/altitude
+  // relation as pointRadius, and the viewport width cancels, so this is just
+  // the camera: half-view = 51.2 * altitude.
+  const halfViewDeg = () => 51.2 * globeAlt;
+
+  // Screen pixels per degree of arc, measured off the live camera rather than
+  // assumed, so DOM markers come out exactly the size the WebGL dot would have
+  // been and the handover at CLOSE_ALT is invisible.
+  function pxPerArcDeg() {
+    const p = globe.pointOfView();
+    const a = globe.getScreenCoords(p.lat, p.lng - 0.01);
+    const b = globe.getScreenCoords(p.lat, p.lng + 0.01);
+    if (!a || !b) return null;
+    return (Math.hypot(b.x - a.x, b.y - a.y) / 0.02) / Math.cos(p.lat * Math.PI / 180);
+  }
+
+  // Wrappers are memoised by site id so that panning does not hand globe.gl a
+  // fresh object for a marker that has not moved - it keys on identity and
+  // would rebuild the element every frame.
+  const closeWrap = new Map();
+
+  // The sites close enough to the camera to be worth a DOM marker. 1.3x the
+  // half-view because the corners of a rectangular viewport reach further than
+  // its half-width, and a marker should not pop in at the edge of the frame.
+  function closeSites() {
+    if (globeAlt >= CLOSE_ALT) return [];
+    const p = globe.pointOfView();
+    const reach = halfViewDeg() * 1.3;
+    const cosLat = Math.cos(p.lat * Math.PI / 180);
+    const near = [];
+    for (const d of shown()) {
+      const dy = d.lat - p.lat;
+      if (Math.abs(dy) > reach) continue;
+      let dx = d.lon - p.lng;
+      if (dx > 180) dx -= 360; else if (dx < -180) dx += 360;
+      dx *= cosLat;
+      const r2 = dx * dx + dy * dy;
+      if (r2 <= reach * reach) near.push([r2, d]);
+    }
+    // Nearest to the view centre first, so a cap trims the far edge and never
+    // the site the camera is actually pointed at.
+    near.sort((a, b) => a[0] - b[0]);
+    // Never truncate silently: an overflowing view still draws the rest, but
+    // as WebGL pins, and knowing that is the difference between "this metro is
+    // denser than the cap" and "the map is broken".
+    if (near.length > CLOSE_CAP) {
+      console.warn(`[globe] ${near.length} sites in view, capping close markers at ` +
+        `${CLOSE_CAP} — the rest stay as WebGL dots`);
+    }
+    return near.slice(0, CLOSE_CAP).map(([, d]) => {
+      let w = closeWrap.get(d.id);
+      if (!w) closeWrap.set(d.id, w = { lat: d.lat, lng: d.lon, site: d });
+      return w;
+    });
+  }
+
+  function closeMarker(d) {
+    const el = document.createElement('div');
+    el.className = 'dc-marker' + (d.site.ft === 'ai' ? ' dc-ai' : '')
+      // Hollow still means something, just not "you are zoomed in": it means
+      // the coordinate is a town centroid, not a located building. Same
+      // convention the 2D dots use, so a ring reads the same in both.
+      + (d.site.gp === 'town' ? ' dc-town' : '');
+    const ppd = pxPerArcDeg();
+    const px = ppd ? Math.max(8, 2 * pointRadius(d.site) * ppd) : 10;
+    el.style.width = el.style.height = `${px.toFixed(1)}px`;
+    el.title = [d.site.n || d.site.o || 'Data centre', d.site.ci || d.site.c]
+      .filter(Boolean).join(' — ');
+    el.addEventListener('click', () => openSite(d.site.id));
+    return el;
+  }
+
+  // The two dot layers are one decision, so they are set in one place: a site
+  // promoted to a DOM marker must come OUT of pointsData, or its 6.4 km pin
+  // goes on smearing underneath the marker that replaced it.
+  //
+  // The epicentre markers share htmlElementsData - globe.gl has only the one
+  // slot - so the two kinds travel together and are told apart by `.site`.
+  let closeKey = '';
+  let closeAt = { lat: 0, lng: 0 };   // camera centre at the last close-set check
+  function drawDots(close) {
+    if (!globe) return;
+    close = close || closeSites();
+    closeKey = close.map(w => w.site.id).join(',');
+    const promoted = new Set(close.map(w => w.site.id));
+    globe.pointsData(promoted.size ? shown().filter(d => !promoted.has(d.id)) : shown());
+    globe.htmlElementsData([
+      ...(state.layers.quake ? quakes.map(q => ({ lat: q.lat, lng: q.lon, q })) : []),
+      ...close,
+    ]);
+  }
+
+  // Solid at every altitude. These used to fade towards transparent as the
+  // camera came down, so you could read the roof through the marker - which
+  // was worth it back when the marker was kilometres wide and covered the
+  // building. It is not any more: the dot is sized to the building and, below
+  // CLOSE_ALT, is a DOM marker anyway. All the fade did was make the dot hard
+  // to find over bright imagery, which is the opposite of a marker's job.
+  const pointColour = (d) => (d.ft === 'ai' ? pal().ai3d : pal().fac3d);
+
   function initGlobe() {
     globe = new Globe(el3d, { animateIn: false });
     window.__globe = globe; // test hook
+    globe.controls().minDistance = globe.getGlobeRadius() * (1 + MIN_ALT);
     globe.width(el3d.clientWidth).height(el3d.clientHeight)
       .showAtmosphere(true)
       .atmosphereAltitude(0.25)
@@ -672,8 +1067,12 @@
       // A pulsing ring was decoration drawn in the same visual language as
       // the contours - perfect circles that read as MMI bands carrying no
       // data. The epicentre is now the same static marker 2D uses.
-      .htmlLat(d => d.lat).htmlLng(d => d.lng).htmlAltitude(0.009)
+      .htmlLat(d => d.lat).htmlLng(d => d.lng)
+      // 0.009 is 57 km. Fine for an epicentre seen from orbit, absurd for a
+      // marker on a roof, which wants to be exactly where its coordinate is.
+      .htmlAltitude(d => (d.site ? 0 : 0.009))
       .htmlElement(d => {
+        if (d.site) return closeMarker(d);
         const el = document.createElement('div');
         el.className = 'epi-marker' + (d.q.exposed ? ' epi-hit' : '');
         // Same log scaling as 2D, so an M7 reads as an M7 in both renderers.
@@ -693,18 +1092,57 @@
         return el;
       })
       .pointLat(d => d.lat).pointLng(d => d.lon)
-      .pointAltitude(0.002)
-      // globe.gl sizes points in degrees of arc, so the default radius is about
-      // a pixel once the camera pulls back to fit a worldwide filter. Grow the
-      // dots as the filtered set shrinks - a sparse set is exactly the case
-      // where each dot has to be findable.
-      .pointRadius(d => (d.ft === 'ai' ? 0.18 : 0.09) *
-        (state.filter ? Math.min(7, Math.max(2, 700 / state.filter.count)) : 1))
+      .pointAltitude(pointAltitude)
+      .pointRadius(pointRadius)
       .pointLabel(d => siteTip(d))
       .onPointClick(d => openSite(d.id));
+    // Re-size and re-shade the dots as the camera moves. Both read globeAlt,
+    // so the values have to be pushed back through globe.gl to take effect.
+    //
+    // NOT onZoom. globe.gl raises onZoom from the orbit controls, which only
+    // hear about gestures the USER makes - pointOfView() moves the camera in
+    // silence. setMode('3d') calls it on every 2D -> 3D switch, so arriving on
+    // the globe already zoomed into a city left globeAlt at the world-view 2.5
+    // and every dot drawn a thousand times too wide: the whole town under one
+    // disc. Reading the camera each frame cannot miss a move, whoever made it.
+    (function watchCamera() {
+      if (!el3d.hidden) {
+        const alt = globe.pointOfView().altitude;
+        // Only when it actually matters: this runs every frame, and
+        // re-evaluating 6,249 points per frame is not free.
+        if (Math.abs(Math.log((alt || 1) / (globeAlt || 1))) > 0.04) {
+          globeAlt = alt;
+          // Colour is no longer altitude-dependent, so it stays where
+          // styleGlobe() put it; only size and stand-off follow the camera.
+          globe.pointRadius(pointRadius).pointAltitude(pointAltitude);
+          setCameraNear(alt);
+          drawDots();
+        } else if (globeAlt < CLOSE_ALT) {
+          // Panning at a fixed altitude changes which sites are in view but
+          // not the zoom, so the altitude test above never fires.
+          //
+          // Gated on the camera having actually travelled, because the test
+          // itself is not free: closeSites() walks every site, and doing that
+          // 60 times a second to discover nothing moved is the kind of cost
+          // that only shows up on someone else's laptop. A tenth of the view
+          // is far below the distance that changes which sites are in frame.
+          const pov = globe.pointOfView();
+          const step = halfViewDeg() * 0.1;
+          if (Math.abs(pov.lat - closeAt.lat) > step ||
+              Math.abs(pov.lng - closeAt.lng) * Math.cos(pov.lat * Math.PI / 180) > step) {
+            closeAt = { lat: pov.lat, lng: pov.lng };
+            const close = closeSites();
+            if (close.map(w => w.site.id).join(',') !== closeKey) drawDots(close);
+          }
+        }
+      }
+      requestAnimationFrame(watchCamera);
+    })();
     refreshGlobe();
     window.addEventListener('resize', () =>
       globe.width(el3d.clientWidth).height(el3d.clientHeight));
+    // Carry whatever basemap 2D is showing onto the globe the moment it exists.
+    applyGlobeBasemap();
   }
 
   // ---- mode + theme + layer wiring -------------------------------------------
@@ -728,15 +1166,23 @@
     ['pjm-line', 'line-color', c => c.pjm],
     ['nyiso', 'fill-color', c => c.nyiso],
     ['nyiso-line', 'line-color', c => c.nyiso],
-    ['sites', 'circle-color', c => ['case', ['==', ['get', 'gp'], 'town'], 'rgba(0,0,0,0)', c.fac]],
-    ['sites', 'circle-stroke-color', c => ['case', ['==', ['get', 'gp'], 'town'], c.fac, c.halo]],
-    ['sites-ai', 'circle-color', c => ['case', ['==', ['get', 'gp'], 'town'], 'rgba(0,0,0,0)', c.ai]],
-    ['sites-ai', 'circle-stroke-color', c => ['case', ['==', ['get', 'gp'], 'town'], c.ai, c.halo]],
+    // The site dots are deliberately NOT listed here - see below.
   ];
   function applyTheme() {
     const c = pal();
     for (const [layer, prop, val] of THEME_PAINT) {
       if (map.getLayer(layer)) map.setPaintProperty(layer, prop, val(c));
+    }
+    // Dots carry zoom-dependent expressions, so re-apply the WHOLE paint from
+    // the one function that defines it. Listing individual properties here is
+    // how a theme toggle would quietly reset the stroke to a flat colour and
+    // stop the dots ever going hollow again - the failure would show up one
+    // interaction after the change that caused it.
+    for (const [id, colour, base] of [['sites', c.fac, 3.2], ['sites-ai', c.ai, 5]]) {
+      if (!map.getLayer(id)) continue;
+      for (const [prop, val] of Object.entries(dotPaint(colour, c.halo, base))) {
+        map.setPaintProperty(id, prop, val);
+      }
     }
   }
 
@@ -963,11 +1409,21 @@
     }
   }
 
+  // Flying to a site whose layer is switched off lands you on empty map. The
+  // search palette has always turned the layer back on first; the operator
+  // directory did not, so picking a site out of an operator's list flew you to
+  // a dot that was not being drawn - and the popup that arrived with it said
+  // "click to open site page". Same rule for every path in, stated once.
+  function ensureLayerFor(site) {
+    const cb = document.getElementById(`lyr-${site.ft === 'ai' ? 'ai' : 'facilities'}`);
+    if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change')); }
+  }
+
   function goTo(lon, lat, site) {
     if (state.mode === '2d') {
       map.flyTo({ center: [lon, lat], zoom: SITE_ZOOM, duration: 1100 });
       new maplibregl.Popup({ closeOnClick: true, offset: 10 })
-        .setLngLat([lon, lat]).setHTML(siteTip(site)).addTo(map);
+        .setLngLat([lon, lat]).setHTML(sitePopup(site)).addTo(map);
     } else {
       globe.pointOfView({ lat, lng: lon, altitude: 0.32 }, 1100);
     }
@@ -980,9 +1436,7 @@
       // meaningful destination - go straight there rather than doing nothing.
       if (openPage || it.site.lat == null) return openSite(it.site.id);
       if (state.time) setTimelineOpen(false);   // the dot must exist to fly to it
-      const key = it.site.ft === 'ai' ? 'ai' : 'facilities';
-      const cb = document.getElementById(`lyr-${key}`);
-      if (!cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change')); }
+      ensureLayerFor(it.site);
       return goTo(it.site.lon, it.site.lat, it.site);
     }
     if (it.zone) {
@@ -1540,6 +1994,174 @@
 
   window.__timeline = { open: setTimelineOpen, state, renderChart }; // test hook
 
+  // ---- satellite basemap -----------------------------------------------------
+  // The server decides which providers exist, because only it knows whether a
+  // Google key is configured. Asking it means the UI never offers an option
+  // that would fail on click.
+  const bmSeg = document.getElementById('bm-seg');
+
+  // Each provider gets its OWN source and layer, added the first time it is
+  // chosen. The first version used one shared source created empty and swapped
+  // its URL with setTiles - which silently did nothing: a raster source built
+  // with `tiles: []` never initialises, so there was nothing for setTiles to
+  // update. serialize() reported the new URL while the source stayed dead and
+  // not one tile was ever requested.
+  let pendingBasemap = null;
+
+  // The globe takes the SAME imagery, as a tile engine rather than a raster
+  // source. three-globe asks for (x, y, level) and wants a URL back, so the
+  // provider's {z}/{y}/{x} template is filled in directly. This is what makes
+  // 3D zoomable: the drawn texture it falls back to is one 4096x2048 image for
+  // the whole planet, which goes soft well before street level. That is the
+  // honest division of labour - Satellite is the zoomable basemap, Map is the
+  // overview - and it is also why the two must not look alike.
+  function applyGlobeBasemap() {
+    if (!globe) return;
+    const p = providers.find(x => x.id === currentBasemap);
+    if (!p) {
+      globe.globeTileEngineUrl(null);
+      // Re-assert the texture: clearing the tile engine leaves the globe bare.
+      globe.globeImageUrl(globeMapTexture());
+    } else {
+      const tpl = p.tiles[0];
+      globe.globeTileEngineUrl((x, y, l) =>
+        new URL(tpl.replace('{z}', l).replace('{y}', y).replace('{x}', x), location.href).href);
+      // The provider's own maximum, held at 19. Esri stops there anyway;
+      // Google advertises 22 but is billed per tile request, and past 19 the
+      // extra levels are mostly the same pixels enlarged.
+      globe.globeTileEngineMaxLevel(Math.min(p.maxzoom ?? 17, 19));
+    }
+    // The two basemaps want opposite lighting - imagery needs lifting, a drawn
+    // map needs leaving alone - so the switch has to re-light, not just
+    // re-texture. Without this, going Satellite -> Map keeps ambient 4.2 and
+    // the drawn map arrives washed to white.
+    styleGlobe();
+  }
+
+  function setBasemap(id) {
+    for (const b of bmSeg.children) b.setAttribute('aria-selected', String(b.dataset.bm === id));
+    const p = providers.find(x => x.id === id);
+
+    // TRY IT, DO NOT ASK FIRST. addSource/addLayer throw "Style is not done
+    // loading" before the style is ready, so the obvious guard is
+    // `if (!map.isStyleLoaded()) defer`. That guard was wrong twice over:
+    // isStyleLoaded() reports false during ordinary style mutations long after
+    // the map is usable, so a click would defer when it did not need to - and
+    // then the retry hung off an event that may never fire again, leaving the
+    // button selected and the basemap silently unchanged.
+    //
+    // Attempting the work and catching the one error MapLibre actually raises
+    // has no such failure mode: it succeeds whenever it can, and retries only
+    // when it genuinely could not.
+    try {
+      if (p && !map.getSource(`sat-${p.id}`)) {
+        map.addSource(`sat-${p.id}`, {
+          type: 'raster', tiles: p.tiles, tileSize: 256,
+          maxzoom: p.maxzoom || 19, attribution: p.attribution || '',
+        });
+        // Beneath `land` so the data layers above it are untouched.
+        map.addLayer({ id: `sat-${p.id}`, type: 'raster', source: `sat-${p.id}`,
+                       layout: { visibility: 'none' } }, 'land');
+      }
+      for (const q of providers) {
+        if (map.getLayer(`sat-${q.id}`)) {
+          map.setLayoutProperty(`sat-${q.id}`, 'visibility', q.id === id ? 'visible' : 'none');
+        }
+      }
+      // Imagery already draws the coastline; our 110m polygons over the top of
+      // it would be a coarser outline on a finer one.
+      for (const l of ['land', 'land-line']) {
+        if (map.getLayer(l)) map.setLayoutProperty(l, 'visibility', p ? 'none' : 'visible');
+      }
+    } catch (err) {
+      pendingBasemap = id;
+      map.once('idle', () => {
+        const q = pendingBasemap;
+        pendingBasemap = null;
+        if (q !== null) setBasemap(q);
+      });
+      return;
+    }
+    currentBasemap = id;
+    showBasemapNote(id);
+    applyGlobeBasemap();
+  }
+
+  const bmNote = document.getElementById('bm-note');
+
+  fetch('/api/basemaps').then(r => r.json()).then(list => {
+    providers = list;
+    bmSeg.innerHTML = `<button data-bm="" role="tab" aria-selected="true">Map</button>`
+      + list.map(p => `<button data-bm="${esc(p.id)}" role="tab" aria-selected="false">${esc(p.label)}</button>`).join('');
+    showBasemapNote('');
+  }).catch(() => {});
+
+  // Imagery is licensed, not free, and which licence applies depends on the
+  // provider. Saying so where the switch is beats burying it in a comment.
+  function showBasemapNote(id) {
+    if (!bmNote) return;
+    const p = providers.find(x => x.id === id);
+    bmNote.textContent = p ? `${p.attribution.replace(/&copy;/g, '©')} · ${p.licence || ''}` : '';
+    bmNote.hidden = !p;
+  }
+
+  bmSeg.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-bm]');
+    if (b) setBasemap(b.dataset.bm);
+  });
+
+  // ---- lifecycle status ------------------------------------------------------
+  // Operational / under construction, as its own filter. The counts are shown
+  // rather than implied, and UNKNOWN is shown alongside them rather than hidden,
+  // because it is 97% of the registry: OSM and PeeringDB record where a facility
+  // is, never what stage it is at. Presenting two tidy numbers without the third
+  // would imply a completeness this data does not have.
+  const ST = [
+    ['op', 'Operational', 'st-op'],
+    ['uc', 'Under construction', 'st-uc'],
+    ['', 'Status unknown', 'st-un'],
+  ];
+  const stRow = document.getElementById('st-row');
+  const stNote = document.getElementById('st-note');
+
+  function renderStatus() {
+    // Count against everything the layer toggles admit, so the numbers track
+    // whatever else is switched on rather than quoting a fixed total.
+    const pool = drawable.filter(d =>
+      (d.ft === 'ai' ? state.layers.ai : state.layers.facilities) && inTime(d));
+    const n = { op: 0, uc: 0, '': 0 };
+    for (const d of pool) n[d.st || ''] += 1;
+    const active = state.filter && state.filter.key === 'st' ? state.filter.value : null;
+    stRow.innerHTML = ST.map(([k, label, cls]) => `
+      <button class="st-chip" data-st="${k}" aria-pressed="${active === k}">
+        <i class="st-dot ${cls}"></i><span class="st-lab">${label}</span>
+        <span class="st-n">${n[k].toLocaleString()}</span>
+      </button>`).join('');
+    const known = n.op + n.uc;
+    stNote.textContent = pool.length
+      ? `Known for ${known.toLocaleString()} of ${pool.length.toLocaleString()}`
+        + ` (${(known / pool.length * 100).toFixed(0)}%). Derived from build dates —`
+        + ` no source in the registry publishes a status field.`
+      : '';
+  }
+
+  stRow.addEventListener('click', (e) => {
+    const b = e.target.closest('.st-chip');
+    if (!b) return;
+    const k = b.dataset.st;
+    const on = state.filter && state.filter.key === 'st' && state.filter.value === k;
+    if (on) return setFilter(null);
+    const all = sites.filter(d => (d.st || '') === k);
+    const pts = drawable.filter(d => (d.st || '') === k);
+    setFilter({ key: 'st', value: k, label: ST.find(s => s[0] === k)[1],
+                count: all.length, unmapped: all.length - pts.length });
+  });
+
+  // Recount whenever anything that changes the visible set changes.
+  const _refresh = refreshView;
+  refreshView = () => { _refresh(); renderStatus(); };
+  renderStatus();
+
   // ---- operator directory -----------------------------------------------------
   // Browse by company rather than by dot. The registry knows 2,613 companies,
   // so this is a searchable list rather than a curated ten - but the ones with
@@ -1741,6 +2363,7 @@
     if (!s) return;
     if (s.lat == null) return openSite(s.id);
     if (state.time) setTimelineOpen(false);
+    ensureLayerFor(s);
     goTo(s.lon, s.lat, s);
   });
 
@@ -1767,7 +2390,7 @@
       map.once('load', () => {
         map.flyTo({ center: [s.lon, s.lat], zoom: SITE_ZOOM, duration: 1200 });
         new maplibregl.Popup({ closeOnClick: true, offset: 10 })
-          .setLngLat([s.lon, s.lat]).setHTML(siteTip(s)).addTo(map);
+          .setLngLat([s.lon, s.lat]).setHTML(sitePopup(s)).addTo(map);
       });
     }
   }
