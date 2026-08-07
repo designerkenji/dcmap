@@ -31,7 +31,10 @@
       // 2D can separate #DFE9F0 ocean from #F6F8FA land because it is flat,
       // evenly lit and viewed head-on. Wrap those two on a sphere behind an
       // atmosphere and they are one colour. A globe needs a blue ocean.
-      globeOcean: '#A8CCE6', globeLand: '#F4F7F9', globeBorder: '#8FA9BE',
+      globeOcean: '#CFE8F7', globeLand: '#EDF2F5', globeBorder: '#6E8FA6',
+      // Nine pastels indexed by Natural Earth's MAPCOLOR9 - see globeMapTexture().
+      globeCountry: ['#A8D8A0', '#F5CE7E', '#A9C8EC', '#F0A9A2', '#D2B4E8',
+                     '#F2E68C', '#9FD8CE', '#EFC08A', '#C9E08A'],
       // Fallback only, for a browser that will not give us a 2D canvas
       // context. The globe wore this photograph until people started reading
       // it as satellite imagery - see globeMapTexture().
@@ -47,6 +50,10 @@
       ercot: '#FFB03B', pjm: '#60A5EB', nyiso: '#4FD1AC', cty: '#A78BFA',
       bg3d: '#000000', atmosphere: '#274060',
       globeOcean: '#0C1B2A', globeLand: '#22303C', globeBorder: '#44586B',
+      // Same nine hues held down to night values: enough to tell countries
+      // apart, not enough to glow.
+      globeCountry: ['#26382C', '#3B3529', '#252F42', '#3C2B2C', '#332B3E',
+                     '#3A3726', '#22383A', '#3A3128', '#31382A'],
       globeTexture: '/textures/earth-topo-bathy.jpg',   // fallback only
       // Night stays night - just enough lift to keep it from going muddy.
       globeLift: 0x0a0f14, ambient: 3.0, sun: 0.9,
@@ -659,9 +666,17 @@
     // touches it - no sun, so no terminator, and no emissive lift. The drawn
     // map then matches the 2D map's palette to the byte. (It also explains the
     // 4.2 above: that is PI plus a third, to drag a dark photograph up.)
+    // three-globe's ambient light is 0xcccccc, not white. That is a flat 20%
+    // off everything the globe renders, and it is why the drawn map came out
+    // greyer than the colours it was painted in - PI is the right intensity
+    // only if the light carrying it is white.
+    //
+    // Set white for the drawn map, and left grey for imagery: the satellite
+    // values were tuned against 0xcccccc and whitening the light would
+    // brighten photographs nobody asked to change.
     const lit = currentBasemap
-      ? { ambient: c.ambient, sun: c.sun, lift: c.globeLift }
-      : { ambient: Math.PI, sun: 0, lift: 0x000000 };
+      ? { ambient: c.ambient, sun: c.sun, lift: c.globeLift, ambientColor: 0xcccccc }
+      : { ambient: Math.PI, sun: 0, lift: 0x000000, ambientColor: 0xffffff };
 
     // three-globe nulls material.color once a texture loads, so the earth
     // cannot be tinted the usual way. `emissive` still works and is what
@@ -682,6 +697,7 @@
     const lights = globe.lights();
     if (lights?.length >= 2) {
       lights[0].intensity = lit.ambient;   // ambient: most of the light, so there
+      lights[0].color?.setHex(lit.ambientColor);
       lights[1].intensity = lit.sun;       // is no terminator across the disc
       globe.lights(lights);
     }
@@ -703,9 +719,27 @@
   const GLOBE_TEX_W = 4096, GLOBE_TEX_H = 2048;      // ~10 km/px at the equator
   const globeTexCache = new Map();
 
+  // Two versions of the same map, and which one you get depends on what else is
+  // on the globe.
+  //
+  // POLITICAL is the default: every country its own pastel, the way a printed
+  // atlas does it, which is what makes a drawn map read as a drawn map at a
+  // glance. The colours are not invented and not hashed - Natural Earth ships
+  // MAPCOLOR9, an index computed so that no two countries sharing a border
+  // share a value. Nine classes, all 177 features carry one.
+  //
+  // PLAIN is the same map with one land colour, and it exists because the
+  // "Data Centres by Country" layer paints a purple choropleth over the globe
+  // at 18-78% opacity. Purple over nine pastels is nine different muddy
+  // purples, i.e. a colour scale you cannot read. So when that layer is on the
+  // basemap gets out of its way. A basemap and a data layer competing for the
+  // same channel is a choice between them, not a thing to split the difference
+  // on.
   function globeMapTexture() {
     const theme = document.documentElement.dataset.theme === 'night' ? 'night' : 'day';
-    const hit = globeTexCache.get(theme);
+    const plain = !!state.layers.countries;
+    const key = theme + (plain ? ':plain' : ':political');
+    const hit = globeTexCache.get(key);
     if (hit) return hit;
 
     const c = pal();
@@ -743,13 +777,15 @@
       return [X(lo), X(hi)];
     };
 
-    g.fillStyle = c.globeLand;
     g.strokeStyle = c.globeBorder;
     g.lineWidth = 1.5;
     g.lineJoin = 'round';
     for (const f of basemap.features) {
       const geom = f.geometry;
       if (!geom) continue;
+      const mc = +f.properties?.MAPCOLOR9;
+      g.fillStyle = plain || !(mc >= 1) ? c.globeLand
+                                        : c.globeCountry[(mc - 1) % c.globeCountry.length];
       const polys = geom.type === 'Polygon' ? [geom.coordinates]
         : geom.type === 'MultiPolygon' ? geom.coordinates : [];
       for (const poly of polys) {
@@ -796,7 +832,7 @@
     // Flat colours, so PNG is both small and exact - a JPEG would ring along
     // every coastline.
     const url = cv.toDataURL('image/png');
-    globeTexCache.set(theme, url);
+    globeTexCache.set(key, url);
     return url;
   }
 

@@ -15,7 +15,7 @@ import { loadAll, paths } from './lib/data.mjs';
 import { renderSitePage } from './lib/sitepage.mjs';
 import { renderOperatorPage } from './lib/operatorpage.mjs';
 import { captures, tileXY, ZOOM } from './lib/wayback.mjs';
-import { FIELDS, validate, appendOverrides } from './lib/overrides.mjs';
+import { FIELDS, validate, appendOverrides, linkError, kindError } from './lib/overrides.mjs';
 
 const PORT = process.env.PORT || 8787;
 const PUB = path.join(import.meta.dirname, 'public');
@@ -225,8 +225,40 @@ async function handle(req, res) {
       operator: opKey ? data.operatorProfiles[opKey] || null : null,
       opKey,
       mates: (data.byBuilding.get(site.building) || []).filter(x => x.site_id !== id),
+      parent: site.parent_site_id ? data.siteById.get(site.parent_site_id) || null : null,
+      children: data.childrenBySite.get(id) || [],
     });
     return send(res, 200, html, MIME['.html']);
+  }
+
+  // The registry's own dots around one site. Straight out of memory - 6,249
+  // sites is a linear scan nobody can measure - so no index and nothing to
+  // keep in step. Sorted by distance and capped, because the answer feeds a
+  // frame a few hundred metres across and a dense campus can hold dozens.
+  const nb = p.match(/^\/api\/nearby\/(site-[a-z0-9-]+)$/);
+  if (nb) {
+    const site = data.siteById.get(nb[1]);
+    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
+    if (site.lat == null || site.lon == null) {
+      return send(res, 200, '{"near":[]}', MIME['.json']);
+    }
+    const km = Math.min(25, Math.max(0.1, +url.searchParams.get('km') || 3));
+    const lat = +site.lat, lon = +site.lon;
+    const near = [];
+    for (const s of data.sites) {
+      if (s.site_id === site.site_id || s.lat == null) continue;
+      const d = data.kmBetween(lon, lat, +s.lon, +s.lat);
+      if (d > km) continue;
+      near.push({
+        id: s.site_id, name: s.name || s.epoch_name || '', operator: s.operator || '',
+        lat: +s.lat, lon: +s.lon, kind: s.site_kind || 'point',
+        parent: s.parent_site_id || '', ft: s.facility_type || '',
+        children: (data.childrenBySite.get(s.site_id) || []).length,
+        km: +d.toFixed(3),
+      });
+    }
+    near.sort((a, b) => a.km - b.km);
+    return send(res, 200, JSON.stringify({ km, near: near.slice(0, 250) }), MIME['.json']);
   }
 
   // Correct a site by hand. Writes to data/site_overrides.csv, which is a
@@ -248,6 +280,12 @@ async function handle(req, res) {
       if (bad) {
         return send(res, 400, JSON.stringify({ error: field + ': ' + bad }), MIME['.json']);
       }
+      // Whether a link is legal depends on the rest of the registry, so it is
+      // checked here rather than in the field validator.
+      const rel = field === 'parent_site_id' ? linkError(site, value, data.siteById)
+                : field === 'site_kind'      ? kindError(site, value, data.siteById)
+                : null;
+      if (rel) return send(res, 400, JSON.stringify({ error: rel }), MIME['.json']);
       // Only what actually differs. Re-asserting a value the pipeline already
       // produces would pin it against future sources for no reason.
       if (String(value) !== String(site[field] ?? '')) edits[field] = value;
