@@ -37,6 +37,21 @@ body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans)
 .themebtn { width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
   background:var(--panel); cursor:pointer; font-size:16px; line-height:1 }
 .themebtn:hover { border-color:var(--accent) }
+
+/* Header icons. Stroked SVG rather than the emoji glyphs that were here: an
+   emoji is a different typeface per platform, so the row never lined up and
+   never matched weight. currentColor means they follow the theme for free. */
+.icobtn { width:36px; height:36px; padding:0; border-radius:50%; border:1px solid transparent;
+  background:none; color:var(--ink-2); cursor:pointer; display:inline-flex;
+  align-items:center; justify-content:center }
+.icobtn svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round }
+.icobtn:hover { color:var(--ink); background:var(--accent-soft) }
+.icobtn[aria-pressed=true] { color:var(--accent); border-color:var(--line);
+  background:var(--accent-soft) }
+/* The theme button keeps its sun/moon glyph, so it needs the font sizing the
+   others do not. */
+#themeBtn { font-size:17px; line-height:1 }
 a.themebtn { display:inline-flex; align-items:center; justify-content:center;
   text-decoration:none }
 /* .themebtn is the round-button SHAPE, shared by every icon in the topbar.
@@ -194,8 +209,11 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 }
 
 .panel { background:var(--panel); border:1px solid var(--line); border-radius:9px }
-.layers { position:fixed; top:64px; left:12px; z-index:25; padding:12px 14px;
-  display:flex; flex-direction:column; gap:8px; min-width:230px }
+.layers { position:fixed; left:14px; bottom:16px; z-index:27; padding:12px 14px;
+  display:flex; flex-direction:column; gap:8px; width:264px;
+  max-height:calc(100vh - 84px); overflow:auto }
+.layers-head { display:flex; align-items:center; gap:10px }
+.dotcount { flex:1; font-weight:640; font-size:14px; letter-spacing:-.01em }
 .layers h2 { margin:0 0 2px; font-family:var(--mono); font-size:10.5px;
   letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); font-weight:600 }
 .layers label { display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px }
@@ -206,6 +224,31 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .sw-pjm { background:var(--pjm) } .sw-nyiso { background:var(--nyiso) }
 .sw-cty { background:var(--cty) }
 .sw-quake { background:#c00000 }
+/* A ring, because that is what the layer draws: generation is context around
+   the data centres, and a solid swatch would claim to be another dot layer. */
+.sw-plant { background:transparent; border:2.5px solid #8B5CF6; border-radius:50% }
+
+/* Legend and filter in one. Deselected chips keep their colour at low opacity
+   rather than going grey - grey is what "other" is, and two greys in one strip
+   read as two fuels. */
+.fuelkey { display:flex; flex-wrap:wrap; gap:4px; margin:2px 0 6px 22px }
+.fk { display:inline-flex; align-items:center; gap:5px; padding:2px 7px 2px 5px;
+  font:inherit; font-size:11px; line-height:1.6; color:var(--ink);
+  background:var(--bg); border:1px solid var(--line); border-radius:999px;
+  cursor:pointer }
+.fk i { width:8px; height:8px; border-radius:50%; flex:none }
+.fk-n { color:var(--ink-2); font-variant-numeric:tabular-nums }
+.fk[aria-pressed="false"] { opacity:.4 }
+.fk[aria-pressed="false"] .fk-n { text-decoration:line-through }
+.fk:hover { border-color:var(--accent) }
+
+/* Plants on the globe. Ring, never a disc: the DOM markers have to stay
+   distinguishable from the data centre markers they sit among, and at these
+   sizes a hollow circle is the only difference that survives. Colours are set
+   per element from the fuel palette. */
+.plant-marker { border-radius:50%; border:2px solid #94A3B8; box-sizing:border-box;
+  pointer-events:auto }
+.plant-marker.plant-ret { border-style:dashed; opacity:.75 }
 /* Epicentre on the globe, matching the 2D marker exactly. */
 .epi-marker { border-radius:50%; background:rgb(154 167 178 / 35%);
   border:1.5px solid #9aa7b2; box-shadow:0 0 5px rgb(0 0 0 / 50%); pointer-events:auto }
@@ -242,7 +285,173 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 
 .layers label { flex-wrap:wrap }
 .sublbl { width:100%; padding-left:19px; font-size:11px; color:var(--ink-3) }
+/* 22ch inside a 264px panel left a column of nothing down the right-hand side
+   of every note. Hints in the layers pane fill the pane; the cap stays where
+   it is useful, on prose in the wider panels. */
 .hint { margin:4px 0 0; font-size:11.5px; color:var(--ink-3); max-width:22ch }
+.layers .hint, .layers .sublbl { max-width:none }
+
+/* ---- the whole registry as a list ---- */
+/* Full screen and virtualised: only the slice in view is ever in the DOM, and
+   a sizer div carries the true height so the scrollbar tells the truth. With
+   grouping on, the display is a mix of group headers and rows - it is that
+   MIXED array that gets virtualised, not the rows, or a collapsed group would
+   still cost its contents. */
+.listview { position:fixed; inset:52px 0 0 0; z-index:34; background:var(--panel);
+  display:flex; flex-direction:column }
+.lv-bar { display:flex; align-items:center; gap:10px; padding:10px 14px;
+  border-bottom:1px solid var(--line) }
+.lv-bar strong { font-size:13.5px; white-space:nowrap }
+.lv-q { font:inherit; font-size:13px; color:var(--ink); background:var(--bg);
+  border:1px solid var(--line); border-radius:7px; padding:5px 10px; min-width:200px }
+.lv-q:focus { outline:none; border-color:var(--accent) }
+
+/* ---- the three pickers ---- */
+.lv-pick { position:relative }
+.lv-ico { display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:30px; padding:0 }
+.lv-ico svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7 }
+.lv-ico[aria-expanded=true] { border-color:var(--accent); color:var(--accent) }
+.lv-pick > button b { font-weight:640 }
+.lv-menu { position:absolute; top:calc(100% + 6px); left:0; z-index:3; width:300px;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  box-shadow:0 12px 34px rgb(0 0 0 / 20%); display:flex; flex-direction:column;
+  max-height:min(460px, 70vh) }
+.lv-body { overflow:auto; padding:10px 12px }
+.lv-foot { padding:10px 12px; border-top:1px solid var(--line-soft) }
+.lv-foot .go { width:100%; background:var(--accent); border-color:var(--accent);
+  color:#fff; font-weight:640; padding:7px }
+.lv-foot .clear { width:100%; padding:7px }
+/* The one Apply, in the bar, standing where the count usually is - so the
+   place that tells you what the list holds is the place that tells you it is
+   not what you asked for yet. */
+#lv-apply { background:var(--accent); border-color:var(--accent); color:#fff;
+  font-weight:640; padding:5px 16px }
+/* A picker holding changes nobody has applied says so. */
+.lv-pick > button.dirty { border-color:var(--accent); color:var(--accent) }
+.lv-menu hr { border:0; border-top:1px solid var(--line-soft); margin:9px 0 }
+
+/* the ordered, chosen columns at the top of the menu */
+.lv-chosen { display:flex; align-items:center; gap:8px; padding:5px 0; font-size:13px;
+  cursor:pointer; background:none; border:0; width:100%; color:var(--ink); text-align:left }
+.lv-chosen .num { color:var(--ink-3); font-family:var(--mono); font-size:11.5px; min-width:1.5em }
+.lv-chosen .grow { flex:1; font-weight:600 }
+.lv-chosen .sum { color:var(--ink-3); font-family:var(--mono); font-size:11.5px }
+.lv-chosen .agg { color:var(--accent); background:var(--accent-soft); border-radius:5px;
+  padding:1px 7px }
+.lv-grp .ga { margin-left:12px; font-weight:400; color:var(--ink-2);
+  font-family:var(--mono); font-size:11.5px }
+.lv-chosen .caret { color:var(--ink-3); font-size:10px }
+.lv-vals { padding:2px 0 10px 22px }
+.lv-vals .lv-q { width:100%; min-width:0; margin-bottom:7px }
+.lv-tools { display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:12.5px }
+.lv-tools a { color:var(--accent); cursor:pointer; text-decoration:none; font-weight:600 }
+.lv-mode { margin-left:auto; font:inherit; font-size:11.5px; font-weight:600; padding:2px 9px;
+  border-radius:20px; cursor:pointer; border:1px solid transparent }
+.lv-mode.inc { color:var(--accent); background:var(--accent-soft) }
+.lv-mode.exc { color:#a3242f; background:rgb(215 38 61 / 12%) }
+.lv-vlist { max-height:190px; overflow:auto }
+.lv-vrow { display:flex; align-items:center; gap:8px; padding:3px 0; font-size:12.5px;
+  cursor:pointer }
+.lv-vrow .grow { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.lv-vrow .n { color:var(--ink-3); font-family:var(--mono); font-size:11px }
+.lv-opt { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:13px;
+  cursor:pointer }
+.lv-opt input:disabled + span { color:var(--ink-3) }
+
+/* ---- the table ---- */
+/* One horizontal scroller for head and body, so a frozen column freezes in
+   both. Widths are fixed in pixels because the sticky offsets are computed
+   from them - a percentage column cannot tell you where the next one starts. */
+.lv-headwrap { overflow:hidden; border-bottom:1px solid var(--line) }
+.lv-head, .lv-row, .lv-grp { display:flex; align-items:center }
+.lv-head { height:38px; font-size:12px; font-weight:640; color:var(--ink-2) }
+.lv-head .cell button { font:inherit; font-weight:640; font-size:12px; color:inherit;
+  background:none; border:0; padding:0; cursor:pointer; text-align:left }
+.lv-head .cell button:hover { color:var(--accent) }
+.lv-scroll { flex:1; overflow:auto; position:relative }
+.lv-sizer { width:1px }
+.lv-rows { position:absolute; top:0; left:0 }
+.cell { flex:none; padding:0 14px; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; box-sizing:border-box }
+.cell.mono { font-family:var(--mono); font-size:11.5px; color:var(--ink-3) }
+.cell.num { text-align:right }
+/* Frozen: the grouped columns. They keep a background of their own or the rows
+   scrolling underneath would show through. */
+.cell.frz { position:sticky; z-index:1; background:var(--panel) }
+.lv-head .cell.frz { z-index:2 }
+.lv-row:hover .cell.frz { background:var(--accent-soft) }
+.lv-row { height:34px; font-size:13px; cursor:pointer; border-bottom:1px solid var(--line-soft) }
+.lv-row:hover { background:var(--accent-soft) }
+.lv-grp { height:34px; font-size:13px; font-weight:640; background:var(--bg);
+  border-bottom:1px solid var(--line-soft); cursor:pointer; position:sticky; left:0 }
+.lv-grp .tw { width:16px; height:16px; margin-right:8px; flex:none; display:inline-flex;
+  align-items:center; justify-content:center; font-family:var(--mono); font-size:12px;
+  border:1px solid var(--line); border-radius:4px; color:var(--ink-2) }
+.lv-grp .gn { margin-left:8px; font-weight:400; color:var(--ink-3);
+  font-family:var(--mono); font-size:11.5px }
+.lv-empty { padding:26px 14px; color:var(--ink-3); font-size:13px }
+
+/* ---- heatmap bar ---- */
+.heatbar { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:26;
+  display:flex; align-items:center; gap:13px; padding:8px 12px }
+/* Shares the bottom edge with the timeline, so it steps aside when that opens -
+   the same lift the map controls take. */
+body.timeline-open .heatbar { bottom:150px }
+.hb-pick { position:relative }
+.hb-end { font-size:12px; color:var(--ink-2); min-width:4ch; text-align:center }
+/* The same five stops the paint expression interpolates, so the strip is the
+   legend rather than a decoration that resembles one. */
+.hb-ramp { width:190px; height:11px; border-radius:6px; border:1px solid var(--line);
+  background:linear-gradient(to right, #2E9E6B, #8DC63F, #F2C744, #F08A24, #D7263D) }
+.hb-sw { width:44px; height:25px; padding:0; border-radius:20px; cursor:pointer;
+  border:1px solid var(--line); background:var(--line-soft); position:relative;
+  transition:background .13s }
+.hb-sw i { position:absolute; top:2px; left:2px; width:19px; height:19px; border-radius:50%;
+  background:var(--panel); box-shadow:0 1px 3px rgb(0 0 0 / 35%); transition:left .13s }
+.hb-sw[aria-checked=true] { background:var(--accent); border-color:var(--accent) }
+.hb-sw[aria-checked=true] i { left:21px }
+.hb-menu { position:absolute; bottom:calc(100% + 8px); left:0; z-index:2; min-width:210px;
+  padding:7px 0; background:var(--panel); border:1px solid var(--line); border-radius:9px;
+  box-shadow:0 10px 30px rgb(0 0 0 / 20%) }
+.hb-menu button { display:flex; align-items:center; gap:9px; width:100%; font:inherit;
+  font-size:13px; text-align:left; padding:6px 13px; border:0; cursor:pointer;
+  background:none; color:var(--ink) }
+.hb-menu button:hover { background:var(--accent-soft) }
+.hb-menu button .tick { width:13px; color:var(--accent) }
+
+/* ---- map controls, bottom right ---- */
+/* One button per control showing the state you are IN, not the one you would
+   switch to - "2D" means you are in 2D, and pressing it takes you to 3D. Two
+   buttons for two states wastes half the space saying what you can already
+   see, which matters when the controls sit over the map rather than in a bar. */
+.mapctl { position:fixed; right:14px; bottom:16px; z-index:26;
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px }
+.ctl-zoom { display:flex; flex-direction:column; gap:1px }
+.ctl-row { display:flex; gap:8px }
+/* The timeline lives here now rather than in the header, so it needs the
+   pressed state the header icons had. */
+.corner-btn[aria-pressed=true] { color:#fff; background:var(--accent);
+  border-color:var(--accent) }
+/* The timeline bar is centred on the bottom edge and the controls are in the
+   corner; on a narrow window they meet. Lift the stack above it while it is
+   open rather than letting them overlap. */
+body.timeline-open .mapctl { bottom:150px }
+.corner-btn { min-width:40px; height:40px; padding:0 12px; font:inherit; font-size:14px;
+  font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel);
+  border:1px solid var(--line); border-radius:9px;
+  box-shadow:0 2px 10px rgb(0 0 0 / 12%); display:inline-flex;
+  align-items:center; justify-content:center }
+.corner-btn:hover { border-color:var(--accent); color:var(--accent) }
+.corner-btn svg { width:20px; height:20px; fill:none; stroke:currentColor;
+  stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round }
+.ctl-zoom .corner-btn { border-radius:0; font-size:19px; font-weight:400 }
+.ctl-zoom .corner-btn:first-child { border-radius:9px 9px 0 0 }
+.ctl-zoom .corner-btn:last-child { border-radius:0 0 9px 9px; border-top:0 }
+/* MapLibre's own zoom control is replaced by ours. */
+.maplibregl-ctrl-top-right { display:none }
+
+.layers-btn { position:fixed; left:14px; bottom:16px; z-index:26 }
 
 .mapfull { position:fixed; inset:52px 0 0 0 }
 #map3d { background:var(--bg) }

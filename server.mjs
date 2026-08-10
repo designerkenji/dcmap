@@ -59,6 +59,7 @@ function serialiseRoutes() {
     '/data/basemap.json': JSON.stringify(data.basemap),
     '/data/timeline.json': JSON.stringify(data.timelinePayload),
     '/data/quakes.json': JSON.stringify(data.quakes),
+    '/data/plants.json': JSON.stringify(data.plants),
     '/data/operators.json': JSON.stringify(data.operatorsPayload),
   };
 }

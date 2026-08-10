@@ -12,9 +12,11 @@
   'use strict';
 
   const state = {
+    heat: { on: false, k: 'mw' },
     mode: '2d',
     layers: { facilities: true, ai: true, ercot: false, pjm: false, nyiso: false,
-      countries: false, quake: false },
+      countries: false, quake: false, plants: false },
+    fuels: null,    // Set of fuel keys while the plant legend is filtering
     filter: null,   // {key,value,label} from search — narrows the dots shown
     time: null,     // {q, mode:'cum'|'year'} while the timeline bar is open
   };
@@ -63,8 +65,8 @@
   const pal = () => PALETTES[document.documentElement.dataset.theme === 'night' ? 'night' : 'day'];
 
   // ---- data ----------------------------------------------------------------
-  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes] = await Promise.all(
-    ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes']
+  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants] = await Promise.all(
+    ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants']
       .map(n => fetch(`/data/${n}.json`).then(r => r.json())));
 
   const drawable = sites.filter(s => s.lat != null);
@@ -136,6 +138,76 @@
   const pjmFC = zoneFC(pjm);
   const nyisoFC = zoneFC(nyiso);
   const ctyFC = zoneFC(countries);
+
+  // ---- power plants ---------------------------------------------------------
+  // US generation at or above 100 MW, from EIA-860M. Drawn as RINGS, where a
+  // data centre is a solid dot: at Ashburn or in ERCOT the two layers overlap
+  // heavily, and hue alone would not survive that - especially with the
+  // heatmap on, which owns green through red for the site dots.
+  //
+  // Conventional fuel colours anyway, because coal-is-black and solar-is-yellow
+  // are read faster than any palette picked to avoid a collision, and the
+  // ring/disc distinction is what carries the layer apart.
+  const FUEL_COLOUR = {
+    nuclear: '#8B5CF6', gas: '#F97316', coal: '#57534E', oil: '#A16207',
+    hydro: '#0EA5E9', wind: '#06B6D4', solar: '#EAB308', storage: '#EC4899',
+    other: '#94A3B8',
+  };
+  const FUEL_LABEL = {
+    nuclear: 'Nuclear', gas: 'Gas', coal: 'Coal', oil: 'Oil', hydro: 'Hydro',
+    wind: 'Wind', solar: 'Solar', storage: 'Storage', other: 'Other',
+  };
+  // Balancing authority to the market whose rules apply. Only the seven that
+  // have a co-location regime worth naming; everything else is a vertically
+  // integrated utility where the question is a state commission's, not an RTO's.
+  const BA_ISO = {
+    PJM: 'PJM', ERCO: 'ERCOT', MISO: 'MISO', ISNE: 'ISO-NE',
+    NYIS: 'NYISO', CISO: 'CAISO', SWPP: 'SPP',
+  };
+  const STATUS_LABEL = { op: 'Operating', plan: 'Planned', ret: 'Retired' };
+
+  // The capacity the dot is sized on: what is running, or failing that what was
+  // there, or failing that what is proposed. A retired 2 GW coal station is a
+  // big dot on purpose - the interconnection is the asset.
+  for (const p of plants) p.smw = p.mw || p.rmw || p.pmw || 0;
+
+  const plantFC = {
+    type: 'FeatureCollection',
+    features: plants.map(p => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [p.lon, p.lat] },
+      properties: p,
+    })),
+  };
+
+  const fuelOn = (f) => !state.fuels || state.fuels.has(f);
+  // null when nothing is deselected, because setFilter(null) clears rather than
+  // matching everything - the same contract eventClause() has.
+  const plantClause = () => (state.fuels
+    ? ['in', ['get', 'f'], ['literal', [...state.fuels]]] : null);
+
+  const mwText = (v) => `${Math.round(v).toLocaleString()} MW`;
+  const plantTip = (p) => {
+    const iso = BA_ISO[p.ba] || p.ba;
+    const head = p.k === 'op'
+      ? `${mwText(p.mw)} operating${p.u > 1 ? ` · ${p.u} units` : ''}${p.y ? ` · since ${p.y}` : ''}`
+      : p.k === 'ret'
+        ? `Retired${p.ry ? ` ${p.ry}` : ''} · ${mwText(p.rmw)} was here`
+        : `Planned${p.y ? ` for ${p.y}` : ''} · ${mwText(p.pmw)}`;
+    // EIA's technology is often a longer way of saying the fuel - "Nuclear"
+    // for nuclear, but "Natural Gas Fired Combined Cycle" for gas, which is
+    // worth the line. Only print both when they differ.
+    const kind = p.tech === FUEL_LABEL[p.f] ? FUEL_LABEL[p.f]
+      : `${FUEL_LABEL[p.f]} · ${p.tech}`;
+    return `<div class="t">${esc(p.n)}</div>` +
+      `<div class="d">${esc(kind)}</div>` +
+      `<div class="d">${head}</div>` +
+      // The two lines that answer the co-location question, when they apply:
+      // capacity about to free up, and capacity being added on the same pad.
+      (p.xmw ? `<div class="d">${mwText(p.xmw)} retiring from ${p.ry}</div>` : '') +
+      (p.k === 'op' && p.pmw ? `<div class="d">${mwText(p.pmw)} more planned here</div>` : '') +
+      `<div class="d">${esc([p.st, iso, p.own].filter(Boolean).join(' · '))}</div>`;
+  };
 
   const openSite = (id) => window.open(`/site/${encodeURIComponent(id)}`, '_blank', 'noopener');
   window.__openSite = openSite; // test hook
@@ -228,6 +300,35 @@
     };
   }
 
+  // Theme-independent, like the epicentre layer and for the same reason: these
+  // are the fuel's colours, not the app's, so they must not go through
+  // THEME_PAINT - which is a flat [layer, property, fn] list that would clobber
+  // the match expression with a single constant on the first day/night toggle.
+  function plantPaint() {
+    const fuel = ['match', ['get', 'f'],
+      ...Object.entries(FUEL_COLOUR).flatMap(([k, v]) => [k, v]), FUEL_COLOUR.other];
+    // sqrt, so AREA tracks capacity rather than radius: linear radius makes a
+    // 6.8 GW dam look four times a 400 MW peaker instead of seventeen times.
+    const cap = ['sqrt', ['/', ['max', 1, ['to-number', ['get', 'smw'], 0]], 100]];
+    const k = ['get', 'k'];
+    const z = (...stops) => ['interpolate', ['linear'], ['zoom'], ...stops];
+    return {
+      'circle-color': fuel,
+      // Capped at each stop so a dam does not swallow a county at low zoom.
+      'circle-radius': z(2, ['min', 7, ['*', 1.3, cap]],
+                         6, ['min', 14, ['*', 2.4, cap]],
+                         11, ['min', 34, ['*', 5.5, cap]]),
+      // Barely filled: these are rings, and the fill is only there so a small
+      // dot still reads as its fuel colour when the ring is a hairline.
+      'circle-opacity': ['match', k, 'op', 0.26, 'plan', 0.14, 0.05],
+      'circle-stroke-color': fuel,
+      'circle-stroke-width': z(2, 1, 11, 2.2),
+      // Retired plants stay faint. They are on the map because the
+      // interconnection may be reusable, not because anything is running.
+      'circle-stroke-opacity': ['match', k, 'op', 0.95, 'plan', 0.7, 0.5],
+    };
+  }
+
   function buildStyle() {
     const c = pal();
     const clamp01 = (e) => ['min', 1, ['max', 0, e]];
@@ -242,6 +343,7 @@
         nyiso: { type: 'geojson', data: nyisoFC },
         quake: { type: 'geojson', data: quakeFC },
         epicentre: { type: 'geojson', data: epicentreFC },
+        plant: { type: 'geojson', data: plantFC },
         sites: { type: 'geojson', data: sitesFC },
       },
       layers: [
@@ -271,6 +373,10 @@
           paint: { 'line-color': ['get', 'color'],
             'line-width': ['interpolate', ['linear'], ['get', 'value'], 2, 0.8, 8, 2.6],
             'line-opacity': 0.9 } },
+        // Under the site dots on purpose: generation is the context this app
+        // reads data centres against, not the subject.
+        { id: 'plant', type: 'circle', source: 'plant', layout: { visibility: 'none' },
+          paint: plantPaint() },
         // A town-level coordinate is drawn hollow: same position, but the
         // ring says "somewhere in this settlement", not "this building".
         { id: 'sites', type: 'circle', source: 'sites',
@@ -329,6 +435,7 @@
     nyiso: ['nyiso', 'nyiso-line'],
     countries: ['cty'],
     quake: ['quake', 'epicentre'],
+    plants: ['plant'],
   };
   // Traditional and AI facilities are separate layers over the same source;
   // each keeps its kind filter, and the search facet composes on top.
@@ -383,9 +490,16 @@
     || (state.filter.value === '__shaken__' ? !!(shakenIds && shakenIds.has(d.id))
         : d[state.filter.key] === state.filter.value
           && (!state.filter.region || d.rg === state.filter.region));
+  // The list is a filter on the map, not a separate view of the same data.
+  // Set by the list to a Set of ids whenever anything is filtering there, and
+  // null when nothing is - null rather than a Set of all 6,263 so the common
+  // case costs no lookup and the map's own layer expression stays untouched.
+  let listIds = null;
+  const inList = (d) => !listIds || listIds.has(d.id);
+
   const shown = () => drawable.filter(d =>
     (d.ft === 'ai' ? state.layers.ai : state.layers.facilities) &&
-    matchesFilter(d) && inTime(d));
+    matchesFilter(d) && inTime(d) && inList(d));
 
   // Events are always time-aware, in both resolutions: show what had happened
   // at or before the cursor. With the timeline closed, show everything.
@@ -432,12 +546,14 @@
             : ['==', ['get', state.filter.key], state.filter.value]);
           if (state.filter.region) parts.push(['==', ['get', 'rg'], state.filter.region]);
         }
+        if (listIds) parts.push(['in', ['get', 'id'], ['literal', [...listIds]]]);
         const dc = dateClause();
         if (dc) parts.push(dc);
         map.setFilter(id, parts.length > 1 ? ['all', ...parts] : kind);
       }
     }
     if (map.getLayer('epicentre')) map.setFilter('epicentre', eventClause());
+    if (map.getLayer('plant')) map.setFilter('plant', plantClause());
     for (const [key, ids] of Object.entries(LAYER_IDS)) {
       for (const id of ids) {
         if (map.getLayer(id)) {
@@ -446,6 +562,9 @@
       }
     }
     updateCount();
+    // The ramp is scaled to what is on screen, so it has to be rebuilt
+    // whenever what is on screen changes.
+    if (window.__applyHeat) window.__applyHeat();
   }
   // 'styledata' fires repeatedly DURING style load, and setLayoutProperty
   // throws while the style is loading - which wedged the style in a permanently
@@ -504,6 +623,14 @@
       (q.detail ? '<div class="d">click for its ShakeMap and exposure</div>' : ''));
   });
   map.on('mouseleave', 'epicentre', () => { map.getCanvas().style.cursor = ''; hideTip(); });
+
+  // A dot under the cursor wins: the plant rings are large and would otherwise
+  // steal the tooltip from every data centre sitting inside one.
+  map.on('mousemove', 'plant', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY, plantTip(e.features[0].properties));
+  });
+  map.on('mouseleave', 'plant', hideTip);
 
   // Clicking an epicentre loads that event's precomputed footprint.
   map.on('click', 'epicentre', (e) => {
@@ -1029,6 +1156,56 @@
     });
   }
 
+  // The globe's DOM-marker slot is shared and unbatched, so the plant layer
+  // gets the same treatment as close-range sites: cull to the view, order by
+  // what matters, cap. Ordering is by capacity rather than by distance to the
+  // view centre - `plants` arrives biggest-first from the ingest - because at
+  // orbital altitude "the whole country is in view" and the only useful 300
+  // are the largest, where for site markers the useful ones are the nearest.
+  const PLANT_CAP = 300;
+  const plantWrap = new Map();
+
+  function visiblePlants() {
+    if (!state.layers.plants) return [];
+    const p = globe.pointOfView();
+    const reach = halfViewDeg() * 1.3;
+    const cosLat = Math.cos(p.lat * Math.PI / 180);
+    const out = [];
+    for (const d of plants) {
+      if (!fuelOn(d.f)) continue;
+      const dy = d.lat - p.lat;
+      if (Math.abs(dy) > reach) continue;
+      let dx = d.lon - p.lng;
+      if (dx > 180) dx -= 360; else if (dx < -180) dx += 360;
+      dx *= cosLat;
+      if (dx * dx + dy * dy > reach * reach) continue;
+      let w = plantWrap.get(d.id);
+      if (!w) plantWrap.set(d.id, w = { lat: d.lat, lng: d.lon, plant: d });
+      out.push(w);
+      if (out.length >= PLANT_CAP) break;
+    }
+    return out;
+  }
+
+  function plantMarker(d) {
+    const p = d.plant;
+    const el = document.createElement('div');
+    el.className = 'plant-marker plant-' + p.k;
+    // Same sqrt-of-capacity law as the 2D rings, damped at altitude so 300 of
+    // them seen from orbit stay readable instead of merging into a smear.
+    const cap = Math.sqrt(Math.max(1, p.smw) / 100);
+    const near = Math.min(1, 0.6 / Math.max(globeAlt, 0.02));
+    const px = Math.max(6, Math.min(30, 3.2 * cap * (0.5 + 0.5 * near)));
+    el.style.width = el.style.height = `${px.toFixed(1)}px`;
+    el.style.borderColor = FUEL_COLOUR[p.f] || FUEL_COLOUR.other;
+    el.style.background = (FUEL_COLOUR[p.f] || FUEL_COLOUR.other)
+      + (p.k === 'op' ? '44' : p.k === 'plan' ? '24' : '10');
+    el.title = [p.n, `${FUEL_LABEL[p.f]} · ${mwText(p.smw)}`,
+      STATUS_LABEL[p.k] + (p.ry ? ` ${p.ry}` : ''),
+      [p.st, BA_ISO[p.ba] || p.ba].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
+    return el;
+  }
+
   function closeMarker(d) {
     const el = document.createElement('div');
     el.className = 'dc-marker' + (d.site.ft === 'ai' ? ' dc-ai' : '')
@@ -1061,6 +1238,7 @@
     globe.pointsData(promoted.size ? shown().filter(d => !promoted.has(d.id)) : shown());
     globe.htmlElementsData([
       ...(state.layers.quake ? quakes.map(q => ({ lat: q.lat, lng: q.lon, q })) : []),
+      ...visiblePlants(),
       ...close,
     ]);
   }
@@ -1071,7 +1249,12 @@
   // building. It is not any more: the dot is sized to the building and, below
   // CLOSE_ALT, is a DOM marker anyway. All the fade did was make the dot hard
   // to find over bright imagery, which is the opposite of a marker's job.
-  const pointColour = (d) => (d.ft === 'ai' ? pal().ai3d : pal().fac3d);
+  const pointColour = (d) => {
+    if (state.heat.on && heatDomain) {
+      return heatHas(d) ? heatColour(+d[state.heat.k]) : HEAT_NONE;
+    }
+    return d.ft === 'ai' ? pal().ai3d : pal().fac3d;
+  };
 
   function initGlobe() {
     globe = new Globe(el3d, { animateIn: false });
@@ -1106,9 +1289,13 @@
       .htmlLat(d => d.lat).htmlLng(d => d.lng)
       // 0.009 is 57 km. Fine for an epicentre seen from orbit, absurd for a
       // marker on a roof, which wants to be exactly where its coordinate is.
-      .htmlAltitude(d => (d.site ? 0 : 0.009))
+      // Plants sit on the surface like site markers. Only the epicentres float:
+      // 0.009 is 57 km, which is right for something seen from orbit and wrong
+      // for a switchyard you are looking down at.
+      .htmlAltitude(d => (d.site || d.plant ? 0 : 0.009))
       .htmlElement(d => {
         if (d.site) return closeMarker(d);
+        if (d.plant) return plantMarker(d);
         const el = document.createElement('div');
         el.className = 'epi-marker' + (d.q.exposed ? ' epi-hit' : '');
         // Same log scaling as 2D, so an M7 reads as an M7 in both renderers.
@@ -1182,8 +1369,7 @@
   }
 
   // ---- mode + theme + layer wiring -------------------------------------------
-  const btn2d = document.getElementById('mode2d');
-  const btn3d = document.getElementById('mode3d');
+  const modeBtn = document.getElementById('modeBtn');
   // A theme change never touches geometry, sources or layer structure - only
   // colours. setStyle was the wrong instrument for that at every setting:
   // diff:false tore down and re-tiled all five GeoJSON sources (30+ s blank),
@@ -1224,8 +1410,13 @@
 
   function setMode(mode) {
     state.mode = mode;
-    btn2d.setAttribute('aria-selected', String(mode === '2d'));
-    btn3d.setAttribute('aria-selected', String(mode === '3d'));
+    // The label is the state you are IN. Two buttons would spend half the
+    // control saying what the map already shows.
+    modeBtn.textContent = mode === '2d' ? '2D' : '3D';
+    modeBtn.title = mode === '2d' ? 'Switch to 3D' : 'Switch to 2D';
+    // Zoom buttons drive MapLibre, which is not on screen in 3D - the globe
+    // has its own wheel and its own limits.
+    document.getElementById('mapctl').classList.toggle('is3d', mode === '3d');
     document.getElementById('map2d').hidden = mode !== '2d';
     el3d.hidden = mode !== '3d';
     hideTip();
@@ -1247,12 +1438,59 @@
       map.triggerRepaint();
     }
   }
-  btn2d.addEventListener('click', () => setMode('2d'));
-  btn3d.addEventListener('click', () => setMode('3d'));
+  modeBtn.addEventListener('click', () => setMode(state.mode === '2d' ? '3d' : '2d'));
+  document.getElementById('zoomIn').addEventListener('click', () => {
+    if (state.mode === '2d') map.zoomIn();
+    else if (globe) globe.pointOfView({ altitude: globe.pointOfView().altitude / 1.7 }, 260);
+  });
+  document.getElementById('zoomOut').addEventListener('click', () => {
+    if (state.mode === '2d') map.zoomOut();
+    else if (globe) globe.pointOfView({ altitude: globe.pointOfView().altitude * 1.7 }, 260);
+  });
+
+  // ---- the layers pane folds into its corner ---------------------------------
+  const layersPane = document.getElementById('layers');
+  const layersBtn = document.getElementById('layersBtn');
+  function setLayersOpen(on) {
+    layersPane.hidden = !on;
+    layersBtn.hidden = on;
+    layersBtn.setAttribute('aria-expanded', String(on));
+  }
+  layersBtn.addEventListener('click', () => setLayersOpen(true));
+  document.getElementById('layersClose').addEventListener('click', () => setLayersOpen(false));
+
+  // Built from the data rather than written out, so the counts stay true and a
+  // fuel that stops appearing stops having a chip. Ordered by how plausible a
+  // co-location host the class is - nuclear, gas, coal - not by how many there
+  // are, which would put 968 solar farms first.
+  const fuelKey = document.getElementById('fuelkey');
+  const FUEL_ORDER = ['nuclear', 'gas', 'coal', 'hydro', 'oil', 'wind', 'solar', 'storage', 'other'];
+  {
+    const n = {};
+    for (const p of plants) n[p.f] = (n[p.f] || 0) + 1;
+    const shownFuels = FUEL_ORDER.filter(f => n[f]);
+    fuelKey.innerHTML = shownFuels.map(f =>
+      `<button type="button" class="fk" data-f="${f}" aria-pressed="true">` +
+      `<i style="background:${FUEL_COLOUR[f]}"></i>${esc(FUEL_LABEL[f])}` +
+      `<span class="fk-n">${n[f].toLocaleString()}</span></button>`).join('');
+    fuelKey.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-f]');
+      if (!b) return;
+      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+      const live = [...fuelKey.querySelectorAll('[data-f][aria-pressed="true"]')]
+        .map(x => x.dataset.f);
+      // null when nothing is deselected, not a set of everything: setFilter
+      // takes null as "no filter", and an all-inclusive `in` would still be
+      // evaluated per feature on every frame to reach the same answer.
+      state.fuels = live.length === shownFuels.length ? null : new Set(live);
+      refreshView();
+    });
+  }
 
   for (const key of Object.keys(state.layers)) {
     document.getElementById(`lyr-${key}`).addEventListener('change', (e) => {
       state.layers[key] = e.target.checked;
+      if (key === 'plants') fuelKey.hidden = !e.target.checked;
       if (key === 'quake') {
         if (state.time) syncScaleUI();
         if (!e.target.checked) {
@@ -1423,6 +1661,11 @@
   }
 
   const chip = document.getElementById('chip');
+  // Set by the list once it exists, so a filter change repaints it too. The
+  // status chips live in the list now and drive this same state, so without it
+  // the chips would filter the map and leave the rows they sit above alone.
+  let refreshList = () => {};
+
   function setFilter(f) {
     state.filter = f;
     chip.hidden = !f;
@@ -1431,6 +1674,7 @@
         (f.unmapped ? ` · ${f.unmapped} without coordinates` : '') + '</span>';
     }
     refreshView();
+    refreshList();
   }
   chip.addEventListener('click', () => setFilter(null));
 
@@ -1456,6 +1700,7 @@
   }
 
   function goTo(lon, lat, site) {
+    preferSatellite();
     if (state.mode === '2d') {
       map.flyTo({ center: [lon, lat], zoom: SITE_ZOOM, duration: 1100 });
       new maplibregl.Popup({ closeOnClick: true, offset: 10 })
@@ -1667,6 +1912,9 @@
   }
 
   function setTimelineOpen(on) {
+    // The map controls share the bottom edge with the timeline bar now, so
+    // they have to get out of its way.
+    document.body.classList.toggle('timeline-open', !!on);
     timebar.hidden = !on;
     timeBtn.setAttribute('aria-pressed', String(on));
     if (on) {
@@ -2034,7 +2282,7 @@
   // The server decides which providers exist, because only it knows whether a
   // Google key is configured. Asking it means the UI never offers an option
   // that would fail on click.
-  const bmSeg = document.getElementById('bm-seg');
+  const bmBtn = document.getElementById('bmBtn');
 
   // Each provider gets its OWN source and layer, added the first time it is
   // chosen. The first version used one shared source created empty and swapped
@@ -2042,7 +2290,7 @@
   // with `tiles: []` never initialises, so there was nothing for setTiles to
   // update. serialize() reported the new URL while the source stayed dead and
   // not one tile was ever requested.
-  let pendingBasemap = null;
+  let pendingBasemap = null, bmRetry = null;
 
   // The globe takes the SAME imagery, as a tile engine rather than a raster
   // source. three-globe asks for (x, y, level) and wants a URL back, so the
@@ -2075,8 +2323,15 @@
   }
 
   function setBasemap(id) {
-    for (const b of bmSeg.children) b.setAttribute('aria-selected', String(b.dataset.bm === id));
     const p = providers.find(x => x.id === id);
+    // Same one-button rule as the mode switch. With a single satellite
+    // provider this is a plain toggle; with two it cycles, and the title says
+    // where the next press goes rather than leaving you to find out.
+    const ring = ['', ...providers.map(q => q.id)];
+    const next = ring[(ring.indexOf(id) + 1) % ring.length];
+    const nameOf = (k) => (k ? (providers.find(q => q.id === k)?.label || k) : 'Map');
+    bmBtn.textContent = nameOf(id);
+    bmBtn.title = 'Switch to ' + nameOf(next);
 
     // TRY IT, DO NOT ASK FIRST. addSource/addLayer throw "Style is not done
     // loading" before the style is ready, so the obvious guard is
@@ -2110,12 +2365,21 @@
         if (map.getLayer(l)) map.setLayoutProperty(l, 'visibility', p ? 'none' : 'visible');
       }
     } catch (err) {
+      // Retried on a TIMER, not on map.once('idle'). 'idle' is a one-shot that
+      // a background or throttled tab may never reach - the same trap the
+      // deep link fell into with 'load' - and the symptom is the nastiest
+      // kind: the button relabels to Satellite and no imagery ever arrives,
+      // because the relabel is above this line and the layer never got made.
+      // setTimeout is throttled in a background tab but it still fires.
       pendingBasemap = id;
-      map.once('idle', () => {
-        const q = pendingBasemap;
-        pendingBasemap = null;
-        if (q !== null) setBasemap(q);
-      });
+      if (!bmRetry) {
+        bmRetry = setInterval(() => {
+          const q = pendingBasemap;
+          if (q === null) { clearInterval(bmRetry); bmRetry = null; return; }
+          pendingBasemap = null;
+          setBasemap(q);
+        }, 400);
+      }
       return;
     }
     currentBasemap = id;
@@ -2127,9 +2391,9 @@
 
   fetch('/api/basemaps').then(r => r.json()).then(list => {
     providers = list;
-    bmSeg.innerHTML = `<button data-bm="" role="tab" aria-selected="true">Map</button>`
-      + list.map(p => `<button data-bm="${esc(p.id)}" role="tab" aria-selected="false">${esc(p.label)}</button>`).join('');
-    showBasemapNote('');
+    setBasemap(currentBasemap);       // relabels now that the ring is known
+    showBasemapNote(currentBasemap);
+    if (wantSat) { wantSat = false; preferSatellite(); }
   }).catch(() => {});
 
   // Imagery is licensed, not free, and which licence applies depends on the
@@ -2141,64 +2405,177 @@
     bmNote.hidden = !p;
   }
 
-  bmSeg.addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-bm]');
-    if (b) setBasemap(b.dataset.bm);
+  bmBtn.addEventListener('click', () => {
+    bmChosen = true;
+    const ring = ['', ...providers.map(q => q.id)];
+    setBasemap(ring[(ring.indexOf(currentBasemap) + 1) % ring.length]);
   });
 
-  // ---- lifecycle status ------------------------------------------------------
-  // Operational / under construction, as its own filter. The counts are shown
-  // rather than implied, and UNKNOWN is shown alongside them rather than hidden,
-  // because it is 97% of the registry: OSM and PeeringDB record where a facility
-  // is, never what stage it is at. Presenting two tidy numbers without the third
-  // would imply a completeness this data does not have.
-  const ST = [
-    ['op', 'Operational', 'st-op'],
-    ['uc', 'Under construction', 'st-uc'],
-    ['', 'Status unknown', 'st-un'],
-  ];
-  const stRow = document.getElementById('st-row');
-  const stNote = document.getElementById('st-note');
-
-  function renderStatus() {
-    // Count against everything the layer toggles admit, so the numbers track
-    // whatever else is switched on rather than quoting a fixed total.
-    const pool = drawable.filter(d =>
-      (d.ft === 'ai' ? state.layers.ai : state.layers.facilities) && inTime(d));
-    const n = { op: 0, uc: 0, '': 0 };
-    for (const d of pool) n[d.st || ''] += 1;
-    const active = state.filter && state.filter.key === 'st' ? state.filter.value : null;
-    stRow.innerHTML = ST.map(([k, label, cls]) => `
-      <button class="st-chip" data-st="${k}" aria-pressed="${active === k}">
-        <i class="st-dot ${cls}"></i><span class="st-lab">${label}</span>
-        <span class="st-n">${n[k].toLocaleString()}</span>
-      </button>`).join('');
-    const known = n.op + n.uc;
-    stNote.textContent = pool.length
-      ? `Known for ${known.toLocaleString()} of ${pool.length.toLocaleString()}`
-        + ` (${(known / pool.length * 100).toFixed(0)}%). Derived from build dates —`
-        + ` no source in the registry publishes a status field.`
-      : '';
+  // Flying to ONE building wants imagery. The drawn basemap is an overview -
+  // 110m coastlines, one land colour, a 4096px texture for the whole planet -
+  // and past about zoom 9 it has nothing left to show, so landing on a single
+  // site with it on is landing on a blank.
+  //
+  // Only where the user has not said otherwise. Picking the basemap is an
+  // instruction; overriding it because they then searched for something would
+  // be the app arguing with them. One explicit press and it never does this
+  // again for the rest of the session.
+  let bmChosen = false, wantSat = false;
+  function preferSatellite() {
+    if (bmChosen || currentBasemap) return;
+    const p = providers[0];
+    // Providers arrive over the network, so a deep link can get here first.
+    if (p) setBasemap(p.id); else wantSat = true;
   }
 
-  stRow.addEventListener('click', (e) => {
-    const b = e.target.closest('.st-chip');
-    if (!b) return;
-    const k = b.dataset.st;
-    const on = state.filter && state.filter.key === 'st' && state.filter.value === k;
-    if (on) return setFilter(null);
-    const all = sites.filter(d => (d.st || '') === k);
-    const pts = drawable.filter(d => (d.st || '') === k);
-    setFilter({ key: 'st', value: k, label: ST.find(s => s[0] === k)[1],
-                count: all.length, unmapped: all.length - pts.length });
+  // ---- heatmap ---------------------------------------------------------------
+  // Colour the dots by a measure instead of by what kind of facility they are.
+  //
+  // The domain is computed over what is CURRENTLY SHOWN, not over the registry,
+  // so the ramp answers "how do these compare with each other" rather than
+  // "how do these compare with a maximum that is filtered out of view". Filter
+  // to one country and the scale rescales to it.
+  //
+  // Sites with no figure stay grey rather than taking the bottom of the ramp.
+  // Power is known for 57 sites and floor area for 101, so the overwhelming
+  // majority of dots have no value at all - painting those deep green would
+  // read as "lowest", which is a claim, where grey reads as "not measured",
+  // which is the truth.
+  const HEAT_STOPS = ['#2E9E6B', '#8DC63F', '#F2C744', '#F08A24', '#D7263D'];
+  const HEAT_NONE = '#9AA7B2';
+  const HEAT_MEASURES = [
+    { k: 'mw',  label: 'Power (MW)' },
+    { k: 'ft2', label: 'Floor area (sq ft)' },
+    // Zero is a legitimate longitude and latitude but never a legitimate build
+    // year or capacity, so "has a value" is not the same test for all of them.
+    { k: 'by',  label: 'Year built' },
+    { k: 'lon', label: 'Longitude', zeroIsReal: true },
+    { k: 'lat', label: 'Latitude',  zeroIsReal: true },
+  ];
+  const heatSpec = () => HEAT_MEASURES.find(m => m.k === state.heat.k) || HEAT_MEASURES[0];
+  const heatHas = (d) => {
+    const m = heatSpec();
+    const v = d[m.k];
+    return v != null && (m.zeroIsReal ? Number.isFinite(+v) : +v > 0);
+  };
+
+  const hbBtn = document.getElementById('hb-btn');
+  const hbMenu = document.getElementById('hb-menu');
+  const hbSw = document.getElementById('hb-sw');
+  const hbLbl = document.getElementById('hb-lbl');
+  const hbMin = document.getElementById('hb-min');
+  const hbMax = document.getElementById('hb-max');
+
+  let heatDomain = null;              // [lo, hi] over the visible set, or null
+
+  function heatColour(v) {
+    if (!heatDomain) return HEAT_NONE;
+    const [lo, hi] = heatDomain;
+    const t = hi === lo ? 0 : Math.max(0, Math.min(1, (v - lo) / (hi - lo)));
+    const at = t * (HEAT_STOPS.length - 1);
+    return HEAT_STOPS[Math.round(at)];
+  }
+
+  // Recomputed whenever the visible set changes, which is why it hangs off
+  // applyVisibility rather than off the switch.
+  function applyHeat() {
+    const m = heatSpec();
+    hbLbl.textContent = m.label;
+    hbSw.setAttribute('aria-checked', String(state.heat.on));
+
+    heatDomain = null;
+    if (state.heat.on) {
+      let lo = Infinity, hi = -Infinity;
+      for (const d of shown()) {
+        if (!heatHas(d)) continue;
+        const v = +d[m.k];
+        if (v < lo) lo = v;
+        if (v > hi) hi = v;
+      }
+      if (lo <= hi) heatDomain = [lo, hi];
+    }
+    const fmt = (v) => (m.k === 'by' ? String(Math.round(v)) : Math.round(v).toLocaleString());
+    // Switched on over a set where nothing carries the measure, every dot goes
+    // grey and blank ends read as a broken control rather than as an answer.
+    hbMin.textContent = heatDomain ? fmt(heatDomain[0]) : (state.heat.on ? 'none shown' : '');
+    hbMax.textContent = heatDomain ? fmt(heatDomain[1]) : '';
+
+    // Rebuild the two dot layers' colour. Everything else dotPaint sets - the
+    // radius, the hollow town ring, the halo - is left alone.
+    const town = ['==', ['get', 'gp'], 'town'];
+    for (const [id, key] of [['sites', 'fac'], ['sites-ai', 'ai']]) {
+      if (!map.getLayer(id)) continue;
+      const plain = ['case', town, 'rgba(0,0,0,0)', pal()[key]];
+      if (!heatDomain) { map.setPaintProperty(id, 'circle-color', plain); continue; }
+      const [lo, hi] = heatDomain;
+      const stops = [];
+      HEAT_STOPS.forEach((c, i) => {
+        stops.push(lo + (hi - lo) * (i / (HEAT_STOPS.length - 1)), c);
+      });
+      // hi === lo would make interpolate throw on non-ascending stops, so a
+      // single-valued domain is painted flat.
+      const ramp = hi === lo
+        ? HEAT_STOPS[HEAT_STOPS.length - 1]
+        : ['interpolate', ['linear'], ['to-number', ['get', m.k], lo - 1], ...stops];
+      const missing = m.zeroIsReal
+        ? ['==', ['has', m.k], false]
+        : ['<=', ['to-number', ['get', m.k], 0], 0];
+      map.setPaintProperty(id, 'circle-color',
+        ['case', town, 'rgba(0,0,0,0)', missing, HEAT_NONE, ramp]);
+    }
+    if (globe) globe.pointColor(pointColour);
+  }
+  window.__applyHeat = applyHeat;   // called from applyVisibility
+
+  hbBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = hbMenu.hidden;
+    if (open) {
+      hbMenu.innerHTML = HEAT_MEASURES.map(m =>
+        '<button type="button" data-m="' + m.k + '"><span class="tick">'
+        + (m.k === state.heat.k ? '✓' : '') + '</span>' + esc(m.label) + '</button>').join('');
+    }
+    hbMenu.hidden = !open;
+    hbBtn.setAttribute('aria-expanded', String(open));
   });
+  hbMenu.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-m]');
+    if (!b) return;
+    state.heat.k = b.dataset.m;
+    // Choosing a measure means you want to see it. Switching on for you is
+    // less surprising than showing the name of a measure that is not painted.
+    state.heat.on = true;
+    hbMenu.hidden = true;
+    hbBtn.setAttribute('aria-expanded', 'false');
+    applyHeat();
+  });
+  document.addEventListener('click', (e) => {
+    if (!hbMenu.hidden && !hbBtn.closest('.hb-pick').contains(e.target)) {
+      hbMenu.hidden = true;
+      hbBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  hbSw.addEventListener('click', () => { state.heat.on = !state.heat.on; applyHeat(); });
 
-  // Recount whenever anything that changes the visible set changes.
-  const _refresh = refreshView;
-  refreshView = () => { _refresh(); renderStatus(); };
-  renderStatus();
+  // applyVisibility may well have run before this block existed - it guards on
+  // window.__applyHeat - so paint the bar once now that it does.
+  applyHeat();
 
-  // ---- operator directory -----------------------------------------------------
+  // ---- lifecycle status ------------------------------------------------------
+  // This was a row of chips in the layers pane: Operational / Under
+  // construction / Status unknown, each a one-key filter on the map.
+  //
+  // It is gone, because status is not a layer and never was, and because as a
+  // filter it was the odd one out - one column with a bespoke widget while the
+  // other eight had nothing. Status is now a Status column in the list, with
+  // the same include/exclude value picker every other column gets, and the
+  // unknown 97% is still visible there as a value with a count rather than as
+  // a special case that needed explaining in a footnote.
+  //
+  // What went with it: filtering the MAP by status. The list filters the list.
+  // Nothing else read state.filter with key 'st'.
+
+  // ---- operator directory ---  // ---- operator directory -----------------------------------------------------
   // Browse by company rather than by dot. The registry knows 2,613 companies,
   // so this is a searchable list rather than a curated ten - but the ones with
   // a profile float to the top of an unfiltered view, because "who are the big
@@ -2403,6 +2780,737 @@
     goTo(s.lon, s.lat, s);
   });
 
+  // ---- every site, as a list -------------------------------------------------
+  // A small pivot over the registry: filter, group and sort, each multi-column.
+  //
+  // Virtualised over the DISPLAY array, not the rows. With grouping on, the
+  // display is a mix of group headers and rows, and a collapsed group
+  // contributes exactly one header - so collapsing is free rather than merely
+  // hidden, which is what makes grouping 6,263 rows usable at all.
+  (() => {
+    const view = document.getElementById('listview');
+    const scroll = document.getElementById('lv-scroll');
+    const sizer = document.getElementById('lv-sizer');
+    const rowsEl = document.getElementById('lv-rows');
+    const headEl = document.getElementById('lv-head');
+    const headWrap = document.querySelector('.lv-headwrap');
+    const countEl = document.getElementById('lv-count');
+    const qEl = document.getElementById('lv-q');
+    const bar = document.querySelector('.lv-bar');
+    const listBtn = document.getElementById('listBtn');
+    const applyBtn = document.getElementById('lv-apply');
+    const ROW_H = 34, OVERSCAN = 8;
+    const CARET_OPEN = '▾', CARET_SHUT = '▸';
+    const UP = ' ▲', DOWN = ' ▼', MINUS = '−', DASH = '—';
+
+    const ST_LABEL = { op: 'Operational', uc: 'Under construction', '': 'Unknown' };
+    const COLS = [
+      { k: 'n',  label: 'Name',        w: 260, get: (d) => d.n || d.en || '' },
+      { k: 'o',  label: 'Operator',    w: 200, get: (d) => d.o || '' },
+      { k: 'u',  label: 'Utility',     w: 170, get: (d) => d.u || '' },
+      { k: 'c',  label: 'Country',     w: 92,  get: (d) => d.c || '' },
+      { k: 'ci', label: 'City',        w: 150, get: (d) => d.ci || '' },
+      { k: 'ft', label: 'Type',        w: 112, get: (d) => (d.ft === 'ai' ? 'AI' : 'Traditional') },
+      { k: 'st', label: 'Status',      w: 150, get: (d) => ST_LABEL[d.st || ''] || 'Unknown' },
+      // Sum/avg/min/max make sense of megawatts. They do not make sense of a
+      // year - the sum of a set of build years is not a number about anything -
+      // so Built offers only the two that do.
+      { k: 'mw', label: 'Power (MW)',  w: 110, num: true, aggs: ['sum', 'avg', 'min', 'max'],
+                 get: (d) => (d.mw ? String(d.mw) : ''),
+                 fmt: (d) => (d.mw ? d.mw.toLocaleString() : '') },
+      // fmt is separate from get on purpose. get() feeds parseFloat, in the
+      // comparator and in every aggregate, so it must stay unpunctuated -
+      // parseFloat('2,603,391') is 2. fmt() is what a person reads.
+      { k: 'ft2', label: 'Floor area (sq ft)', w: 150, num: true,
+                 aggs: ['sum', 'avg', 'min', 'max'],
+                 get: (d) => (d.ft2 ? String(d.ft2) : ''),
+                 fmt: (d) => (d.ft2 ? d.ft2.toLocaleString() : '') },
+      { k: 'by', label: 'Built',       w: 84,  num: true, aggs: ['min', 'max'],
+                 get: (d) => (d.by ? String(d.by) : '') },
+      { k: 'lon', label: 'Longitude', w: 118, mono: true, num: true,
+                 get: (d) => (d.lon == null ? '' : d.lon.toFixed(5)) },
+      { k: 'lat', label: 'Latitude',  w: 118, mono: true, num: true,
+                 get: (d) => (d.lat == null ? '' : d.lat.toFixed(5)) },
+      // Calculated, and it belongs to a GROUP rather than to a site: it is the
+      // number beside each group heading. So it is sortable but not a table
+      // column, not filterable, and not something you can group by - there is
+      // nothing to put in the cell of a row that is one site, and "count" of
+      // one thing is not a fact about it.
+      { k: 'cnt', label: 'Count', groupOnly: true, get: () => '' },
+    ];
+    const TABLE = COLS.filter(c => !c.groupOnly);
+    // Every column on by default. Hiding is for narrowing a wide table down to
+    // the few columns a particular question needs, not a thing anyone should
+    // have to undo before they can read anything.
+    const visible = new Set(TABLE.map(c => c.k));
+    const byKey = Object.fromEntries(COLS.map(c => [c.k, c]));
+
+    let rows = [];
+    let sort = [{ k: 'n', dir: 1 }];
+    let groupOn = [];
+    let filterOn = [];                   // ordered: the position IS the scope order
+    const filters = {};                  // k -> { mode, sel:Set, q, open }
+    // EXPANDED, not collapsed. The default has to be the empty set, and the
+    // default state has to be shut: group 6,263 rows by operator with
+    // everything open and the first heading is followed by 762 rows, which is
+    // the ungrouped list with a caption. Tracking the exceptions the other way
+    // round was a bug - an earlier commit claimed collapsed-by-default and the
+    // code cleared a `collapsed` set, which means precisely the opposite.
+    const expanded = new Set();
+    let display = [];
+    // A draft per picker, kept whether or not its panel is open. The three
+    // pickers used to commit separately, so setting up a filter AND a grouping
+    // AND a sort meant three Applies and three full rebuilds of 6,263 rows -
+    // and two of them showed you a list nobody asked to see. Now they stage
+    // together and one Apply in the bar commits the lot.
+    const pending = { filter: null, group: null, sort: null };
+    let draft = null;                    // whichever panel is open right now
+
+    function fstate(k) {
+      if (!filters[k]) filters[k] = { mode: 'inc', sel: new Set(), q: '', open: false };
+      return filters[k];
+    }
+    function passes(d, k, table) {
+      const f = (table || filters)[k];
+      if (!f || !f.sel.size) return true;     // nothing ticked is not a filter
+      const has = f.sel.has(byKey[k].get(d));
+      return f.mode === 'inc' ? has : !has;
+    }
+
+    // The values available to the filter at position `upto`, counted against
+    // the rows that already satisfy every filter ABOVE it. This is the whole
+    // point of the ordering: choose Country US and the City list is US cities,
+    // not four thousand cities of which all but a few match nothing.
+    function valuesFor(cols, table, upto) {
+      const k = cols[upto];
+      const n = new Map();
+      for (const d of rows) {
+        let ok = true;
+        for (let i = 0; i < upto; i++) { if (!passes(d, cols[i], table)) { ok = false; break; } }
+        if (!ok) continue;
+        const v = byKey[k].get(d);
+        n.set(v, (n.get(v) || 0) + 1);
+      }
+      return [...n.entries()].sort((a, b) =>
+        a[0] === '' ? 1 : b[0] === '' ? -1
+        : a[0].localeCompare(b[0], undefined, { numeric: true, sensitivity: 'base' }));
+    }
+
+    const AGG_SIGN = { sum: '\u03A3', avg: '\u00D8', min: 'min', max: 'max' };
+
+    // Computed from the group's LEAF rows at every level. Averaging the child
+    // averages would weight a city holding one site the same as one holding
+    // forty; recomputing from the leaves is the only version that is right at
+    // depth, and it is free because each bucket already holds its members.
+    //
+    // Returns null, not 0, when nothing in the group carries a figure. 57 of
+    // 6,263 sites have a power number, so "no data" is the common case and
+    // "zero megawatts" the rare one - a column that renders them the same is
+    // not reporting, it is guessing.
+    function stat(list, k, agg) {
+      const v = [];
+      for (const d of list) {
+        const x = parseFloat(byKey[k].get(d));
+        if (Number.isFinite(x)) v.push(x);
+      }
+      if (!v.length) return null;
+      const total = v.reduce((a, b) => a + b, 0);
+      const value = agg === 'sum' ? total
+                  : agg === 'avg' ? total / v.length
+                  : agg === 'min' ? Math.min(...v)
+                  : Math.max(...v);
+      return { value: value, n: v.length, of: list.length };
+    }
+
+    // A sort entry carrying an aggregate orders the GROUPS, exactly as Count
+    // does, so it must not also try to order the rows inside them.
+    const groupSorts = () => sort.filter(x => x.k === 'cnt' || x.agg);
+
+    function compare(a, b) {
+      for (const s of sort) {
+        const col = byKey[s.k];
+        if (col.groupOnly || s.agg) continue;   // these order groups, not rows
+        const x = col.get(a), y = col.get(b);
+        if (!x && !y) continue;
+        if (!x) return 1;                // blanks last, whichever way it points
+        if (!y) return -1;
+        const r = col.num ? (parseFloat(x) - parseFloat(y))
+          : x.localeCompare(y, undefined, { numeric: true, sensitivity: 'base' });
+        if (r) return r * s.dir;
+      }
+      return 0;
+    }
+
+    // Grouped columns move to the front and freeze there; the rest follow in
+    // their own order.
+    function order() {
+      return groupOn.concat(
+        TABLE.map(c => c.k).filter(k => groupOn.indexOf(k) < 0 && visible.has(k)));
+    }
+    function offsets() {
+      const o = {}; let x = 0;
+      for (const k of order()) { o[k] = x; x += byKey[k].w; }
+      return { o, total: x };
+    }
+
+    // What a cell shows. Sorting, filtering, searching and the aggregates all
+    // go through get() instead, which is the raw value.
+    const disp = (k, d) => (byKey[k].fmt ? byKey[k].fmt(d) : byKey[k].get(d));
+
+    function cell(k, text, frozen, left) {
+      const c = byKey[k];
+      return '<div class="cell' + (c.mono ? ' mono' : '') + (c.num ? ' num' : '')
+        + (frozen ? ' frz' : '') + '" style="width:' + c.w + 'px'
+        + (frozen ? ';left:' + left + 'px' : '') + '">' + esc(text) + '</div>';
+    }
+
+    function build() {
+      const q = qEl.value.trim().toLowerCase();
+      let out = rows.filter(d => filterOn.every(k => passes(d, k)));
+      if (q) out = out.filter(d => TABLE.some(c => c.get(d).toLowerCase().indexOf(q) >= 0));
+      out.sort(compare);
+
+      display = [];
+      if (!groupOn.length) {
+        for (const d of out) display.push({ t: 'r', d });
+      } else {
+        const walk = (list, depth, path) => {
+          if (depth === groupOn.length) {
+            for (const d of list) display.push({ t: 'r', d });
+            return;
+          }
+          const k = groupOn[depth];
+          const buckets = new Map();
+          for (const d of list) {
+            const v = byKey[k].get(d) || DASH;
+            if (!buckets.has(v)) buckets.set(v, []);
+            buckets.get(v).push(d);
+          }
+          // Count sorts the GROUPS. It applies at every level of the
+          // grouping, and falls through to the label when two groups are the
+          // same size, so the order is stable rather than arbitrary.
+          const gs = groupSorts();
+          const keys = [...buckets.keys()].sort((a, b) => {
+            for (const x of gs) {
+              if (x.k === 'cnt') {
+                const d = (buckets.get(a).length - buckets.get(b).length) * x.dir;
+                if (d) return d;
+                continue;
+              }
+              const sa = stat(buckets.get(a), x.k, x.agg);
+              const sb = stat(buckets.get(b), x.k, x.agg);
+              if (!sa && !sb) continue;
+              if (!sa) return 1;                // no figure sorts last either way
+              if (!sb) return -1;
+              const d = (sa.value - sb.value) * x.dir;
+              if (d) return d;
+            }
+            return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+          });
+          for (const v of keys) {
+            const kids = buckets.get(v);
+            // \u001f, the ASCII unit separator, because a group path is
+            // built from values and any printable joiner could occur inside
+            // one. Written as an escape: it arrived here as a literal control
+            // character once, which is invisible in every editor and matches
+            // nothing you search for.
+            const key = path + '\u001f' + v;
+            // Coverage travels with the number: "12 of 118" is the difference
+            // between a total and a total of whatever happened to be recorded.
+            const aggs = gs.filter(x => x.agg).map(x => {
+              const r = stat(kids, x.k, x.agg);
+              return AGG_SIGN[x.agg] + ' ' + (r
+                ? Math.round(r.value).toLocaleString() + ' \u00B7 ' + r.n + ' of ' + r.of
+                : '\u2014');
+            });
+            display.push({ t: 'g', depth, label: v, n: kids.length, key, aggs: aggs });
+            if (expanded.has(key)) walk(kids, depth + 1, key);
+          }
+        };
+        walk(out, 0, '');
+      }
+
+      countEl.textContent = 'Showing ' + out.length.toLocaleString() + ' of '
+        + rows.length.toLocaleString() + ' sites';
+
+      // The map shows what the list shows. Null when nothing is filtering, so
+      // the usual case adds no id set to the layer expression at all.
+      const filtering = filterOn.some(k => fstate(k).sel.size) || !!q;
+      listIds = filtering ? new Set(out.map(d => d.id)) : null;
+      // Straight to the repaint, NOT through refreshView: the map's own filter
+      // changes call back into the list, and going through it here would be a
+      // loop.
+      applyVisibility();
+      refreshGlobe();
+      const geo = offsets();
+      sizer.style.height = (display.length * ROW_H) + 'px';
+      sizer.style.width = geo.total + 'px';
+      rowsEl.style.width = geo.total + 'px';
+      headEl.style.width = geo.total + 'px';
+      drawHead();
+      paint();
+    }
+
+    function drawHead() {
+      const geo = offsets(), ord = order();
+      headEl.innerHTML = ord.map((k, i) => {
+        const frozen = i < groupOn.length;
+        const c = byKey[k];
+        const s = sort.find(x => x.k === k);
+        const arrow = s ? (s.dir > 0 ? UP : DOWN) : '';
+        return '<div class="cell' + (c.num ? ' num' : '') + (frozen ? ' frz' : '')
+          + '" style="width:' + c.w + 'px' + (frozen ? ';left:' + geo.o[k] + 'px' : '') + '">'
+          + '<button data-k="' + k + '">' + esc(c.label) + arrow + '</button></div>';
+      }).join('');
+    }
+
+    function paint() {
+      const first = Math.max(0, Math.floor(scroll.scrollTop / ROW_H) - OVERSCAN);
+      const n = Math.ceil(scroll.clientHeight / ROW_H) + OVERSCAN * 2;
+      rowsEl.style.transform = 'translateY(' + (first * ROW_H) + 'px)';
+      headWrap.scrollLeft = scroll.scrollLeft;
+      if (!order().length) {
+        rowsEl.innerHTML = '<p class="lv-empty">No columns selected.</p>';
+        return;
+      }
+      if (!display.length) {
+        rowsEl.innerHTML = '<p class="lv-empty">Nothing matches those filters.</p>';
+        return;
+      }
+      const geo = offsets(), ord = order();
+      rowsEl.innerHTML = display.slice(first, first + n).map(e => {
+        if (e.t === 'g') {
+          return '<div class="lv-grp" data-g="' + esc(e.key) + '" style="padding-left:'
+            + (14 + e.depth * 18) + 'px"><span class="tw">'
+            + (expanded.has(e.key) ? MINUS : '+') + '</span>' + esc(e.label)
+            + '<span class="gn">' + e.n + '</span>'
+            + (e.aggs || []).map(a => '<span class="ga">' + esc(a) + '</span>').join('')
+            + '</div>';
+        }
+        // The grouped columns are blank on a leaf row: every one of them is
+        // already spelled out in the headers directly above it, and repeating
+        // "Arminco Ltd / AM" under a group called Arminco Ltd / AM is noise.
+        // The cells stay, empty, because they are the frozen ones and the
+        // group headers indent into the width they hold.
+        return '<div class="lv-row" data-id="' + esc(e.d.id) + '">'
+          + ord.map((k, i) => cell(k, i < groupOn.length ? '' : disp(k, e.d),
+                                   i < groupOn.length, geo.o[k])).join('')
+          + '</div>';
+      }).join('');
+    }
+
+    // ---- the three pickers ------------------------------------------------------
+    // One shape for all three: the chosen columns in order at the top, the full
+    // column list beneath, Apply at the bottom. Filter alone adds an expandable
+    // value panel per chosen column, because it is the only one that needs to
+    // ask WHICH values rather than just which column.
+    function menuHtml(kind) {
+      const chosen = draft.cols.map((k, i) => {
+        let head = '<button class="lv-chosen" data-x="' + k + '"><span class="num">'
+          + (i + 1) + '.</span><span class="grow">' + esc(byKey[k].label) + '</span>';
+        if (kind === 'filter') {
+          const f = draft.f[k], vals = draft.vals[k] || [];
+          head += '<span class="sum">' + (f.sel.size
+            ? (f.mode === 'inc' ? f.sel.size + ' of ' + vals.length : 'not ' + f.sel.size)
+            : 'all ' + vals.length) + '</span>'
+            + '<span class="caret">' + (f.open ? CARET_OPEN : CARET_SHUT) + '</span>';
+        } else if (kind === 'sort') {
+          // Only where it can mean something: an aggregate with nothing
+          // grouped is a total of one row, which is the row.
+          const spec = byKey[k];
+          if (spec.aggs && effGroup().length) {
+            const a = draft.agg[k];
+            head += '<span class="sum agg" data-agg="' + k + '">'
+              + (a ? a[0].toUpperCase() + a.slice(1) : 'Per row') + '</span>';
+          }
+          head += '<span class="sum" data-dir="' + k + '">'
+            + (draft.dir[k] > 0 ? 'Asc' + UP : 'Desc' + DOWN) + '</span>';
+        }
+        head += '</button>';
+        if (kind === 'filter' && draft.f[k].open) head += valuePanel(k);
+        return head;
+      }).join('');
+
+      // Count is offered in Sort only, and disabled there until something is
+      // grouped - a total of nothing is not a sort order, and a checkbox that
+      // silently does nothing is worse than one that says why it cannot.
+      const boxes = COLS.filter(c => !c.groupOnly || kind === 'sort').map(c => {
+        const dead = c.groupOnly && !effGroup().length;
+        return '<label class="lv-opt"' + (dead
+            ? ' title="Count is a group total - switch Group by on first"' : '')
+          + '><input type="checkbox" data-pick="' + c.k + '"'
+          + (draft.cols.indexOf(c.k) >= 0 ? ' checked' : '')
+          + (dead ? ' disabled' : '') + '><span>' + esc(c.label) + '</span></label>';
+      }).join('');
+
+      return '<div class="lv-body">' + chosen + (chosen ? '<hr>' : '') + boxes + '</div>'
+        + '<div class="lv-foot"><button class="tb-btn clear" data-clear="1">'
+        + 'Clear ' + esc(kind === 'filter' ? 'filters' : kind === 'group' ? 'grouping' : 'sort')
+        + '</button></div>';
+    }
+
+    function valuePanel(k) {
+      const f = draft.f[k];
+      const all = draft.vals[k] || [];
+      const q = (f.q || '').toLowerCase();
+      const shown = q ? all.filter(v => v[0].toLowerCase().indexOf(q) >= 0) : all;
+      return '<div class="lv-vals">'
+        + '<input class="lv-q" data-vq="' + k + '" value="' + esc(f.q || '')
+        + '" placeholder="Search ' + esc(byKey[k].label) + ' values">'
+        + '<div class="lv-tools"><a data-all="' + k + '">All</a><a data-none="' + k + '">None</a>'
+        + '<button class="lv-mode ' + (f.mode === 'inc' ? 'inc' : 'exc') + '" data-mode="'
+        + k + '">' + (f.mode === 'inc' ? 'Include' : 'Exclude') + '</button></div>'
+        + '<div class="lv-vlist">' + shown.map(v =>
+            '<label class="lv-vrow"><input type="checkbox" data-v="' + k + '" value="'
+            + esc(v[0]) + '"' + (f.sel.has(v[0]) ? ' checked' : '') + '>'
+            + '<span class="grow">' + esc(v[0] || '(blank)') + '</span>'
+            + '<span class="n">' + v[1] + '</span></label>').join('')
+        + '</div></div>';
+    }
+
+    // Recomputed on every draft change, because the scope a value list is
+    // counted against depends on every filter above it in the order.
+    function refreshVals() {
+      if (!draft || draft.kind !== 'filter') return;
+      draft.vals = {};
+      draft.cols.forEach((k, i) => { draft.vals[k] = valuesFor(draft.cols, draft.f, i); });
+    }
+
+    function openMenu(kind, on) {
+      for (const w of document.querySelectorAll('.lv-pick')) {
+        // The columns panel is a .lv-pick for styling but not a draft menu -
+        // it has no [data-open] button and manages its own open state. Walking
+        // it here threw on the missing button, and because the loop had
+        // already hidden its menu by then, it aborted before opening the one
+        // that was asked for: every draft menu stopped opening at all.
+        const b = w.querySelector('button[data-open]');
+        if (!b) continue;
+        const isIt = w.dataset.kind === kind && on;
+        w.querySelector('.lv-menu').hidden = !isIt;
+        b.setAttribute('aria-expanded', String(isIt));
+      }
+      // Closing a panel does NOT throw away what is in it. That is the whole
+      // point of staging across all three.
+      if (!on) { draft = null; return; }
+      if (!pending[kind]) pending[kind] = seedDraft(kind);
+      draft = pending[kind];
+      if (kind === 'filter') refreshVals();
+      redrawMenu();
+    }
+
+    function seedDraft(kind) {
+      const d = { kind: kind, cols: [], f: {}, dir: {}, agg: {}, vals: {} };
+      if (kind === 'filter') {
+        d.cols = filterOn.slice();
+        for (const k of d.cols) {
+          const f = fstate(k);
+          d.f[k] = { mode: f.mode, sel: new Set(f.sel), q: '', open: f.open };
+        }
+      } else if (kind === 'group') {
+        d.cols = groupOn.slice();
+      } else {
+        d.cols = sort.map(s => s.k);
+        for (const s of sort) { d.dir[s.k] = s.dir; d.agg[s.k] = s.agg || null; }
+      }
+      return d;
+    }
+
+    // Signatures rather than deep-equality: a draft is dirty when it says
+    // something different from what the list is currently doing, and comparing
+    // the two as strings is both shorter and harder to get subtly wrong.
+    const sigFilter = (cols, f) => cols.map(k =>
+      k + ':' + f[k].mode + ':' + [...f[k].sel].sort().join('|')).join(',');
+    const sigSort = (list) => list.map(x =>
+      x.k + ':' + x.dir + ':' + (x.agg || '')).join(',');
+    function sigOf(kind, d) {
+      if (kind === 'filter') return d ? sigFilter(d.cols, d.f) : sigFilter(filterOn, filters);
+      if (kind === 'group') return (d ? d.cols : groupOn).join(',');
+      return sigSort(d ? d.cols.map(k => ({ k: k, dir: d.dir[k] || 1, agg: d.agg[k] || null }))
+                       : sort);
+    }
+    // What the grouping WILL be once Apply is pressed. Count and the
+    // aggregates are only meaningful with a grouping, and now that the pickers
+    // stage together the answer to "is anything grouped" has to include what
+    // is staged - otherwise you group by Operator, open Sort to order those
+    // groups by size, and find Count greyed out because the grouping you just
+    // set up has not happened yet.
+    const effGroup = () => (pending.group ? pending.group.cols : groupOn);
+
+    const isDirty = (kind) => !!pending[kind] && sigOf(kind, pending[kind]) !== sigOf(kind, null);
+    const anyDirty = () => ['filter', 'group', 'sort'].some(isDirty);
+    function redrawMenu() {
+      const w = document.querySelector('.lv-pick[data-kind="' + draft.kind + '"]');
+      w.querySelector('.lv-menu').innerHTML = menuHtml(draft.kind);
+    }
+
+    // The count and the Apply share a slot, because they are answers to the
+    // same question: the count says what the list holds, and while something
+    // is staged the honest answer is "not what you asked for yet".
+    function syncBar() {
+      const dirty = anyDirty();
+      applyBtn.hidden = !dirty;
+      countEl.hidden = dirty;
+      for (const w of document.querySelectorAll('.lv-pick[data-kind]')) {
+        const b = w.querySelector('button[data-open]');
+        if (b) b.classList.toggle('dirty', isDirty(w.dataset.kind));
+      }
+    }
+
+    function labels() {
+      for (const w of document.querySelectorAll('.lv-pick')) {
+        const b = w.querySelector('button[data-open] b');
+        if (!b) continue;                       // the columns panel, again
+        const kind = w.dataset.kind;
+        // Reads the STAGED state where there is one. The button is what you
+        // are building; the Apply beside it is what says you have not built it
+        // yet. Showing the committed value here instead would mean staging a
+        // filter, closing the panel, and being told you had filtered by
+        // nothing.
+        const d = pending[kind];
+        let list;
+        if (kind === 'filter') {
+          const cols = d ? d.cols : filterOn, table = d ? d.f : filters;
+          list = [];
+          for (const k of cols) for (const v of (table[k] || fstate(k)).sel) list.push(v || '(blank)');
+          if (list.length > 6) list = list.slice(0, 6).concat([list.length - 6 + ' more']);
+        } else if (kind === 'group') {
+          list = (d ? d.cols : groupOn).map(k => byKey[k].label);
+        } else {
+          list = d
+            ? d.cols.map(k => byKey[k].label + (d.agg[k] ? ' (' + d.agg[k] + ')' : ''))
+            : sort.map(x => byKey[x.k].label + (x.agg ? ' (' + x.agg + ')' : ''));
+        }
+        b.textContent = list.length ? list.join(', ') : 'nothing';
+      }
+    }
+
+    // Columns is its own small panel rather than a fourth draft menu: there is
+    // nothing to stage. Ticking a column shows it, and you can see immediately
+    // whether that was what you wanted, which is the opposite of the
+    // multi-column choices next to it where the intermediate states are not
+    // choices anybody made.
+    const colsBtn = document.getElementById('lv-colsbtn');
+    const colsMenu = document.getElementById('lv-colsmenu');
+    function drawCols() {
+      colsMenu.innerHTML = '<div class="lv-body">'
+        + '<div class="lv-tools"><a data-cols-all>All</a><a data-cols-none>None</a></div>'
+        + TABLE.map(c => {
+            const grouped = groupOn.indexOf(c.k) >= 0;
+            return '<label class="lv-opt"' + (grouped
+                ? ' title="Grouped columns always show - they carry the headings"' : '')
+              + '><input type="checkbox" data-col="' + c.k + '"'
+              + (grouped || visible.has(c.k) ? ' checked' : '')
+              + (grouped ? ' disabled' : '') + '><span>' + esc(c.label) + '</span></label>';
+          }).join('')
+        + '</div>';
+    }
+    function openCols(on) {
+      if (on && draft) openMenu(draft.kind, false);   // one panel at a time
+      if (on) drawCols();
+      colsMenu.hidden = !on;
+      colsBtn.setAttribute('aria-expanded', String(on));
+    }
+    colsBtn.addEventListener('click', (e) => { e.stopPropagation(); openCols(colsMenu.hidden); });
+    colsMenu.addEventListener('click', (e) => {
+      if (e.target.closest('[data-cols-all]')) {
+        for (const c of TABLE) visible.add(c.k);
+        drawCols(); build(); return;
+      }
+      if (e.target.closest('[data-cols-none]')) {
+        visible.clear();
+        drawCols(); build();
+      }
+    });
+    colsMenu.addEventListener('change', (e) => {
+      const c = e.target.closest('[data-col]');
+      if (!c) return;
+      if (c.checked) visible.add(c.dataset.col); else visible.delete(c.dataset.col);
+      build();
+    });
+    document.addEventListener('click', (e) => {
+      if (colsMenu.hidden) return;
+      const path = typeof e.composedPath === 'function' ? e.composedPath() : null;
+      const w = colsBtn.closest('.lv-pick');
+      const inside = path && path.length ? path.indexOf(w) >= 0 : w.contains(e.target);
+      if (!inside) openCols(false);
+    });
+
+    bar.addEventListener('click', (e) => {
+      const open = e.target.closest('button[data-open]');
+      if (open) openCols(false);                      // one panel at a time
+      if (open) {
+        const kind = open.dataset.open;
+        const isOpen = !open.closest('.lv-pick').querySelector('.lv-menu').hidden;
+        openMenu(kind, !isOpen);
+        return;
+      }
+      if (!draft) return;
+
+      if (e.target.closest('[data-clear]')) {
+        // Empties this picker, staged like anything else - so it shows up as
+        // pending and you can change your mind before it takes effect.
+        draft.cols = []; draft.f = {}; draft.dir = {}; draft.agg = {}; draft.vals = {};
+        redrawMenu(); labels(); syncBar();
+        return;
+      }
+      const agg = e.target.closest('[data-agg]');
+      if (agg) {
+        // Cycles the column's own aggregates and then "per row", which is the
+        // way out: sorting the rows inside each group rather than the groups.
+        const k = agg.dataset.agg, ring = byKey[k].aggs.concat([null]);
+        draft.agg[k] = ring[(ring.indexOf(draft.agg[k]) + 1) % ring.length];
+        redrawMenu(); labels(); syncBar(); return;
+      }
+      const dir = e.target.closest('[data-dir]');
+      if (dir) { draft.dir[dir.dataset.dir] *= -1; redrawMenu(); labels(); syncBar(); return; }
+      const x = e.target.closest('[data-x]');
+      if (x) {
+        if (draft.kind === 'filter') {
+          const f = draft.f[x.dataset.x];
+          f.open = !f.open;
+          redrawMenu();
+        }
+        return;
+      }
+      const all = e.target.closest('[data-all]');
+      if (all) {
+        const k = all.dataset.all;
+        draft.f[k].sel = new Set((draft.vals[k] || []).map(v => v[0]));
+        refreshVals(); redrawMenu(); labels(); syncBar(); return;
+      }
+      const none = e.target.closest('[data-none]');
+      if (none) { draft.f[none.dataset.none].sel = new Set(); refreshVals(); redrawMenu(); labels(); syncBar(); return; }
+      const mode = e.target.closest('[data-mode]');
+      if (mode) {
+        const f = draft.f[mode.dataset.mode];
+        f.mode = f.mode === 'inc' ? 'exc' : 'inc';
+        refreshVals(); redrawMenu(); labels(); syncBar();
+      }
+    });
+
+    // Commits every staged picker at once. Grouping resets what is expanded
+    // because the group keys it holds belong to the old grouping.
+    applyBtn.addEventListener('click', () => {
+      if (pending.filter) {
+        filterOn = pending.filter.cols;
+        for (const k of filterOn) filters[k] = pending.filter.f[k];
+      }
+      if (pending.group) { groupOn = pending.group.cols; expanded.clear(); }
+      if (pending.sort) {
+        const d = pending.sort;
+        sort = d.cols.length
+          ? d.cols.map(k => ({ k: k, dir: d.dir[k] || 1, agg: d.agg[k] || null }))
+          : [{ k: 'n', dir: 1 }];
+      }
+      pending.filter = pending.group = pending.sort = null;
+      if (draft) openMenu(draft.kind, false);
+      labels(); build(); syncBar();
+    });
+
+    bar.addEventListener('change', (e) => {
+      if (!draft) return;
+      const pick = e.target.closest('[data-pick]');
+      if (pick) {
+        const k = pick.dataset.pick, at = draft.cols.indexOf(k);
+        if (at >= 0) draft.cols.splice(at, 1);
+        else {
+          draft.cols.push(k);
+          // Closed. Choosing WHICH columns to filter and choosing WHICH values
+          // are two passes, and expanding on selection forces them together:
+          // pick Country and a 159-row value list shoves City off the bottom
+          // before you have said you want to filter by City at all.
+          if (draft.kind === 'filter') {
+            draft.f[k] = { mode: 'inc', sel: new Set(), q: '', open: false };
+          }
+          if (draft.kind === 'sort') {
+            // Grouped and aggregatable, so the useful default is the first
+            // aggregate and largest first - "sort by power" means the big ones.
+            const spec = byKey[k];
+            draft.agg[k] = spec.aggs && effGroup().length ? spec.aggs[0] : null;
+            draft.dir[k] = (k === 'cnt' || draft.agg[k]) ? -1 : 1;
+          }
+        }
+        refreshVals(); redrawMenu(); labels(); syncBar(); return;
+      }
+      const v = e.target.closest('[data-v]');
+      if (v) {
+        const f = draft.f[v.dataset.v];
+        if (v.checked) f.sel.add(v.value); else f.sel.delete(v.value);
+        refreshVals(); redrawMenu(); labels(); syncBar();
+      }
+    });
+
+    bar.addEventListener('input', (e) => {
+      const vq = e.target.closest('[data-vq]');
+      if (!vq || !draft) return;
+      draft.f[vq.dataset.vq].q = vq.value;
+      const at = vq.selectionStart;
+      redrawMenu();
+      const again = document.querySelector('[data-vq="' + vq.dataset.vq + '"]');
+      if (again) { again.focus(); again.setSelectionRange(at, at); }
+    });
+
+    // composedPath(), not contains(). Every control in these menus redraws the
+    // menu, which replaces its innerHTML and DETACHES the node that was just
+    // clicked - so by the time this outside-click handler runs, contains() is
+    // asked about an element that is no longer in the document and answers
+    // false. Expanding a filter column closed the whole panel.
+    //
+    // composedPath() is captured when the event is dispatched and does not
+    // care what happened to the DOM since, which is exactly the question being
+    // asked: did this click come from inside the panel.
+    document.addEventListener('click', (e) => {
+      if (!draft) return;
+      const w = document.querySelector('.lv-pick[data-kind="' + draft.kind + '"]');
+      if (!w) return;
+      const path = typeof e.composedPath === 'function' ? e.composedPath() : null;
+      const inside = path && path.length ? path.indexOf(w) >= 0 : w.contains(e.target);
+      if (!inside) openMenu(draft.kind, false);
+    });
+
+    // ---- the table --------------------------------------------------------------
+    headEl.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-k]');
+      if (!b) return;
+      const k = b.dataset.k, at = sort.findIndex(s => s.k === k);
+      if (e.shiftKey) { if (at < 0) sort.push({ k: k, dir: 1 }); else sort[at].dir *= -1; }
+      else sort = [{ k: k, dir: at === 0 ? -sort[0].dir : 1 }];
+      // A header click is immediate, so a sort staged in the panel would now
+      // be stale advice about a state that has moved on.
+      pending.sort = null;
+      labels(); build(); syncBar();
+    });
+    rowsEl.addEventListener('click', (e) => {
+      const g = e.target.closest('.lv-grp');
+      if (g) {
+        const key = g.dataset.g;
+        if (expanded.has(key)) expanded.delete(key); else expanded.add(key);
+        build();
+        return;
+      }
+      const r = e.target.closest('.lv-row');
+      if (r) openSite(r.dataset.id);
+    });
+    scroll.addEventListener('scroll', paint, { passive: true });
+    window.addEventListener('resize', () => { if (!view.hidden) paint(); });
+    qEl.addEventListener('input', () => { scroll.scrollTop = 0; build(); });
+
+    function setOpen(on) {
+      view.hidden = !on;
+      listBtn.setAttribute('aria-pressed', String(on));
+      if (!on) return;
+      if (!rows.length) rows = sites.slice();
+      labels(); build(); syncBar();
+      qEl.focus();
+    }
+    refreshList = () => { if (!view.hidden && rows.length) build(); };
+    listBtn.addEventListener('click', () => setOpen(view.hidden));
+    document.getElementById('lv-close').addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !view.hidden) setOpen(false);
+    });
+  })();
+
   // ---- deep link: /?operators=1 opens the directory, /?op=<key> filters to one
   // Operator pages link back here with these, so the map is the same object
   // seen spatially rather than a separate place you have to re-navigate.
@@ -2423,11 +3531,15 @@
   if (focusId) {
     const s = sites.find(x => x.id === focusId);
     if (s && s.lat != null) {
-      map.once('load', () => {
-        map.flyTo({ center: [s.lon, s.lat], zoom: SITE_ZOOM, duration: 1200 });
-        new maplibregl.Popup({ closeOnClick: true, offset: 10 })
-          .setLngLat([s.lon, s.lat]).setHTML(sitePopup(s)).addTo(map);
-      });
+      // Not inside map.once('load'). flyTo and Popup both work on a map that
+      // has not finished loading - verified - and 'load' is a one-shot that
+      // does not fire if it has already passed, and can take a very long time
+      // in a background tab. A shareable URL that silently does nothing when
+      // the map is slow is worse than one that jumps a frame early.
+      preferSatellite();
+      map.flyTo({ center: [s.lon, s.lat], zoom: SITE_ZOOM, duration: 1200 });
+      new maplibregl.Popup({ closeOnClick: true, offset: 10 })
+        .setLngLat([s.lon, s.lat]).setHTML(sitePopup(s)).addTo(map);
     }
   }
 })();

@@ -9,29 +9,35 @@
 </head>
 <body>
 <header class="topbar">
-  <span class="brand" id="dotcount" aria-live="polite">Data Centre Registry</span>
-  <div class="seg" role="tablist" aria-label="Map mode">
-    <button id="mode2d" role="tab" aria-selected="true">2D</button>
-    <button id="mode3d" role="tab" aria-selected="false">3D</button>
-  </div>
+  <span class="brand">Data Center Intelligence</span>
   <button id="chip" class="chip" hidden></button>
   <span class="spacer"></span>
-  <button id="opsBtn" class="themebtn opsbtn" aria-label="Operator directory"
-          title="Operators" aria-pressed="false"></button>
-  <button id="timeBtn" class="themebtn timebtn" aria-label="Timeline of data centre build-out"
-          title="Timeline" aria-pressed="false"></button>
-  <button id="searchBtn" class="themebtn searchbtn" aria-label="Search sites, operators, utilities, zones"
-          title="Search — ⌘K"></button>
-  <button id="themeBtn" class="themebtn" aria-label="Toggle day / night view"></button>
+  <button id="listBtn" class="icobtn" aria-label="All data centres as a list"
+          title="List — every site" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+  </button>
+  <button id="searchBtn" class="icobtn" aria-label="Search sites, operators, utilities, zones"
+          title="Search — ⌘K">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+  </button>
+  <button id="opsBtn" class="icobtn" aria-label="Operator directory"
+          title="Operators" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5.5A1.5 1.5 0 0 1 5.5 4h7A1.5 1.5 0 0 1 14 5.5V21M14 21V10h4.5A1.5 1.5 0 0 1 20 11.5V21M2.5 21h19M7 8h4M7 12h4M7 16h4M17 14h.01M17 17.5h.01"/></svg>
+  </button>
+  <button id="themeBtn" class="icobtn" aria-label="Toggle day / night view"></button>
 </header>
 
-<aside class="layers panel" aria-label="Layers">
-  <h2>Basemap</h2>
-  <div class="seg bm-seg" id="bm-seg" role="tablist" aria-label="Basemap">
-    <button data-bm="" role="tab" aria-selected="true">Map</button>
-  </div>
+<!-- Collapsed, the layers pane is this one button in the bottom-left corner. -->
+<button id="layersBtn" class="corner-btn layers-btn" aria-label="Layers and filters"
+        aria-expanded="false" title="Layers">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3.5 12.5 8.5 4.7 8.5-4.7"/><path d="m3.5 16.8 8.5 4.7 8.5-4.7"/></svg>
+</button>
 
-  <p class="hint bm-note" id="bm-note" hidden></p>
+<aside class="layers panel" id="layers" aria-label="Layers" hidden>
+  <div class="layers-head">
+    <span class="dotcount" id="dotcount" aria-live="polite">Data centres</span>
+    <button id="layersClose" class="tb-btn" aria-label="Collapse layers">✕</button>
+  </div>
 
   <h2 class="st-h">Layers</h2>
   <label><input type="checkbox" id="lyr-facilities" checked> <i class="sw sw-fac"></i> Data Center Facilities</label>
@@ -42,13 +48,49 @@
   <label><input type="checkbox" id="lyr-countries"> <i class="sw sw-cty"></i> Data Centres by Country</label>
   <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes
     <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
-
-  <h2 class="st-h">Status</h2>
-  <div class="st-row" id="st-row"></div>
-  <p class="hint st-note" id="st-note"></p>
+  <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants
+    <span class="sublbl">EIA-860M, June 2026 — US generation, 100 MW and up</span></label>
+  <!-- Legend and filter in one control: it has to explain the colours anyway,
+       and the same click that asks "which one is coal" wants to see only coal. -->
+  <div class="fuelkey" id="fuelkey" hidden></div>
 
   <p class="hint">Click a dot to open that site's page in a new tab.</p>
+  <!-- Imagery attribution is a licence condition, not a nicety. It moved here
+       when the basemap switch left the pane, and it must stay visible. -->
+  <p class="hint bm-note" id="bm-note" hidden></p>
 </aside>
+
+<!-- Map controls, bottom right, over the map rather than in a chrome bar.
+     Each is a single button showing the CURRENT state; clicking swaps it. -->
+<div class="mapctl" id="mapctl">
+  <button id="timeBtn" class="corner-btn" aria-label="Timeline of data centre build-out"
+          title="Timeline" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.2 2"/></svg>
+  </button>
+  <div class="ctl-zoom">
+    <button id="zoomIn" class="corner-btn" aria-label="Zoom in">+</button>
+    <button id="zoomOut" class="corner-btn" aria-label="Zoom out">&minus;</button>
+  </div>
+  <!-- The two basemap-ish switches read as one pair, so they sit as one. -->
+  <div class="ctl-row">
+    <button id="modeBtn" class="corner-btn" title="Switch to 3D">2D</button>
+    <button id="bmBtn" class="corner-btn" title="Switch to Satellite">Map</button>
+  </div>
+</div>
+
+<!-- Colour the dots by a measure. Bottom centre, above the timeline bar when
+     both are open. -->
+<div class="heatbar panel" id="heatbar">
+  <div class="hb-pick">
+    <button class="tb-btn" id="hb-btn" aria-expanded="false">Heatmap: <b id="hb-lbl"></b></button>
+    <div class="hb-menu" id="hb-menu" hidden></div>
+  </div>
+  <span class="hb-end mono" id="hb-min"></span>
+  <span class="hb-ramp" id="hb-ramp" aria-hidden="true"></span>
+  <span class="hb-end mono" id="hb-max"></span>
+  <button class="hb-sw" id="hb-sw" role="switch" aria-checked="false"
+          aria-label="Colour the dots by this measure"><i></i></button>
+</div>
 
 <div id="map2d" class="mapfull"></div>
 <div id="map3d" class="mapfull" hidden></div>
@@ -161,6 +203,41 @@
     <ol id="ops-d-sites" class="tchart-rows ops-sites"></ol>
   </div>
 </aside>
+
+<!-- Every site, full screen. 6,262 rows are virtualised: only the slice in
+     view exists in the DOM. -->
+<section id="listview" class="listview" aria-label="All data centres" hidden>
+  <div class="lv-bar">
+    <div class="lv-pick" data-kind="cols">
+      <button class="tb-btn lv-ico" id="lv-colsbtn" aria-expanded="false"
+              aria-label="Choose which columns to show" title="Columns">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="7" height="15" rx="1.5"/><rect x="13.5" y="4.5" width="7" height="15" rx="1.5"/></svg>
+      </button>
+      <div class="lv-menu" id="lv-colsmenu" hidden></div>
+    </div>
+    <div class="lv-pick" data-kind="filter">
+      <button class="tb-btn" data-open="filter" aria-expanded="false">Filter by <b>nothing</b></button>
+      <div class="lv-menu" hidden></div>
+    </div>
+    <div class="lv-pick" data-kind="group">
+      <button class="tb-btn" data-open="group" aria-expanded="false">Group by <b>nothing</b></button>
+      <div class="lv-menu" hidden></div>
+    </div>
+    <div class="lv-pick" data-kind="sort">
+      <button class="tb-btn" data-open="sort" aria-expanded="false">Sort by <b>Name</b></button>
+      <div class="lv-menu" hidden></div>
+    </div>
+    <strong id="lv-count"></strong>
+    <button id="lv-apply" class="tb-btn go" hidden>Apply</button>
+    <input id="lv-q" class="lv-q" type="text" placeholder="Search all columns…"
+           aria-label="Search the list">
+    <span class="spacer"></span>
+    <button id="lv-close" class="tb-btn" aria-label="Close the list">✕</button>
+  </div>
+  <div class="lv-headwrap"><div class="lv-head" id="lv-head"></div></div>
+  <div class="lv-scroll" id="lv-scroll"><div class="lv-sizer" id="lv-sizer"></div>
+    <div class="lv-rows" id="lv-rows"></div></div>
+</section>
 
 <dialog id="palette" class="palette" aria-label="Search the registry">
   <div class="pal-in">
