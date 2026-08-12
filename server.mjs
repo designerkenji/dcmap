@@ -11,11 +11,12 @@
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { loadAll, paths } from './lib/data.mjs';
 import { renderSitePage } from './lib/sitepage.mjs';
 import { renderOperatorPage } from './lib/operatorpage.mjs';
-import { captures, tileXY, ZOOM } from './lib/wayback.mjs';
-import { FIELDS, validate, appendOverrides, linkError, kindError } from './lib/overrides.mjs';
+import { FIELDS, validate, appendOverrides, linkError, kindError,
+         plantLinkError } from './lib/overrides.mjs';
 
 const PORT = process.env.PORT || 8787;
 const PUB = path.join(import.meta.dirname, 'public');
@@ -48,9 +49,20 @@ let data = await loadAll();
 // re-serialise them or the map keeps serving the name the registry no longer
 // holds. That is one function call rather than a rule to remember, which is the
 // point of it being here and not at each call site.
+//
+// AND PRE-GZIPPED, for the same reason twice over. These payloads are JSON
+// objects with the same short keys repeated tens of thousands of times, which
+// is close to the best case for deflate: the nine of them together are 9.4 MB
+// raw and 1.8 MB compressed. Going global on power plants added 5.3 MB of
+// uncompressed transfer, and compressing what was already here more than pays
+// it back - the app loads less over the wire now than before the layer existed.
+//
+// Compressed once at serialise time, not per request. gzip -9 on 6 MB is far
+// too slow to do on every page load, and these bytes never change between
+// loads; a site correction re-runs this and re-compresses along with it.
 let JSON_ROUTES;
 function serialiseRoutes() {
-  JSON_ROUTES = {
+  const routes = {
     '/data/sites.json': JSON.stringify(data.mapSites),
     '/data/ercot.json': JSON.stringify(data.ercot),
     '/data/pjm.json': JSON.stringify(data.pjm),
@@ -60,8 +72,13 @@ function serialiseRoutes() {
     '/data/timeline.json': JSON.stringify(data.timelinePayload),
     '/data/quakes.json': JSON.stringify(data.quakes),
     '/data/plants.json': JSON.stringify(data.plants),
+    '/data/fabs.json': JSON.stringify(data.fabs),
     '/data/operators.json': JSON.stringify(data.operatorsPayload),
   };
+  JSON_ROUTES = {};
+  for (const [p, body] of Object.entries(routes)) {
+    JSON_ROUTES[p] = { raw: body, gz: zlib.gzipSync(body, { level: 9 }) };
+  }
 }
 serialiseRoutes();
 
@@ -164,11 +181,12 @@ function readBody(req, limit) {
   });
 }
 
-function send(res, code, body, type) {
+function send(res, code, body, type, extra) {
   res.writeHead(code, {
     'Content-Type': type,
     'Cache-Control': 'no-cache',
     'X-Content-Type-Options': 'nosniff',
+    ...extra,
   });
   res.end(body);
 }
@@ -228,6 +246,7 @@ async function handle(req, res) {
       mates: (data.byBuilding.get(site.building) || []).filter(x => x.site_id !== id),
       parent: site.parent_site_id ? data.siteById.get(site.parent_site_id) || null : null,
       children: data.childrenBySite.get(id) || [],
+      plant: site.linked_plant_id ? data.plantById.get(site.linked_plant_id) || null : null,
     });
     return send(res, 200, html, MIME['.html']);
   }
@@ -262,6 +281,32 @@ async function handle(req, res) {
     return send(res, 200, JSON.stringify({ km, near: near.slice(0, 250) }), MIME['.json']);
   }
 
+  // Plants within reach of a site, for the supply picker. A wider default than
+  // the site version: a campus's neighbours are metres away, but the plant it
+  // buys from is a drive, and every real co-location deal so far has been a
+  // fence line or a substation - so the list has to cover both without the
+  // reader guessing a radius.
+  const npl = p.match(/^\/api\/nearby-plants\/(site-[a-z0-9-]+)$/);
+  if (npl) {
+    const site = data.siteById.get(npl[1]);
+    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
+    if (site.lat == null || site.lon == null) {
+      return send(res, 200, '{"near":[]}', MIME['.json']);
+    }
+    const km = Math.min(200, Math.max(1, +url.searchParams.get('km') || 50));
+    const lat = +site.lat, lon = +site.lon;
+    const near = [];
+    for (const pl of data.plants) {
+      const d = data.kmBetween(lon, lat, pl.lon, pl.lat);
+      if (d > km) continue;
+      near.push({ ...pl, km: +d.toFixed(2) });
+    }
+    // Nearest first: the question is "which plant is this one next to", and a
+    // 6 GW dam 90 km away is not a better answer than the gas unit over the road.
+    near.sort((a, b) => a.km - b.km);
+    return send(res, 200, JSON.stringify({ km, near: near.slice(0, 120) }), MIME['.json']);
+  }
+
   // Correct a site by hand. Writes to data/site_overrides.csv, which is a
   // SOURCE the pipeline never rewrites, then re-applies it to the in-memory
   // site so the change is live without a restart.
@@ -283,14 +328,35 @@ async function handle(req, res) {
       }
       // Whether a link is legal depends on the rest of the registry, so it is
       // checked here rather than in the field validator.
-      const rel = field === 'parent_site_id' ? linkError(site, value, data.siteById)
-                : field === 'site_kind'      ? kindError(site, value, data.siteById)
+      const rel = field === 'parent_site_id'  ? linkError(site, value, data.siteById)
+                : field === 'site_kind'       ? kindError(site, value, data.siteById)
+                : field === 'linked_plant_id' ? plantLinkError(value, data.plantById)
                 : null;
       if (rel) return send(res, 400, JSON.stringify({ error: rel }), MIME['.json']);
       // Only what actually differs. Re-asserting a value the pipeline already
       // produces would pin it against future sources for no reason.
       if (String(value) !== String(site[field] ?? '')) edits[field] = value;
     }
+    // Cross-field, so it cannot live in the per-field loop: the two halves of
+    // a supply link only mean anything together. An arrangement with no plant
+    // is a claim about a relationship with nothing at the other end, and a
+    // plant with no arrangement is the more common half-finished edit - both
+    // would render as a supply section that says nothing.
+    const finalLink = 'linked_plant_id' in edits ? edits.linked_plant_id
+                    : (site.linked_plant_id || '');
+    const finalStruct = 'link_structure' in edits ? edits.link_structure
+                      : (site.link_structure || '');
+    if (finalStruct && !finalLink) {
+      return send(res, 400, JSON.stringify({
+        error: 'Pick the plant before setting the arrangement.' }), MIME['.json']);
+    }
+    if (finalLink && !finalStruct) {
+      return send(res, 400, JSON.stringify({
+        error: 'Say what the arrangement is — behind the meter, net-metered, a '
+             + 'contract, or announced only. A bare link does not distinguish a '
+             + 'signed co-location from a press release.' }), MIME['.json']);
+    }
+
     if (!Object.keys(edits).length) {
       return send(res, 200, '{"saved":0}', MIME['.json']);
     }
@@ -308,33 +374,11 @@ async function handle(req, res) {
     }
   }
 
-  // The dated imagery series for one site. Lazy on purpose: the scan behind it
-  // is 195 upstream requests, so it runs when the page asks rather than on
-  // every render, and the answer is cached per tile for the life of the
-  // process. An immutable-ish Cache-Control covers the reloads in between -
-  // the archive gains a release every few weeks, not every few minutes.
-  const wb = p.match(/^\/api\/wayback\/(site-[a-z0-9-]+)$/);
-  if (wb) {
-    const site = data.siteById.get(wb[1]);
-    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
-    if (site.lat == null || site.lon == null) {
-      return send(res, 200, JSON.stringify({ captures: [] }), MIME['.json']);
-    }
-    try {
-      const list = await captures(+site.lat, +site.lon);
-      const { x, y, z } = tileXY(+site.lat, +site.lon, ZOOM);
-      const body = JSON.stringify({ z, x, y, captures: list });
-      res.writeHead(200, { 'Content-Type': MIME['.json'],
-                           'Cache-Control': 'public, max-age=86400' });
-      return res.end(body);
-    } catch (err) {
-      // The page degrades to its uploaded screenshots, so this is a 200 with
-      // an empty series and a reason, not a 500 that shows the user a stack.
-      console.warn('[wayback] scan failed:', err.message);
-      return send(res, 200, JSON.stringify({ captures: [], error: err.message }),
-                  MIME['.json']);
-    }
-  }
+  // /api/wayback/<id> used to live here and does not any more. The archive
+  // scan runs in the browser: both endpoints it needs send
+  // Access-Control-Allow-Origin: *, so proxying them bought nothing except a
+  // server that makes 195 outbound requests while someone waits for a page.
+  // See the scan in lib/sitepage.mjs for why the client is the better home.
 
   // Which satellite providers this deployment can actually offer. Google only
   // appears when a key is configured, so the UI never shows an option that
@@ -438,7 +482,16 @@ async function handle(req, res) {
     return sendFile(res, f);
   }
 
-  if (JSON_ROUTES[p]) return send(res, 200, JSON_ROUTES[p], MIME['.json']);
+  if (JSON_ROUTES[p]) {
+    const r = JSON_ROUTES[p];
+    // Vary matters even though every browser sends gzip: without it a proxy
+    // can hand the compressed bytes to a client that did not ask for them.
+    if (/\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
+      return send(res, 200, r.gz, MIME['.json'],
+        { 'Content-Encoding': 'gzip', Vary: 'Accept-Encoding' });
+    }
+    return send(res, 200, r.raw, MIME['.json'], { Vary: 'Accept-Encoding' });
+  }
 
   // Per-event ShakeMap detail, loaded when an epicentre is clicked. The id is
   // regex-gated and basename'd: it becomes a filesystem path.

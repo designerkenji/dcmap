@@ -49,10 +49,29 @@
   <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes
     <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
   <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants
-    <span class="sublbl">EIA-860M, June 2026 — US generation, 100 MW and up</span></label>
+    <span class="sublbl">100 MW and up, worldwide — hollow means the location is approximate</span></label>
   <!-- Legend and filter in one control: it has to explain the colours anyway,
        and the same click that asks "which one is coal" wants to see only coal. -->
   <div class="fuelkey" id="fuelkey" hidden></div>
+  <!-- CC BY 4.0 requires credit for the GEM half of this layer. It is a
+       licence condition, not a courtesy: do not remove it. -->
+  <p class="hint pl-note" id="pl-note" hidden>
+    US from <a href="https://www.eia.gov/electricity/data/eia860m/" target="_blank" rel="noopener">EIA-860M</a>,
+    June 2026 (public domain). Rest of world from
+    <a href="https://globalenergymonitor.org/projects/global-integrated-power-tracker/" target="_blank" rel="noopener">Global Energy Monitor</a>,
+    Global Integrated Power Tracker, August 2026, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Storage is US-only — GEM tracks batteries separately.
+  </p>
+  <label><input type="checkbox" id="lyr-fabs"> <i class="sw sw-fab"></i> Semiconductor Fabs
+    <span class="sublbl">78 leading-edge fabs — power is estimated, never measured</span></label>
+  <!-- The honesty this layer needs, stated once where it cannot be missed:
+       no fab on earth publishes its electricity demand. -->
+  <p class="hint pl-note" id="fb-note" hidden>
+    Hand-sourced per fab from company disclosures and CHIPS Act filings; each
+    record carries its source. No fab publishes its electricity demand, so MW is
+    <b>modelled</b> from wafer capacity and process node and is good to roughly a
+    factor of two — 14 of 78 have enough published data to estimate at all.
+  </p>
 
   <p class="hint">Click a dot to open that site's page in a new tab.</p>
   <!-- Imagery attribution is a licence condition, not a nicety. It moved here

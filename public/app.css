@@ -79,7 +79,12 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .tb-btn[aria-pressed=true] { background:var(--accent); border-color:var(--accent); color:var(--panel) }
 .tb-play { min-width:34px }
 #tslider { flex:1; accent-color:var(--accent) }
-.tb-note { max-width:none; margin:0 }
+/* Specificity, not just source order. This rule lives up here with the rest of
+   the timebar, and `.hint { max-width:22ch }` is 200 lines further down - same
+   one-class weight, later in the file, so it won and clamped the note to 160px
+   inside an 840px bar. Four lines of text and two thirds of the bar empty.
+   Qualifying it with the section id makes the override hold wherever it sits. */
+.timebar .tb-note { max-width:none; margin:0 }
 
 /* ---- timeline (record) chart ---- */
 .tline { position:fixed; left:50%; transform:translateX(-50%); bottom:150px; z-index:26;
@@ -227,6 +232,9 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 /* A ring, because that is what the layer draws: generation is context around
    the data centres, and a solid swatch would claim to be another dot layer. */
 .sw-plant { background:transparent; border:2.5px solid #8B5CF6; border-radius:50% }
+/* Solid with a dark rim: the third visual class, after the site disc and the
+   plant ring. Square-ish corners because a fab is a building, not a field. */
+.sw-fab { background:#BE185D; border:1px solid #4A0E28; border-radius:2px }
 
 /* Legend and filter in one. Deselected chips keep their colour at low opacity
    rather than going grey - grey is what "other" is, and two greys in one strip
@@ -249,6 +257,9 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .plant-marker { border-radius:50%; border:2px solid #94A3B8; box-sizing:border-box;
   pointer-events:auto }
 .plant-marker.plant-ret { border-style:dashed; opacity:.75 }
+.fab-marker { border-radius:3px; background:#BE185D; border:1.5px solid #4A0E28;
+  box-sizing:border-box; pointer-events:auto }
+.fab-marker.fab-plan { opacity:.5 }
 /* Epicentre on the globe, matching the 2D marker exactly. */
 .epi-marker { border-radius:50%; background:rgb(154 167 178 / 35%);
   border:1.5px solid #9aa7b2; box-shadow:0 0 5px rgb(0 0 0 / 50%); pointer-events:auto }
@@ -626,6 +637,24 @@ body.timeline-open .mapctl { bottom:150px }
   display:flex; align-items:center; flex-wrap:wrap; gap:9px }
 .wb-sel .grow { flex:1; min-width:180px }
 .wb-sel b { font-weight:640 }
+/* ---- linking a plant to a site ---- */
+.pl-pick { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-top:10px }
+.pl-lbl { display:inline-flex; align-items:center; gap:8px; font-size:12.5px;
+  margin:10px 0 2px }
+.pl-lbl select { font:inherit; font-size:12.5px; padding:3px 7px;
+  border:1px solid var(--line); border-radius:6px; background:var(--panel);
+  color:var(--ink) }
+.pl-list { list-style:none; margin:6px 0 0; padding:0; max-height:280px;
+  overflow-y:auto; border:1px solid var(--line); border-radius:8px }
+.pl-list li + li { border-top:1px solid var(--line-soft) }
+.pl-row { display:flex; flex-direction:column; gap:2px; width:100%; text-align:left;
+  padding:7px 10px; background:none; border:0; font:inherit; cursor:pointer;
+  color:var(--ink) }
+.pl-row:hover { background:var(--accent-soft) }
+.pl-n { font-size:13px; font-weight:600 }
+/* Distance sits in the dim row on purpose. It is context for finding the
+   plant, not evidence that it supplies anything. */
+.pl-d { font-size:11.5px; color:var(--ink-3) }
 .kinbadge { font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
   letter-spacing:.04em; padding:1px 6px; border-radius:4px; border:1px solid var(--line);
   color:var(--ink-3) }
@@ -848,3 +877,9 @@ a { color:var(--accent) }
 .bm-seg button { border:1px solid var(--line); border-radius:6px; font-size:11.5px;
   padding:3px 9px }
 .bm-note { font-size:10.5px; margin:6px 0 0 !important; line-height:1.45 }
+/* Source credit for the plant layer. Wider than .hint's 22ch because it is
+   prose with links in it, not a one-line nudge, and CC BY means it has to be
+   readable rather than technically present. */
+.pl-note { font-size:10.5px; line-height:1.45; max-width:100%;
+  margin:2px 0 6px 22px !important }
+.pl-note a { color:var(--accent) }

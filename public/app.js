@@ -15,7 +15,7 @@
     heat: { on: false, k: 'mw' },
     mode: '2d',
     layers: { facilities: true, ai: true, ercot: false, pjm: false, nyiso: false,
-      countries: false, quake: false, plants: false },
+      countries: false, quake: false, plants: false, fabs: false },
     fuels: null,    // Set of fuel keys while the plant legend is filtering
     filter: null,   // {key,value,label} from search — narrows the dots shown
     time: null,     // {q, mode:'cum'|'year'} while the timeline bar is open
@@ -65,8 +65,8 @@
   const pal = () => PALETTES[document.documentElement.dataset.theme === 'night' ? 'night' : 'day'];
 
   // ---- data ----------------------------------------------------------------
-  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants] = await Promise.all(
-    ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants']
+  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants, fabs] = await Promise.all(
+    ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants', 'fabs']
       .map(n => fetch(`/data/${n}.json`).then(r => r.json())));
 
   const drawable = sites.filter(s => s.lat != null);
@@ -199,14 +199,63 @@
     // worth the line. Only print both when they differ.
     const kind = p.tech === FUEL_LABEL[p.f] ? FUEL_LABEL[p.f]
       : `${FUEL_LABEL[p.f]} · ${p.tech}`;
+    // US records carry a state and a balancing authority; GEM records carry a
+    // country and neither. Filtering empties keeps one line doing both jobs.
+    const where = p.src === 'gem' ? [p.cy, p.own] : [p.st, iso, p.own];
     return `<div class="t">${esc(p.n)}</div>` +
       `<div class="d">${esc(kind)}</div>` +
       `<div class="d">${head}</div>` +
       // The two lines that answer the co-location question, when they apply:
       // capacity about to free up, and capacity being added on the same pad.
-      (p.xmw ? `<div class="d">${mwText(p.xmw)} retiring from ${p.ry}</div>` : '') +
+      // EIA gives the capacity that is leaving; GEM gives only the date. Both
+      // are worth saying - an announced closure is the clearest signal in the
+      // layer that interconnection is about to free up - so the date alone
+      // still gets a line rather than being dropped for want of a number.
+      (p.xmw ? `<div class="d">${mwText(p.xmw)} retiring from ${p.ry}</div>`
+        : p.k === 'op' && p.ry ? `<div class="d">Retirement announced for ${p.ry}</div>` : '') +
       (p.k === 'op' && p.pmw ? `<div class="d">${mwText(p.pmw)} more planned here</div>` : '') +
-      `<div class="d">${esc([p.st, iso, p.own].filter(Boolean).join(' · '))}</div>`;
+      `<div class="d">${esc(where.filter(Boolean).join(' · '))}</div>` +
+      // Said out loud, the way a town-geocoded data centre says it. GEM grades
+      // its own coordinates and 47% of these are settlement-level, which is
+      // fine for "there is a 600 MW gas plant near this city" and not fine for
+      // measuring a distance off the map.
+      (p.ax ? '<div class="d">approximate location — accurate to the area, not the site</div>' : '');
+  };
+
+  // ---- semiconductor fabs ---------------------------------------------------
+  // A third class of thing on one map, so a third visual language: data centres
+  // are solid dots, plants are rings, fabs are a solid dot with a dark rim in a
+  // colour nothing else uses. 78 of them, so they can all be drawn at any zoom.
+  //
+  // They are here because a leading-edge fab draws 100-500 MW and competes with
+  // data centres for the same interconnection queue - it is the same grid
+  // question the plant layer asks, from the demand side.
+  const FAB_COLOUR = '#BE185D';
+  const FAB_STATUS = { operating: 'Operating', construction: 'Under construction',
+                       announced: 'Announced', closed: 'Closed' };
+
+  const fabFC = {
+    type: 'FeatureCollection',
+    features: fabs.map(f => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [f.lon, f.lat] },
+      properties: f,
+    })),
+  };
+
+  const fabTip = (f) => {
+    const spec = [f.nm ? f.nm + ' nm' : '', f.wf ? f.wf + ' mm' : '',
+                  f.ws ? f.ws.toLocaleString() + ' wafers/mo' : ''].filter(Boolean).join(' · ');
+    return `<div class="t">${esc(f.n)}</div>` +
+      `<div class="d">${esc(f.op)}</div>` +
+      (spec ? `<div class="d">${esc(spec)}</div>` : '') +
+      // ESTIMATED, said every single time. No fab on earth publishes its
+      // electricity demand, so this is modelled from wafer capacity and node
+      // and is good to about a factor of two. Printing it bare would turn a
+      // calculation into a reading.
+      (f.mw ? `<div class="d">~${f.mw.toLocaleString()} MW <em>estimated</em>, not measured</div>`
+            : '<div class="d">power not estimated — capacity or node unpublished</div>') +
+      `<div class="d">${esc([FAB_STATUS[f.k] || f.k, f.pl, f.cy].filter(Boolean).join(' · '))}</div>`;
   };
 
   const openSite = (id) => window.open(`/site/${encodeURIComponent(id)}`, '_blank', 'noopener');
@@ -320,12 +369,34 @@
                          11, ['min', 34, ['*', 5.5, cap]]),
       // Barely filled: these are rings, and the fill is only there so a small
       // dot still reads as its fuel colour when the ring is a hairline.
-      'circle-opacity': ['match', k, 'op', 0.26, 'plan', 0.14, 0.05],
+      //
+      // Emptied entirely when the coordinate is only approximate, which is the
+      // same thing hollow means on a town-geocoded site dot: the ring says
+      // "somewhere around here", not "this switchyard". 47% of the global
+      // records are graded that way by GEM itself.
+      'circle-opacity': ['case', ['==', ['get', 'ax'], 1], 0,
+        ['match', k, 'op', 0.26, 'plan', 0.14, 0.05]],
       'circle-stroke-color': fuel,
       'circle-stroke-width': z(2, 1, 11, 2.2),
       // Retired plants stay faint. They are on the map because the
       // interconnection may be reusable, not because anything is running.
       'circle-stroke-opacity': ['match', k, 'op', 0.95, 'plan', 0.7, 0.5],
+    };
+  }
+
+  function fabPaint() {
+    // sqrt of the estimate where there is one, a fixed small dot where there is
+    // not - so an unknown fab reads as present-but-unmeasured rather than tiny.
+    const cap = ['sqrt', ['/', ['max', 100, ['to-number', ['get', 'mw'], 100]], 100]];
+    const z = (...st) => ['interpolate', ['linear'], ['zoom'], ...st];
+    return {
+      'circle-color': FAB_COLOUR,
+      'circle-radius': z(2, ['min', 8, ['*', 2.2, cap]], 6, ['min', 15, ['*', 3.6, cap]],
+                         11, ['min', 30, ['*', 7, cap]]),
+      'circle-opacity': ['match', ['get', 'k'], 'operating', 0.9, 0.45],
+      'circle-stroke-color': '#4A0E28',
+      'circle-stroke-width': 1.4,
+      'circle-stroke-opacity': 0.95,
     };
   }
 
@@ -344,6 +415,7 @@
         quake: { type: 'geojson', data: quakeFC },
         epicentre: { type: 'geojson', data: epicentreFC },
         plant: { type: 'geojson', data: plantFC },
+        fab: { type: 'geojson', data: fabFC },
         sites: { type: 'geojson', data: sitesFC },
       },
       layers: [
@@ -377,6 +449,8 @@
         // reads data centres against, not the subject.
         { id: 'plant', type: 'circle', source: 'plant', layout: { visibility: 'none' },
           paint: plantPaint() },
+        { id: 'fab', type: 'circle', source: 'fab', layout: { visibility: 'none' },
+          paint: fabPaint() },
         // A town-level coordinate is drawn hollow: same position, but the
         // ring says "somewhere in this settlement", not "this building".
         { id: 'sites', type: 'circle', source: 'sites',
@@ -436,6 +510,7 @@
     countries: ['cty'],
     quake: ['quake', 'epicentre'],
     plants: ['plant'],
+    fabs: ['fab'],
   };
   // Traditional and AI facilities are separate layers over the same source;
   // each keeps its kind filter, and the search facet composes on top.
@@ -631,6 +706,12 @@
     showTip(e.originalEvent.clientX, e.originalEvent.clientY, plantTip(e.features[0].properties));
   });
   map.on('mouseleave', 'plant', hideTip);
+
+  map.on('mousemove', 'fab', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY, fabTip(e.features[0].properties));
+  });
+  map.on('mouseleave', 'fab', hideTip);
 
   // Clicking an epicentre loads that event's precomputed footprint.
   map.on('click', 'epicentre', (e) => {
@@ -1197,12 +1278,32 @@
     const near = Math.min(1, 0.6 / Math.max(globeAlt, 0.02));
     const px = Math.max(6, Math.min(30, 3.2 * cap * (0.5 + 0.5 * near)));
     el.style.width = el.style.height = `${px.toFixed(1)}px`;
-    el.style.borderColor = FUEL_COLOUR[p.f] || FUEL_COLOUR.other;
-    el.style.background = (FUEL_COLOUR[p.f] || FUEL_COLOUR.other)
-      + (p.k === 'op' ? '44' : p.k === 'plan' ? '24' : '10');
+    // Same rule as 2D: the fuel colour normally, the shared ramp while the
+    // heatmap is painting a measure a plant also has.
+    const hm = heatSpec();
+    const heat = state.heat.on && heatDomain && hm.pk;
+    const v = heat ? heatVal(p, hm.pk, hm) : null;
+    const col = heat ? (v == null ? HEAT_NONE : heatColour(v))
+      : (FUEL_COLOUR[p.f] || FUEL_COLOUR.other);
+    el.style.borderColor = col;
+    el.style.background = p.ax ? 'transparent'
+      : col + (heat ? '9e' : p.k === 'op' ? '44' : p.k === 'plan' ? '24' : '10');
     el.title = [p.n, `${FUEL_LABEL[p.f]} · ${mwText(p.smw)}`,
       STATUS_LABEL[p.k] + (p.ry ? ` ${p.ry}` : ''),
-      [p.st, BA_ISO[p.ba] || p.ba].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
+      (p.src === 'gem' ? p.cy : [p.st, BA_ISO[p.ba] || p.ba].filter(Boolean).join(' · ')),
+      p.ax ? 'approximate location' : ''].filter(Boolean).join('\n');
+    return el;
+  }
+
+  function fabMarker(d) {
+    const f = d.fab;
+    const el = document.createElement('div');
+    el.className = 'fab-marker' + (f.k === 'operating' ? '' : ' fab-plan');
+    const px = f.mw ? Math.max(9, Math.min(26, 3.2 * Math.sqrt(f.mw / 100) * 2)) : 9;
+    el.style.width = el.style.height = px.toFixed(1) + 'px';
+    el.title = [f.n, f.op,
+      f.mw ? '~' + f.mw.toLocaleString() + ' MW estimated' : 'power not estimated',
+      [FAB_STATUS[f.k] || f.k, f.pl].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
     return el;
   }
 
@@ -1239,6 +1340,7 @@
     globe.htmlElementsData([
       ...(state.layers.quake ? quakes.map(q => ({ lat: q.lat, lng: q.lon, q })) : []),
       ...visiblePlants(),
+      ...(state.layers.fabs ? fabs.map(f => ({ lat: f.lat, lng: f.lon, fab: f })) : []),
       ...close,
     ]);
   }
@@ -1292,10 +1394,11 @@
       // Plants sit on the surface like site markers. Only the epicentres float:
       // 0.009 is 57 km, which is right for something seen from orbit and wrong
       // for a switchyard you are looking down at.
-      .htmlAltitude(d => (d.site || d.plant ? 0 : 0.009))
+      .htmlAltitude(d => (d.site || d.plant || d.fab ? 0 : 0.009))
       .htmlElement(d => {
         if (d.site) return closeMarker(d);
         if (d.plant) return plantMarker(d);
+        if (d.fab) return fabMarker(d);
         const el = document.createElement('div');
         el.className = 'epi-marker' + (d.q.exposed ? ' epi-hit' : '');
         // Same log scaling as 2D, so an M7 reads as an M7 in both renderers.
@@ -1464,6 +1567,8 @@
   // co-location host the class is - nuclear, gas, coal - not by how many there
   // are, which would put 968 solar farms first.
   const fuelKey = document.getElementById('fuelkey');
+  const plNote = document.getElementById('pl-note');
+  const fbNote = document.getElementById('fb-note');
   const FUEL_ORDER = ['nuclear', 'gas', 'coal', 'hydro', 'oil', 'wind', 'solar', 'storage', 'other'];
   {
     const n = {};
@@ -1490,7 +1595,8 @@
   for (const key of Object.keys(state.layers)) {
     document.getElementById(`lyr-${key}`).addEventListener('change', (e) => {
       state.layers[key] = e.target.checked;
-      if (key === 'plants') fuelKey.hidden = !e.target.checked;
+      if (key === 'plants') fuelKey.hidden = plNote.hidden = !e.target.checked;
+      if (key === 'fabs') fbNote.hidden = !e.target.checked;
       if (key === 'quake') {
         if (state.time) syncScaleUI();
         if (!e.target.checked) {
@@ -2443,21 +2549,44 @@
   // which is the truth.
   const HEAT_STOPS = ['#2E9E6B', '#8DC63F', '#F2C744', '#F08A24', '#D7263D'];
   const HEAT_NONE = '#9AA7B2';
+  // `pk` is the same quantity on a PLANT record. Where a measure has one, the
+  // plant layer joins the identical ramp over the identical domain instead of
+  // keeping its fuel colours - which is the entire point of a shared scale. A
+  // data centre's draw and a plant's nameplate are both megawatts, and a green
+  // plant beside a red data centre is a site asking for more than the
+  // generation next to it can supply. Two scales cannot show that; one can.
+  //
+  // `log` because capacity is log-distributed. There are thousands of 100 MW
+  // plants and a handful above 5 GW, so on a linear ramp the top percent eats
+  // the whole scale and everything else is one shade of green. Log also makes
+  // the comparison a RATIO, which is what "draws more than it supplies" means.
   const HEAT_MEASURES = [
-    { k: 'mw',  label: 'Power (MW)' },
-    { k: 'ft2', label: 'Floor area (sq ft)' },
+    { k: 'mw',  pk: 'mw',  log: true, label: 'Power (MW)' },
+    // Generation ≤25 km used to be here and is a list column now. Once plants
+    // joined this ramp it stopped earning a slot: the generation near a site
+    // IS the plant rings, in the same colours, already on the screen. Floor
+    // area is site-only too, but nobody expects a power station to have one -
+    // where a measure that is explicitly ABOUT nearby generation, sitting in a
+    // list beside a generation layer that ignored it, only invited the
+    // question of why the plants had not changed colour.
+    { k: 'ft2', log: true, label: 'Floor area (sq ft)' },
     // Zero is a legitimate longitude and latitude but never a legitimate build
     // year or capacity, so "has a value" is not the same test for all of them.
-    { k: 'by',  label: 'Year built' },
-    { k: 'lon', label: 'Longitude', zeroIsReal: true },
-    { k: 'lat', label: 'Latitude',  zeroIsReal: true },
+    { k: 'by',  pk: 'y',   label: 'Year built' },
+    { k: 'lon', pk: 'lon', label: 'Longitude', zeroIsReal: true },
+    { k: 'lat', pk: 'lat', label: 'Latitude',  zeroIsReal: true },
   ];
   const heatSpec = () => HEAT_MEASURES.find(m => m.k === state.heat.k) || HEAT_MEASURES[0];
-  const heatHas = (d) => {
-    const m = heatSpec();
-    const v = d[m.k];
-    return v != null && (m.zeroIsReal ? Number.isFinite(+v) : +v > 0);
+  const heatVal = (d, key, m) => {
+    const v = d[key];
+    if (v == null) return null;
+    return (m.zeroIsReal ? Number.isFinite(+v) : +v > 0) ? +v : null;
   };
+  const heatHas = (d) => heatVal(d, heatSpec().k, heatSpec()) != null;
+  // True when the plant layer is on AND the current measure means something on
+  // a plant. Both halves matter: plants off means they must not stretch the
+  // domain, and a site-only measure means they must keep their fuel colours.
+  const plantsInHeat = () => !!(heatSpec().pk && state.layers.plants);
 
   const hbBtn = document.getElementById('hb-btn');
   const hbMenu = document.getElementById('hb-menu');
@@ -2467,13 +2596,25 @@
   const hbMax = document.getElementById('hb-max');
 
   let heatDomain = null;              // [lo, hi] over the visible set, or null
+  let heatSig = '';                   // last painted heat state, for the globe
+
+  // Position of a value on the ramp, 0..1. Log where the measure says so, and
+  // the JS and the MapLibre expression below have to agree exactly or the
+  // globe and the 2D map disagree about the same plant.
+  function heatT(v) {
+    if (!heatDomain) return 0;
+    const [lo, hi] = heatDomain;
+    if (hi === lo) return 1;
+    if (heatSpec().log && lo > 0) {
+      return Math.max(0, Math.min(1,
+        Math.log10(Math.max(lo, v) / lo) / Math.log10(hi / lo)));
+    }
+    return Math.max(0, Math.min(1, (v - lo) / (hi - lo)));
+  }
 
   function heatColour(v) {
     if (!heatDomain) return HEAT_NONE;
-    const [lo, hi] = heatDomain;
-    const t = hi === lo ? 0 : Math.max(0, Math.min(1, (v - lo) / (hi - lo)));
-    const at = t * (HEAT_STOPS.length - 1);
-    return HEAT_STOPS[Math.round(at)];
+    return HEAT_STOPS[Math.round(heatT(v) * (HEAT_STOPS.length - 1))];
   }
 
   // Recomputed whenever the visible set changes, which is why it hangs off
@@ -2486,11 +2627,15 @@
     heatDomain = null;
     if (state.heat.on) {
       let lo = Infinity, hi = -Infinity;
-      for (const d of shown()) {
-        if (!heatHas(d)) continue;
-        const v = +d[m.k];
-        if (v < lo) lo = v;
-        if (v > hi) hi = v;
+      const see = (v) => { if (v == null) return; if (v < lo) lo = v; if (v > hi) hi = v; };
+      for (const d of shown()) see(heatVal(d, m.k, m));
+      // Plants stretch the SAME domain when they are on the same ramp. If they
+      // had their own the colours would not be comparable, and comparing them
+      // is the reason both are painted.
+      if (plantsInHeat()) {
+        for (const p of plants) {
+          if (fuelOn(p.f)) see(heatVal(p, m.pk, m));
+        }
       }
       if (lo <= hi) heatDomain = [lo, hi];
     }
@@ -2500,30 +2645,74 @@
     hbMin.textContent = heatDomain ? fmt(heatDomain[0]) : (state.heat.on ? 'none shown' : '');
     hbMax.textContent = heatDomain ? fmt(heatDomain[1]) : '';
 
+    // The ramp for one property name. Built per key rather than once, because
+    // the site layers read `mw` and the plant layer reads its own `pk`, and
+    // both have to resolve against the one shared domain.
+    const rampFor = (key) => {
+      const [lo, hi] = heatDomain;
+      // hi === lo would make interpolate throw on non-ascending stops, so a
+      // single-valued domain is painted flat.
+      if (hi === lo) return HEAT_STOPS[HEAT_STOPS.length - 1];
+      const useLog = m.log && lo > 0;
+      const val = ['to-number', ['get', key], lo];
+      const stops = [];
+      HEAT_STOPS.forEach((c, i) => {
+        const t = i / (HEAT_STOPS.length - 1);
+        stops.push(useLog ? Math.log10(lo * Math.pow(hi / lo, t)) : lo + (hi - lo) * t, c);
+      });
+      // Clamped at lo before the log so a value under the domain floor cannot
+      // reach log10(0). Missing values never get here - the case below catches
+      // them first - but the ramp must be total anyway.
+      return ['interpolate', ['linear'],
+        useLog ? ['log10', ['max', lo, val]] : val, ...stops];
+    };
+    const missingFor = (key) => (m.zeroIsReal
+      ? ['==', ['has', key], false]
+      : ['<=', ['to-number', ['get', key], 0], 0]);
+
     // Rebuild the two dot layers' colour. Everything else dotPaint sets - the
     // radius, the hollow town ring, the halo - is left alone.
     const town = ['==', ['get', 'gp'], 'town'];
     for (const [id, key] of [['sites', 'fac'], ['sites-ai', 'ai']]) {
       if (!map.getLayer(id)) continue;
-      const plain = ['case', town, 'rgba(0,0,0,0)', pal()[key]];
-      if (!heatDomain) { map.setPaintProperty(id, 'circle-color', plain); continue; }
-      const [lo, hi] = heatDomain;
-      const stops = [];
-      HEAT_STOPS.forEach((c, i) => {
-        stops.push(lo + (hi - lo) * (i / (HEAT_STOPS.length - 1)), c);
-      });
-      // hi === lo would make interpolate throw on non-ascending stops, so a
-      // single-valued domain is painted flat.
-      const ramp = hi === lo
-        ? HEAT_STOPS[HEAT_STOPS.length - 1]
-        : ['interpolate', ['linear'], ['to-number', ['get', m.k], lo - 1], ...stops];
-      const missing = m.zeroIsReal
-        ? ['==', ['has', m.k], false]
-        : ['<=', ['to-number', ['get', m.k], 0], 0];
+      if (!heatDomain) {
+        map.setPaintProperty(id, 'circle-color', ['case', town, 'rgba(0,0,0,0)', pal()[key]]);
+        continue;
+      }
       map.setPaintProperty(id, 'circle-color',
-        ['case', town, 'rgba(0,0,0,0)', missing, HEAT_NONE, ramp]);
+        ['case', town, 'rgba(0,0,0,0)', missingFor(m.k), HEAT_NONE, rampFor(m.k)]);
+    }
+
+    // And the plant layer, onto the same ramp when the measure applies to it.
+    if (map.getLayer('plant')) {
+      const base = plantPaint();
+      const on = heatDomain && m.pk;
+      const colour = on
+        ? ['case', missingFor(m.pk), HEAT_NONE, rampFor(m.pk)]
+        : base['circle-color'];
+      map.setPaintProperty('plant', 'circle-color', colour);
+      map.setPaintProperty('plant', 'circle-stroke-color', colour);
+      // Fuel rings are deliberately faint because they are context. On the
+      // shared ramp they are the subject, and a 26%-opacity fill cannot be
+      // compared by eye against a 92%-opacity dot. Approximate locations stay
+      // hollow either way - the stroke still carries the colour.
+      map.setPaintProperty('plant', 'circle-opacity', on
+        ? ['case', ['==', ['get', 'ax'], 1], 0, 0.62]
+        : base['circle-opacity']);
     }
     if (globe) globe.pointColor(pointColour);
+
+    // globe.gl keys HTML markers on datum IDENTITY, and visiblePlants memoises
+    // its wrappers so panning does not rebuild 300 elements every frame. That
+    // memo also means a colour change alone would never reach the DOM. So the
+    // cache is dropped when - and only when - the heat state actually moves;
+    // clearing it on every applyHeat would undo the memo entirely.
+    const sig = state.heat.on ? `${m.k}|${heatDomain ? heatDomain.join(',') : 'none'}` : 'off';
+    if (sig !== heatSig) {
+      heatSig = sig;
+      plantWrap.clear();
+      if (globe) refreshGlobe();
+    }
   }
   window.__applyHeat = applyHeat;   // called from applyVisibility
 
@@ -2825,6 +3014,16 @@
                  aggs: ['sum', 'avg', 'min', 'max'],
                  get: (d) => (d.ft2 ? String(d.ft2) : ''),
                  fmt: (d) => (d.ft2 ? d.ft2.toLocaleString() : '') },
+      // Moved here from the heatmap dropdown once plants joined the shared MW
+      // ramp, which made it redundant AS A COLOUR - generation near a site is
+      // now visible as the plant rings themselves. As a NUMBER it is not
+      // redundant at all: no amount of looking at 28,152 rings tells you which
+      // of 6,263 sites sits in the most generation-rich place, and sum/avg by
+      // country is a question the map cannot answer at any zoom.
+      { k: 'gen', label: 'Generation ≤25 km (MW)', w: 168, num: true,
+                 aggs: ['sum', 'avg', 'min', 'max'],
+                 get: (d) => (d.gen ? String(d.gen) : ''),
+                 fmt: (d) => (d.gen ? d.gen.toLocaleString() : '') },
       { k: 'by', label: 'Built',       w: 84,  num: true, aggs: ['min', 'max'],
                  get: (d) => (d.by ? String(d.by) : '') },
       { k: 'lon', label: 'Longitude', w: 118, mono: true, num: true,
