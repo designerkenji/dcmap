@@ -15,8 +15,17 @@ import zlib from 'node:zlib';
 import { loadAll, paths } from './lib/data.mjs';
 import { renderSitePage } from './lib/sitepage.mjs';
 import { renderOperatorPage } from './lib/operatorpage.mjs';
+import { renderFabsPage } from './lib/fabspage.mjs';
+import { renderPlantsPage } from './lib/plantspage.mjs';
+import { renderDcPage } from './lib/dcpage.mjs';
+import { renderPlantPage, renderFabPage } from './lib/dotpage.mjs';
+import { renderQuakesPage, renderQuakePage } from './lib/quakepage.mjs';
+import { makeGeo } from './lib/summary.mjs';
 import { FIELDS, validate, appendOverrides, linkError, kindError,
-         plantLinkError } from './lib/overrides.mjs';
+         plantLinkError, footprintError, footprintProps,
+         appendFootprintOverride, readNameReviews,
+         appendNameReview } from './lib/overrides.mjs';
+import { renderReviewPage } from './lib/reviewpage.mjs';
 
 const PORT = process.env.PORT || 8787;
 const PUB = path.join(import.meta.dirname, 'public');
@@ -74,6 +83,9 @@ function serialiseRoutes() {
     '/data/plants.json': JSON.stringify(data.plants),
     '/data/fabs.json': JSON.stringify(data.fabs),
     '/data/operators.json': JSON.stringify(data.operatorsPayload),
+    // NOT the footprints: see /api/footprints above. 19,367 of them is more
+    // than MapLibre's worker survives in one source, and more than any one
+    // view needs.
   };
   JSON_ROUTES = {};
   for (const [p, body] of Object.entries(routes)) {
@@ -247,6 +259,15 @@ async function handle(req, res) {
       parent: site.parent_site_id ? data.siteById.get(site.parent_site_id) || null : null,
       children: data.childrenBySite.get(id) || [],
       plant: site.linked_plant_id ? data.plantById.get(site.linked_plant_id) || null : null,
+      // Just the names, for the "the outline round this dot is called X"
+      // suggestion. The geometry the archive viewer draws comes from
+      // /api/footprints on demand - inlining it would put a megabyte of rings
+      // into a page that may never open the overlay.
+      footprints: data.footprints.features
+        .filter(f => (f.properties.sites || []).includes(id))
+        .map(f => ({ id: f.properties.id, name: f.properties.name || '',
+                     kind: f.properties.kind, src: f.properties.src,
+                     m2: f.properties.m2 || 0 })),
     });
     return send(res, 200, html, MIME['.html']);
   }
@@ -279,6 +300,97 @@ async function handle(req, res) {
     }
     near.sort((a, b) => a.km - b.km);
     return send(res, 200, JSON.stringify({ km, near: near.slice(0, 250) }), MIME['.json']);
+  }
+
+  // Footprints inside a viewport, for the map layer.
+  //
+  // The layer used to ship whole in /data/footprints.json, and that stopped
+  // working the moment the untagged halls arrived: 19,367 features and 308,000
+  // vertices puts MapLibre's worker into the same silent failure the basemap
+  // note in lib/data.mjs describes - isSourceLoaded() stays false forever, no
+  // error is raised, and the layer simply never appears. 189,000 vertices was
+  // already enough to break it there.
+  //
+  // Raising the size floor would fit under the limit by throwing away 1,400
+  // sites' outlines, which is paying for the bug with the data. Serving what
+  // the viewport asks for costs nothing instead: a footprint is a building
+  // seen from a few hundred metres, and at the zoom where the whole layer
+  // would matter every shape in it is smaller than a pixel.
+  //
+  // A linear scan over 19k bounding boxes, like /api/nearby over 6k sites -
+  // there is no index to keep in step and nobody can measure the difference.
+  if (p === '/api/footprints') {
+    // An ABSENT parameter is not a zero. url.searchParams.get() returns null
+    // when the key is missing, +null is 0, and Number.isFinite(0) is true - so
+    // the obvious one-liner silently answered every default as 0, which capped
+    // this route at a single feature and made the whole viewport look empty.
+    const num = (k, d) => {
+      const raw = url.searchParams.get(k);
+      return raw !== null && raw !== '' && Number.isFinite(+raw) ? +raw : d;
+    };
+    const w = num('w', -180), s = num('s', -90), e = num('e', 180), n = num('n', 90);
+    const max = Math.min(6000, Math.max(1, num('max', 4000)));
+    const out = [];
+    let clipped = false;
+    for (const f of data.footprints.features) {
+      const b = f.properties.bbox;
+      if (!b || b[2] < w || b[0] > e || b[3] < s || b[1] > n) continue;
+      if (out.length >= max) { clipped = true; break; }
+      out.push(f);
+    }
+    // `clipped` is the honest half: a viewport holding more shapes than the cap
+    // gets a partial answer, and the client says so rather than letting a
+    // half-drawn layer read as the whole truth.
+    return send(res, 200, JSON.stringify({
+      type: 'FeatureCollection', clipped, total: data.footprints.features.length,
+      features: out,
+    }), MIME['.json']);
+  }
+
+  // Footprint outlines around a site, for the archive viewer's overlay. Sent
+  // with geometry, which /api/nearby never needs - the point of drawing them
+  // over dated imagery is to see whether the outline matches what was actually
+  // on the ground that year, and an outline is the one thing a bounding box
+  // cannot stand in for.
+  //
+  // `mine` is the pipeline's own attachment (containment, osm_id or nearest
+  // within 250 m), not a fresh containment test, so the viewer and the map
+  // layer can never disagree about which footprint belongs to this dot.
+  const nfp = p.match(/^\/api\/footprints\/(site-[a-z0-9-]+)$/);
+  if (nfp) {
+    const site = data.siteById.get(nfp[1]);
+    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
+    if (site.lat == null || site.lon == null) {
+      return send(res, 200, '{"near":[]}', MIME['.json']);
+    }
+    const km = Math.min(10, Math.max(0.2, +url.searchParams.get('km') || 1.5));
+    const lat = +site.lat, lon = +site.lon;
+    const out = [];
+    for (const f of data.footprints.features) {
+      const b = f.properties.bbox;
+      if (!b) continue;
+      // Distance to the bbox, not to its centre: a campus can be a kilometre
+      // across, and measuring from the middle hides the one you are standing on.
+      const cx = Math.min(Math.max(lon, b[0]), b[2]);
+      const cy = Math.min(Math.max(lat, b[1]), b[3]);
+      if (data.kmBetween(lon, lat, cx, cy) > km) continue;
+      const g = f.geometry;
+      const polys = g.type === 'Polygon' ? [g.coordinates]
+                  : g.type === 'MultiPolygon' ? g.coordinates : [];
+      out.push({
+        id: f.properties.id, kind: f.properties.kind, src: f.properties.src,
+        name: f.properties.name || '', op: f.properties.op || '',
+        m2: f.properties.m2 || 0, bbox: b,
+        mine: (f.properties.sites || []).includes(site.site_id),
+        // Flat list of rings. The viewer fills with the even-odd rule, so a
+        // hole needs no marking - it is simply a ring inside another.
+        rings: polys.flat(),
+      });
+    }
+    // The ones that are this site come first, then biggest: at a shared fence
+    // line the campus you are on is the one worth drawing on top.
+    out.sort((a, b2) => (b2.mine - a.mine) || (b2.m2 - a.m2));
+    return send(res, 200, JSON.stringify({ km, near: out.slice(0, 150) }), MIME['.json']);
   }
 
   // Plants within reach of a site, for the supply picker. A wider default than
@@ -335,7 +447,17 @@ async function handle(req, res) {
       if (rel) return send(res, 400, JSON.stringify({ error: rel }), MIME['.json']);
       // Only what actually differs. Re-asserting a value the pipeline already
       // produces would pin it against future sources for no reason.
-      if (String(value) !== String(site[field] ?? '')) edits[field] = value;
+      //
+      // `point` and blank are the SAME CLAIM, and comparing them as strings is
+      // not academic: site_kind is blank on all 6,269 rows, so the form's
+      // <select> finds no option to mark selected, the browser falls back to
+      // the first one - point - and every save posted it as a change. Saving a
+      // corrected NAME therefore also wrote "this dot is a point", which is an
+      // assertion nobody made. kindOf() already reads a blank site as a point,
+      // so the row records nothing and costs the distinction the field exists
+      // for: "we have not looked" has to stay sayable.
+      const same = (v) => (field === 'site_kind' && v === 'point' ? '' : v);
+      if (same(String(value)) !== same(String(site[field] ?? ''))) edits[field] = value;
     }
     // Cross-field, so it cannot live in the per-field loop: the two halves of
     // a supply link only mean anything together. An arrangement with no plant
@@ -370,6 +492,49 @@ async function handle(req, res) {
                   MIME['.json']);
     } catch (err) {
       console.error('[overrides] write failed:', err);
+      return send(res, 500, JSON.stringify({ error: err.message }), MIME['.json']);
+    }
+  }
+
+  // Draw, correct or hide a footprint. Writes one Feature line to
+  // data/footprint_overrides.geojsonl - a SOURCE with the same contract as
+  // site_overrides.csv - then reloads, so the shape is live without a restart.
+  if (req.method === 'POST' && p === '/api/footprint') {
+    let body;
+    try {
+      body = JSON.parse(await readBody(req, 512 * 1024));
+    } catch {
+      return send(res, 400, '{"error":"expected JSON"}', MIME['.json']);
+    }
+    const bad = footprintError(body, data.siteById, data.footprintById);
+    if (bad) return send(res, 400, JSON.stringify({ error: bad }), MIME['.json']);
+    const id = body.id || `fp-man-${Date.now().toString(36)}`;
+    const now = new Date().toISOString().slice(0, 19) + 'Z';
+    const note = typeof body.note === 'string' ? body.note.slice(0, 300) : '';
+    const was = data.footprintById.get(id);
+    const feature = body.delete
+      ? { type: 'Feature', geometry: null,
+          properties: { id, deleted: true, note, edited: now } }
+      : { type: 'Feature', geometry: body.geometry,
+          properties: {
+            id,
+            kind: body.kind || was?.properties.kind || 'campus',
+            // A person now vouches for this shape, whatever first derived it.
+            src: 'manual',
+            name: typeof body.name === 'string' ? body.name.slice(0, 120)
+              : was?.properties.name || '',
+            op: was?.properties.op || '',
+            sites: Array.isArray(body.sites) ? body.sites : was?.properties.sites || [],
+            ...footprintProps(body.geometry),
+            note, edited: now,
+          } };
+    try {
+      appendFootprintOverride(paths.data, feature);
+      data = await loadAll();     // see the note where `data` is declared
+      serialiseRoutes();
+      return send(res, 200, JSON.stringify({ id }), MIME['.json']);
+    } catch (err) {
+      console.error('[footprints] write failed:', err);
       return send(res, 500, JSON.stringify({ error: err.message }), MIME['.json']);
     }
   }
@@ -417,6 +582,113 @@ async function handle(req, res) {
       console.error('[dcmap] google tiles:', err.message);
       return send(res, 502, 'google tiles unavailable', 'text/plain');
     }
+  }
+
+  // Comparative view of the fab layer. Static from the loaded data, so it is
+  // rendered per request rather than cached - it is one page of tables.
+  if (p === '/fabs' || p === '/fabs/') {
+    return send(res, 200, renderFabsPage(data.fabs, data.operatorsPayload.regions), MIME['.html']);
+  }
+  if (p === '/plants' || p === '/plants/') {
+    return send(res, 200, renderPlantsPage(data.plants, data.operatorsPayload.regions), MIME['.html']);
+  }
+  // The name-conflict queue. Read from disk per request rather than held in
+  // `data`, because src/site_names.py rewrites it and a reviewer should see
+  // the current queue without a restart.
+  if (p === '/review/names' || p === '/review/names/') {
+    const qf = path.join(paths.data, 'name_conflicts.json');
+    const queue = fs.existsSync(qf) ? JSON.parse(fs.readFileSync(qf, 'utf8')) : [];
+    const done = readNameReviews(paths.data);
+    const seen = new Set(done.map(r => r.site_id));
+    return send(res, 200,
+      renderReviewPage(queue.filter(c => !seen.has(c.site_id)), seen.size),
+      MIME['.html']);
+  }
+
+  // Settle one. `keep` and `neither` write only the review; `take` also writes
+  // the name through the same override path the site page uses, so a name set
+  // here is indistinguishable from one typed there - which it should be.
+  if (req.method === 'POST' && p === '/api/name-review') {
+    let body;
+    try {
+      body = JSON.parse(await readBody(req, 16 * 1024));
+    } catch {
+      return send(res, 400, '{"error":"expected JSON"}', MIME['.json']);
+    }
+    const site = data.siteById.get(String(body.site_id || ''));
+    if (!site) return send(res, 404, '{"error":"unknown site"}', MIME['.json']);
+    if (!['keep', 'take', 'neither'].includes(body.decision)) {
+      return send(res, 400, '{"error":"decision must be keep, take or neither"}',
+                  MIME['.json']);
+    }
+    const chosen = typeof body.chosen === 'string' ? body.chosen.slice(0, 300) : '';
+    const note = typeof body.note === 'string' ? body.note.slice(0, 300) : '';
+    const now = new Date().toISOString().slice(0, 19) + 'Z';
+    try {
+      if (body.decision === 'take') {
+        const bad = validate('name', chosen);
+        if (bad) return send(res, 400, JSON.stringify({ error: bad }), MIME['.json']);
+        if (chosen && chosen !== String(site.name ?? '')) {
+          appendOverrides(paths.data, site.site_id, site, { name: chosen },
+                          note || 'settled at /review/names', now);
+        }
+      }
+      appendNameReview(paths.data, {
+        site_id: site.site_id, decision: body.decision, chosen, note, reviewed: now,
+      });
+      data = await loadAll();
+      serialiseRoutes();
+      return send(res, 200, JSON.stringify({ ok: true }), MIME['.json']);
+    } catch (err) {
+      console.error('[reviews] write failed:', err);
+      return send(res, 500, JSON.stringify({ error: err.message }), MIME['.json']);
+    }
+  }
+
+  if (p === '/quakes' || p === '/quakes/') {
+    return send(res, 200, renderQuakesPage(data.quakes), MIME['.html']);
+  }
+  // One page per event. The id is the USGS event id and is regex-gated because
+  // it becomes a filesystem path below.
+  const qk = p.match(/^\/quake\/([a-z0-9]{6,24})$/);
+  if (qk) {
+    const quake = data.quakes.find(q => q.id === qk[1]);
+    if (!quake) return send(res, 404, 'unknown earthquake', 'text/plain');
+    // The detail file is optional: quakes.py only writes one where an event is
+    // big enough or reached something, so a page for a quiet M5 still renders
+    // from the layer record alone.
+    const df = path.join(paths.data, 'quake_events', `${qk[1]}.json`);
+    const detail = fs.existsSync(df) ? JSON.parse(fs.readFileSync(df, 'utf8')) : null;
+    return send(res, 200, renderQuakePage({
+      quake, detail, geo: makeGeo(data.operatorsPayload.regions),
+    }), MIME['.html']);
+  }
+
+  if (p === '/datacentres' || p === '/datacentres/' || p === '/datacenters') {
+    return send(res, 200,
+      renderDcPage(data.mapSites, data.operatorsPayload.regions, data.operatorsPayload.operators),
+      MIME['.html']);
+  }
+
+  // A page per dot for the layers that never had one. Ids are the ingest's own
+  // and regex-gated: e<eia>, g<gem project>, f<nnn>.
+  const pl = p.match(/^\/plant\/([eg][A-Za-z0-9]+)$/);
+  if (pl) {
+    const plant = data.plantById.get(pl[1]);
+    if (!plant) return send(res, 404, 'unknown plant', 'text/plain');
+    return send(res, 200, renderPlantPage({
+      plant, sites: data.mapSites, fabs: data.fabs,
+      geo: makeGeo(data.operatorsPayload.regions), kmBetween: data.kmBetween,
+    }), MIME['.html']);
+  }
+  const fb = p.match(/^\/fab\/(f\d+)$/);
+  if (fb) {
+    const fab = data.fabs.find(f => f.id === fb[1]);
+    if (!fab) return send(res, 404, 'unknown fab', 'text/plain');
+    return send(res, 200, renderFabPage({
+      fab, sites: data.mapSites, plants: data.plants,
+      geo: makeGeo(data.operatorsPayload.regions), kmBetween: data.kmBetween,
+    }), MIME['.html']);
   }
 
   if (p.startsWith('/operator/')) {

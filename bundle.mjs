@@ -43,6 +43,11 @@ const FILES = [
   ['data/raw/osm_world.json', 'raw/osm_world.json', false],
   ['data/raw/osm_us_va.json', 'raw/osm_us_va.json', false],
   ['data/raw/osm_us_tx.json', 'raw/osm_us_tx.json', false],
+  // Footprint polygons and the hand-drawn corrections laid over them. The
+  // overrides file is a SOURCE (see lib/overrides.mjs): if it exists it must
+  // travel, or a deployed copy silently loses someone's hand work.
+  ['data/footprints.geojson', 'footprints.geojson', false],
+  ['data/footprint_overrides.geojsonl', 'footprint_overrides.geojsonl', false],
   ['data/wm/quakes-recent.json', 'wm/quakes-recent.json', true],
   ['data/wm/ercot-load-zones.json', 'wm/ercot-load-zones.json', true],
   ['data/wm/pjm-zones.json', 'wm/pjm-zones.json', true],

@@ -14,17 +14,28 @@
   const state = {
     heat: { on: false, k: 'mw' },
     mode: '2d',
-    layers: { facilities: true, ai: true, ercot: false, pjm: false, nyiso: false,
-      countries: false, quake: false, plants: false, fabs: false },
+    layers: { facilities: true, footprints: true, ercot: false, pjm: false,
+      nyiso: false, countries: false, quake: false, plants: false, fabs: false },
     fuels: null,    // Set of fuel keys while the plant legend is filtering
+    // AI and traditional are two KINDS of data centre, not two layers. They
+    // were two checkboxes because they are drawn as two MapLibre layers, which
+    // is an implementation detail leaking into the pane - nobody thinks of an
+    // AI campus as a different subject from the building next to it. Same
+    // shape as `fuels`: null when everything is on, so the common case costs
+    // no filter at all.
+    dcKinds: null,
     filter: null,   // {key,value,label} from search — narrows the dots shown
     time: null,     // {q, mode:'cum'|'year'} while the timeline bar is open
+    fpEdit: false,  // the ✎ button: clicks edit footprints instead of opening pages
   };
 
   const PALETTES = {
     day: {
       ocean: '#DFE9F0', land: '#F6F8FA', border: '#C4CFD8',
       fac: '#0E8A7C', ai: '#B5761E', halo: '#FFFFFF',
+      // See --fp in app.css: footprints are drawn over PHOTOGRAPHY, so the
+      // hue is picked against the earth rather than against this palette.
+      fp: '#E0148C', fpCase: 'rgba(28,4,18,0.55)',
       ercot: '#B5761E', pjm: '#3B82C4', nyiso: '#2E9E83', cty: '#7C5FBF',
       // The globe was night in both themes: one hard-coded texture and a black
       // background in each palette. Day now gets a lit sky; night stays dark.
@@ -49,6 +60,7 @@
     night: {
       ocean: '#0A1016', land: '#151C24', border: '#2E3A46',
       fac: '#40C4B4', ai: '#E0A75C', halo: '#0A1016',
+      fp: '#FF63BE', fpCase: 'rgba(0,0,0,0.6)',
       ercot: '#FFB03B', pjm: '#60A5EB', nyiso: '#4FD1AC', cty: '#A78BFA',
       bg3d: '#000000', atmosphere: '#274060',
       globeOcean: '#0C1B2A', globeLand: '#22303C', globeBorder: '#44586B',
@@ -65,9 +77,16 @@
   const pal = () => PALETTES[document.documentElement.dataset.theme === 'night' ? 'night' : 'day'];
 
   // ---- data ----------------------------------------------------------------
-  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants, fabs] = await Promise.all(
-    ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants', 'fabs']
+  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants, fabs]
+    = await Promise.all(
+    ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants',
+     'fabs']
       .map(n => fetch(`/data/${n}.json`).then(r => r.json())));
+
+  // Footprints arrive per viewport from /api/footprints, not in one payload -
+  // see the note on that route. This starts empty and is filled by
+  // loadFootprints() below whenever the map settles somewhere close enough in.
+  const footprints = { type: 'FeatureCollection', features: [] };
 
   const drawable = sites.filter(s => s.lat != null);
   const sitesFC = {
@@ -219,7 +238,8 @@
       // its own coordinates and 47% of these are settlement-level, which is
       // fine for "there is a 600 MW gas plant near this city" and not fine for
       // measuring a distance off the map.
-      (p.ax ? '<div class="d">approximate location — accurate to the area, not the site</div>' : '');
+      (p.ax ? '<div class="d">approximate location — accurate to the area, not the site</div>' : '') +
+      '<div class="d">click to open this plant\u2019s page</div>';
   };
 
   // ---- semiconductor fabs ---------------------------------------------------
@@ -254,8 +274,11 @@
       // and is good to about a factor of two. Printing it bare would turn a
       // calculation into a reading.
       (f.mw ? `<div class="d">~${f.mw.toLocaleString()} MW <em>estimated</em>, not measured</div>`
-            : '<div class="d">power not estimated — capacity or node unpublished</div>') +
-      `<div class="d">${esc([FAB_STATUS[f.k] || f.k, f.pl, f.cy].filter(Boolean).join(' · '))}</div>`;
+            : f.pn ? '' : '<div class="d">power not estimated — capacity or node unpublished</div>') +
+      (f.pn ? `<div class="d">${esc(f.pn)}</div>` : '') +
+      (f.nt ? `<div class="d">${esc(f.nt)}</div>` : '') +
+      `<div class="d">${esc([FAB_STATUS[f.k] || f.k, f.pl, f.cy].filter(Boolean).join(' · '))}</div>` +
+      '<div class="d">click to open this fab\u2019s page</div>';
   };
 
   const openSite = (id) => window.open(`/site/${encodeURIComponent(id)}`, '_blank', 'noopener');
@@ -283,7 +306,13 @@
   }
   const hideTip = () => { tip.hidden = true; };
 
-  const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // Quotes matter as much as angle brackets here: almost every use of this is
+  // inside an attribute (data-g=, data-v=, value=, href=), so a name carrying
+  // a " breaks out of the attribute without ever needing a <. The three
+  // server-side escapers - sitepage.mjs, summary.mjs, operatorpage.mjs - all
+  // escape it; this one did not, and operator names are hand-editable.
+  const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   const siteFacts = (p) => {
     const bits = [p.o, p.ci || p.c, p.mw ? p.mw.toLocaleString() + ' MW' : '', p.u]
       .filter(Boolean).map(esc).join(' · ');
@@ -400,6 +429,14 @@
     };
   }
 
+  // Footprint stroke widths scale with zoom. A footprint is looked at from two
+  // distances that want opposite things: zoomed out it is one shape among
+  // hundreds and must stay a hairline or the layer turns into a blur of
+  // outlines, and zoomed in it is the subject and should be a line you can
+  // trace around a roof.
+  const fpWidth = (base) => ['interpolate', ['linear'], ['zoom'],
+    9, base * 0.65, 14, base, 18, base * 1.7];
+
   function buildStyle() {
     const c = pal();
     const clamp01 = (e) => ['min', 1, ['max', 0, e]];
@@ -417,6 +454,7 @@
         plant: { type: 'geojson', data: plantFC },
         fab: { type: 'geojson', data: fabFC },
         sites: { type: 'geojson', data: sitesFC },
+        fp: { type: 'geojson', data: footprints },
       },
       layers: [
         { id: 'bg', type: 'background', paint: { 'background-color': c.ocean } },
@@ -445,6 +483,55 @@
           paint: { 'line-color': ['get', 'color'],
             'line-width': ['interpolate', ['linear'], ['get', 'value'], 2, 0.8, 8, 2.6],
             'line-opacity': 0.9 } },
+        // Footprints sit under every dot: the shape is what a dot stands ON,
+        // and a marker's first job is to stay findable. Campus boundaries are
+        // dashed - a fence line, not a roof - and barely filled, so imagery
+        // stays readable inside one. line-dasharray cannot vary per feature,
+        // hence a line layer per kind over the one fill.
+        //
+        // Each line is CASED: a dark, wider line underneath the coloured one.
+        // Over our own basemap a bare line is fine, but over imagery the
+        // background is whatever was on the ground that day - a white roof, wet
+        // asphalt, a solar array - and no single colour survives all of them.
+        // A casing does, because it puts a dark edge against the light
+        // backgrounds and the bright line against the dark ones.
+        //
+        // Dash lengths are in multiples of the LINE WIDTH, so the casing's
+        // array is scaled by the width ratio (1.8/3.6) to make its dashes land
+        // on exactly the same pixels as the line it sits under.
+        // Barely tinted, and deliberately so. The fill's job is to give the
+        // shape a clickable interior and a hint of where it is; the cased
+        // outline is what makes it findable. At the 0.13 it started from, a
+        // magenta wash sat over every roof and hid the thing the footprint is
+        // there to help you look at.
+        { id: 'fp-fill', type: 'fill', source: 'fp',
+          paint: { 'fill-color': c.fp,
+            'fill-opacity': ['case', ['==', ['get', 'kind'], 'campus'], 0.04, 0.07] } },
+        // Inferred halls are drawn a shade back from asserted ones. Same
+        // colour and same shape - they are footprints either way - but a
+        // building nobody labelled should not look as certain on the map as
+        // one somebody did.
+        { id: 'fp-line-case', type: 'line', source: 'fp',
+          filter: ['!=', ['get', 'kind'], 'campus'],
+          paint: { 'line-color': c.fpCase, 'line-width': fpWidth(2.6),
+            'line-opacity': ['case', ['==', ['get', 'src'], 'osm-site'], 0.5, 0.85] } },
+        { id: 'fp-line', type: 'line', source: 'fp',
+          filter: ['!=', ['get', 'kind'], 'campus'],
+          paint: { 'line-color': c.fp, 'line-width': fpWidth(1.3),
+            'line-opacity': ['case', ['==', ['get', 'src'], 'osm-site'], 0.62, 1] } },
+        // A derived boundary fades the same way an inferred hall does. It is
+        // the hull of the buildings, not a line anybody surveyed, and it must
+        // not read as firmly as a parcel somebody mapped.
+        { id: 'fp-line-campus-case', type: 'line', source: 'fp',
+          filter: ['==', ['get', 'kind'], 'campus'],
+          paint: { 'line-color': c.fpCase, 'line-width': fpWidth(3.2),
+            'line-opacity': ['case', ['==', ['get', 'src'], 'derived'], 0.45, 0.85],
+            'line-dasharray': [1.5, 1] } },
+        { id: 'fp-line-campus', type: 'line', source: 'fp',
+          filter: ['==', ['get', 'kind'], 'campus'],
+          paint: { 'line-color': c.fp, 'line-width': fpWidth(1.6),
+            'line-opacity': ['case', ['==', ['get', 'src'], 'derived'], 0.6, 1],
+            'line-dasharray': [3, 2] } },
         // Under the site dots on purpose: generation is the context this app
         // reads data centres against, not the subject.
         { id: 'plant', type: 'circle', source: 'plant', layout: { visibility: 'none' },
@@ -462,13 +549,21 @@
             // radius makes an M7 look barely worse than an M5.
             'circle-radius': ['interpolate', ['exponential', 1.9], ['get', 'mag'],
               5, 3.5, 6, 6, 7, 10, 8, 15],
-            // Red where the shaking actually reached a registry site.
+            // Red where the shaking actually reached a registry site, slate
+            // where it did not. Slate rather than nothing: an unexposed event
+            // used to draw a fully transparent fill behind a #9aa7b2 hairline,
+            // which on the light basemap made an M7.7 in the Flores Sea read
+            // the same as empty ocean. "No site was shaken" is a fact about
+            // the registry, not a reason to hide the earthquake.
             'circle-color': ['case', ['>', ['coalesce', ['get', 'exposed'], 0], 0],
-              '#d7263d', 'rgba(0,0,0,0)'],
-            'circle-opacity': 0.55,
+              '#d7263d', '#94A3B8'],
+            'circle-opacity': 0.5,
             'circle-stroke-color': ['case', ['>', ['coalesce', ['get', 'exposed'], 0], 0],
-              '#d7263d', '#9aa7b2'],
-            'circle-stroke-width': 1.4,
+              '#d7263d', '#475569'],
+            // Magnitude carries in the outline too, so the big ones stay
+            // legible when a cluster of aftershocks overlaps them.
+            'circle-stroke-width': ['interpolate', ['linear'], ['get', 'mag'],
+              5, 1, 6, 1.4, 7, 2, 8, 2.6],
           } },
         { id: 'sites-ai', type: 'circle', source: 'sites',
           filter: ['==', ['get', 'ft'], 'ai'],
@@ -502,8 +597,11 @@
   }).observe(el2d);
 
   const LAYER_IDS = {
-    facilities: ['sites'],
-    ai: ['sites-ai'],
+    // One layer, two MapLibre layers under it: AI and traditional dots differ
+    // in colour and size, which is a paint difference, not a subject one. The
+    // kind chips below decide which of the two is drawn.
+    facilities: ['sites', 'sites-ai'],
+    footprints: ['fp-fill', 'fp-line-case', 'fp-line', 'fp-line-campus-case', 'fp-line-campus'],
     ercot: ['ercot', 'ercot-line'],
     pjm: ['pjm', 'pjm-line'],
     nyiso: ['nyiso', 'nyiso-line'],
@@ -572,8 +670,11 @@
   let listIds = null;
   const inList = (d) => !listIds || listIds.has(d.id);
 
+  const dcKind = (d) => (d.ft === 'ai' ? 'ai' : 'traditional');
+  const dcOn = (d) => !state.dcKinds || state.dcKinds.has(dcKind(d));
+
   const shown = () => drawable.filter(d =>
-    (d.ft === 'ai' ? state.layers.ai : state.layers.facilities) &&
+    state.layers.facilities && dcOn(d) &&
     matchesFilter(d) && inTime(d) && inList(d));
 
   // Events are always time-aware, in both resolutions: show what had happened
@@ -606,7 +707,11 @@
   const dotcount = document.getElementById('dotcount');
   function updateCount() {
     const n = shown().length;
-    dotcount.textContent = `${n.toLocaleString()} data center${n === 1 ? '' : 's'}`;
+    // Sitting under the layer's own name now, so it does not repeat it. The
+    // hollow note is the other thing worth knowing about these dots and had
+    // nowhere to be said before.
+    dotcount.textContent = `${n.toLocaleString()} shown — hollow means the location `
+                         + 'is approximate';
   }
 
   updateCount();   // paint the real number now; the style takes seconds to load
@@ -636,6 +741,15 @@
         }
       }
     }
+    // The kind chips ride on top of the layer toggle: switching the layer off
+    // hides both, and with it on each kind answers for itself.
+    if (state.layers.facilities) {
+      for (const [id, kind] of [['sites', 'traditional'], ['sites-ai', 'ai']]) {
+        if (!map.getLayer(id)) continue;
+        const on = !state.dcKinds || state.dcKinds.has(kind);
+        map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
+      }
+    }
     updateCount();
     // The ramp is scaled to what is on screen, so it has to be rebuilt
     // whenever what is on screen changes.
@@ -649,6 +763,9 @@
 
   for (const id of ['sites', 'sites-ai']) {
     map.on('click', id, (e) => {
+      // Mid-edit, a click is aimed at geometry; opening a page over the
+      // editor would be the map changing the subject.
+      if (state.fpEdit) return;
       const f = e.features && e.features[0];
       if (f) openSite(f.properties.id);
     });
@@ -685,6 +802,14 @@
       `<div class="d">${esc(openEvent ? openEvent.title : '')}</div>`);
   });
   map.on('mouseleave', 'quake', hideTip);
+  // "12 assets" answers nothing - a shaken fab and a shaken solar farm are
+  // different events. Counts are carried per kind and read out per kind.
+  const KIND_1 = { dc: 'data centre', plant: 'power plant', fab: 'fab' };
+  const KIND_N = { dc: 'data centres', plant: 'power plants', fab: 'fabs' };
+  const kindList = (q) => ['dc', 'plant', 'fab']
+    .filter(k => q[k]).map(k => `${q[k]} ${q[k] === 1 ? KIND_1[k] : KIND_N[k]}`)
+    .join(', ') || `${q.exposed} assets`;
+
   map.on('mousemove', 'epicentre', (e) => {
     const q = e.features[0].properties;
     map.getCanvas().style.cursor = q.detail ? 'pointer' : '';
@@ -692,9 +817,9 @@
     showTip(e.originalEvent.clientX, e.originalEvent.clientY,
       `<div class="t">M${q.mag} — ${esc(q.place)}</div>` +
       `<div class="d">${when} · depth ${q.depthKm} km</div>` +
-      `<div class="d">${q.exposed ? `${q.exposed} registry sites shaken, max MMI ${q.maxMmi}`
-        : q.near200 ? `${q.near200} sites within 200 km, none shaken at MMI 2+`
-        : 'no registry site within 200 km'}</div>` +
+      `<div class="d">${q.exposed ? `${kindList(q)} shaken, max MMI ${q.maxMmi}`
+        : q.near200 ? `${q.near200} assets within 200 km, none shaken at MMI 2+`
+        : 'nothing within 200 km'}</div>` +
       (q.detail ? '<div class="d">click for its ShakeMap and exposure</div>' : ''));
   });
   map.on('mouseleave', 'epicentre', () => { map.getCanvas().style.cursor = ''; hideTip(); });
@@ -706,15 +831,33 @@
     showTip(e.originalEvent.clientX, e.originalEvent.clientY, plantTip(e.features[0].properties));
   });
   map.on('mouseleave', 'plant', hideTip);
+  // A dot you cannot open is a dead end. Sites have had a page since the start;
+  // plants and fabs only got one when /plant and /fab were added, so the click
+  // is wired here rather than at layer-creation time.
+  map.on('click', 'plant', (e) => {
+    if (state.fpEdit) return;     // see the sites handler above
+    const f = e.features && e.features[0];
+    if (f) window.open('/plant/' + encodeURIComponent(f.properties.id), '_blank', 'noopener');
+  });
+  map.on('mouseenter', 'plant', () => { map.getCanvas().style.cursor = 'pointer'; });
+  map.on('mouseleave', 'plant', () => { map.getCanvas().style.cursor = ''; });
 
   map.on('mousemove', 'fab', (e) => {
     if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
     showTip(e.originalEvent.clientX, e.originalEvent.clientY, fabTip(e.features[0].properties));
   });
   map.on('mouseleave', 'fab', hideTip);
+  map.on('click', 'fab', (e) => {
+    if (state.fpEdit) return;     // see the sites handler above
+    const f = e.features && e.features[0];
+    if (f) window.open('/fab/' + encodeURIComponent(f.properties.id), '_blank', 'noopener');
+  });
+  map.on('mouseenter', 'fab', () => { map.getCanvas().style.cursor = 'pointer'; });
+  map.on('mouseleave', 'fab', () => { map.getCanvas().style.cursor = ''; });
 
   // Clicking an epicentre loads that event's precomputed footprint.
   map.on('click', 'epicentre', (e) => {
+    if (state.fpEdit) return;     // see the sites handler above
     const q = e.features[0].properties;
     if (!q.detail) return;
     fetch(`/data/quake/${encodeURIComponent(q.id)}`)
@@ -760,28 +903,50 @@
     const bandColor = Object.fromEntries((det.bands || []).map(b => [b.mmi, b.color]));
     shaken = det.exposed || [];
     document.getElementById('eq-title').textContent = det.title || '';
+    // Everything in this panel is thrown away on the next click. The page is
+    // the same event as a URL - shareable, citable, and listing the assets in
+    // full rather than in a scrolling column.
+    const pageLink = document.getElementById('eq-page');
+    if (pageLink) pageLink.href = det.id ? `/quake/${encodeURIComponent(det.id)}` : '/quakes';
+    const byKind = { dc: 0, plant: 0, fab: 0 };
+    for (const e of shaken) byKind[e.kind || 'dc']++;
+    const parts = ['dc', 'plant', 'fab'].filter(k => byKind[k])
+      .map(k => `${byKind[k]} ${byKind[k] === 1 ? KIND_1[k] : KIND_N[k]}`);
     document.getElementById('eq-sub').textContent = shaken.length
-      ? `${shaken.length} registry sites inside the shaking footprint, worst first. ` +
-        `MMI is observed intensity — VI is where non-structural damage begins.`
-      : 'No registry site was shaken at MMI 2 or above by this event.';
+      ? `${parts.join(', ')} inside the shaking footprint, worst first` +
+        (det.mwShaken ? ` — ${det.mwShaken.toLocaleString()} MW of operating generation` : '') +
+        `. MMI is observed intensity — VI is where non-structural damage begins.`
+      : 'Nothing in the registry, the plant layer or the fab layer was shaken at MMI 2 or above.';
     document.getElementById('eq-bands').innerHTML = (det.bands || [])
       .map(b => `<div class="eq-band"><i style="background:${b.color}"></i>` +
         `<b>${b.sites}</b> <span>${esc(b.label)}</span></div>`).join('');
     eqRows.innerHTML = shaken.map(e =>
-      `<li class="eq-row" data-id="${esc(e.site_id)}" title="Open site page">` +
+      `<li class="eq-row" data-id="${esc(e.site_id)}" data-kind="${esc(e.kind || 'dc')}"` +
+      ` title="Open this ${esc(KIND_1[e.kind] || 'site')}">` +
       `<i style="background:${bandColor[Math.floor(e.mmi)] || '#888'}"></i>` +
       `<span class="eq-name">${esc(e.name || e.operator || e.site_id)}</span>` +
+      // Outside .eq-name, which ellipsises: the fuel and megawatts are the
+      // reason a plant is in this list, so the name gives way, not the chip.
+      ((e.kind && e.kind !== 'dc')
+        ? `<b class="eq-kind eq-k-${esc(e.kind)}">${e.kind === 'fab' ? 'FAB'
+            : esc((e.fuel || 'plant').toUpperCase())}${e.mw ? ' ' + Math.round(e.mw).toLocaleString() : ''}</b>`
+        : '') +
       `<span class="eq-mmi">${e.mmi.toFixed(1)}</span>` +
       `<span class="eq-km">${Math.round(e.km)} km</span></li>`).join('');
     eqOnly.hidden = !shaken.length;
   }
   eqRows.addEventListener('click', (e) => {
     const row = e.target.closest('.eq-row');
-    if (row) openSite(row.dataset.id);
+    if (!row) return;
+    const k = row.dataset.kind;
+    if (k === 'plant') window.open('/plant/' + encodeURIComponent(row.dataset.id), '_blank', 'noopener');
+    else if (k === 'fab') window.open('/fab/' + encodeURIComponent(row.dataset.id), '_blank', 'noopener');
+    else openSite(row.dataset.id);
   });
   eqRows.addEventListener('mousemove', (e) => {
     const row = e.target.closest('.eq-row');
     if (!row) return hideTip();
+    if (row.dataset.kind && row.dataset.kind !== 'dc') return hideTip();
     const s = sites.find(x => x.id === row.dataset.id);
     if (s) showTip(e.clientX, e.clientY, siteTip(s));
   });
@@ -792,10 +957,14 @@
   eqOnly.addEventListener('click', () => {
     const on = eqOnly.getAttribute('aria-pressed') !== 'true';
     eqOnly.setAttribute('aria-pressed', String(on));
-    shakenIds = on ? new Set(shaken.map(e => e.site_id)) : null;
+    // This chip filters the data-centre dots, so it counts data centres. It
+    // used to be handed the whole exposed list, which after plants and fabs
+    // joined would have claimed a count it cannot filter to.
+    const dcShaken = shaken.filter(e => (e.kind || 'dc') === 'dc');
+    shakenIds = on ? new Set(dcShaken.map(e => e.site_id)) : null;
     setFilter(on ? { key: 'mmi', value: '__shaken__',
                      label: `Shaken by M${openEvent.mag}`,
-                     count: shaken.length, unmapped: 0 } : null);
+                     count: dcShaken.length, unmapped: 0 } : null);
   });
   document.getElementById('eq-close').addEventListener('click', () => {
     const cb = document.getElementById('lyr-quake');
@@ -1405,7 +1574,7 @@
         const r = Math.round(4 + Math.pow(1.9, d.q.mag - 5) * 2);
         el.style.width = el.style.height = `${Math.min(r, 22)}px`;
         el.title = `M${d.q.mag} — ${d.q.place}`
-          + (d.q.exposed ? ` · ${d.q.exposed} sites shaken, max MMI ${d.q.maxMmi}` : '');
+          + (d.q.exposed ? ` · ${kindList(d.q)} shaken, max MMI ${d.q.maxMmi}` : '');
         if (d.q.detail) {
           el.style.cursor = 'pointer';
           el.addEventListener('click', () => {
@@ -1491,6 +1660,11 @@
     ['pjm-line', 'line-color', c => c.pjm],
     ['nyiso', 'fill-color', c => c.nyiso],
     ['nyiso-line', 'line-color', c => c.nyiso],
+    ['fp-fill', 'fill-color', c => c.fp],
+    ['fp-line', 'line-color', c => c.fp],
+    ['fp-line-campus', 'line-color', c => c.fp],
+    ['fp-line-case', 'line-color', c => c.fpCase],
+    ['fp-line-campus-case', 'line-color', c => c.fpCase],
     // The site dots are deliberately NOT listed here - see below.
   ];
   function applyTheme() {
@@ -1554,13 +1728,15 @@
   // ---- the layers pane folds into its corner ---------------------------------
   const layersPane = document.getElementById('layers');
   const layersBtn = document.getElementById('layersBtn');
+  // One button, both directions. It used to hide itself on open and hand the
+  // closing to a ✕ inside the pane, which meant two controls for one piece of
+  // state and a corner that changed what it did depending on what was already
+  // there. The button stays put and toggles; the pane rises above it.
   function setLayersOpen(on) {
     layersPane.hidden = !on;
-    layersBtn.hidden = on;
     layersBtn.setAttribute('aria-expanded', String(on));
   }
-  layersBtn.addEventListener('click', () => setLayersOpen(true));
-  document.getElementById('layersClose').addEventListener('click', () => setLayersOpen(false));
+  layersBtn.addEventListener('click', () => setLayersOpen(layersPane.hidden));
 
   // Built from the data rather than written out, so the counts stay true and a
   // fuel that stops appearing stops having a chip. Ordered by how plausible a
@@ -1574,11 +1750,36 @@
     const n = {};
     for (const p of plants) n[p.f] = (n[p.f] || 0) + 1;
     const shownFuels = FUEL_ORDER.filter(f => n[f]);
+    // Nine fuels means nine clicks to see one of them, and nine more to get
+    // back. The all/none chip is one click either way, and it labels the move
+    // it will make rather than its own state - "None" while everything is on,
+    // "All" as soon as anything is off.
+    const allNone = '<button type="button" class="fk fk-all" data-all>' +
+      '<span class="fk-allw">None</span></button>';
     fuelKey.innerHTML = shownFuels.map(f =>
       `<button type="button" class="fk" data-f="${f}" aria-pressed="true">` +
       `<i style="background:${FUEL_COLOUR[f]}"></i>${esc(FUEL_LABEL[f])}` +
-      `<span class="fk-n">${n[f].toLocaleString()}</span></button>`).join('');
+      `<span class="fk-n">${n[f].toLocaleString()}</span></button>`).join('') + allNone;
+    const syncAllNone = () => {
+      const live = fuelKey.querySelectorAll('[data-f][aria-pressed="true"]').length;
+      const w = fuelKey.querySelector('.fk-allw');
+      if (w) w.textContent = live === shownFuels.length ? 'None' : 'All';
+    };
     fuelKey.addEventListener('click', (e) => {
+      const all = e.target.closest('[data-all]');
+      if (all) {
+        // Turning everything off would leave the layer on and empty, which
+        // reads as broken; "None" therefore means none SELECTED, and the
+        // filter that produces is an empty set, not a hidden layer.
+        const turnOn = fuelKey.querySelector('.fk-allw').textContent === 'All';
+        for (const b of fuelKey.querySelectorAll('[data-f]')) {
+          b.setAttribute('aria-pressed', String(turnOn));
+        }
+        state.fuels = turnOn ? null : new Set();
+        syncAllNone();
+        refreshView();
+        return;
+      }
       const b = e.target.closest('[data-f]');
       if (!b) return;
       b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
@@ -1588,15 +1789,61 @@
       // takes null as "no filter", and an all-inclusive `in` would still be
       // evaluated per feature on every frame to reach the same answer.
       state.fuels = live.length === shownFuels.length ? null : new Set(live);
+      syncAllNone();
       refreshView();
     });
   }
+
+  // The same control for the two kinds of data centre. Counts come from the
+  // registry rather than being written down, so they follow the data.
+  {
+    const dcKey = document.getElementById('dckey');
+    const KINDS = [
+      { k: 'ai', label: 'AI', colour: 'var(--ai)' },
+      { k: 'traditional', label: 'Traditional', colour: 'var(--fac)' },
+    ];
+    const n = { ai: 0, traditional: 0 };
+    for (const s of drawable) n[s.ft === 'ai' ? 'ai' : 'traditional']++;
+    dcKey.innerHTML = KINDS.map(({ k, label, colour }) =>
+      `<button type="button" class="fk" data-k="${k}" aria-pressed="true">` +
+      `<i style="background:${colour}"></i>${label}` +
+      `<span class="fk-n">${n[k].toLocaleString()}</span></button>`).join('');
+    dcKey.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-k]');
+      if (!b) return;
+      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+      const live = [...dcKey.querySelectorAll('[data-k][aria-pressed="true"]')]
+        .map(x => x.dataset.k);
+      state.dcKinds = live.length === KINDS.length ? null : new Set(live);
+      refreshView();
+    });
+    // Switching the layer off greys the chips: they still describe the colours
+    // but they are no longer filtering anything.
+    window.__syncDcKey = () => dcKey.classList.toggle('fk-off', !state.layers.facilities);
+  }
+
+  // The layers folded into "More layers". Listed here rather than read from
+  // the DOM so the count cannot drift if the markup is reordered again.
+  const MORE_LAYERS = ['ercot', 'pjm', 'nyiso', 'countries'];
+  const moreCount = document.getElementById('morecount');
+  function updateMoreCount() {
+    if (!moreCount) return;
+    const n = MORE_LAYERS.filter(k => state.layers[k]).length;
+    moreCount.textContent = n ? `${n} on` : '';
+    moreCount.classList.toggle('on', n > 0);
+  }
+  updateMoreCount();
 
   for (const key of Object.keys(state.layers)) {
     document.getElementById(`lyr-${key}`).addEventListener('change', (e) => {
       state.layers[key] = e.target.checked;
       if (key === 'plants') fuelKey.hidden = plNote.hidden = !e.target.checked;
       if (key === 'fabs') fbNote.hidden = !e.target.checked;
+      // Footprints are fetched for the current view rather than held whole, so
+      // switching the layer on is a request for them, not just a repaint.
+      if (key === 'footprints' && window.__loadFootprints) window.__loadFootprints(false);
+      if (key === 'facilities' && window.__syncDcKey) window.__syncDcKey();
+      updateMoreCount();
       if (key === 'quake') {
         if (state.time) syncScaleUI();
         if (!e.target.checked) {
@@ -1801,8 +2048,17 @@
   // a dot that was not being drawn - and the popup that arrived with it said
   // "click to open site page". Same rule for every path in, stated once.
   function ensureLayerFor(site) {
-    const cb = document.getElementById(`lyr-${site.ft === 'ai' ? 'ai' : 'facilities'}`);
+    const cb = document.getElementById('lyr-facilities');
     if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change')); }
+    // The kind chips can hide a dot just as effectively as the layer toggle,
+    // so flying to an AI site with the AI chip off would land on nothing.
+    if (state.dcKinds && !state.dcKinds.has(site.ft === 'ai' ? 'ai' : 'traditional')) {
+      state.dcKinds = null;
+      for (const b of document.querySelectorAll('#dckey [data-k]')) {
+        b.setAttribute('aria-pressed', 'true');
+      }
+      refreshView();
+    }
   }
 
   function goTo(lon, lat, site) {
@@ -2384,6 +2640,690 @@
 
   window.__timeline = { open: setTimelineOpen, state, renderChart }; // test hook
 
+  // ---- footprints: view, draw, edit -------------------------------------------
+  // The fp layers above draw what src/footprints.py derived. This section is
+  // everything a PERSON does with a shape: read its facts, draw a missing one,
+  // drag a wrong one straight. Edits go to POST /api/footprint, which appends
+  // to data/footprint_overrides.geojsonl - a source the pipeline never
+  // rewrites - so a correction outlives every rebuild.
+  //
+  // Hand-rolled rather than a draw library, deliberately. The app is offline-
+  // first with two vendored dependencies, and the whole requirement is one
+  // editable ring: box, polygon, drag a corner, add one, remove one. That is
+  // ~200 lines against terra-draw's however-many, and it draws through the
+  // same sources-and-layers idiom as everything else on this map.
+  {
+    const fpBtn = document.getElementById('fpBtn');
+    const fpbar = document.getElementById('fpbar');
+    const fpMsg = document.getElementById('fp-msg');
+    const fpAttach = document.getElementById('fp-attach');
+    const fpEditRow = document.getElementById('fp-editrow');
+    const fpName = document.getElementById('fp-name');
+    const fpBoxBtn = document.getElementById('fp-box');
+    const fpPolyBtn = document.getElementById('fp-poly');
+    const fpSaveBtn = document.getElementById('fp-save');
+    const fpCancelBtn = document.getElementById('fp-cancel');
+    const fpDeleteBtn = document.getElementById('fp-delete');
+    const kindBtns = {
+      building: document.getElementById('fp-kind-building'),
+      campus: document.getElementById('fp-kind-campus'),
+    };
+
+    const EMPTY_FC = { type: 'FeatureCollection', features: [] };
+    const EDIT_C = '#3B82C4';   // the PJM blue: visible over imagery and both themes,
+                                // and unclaimed by any state a footprint can be in
+    const READY_MSG = 'Click a footprint to edit it, or draw a new one.';
+
+    // One shape is in hand at a time. `polys` is MultiPolygon-shaped even for
+    // a single ring, so every edit path below works on one representation.
+    const ed = {
+      id: null,       // editing this existing footprint, or null = drawing new
+      polys: null,    // [[outer, hole...], ...] - rings closed at all times
+      kind: 'campus',
+      drag: null,     // {p, r, i} while a corner follows the mouse
+      draw: null,     // 'box' | 'poly'
+      boxStart: null, // first corner, while draw === 'box'
+      path: null,     // open ring, while draw === 'poly'
+      confirm: false, // Delete pressed once, waiting for the second press
+      sites: [],      // attachments the shape ARRIVED with - see attachedSites()
+      saving: false,  // a POST is in flight; a second Enter must not repeat it
+      dirty: false,   // geometry or fields changed since it was loaded
+      confirmSwitch: null,  // a shape clicked while this one has unsaved work
+    };
+
+    const msg = (text, err) => {
+      fpMsg.textContent = text;
+      fpMsg.classList.toggle('err', !!err);
+    };
+    const fmtInt = (v) => Math.round(v).toLocaleString();
+    // What the shape is a claim ABOUT, which is not the same for every source.
+    // osm and im3 mean somebody labelled this building a data centre. osm-site
+    // means only that it is a large building standing on a site the registry
+    // already knew about - an inference this project made, not a fact anyone
+    // recorded - so it says so rather than borrowing the others' authority.
+    const SRC_LABEL = { osm: 'OpenStreetMap', im3: 'IM3 atlas (PNNL/DOE)',
+                        'osm-site': 'OpenStreetMap — a large building on this site, '
+                                  + 'not labelled a data centre',
+                        derived: 'derived — the hull of the halls on this site, '
+                               + 'not a surveyed boundary',
+                        parcel: 'county parcel record — the recorded boundary',
+                        manual: 'drawn by hand' };
+    const KIND_LABEL = { building: 'building footprint', campus: 'campus boundary' };
+    // MapLibre stringifies nested feature properties on the way through its
+    // worker, so arrays come back as JSON text.
+    const arr = (v) => (typeof v === 'string' ? JSON.parse(v) : v) || [];
+
+    const toPolys = (geom) => JSON.parse(JSON.stringify(
+      geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates));
+    const toGeom = (polys) => (polys.length === 1
+      ? { type: 'Polygon', coordinates: polys[0] }
+      : { type: 'MultiPolygon', coordinates: polys });
+
+    // Same even-odd rule the server and pipeline use, so "attaches to" here
+    // is the same answer footprints.py would give.
+    const inRing = (x, y, ring) => {
+      let inside = false;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const xi = ring[i][0], yi = ring[i][1], xj = ring[j][0], yj = ring[j][1];
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) {
+          inside = !inside;
+        }
+      }
+      return inside;
+    };
+    function containedSites() {
+      if (!ed.polys) return [];
+      let w = Infinity, s = Infinity, e = -Infinity, n = -Infinity;
+      for (const poly of ed.polys) {
+        for (const pt of poly[0]) {
+          if (pt[0] < w) w = pt[0]; if (pt[0] > e) e = pt[0];
+          if (pt[1] < s) s = pt[1]; if (pt[1] > n) n = pt[1];
+        }
+      }
+      const out = [];
+      for (const d of drawable) {
+        if (d.lon < w || d.lon > e || d.lat < s || d.lat > n) continue;
+        let hits = 0;
+        for (const poly of ed.polys) {
+          for (const ring of poly) if (inRing(d.lon, d.lat, ring)) hits++;
+        }
+        if (hits % 2 === 1) out.push(d);
+      }
+      return out;
+    }
+    // What gets SAVED: everything the shape already had, plus whatever it now
+    // contains. A union rather than a replacement, because containment is not
+    // the only way a footprint earns a site. footprints.py also attaches by
+    // osm_id - an identity match between the very OSM way this outline came
+    // from and a registry row - and by nearest-within-250 m, and neither
+    // survives a containment test: 1,286 of the layer's attachments are to a
+    // dot that falls outside its own polygon (a geocoded address beside the
+    // building, not in it). Sending containment alone meant that renaming a
+    // footprint, or nudging one corner, silently cut those sites loose.
+    const attachedSites = () => {
+      const ids = new Set(ed.sites);
+      for (const d of containedSites()) ids.add(d.id);
+      return [...ids];
+    };
+    function updateAttach() {
+      if (!ed.polys) { fpAttach.textContent = ''; return; }
+      const ids = attachedSites();
+      if (!ids.length) { fpAttach.textContent = 'contains no registry dots'; return; }
+      const byId = new Map(drawable.map(d => [d.id, d]));
+      const names = ids.slice(0, 2)
+        .map(id => (byId.get(id)?.n || byId.get(id)?.o || id)).join(', ');
+      fpAttach.textContent = `attaches to ${ids.length} site${ids.length === 1 ? '' : 's'}: `
+        + names + (ids.length > 2 ? `, +${ids.length - 2}` : '');
+    }
+
+    // ---- editor sources and layers, added on first use --------------------
+    // Handles go on top of the dots: while a corner is being dragged it is
+    // the subject, and everything else is context.
+    let editLayersOk = false;
+    function ensureEditLayers() {
+      if (editLayersOk && map.getSource('fp-edit')) return true;
+      try {
+        map.addSource('fp-edit', { type: 'geojson', data: EMPTY_FC });
+        map.addSource('fp-handles', { type: 'geojson', data: EMPTY_FC });
+        map.addLayer({ id: 'fp-edit-fill', type: 'fill', source: 'fp-edit',
+          paint: { 'fill-color': EDIT_C, 'fill-opacity': 0.10 } });
+        map.addLayer({ id: 'fp-edit-line', type: 'line', source: 'fp-edit',
+          paint: { 'line-color': EDIT_C, 'line-width': 2 } });
+        map.addLayer({ id: 'fp-mids', type: 'circle', source: 'fp-handles',
+          filter: ['==', ['get', 'mid'], 1],
+          paint: { 'circle-radius': 3.5, 'circle-color': '#FFFFFF',
+            'circle-stroke-color': EDIT_C, 'circle-stroke-width': 1.2,
+            'circle-opacity': 0.85 } });
+        map.addLayer({ id: 'fp-handles', type: 'circle', source: 'fp-handles',
+          filter: ['==', ['get', 'mid'], 0],
+          paint: { 'circle-radius': 5.5, 'circle-color': EDIT_C,
+            'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 1.5 } });
+        editLayersOk = true;
+        return true;
+      } catch {
+        // "Style is not done loading" - the same race setBasemap documents.
+        // The button is user-pressed, so the retry is the user's next press.
+        return false;
+      }
+    }
+
+    // The derived layers keep drawing everything except the shape in hand;
+    // its own fp-* rendering would sit under the editable copy and lie about
+    // where the edge currently is.
+    function applyFpFilters(excludeId) {
+      const ex = excludeId ? ['!=', ['get', 'id'], excludeId] : null;
+      // Every layer the shape is drawn in, casings included - miss one and the
+      // shape being edited leaves its own dark outline behind on the ground it
+      // used to occupy.
+      const base = {
+        'fp-fill': null,
+        'fp-line': ['!=', ['get', 'kind'], 'campus'],
+        'fp-line-case': ['!=', ['get', 'kind'], 'campus'],
+        'fp-line-campus': ['==', ['get', 'kind'], 'campus'],
+        'fp-line-campus-case': ['==', ['get', 'kind'], 'campus'],
+      };
+      for (const [id, f] of Object.entries(base)) {
+        if (!map.getLayer(id)) continue;
+        const parts = [f, ex].filter(Boolean);
+        map.setFilter(id, parts.length > 1 ? ['all', ...parts] : (parts[0] || null));
+      }
+    }
+
+    function renderEdit() {
+      if (!editLayersOk) return;
+      const feats = ed.polys
+        ? [{ type: 'Feature', geometry: toGeom(ed.polys), properties: {} }] : [];
+      map.getSource('fp-edit').setData({ type: 'FeatureCollection', features: feats });
+      const pts = [];
+      if (ed.polys) {
+        ed.polys.forEach((poly, p) => poly.forEach((ring, r) => {
+          for (let i = 0; i < ring.length - 1; i++) {
+            pts.push({ type: 'Feature', properties: { p, r, i, mid: 0 },
+              geometry: { type: 'Point', coordinates: ring[i] } });
+            const j = i + 1;   // ring is closed, so i+1 always exists
+            pts.push({ type: 'Feature', properties: { p, r, i, mid: 1 },
+              geometry: { type: 'Point', coordinates:
+                [(ring[i][0] + ring[j][0]) / 2, (ring[i][1] + ring[j][1]) / 2] } });
+          }
+        }));
+      }
+      map.getSource('fp-handles').setData({ type: 'FeatureCollection', features: pts });
+      updateAttach();
+    }
+    // The open ring while a polygon is being clicked out: a line, not a fill,
+    // because it is not a shape yet and must not claim to be one.
+    function renderPath(cursor) {
+      if (!editLayersOk) return;
+      const line = cursor ? [...ed.path, cursor] : ed.path;
+      map.getSource('fp-edit').setData({ type: 'FeatureCollection',
+        features: line.length > 1
+          ? [{ type: 'Feature', properties: {},
+               geometry: { type: 'LineString', coordinates: line } }] : [] });
+      map.getSource('fp-handles').setData({ type: 'FeatureCollection',
+        features: ed.path.map((c, i) => ({ type: 'Feature',
+          properties: { p: -1, r: -1, i, mid: 0 },
+          geometry: { type: 'Point', coordinates: c } })) });
+    }
+
+    function setKind(k) {
+      ed.kind = k;
+      for (const [key, btn] of Object.entries(kindBtns)) {
+        btn.setAttribute('aria-selected', String(key === k));
+      }
+    }
+    function showEditRow(existing) {
+      fpEditRow.hidden = false;
+      fpDeleteBtn.hidden = !existing;
+      fpDeleteBtn.textContent = 'Delete';
+      ed.confirm = false;
+      fpSaveBtn.disabled = false;
+    }
+
+    function loadFootprint(id) {
+      const f = footprints.features.find(x => x.properties.id === id);
+      if (!f) return;
+      // The editor's own layers may still be missing: setFpEdit runs before
+      // the style is necessarily ready, and its one attempt is not retried by
+      // anything else. Without this, the shape loads into state, the derived
+      // copy is filtered out to make way for it, and nothing is drawn in its
+      // place - the footprint simply disappears.
+      if (!ensureEditLayers()) { msg('the map is still loading — try again', true); return; }
+      // From the source data, never from the clicked feature: MapLibre hands
+      // back geometry clipped to the tile the click landed in.
+      ed.id = id;
+      ed.polys = toPolys(f.geometry);
+      ed.sites = Array.isArray(f.properties.sites) ? [...f.properties.sites] : [];
+      ed.dirty = false;
+      ed.confirmSwitch = null;
+      setKind(f.properties.kind === 'building' ? 'building' : 'campus');
+      fpName.value = f.properties.name || '';
+      applyFpFilters(id);
+      showEditRow(true);
+      renderEdit();
+      msg('Drag a corner to move it, a small dot to add one; right-click removes.');
+    }
+
+    function clearShape() {
+      ed.id = null; ed.polys = null; ed.path = null; ed.sites = [];
+      ed.dirty = false; ed.confirmSwitch = null;
+      // The in-flight corner has to go with the shape it belonged to. Left
+      // set, the next mousemove would index into a null ed.polys and throw on
+      // every pointer move across the map - the editor dead, the console
+      // filling, and no way back except a reload.
+      ed.drag = null;
+      fpName.value = '';
+      fpEditRow.hidden = true;
+      applyFpFilters(null);
+      renderEdit();
+    }
+    function cancelEdit() {
+      exitDraw();
+      clearShape();
+      msg(READY_MSG);
+    }
+
+    function exitDraw() {
+      ed.draw = null; ed.boxStart = null; ed.path = null; ed.drag = null;
+      fpBoxBtn.setAttribute('aria-selected', 'false');
+      fpPolyBtn.setAttribute('aria-selected', 'false');
+      map.getCanvas().style.cursor = '';
+      map.dragPan.enable();
+      map.doubleClickZoom.enable();
+    }
+    function startDraw(kind) {
+      if (!ensureEditLayers()) { msg('the map is still loading — try again', true); return; }
+      cancelEdit();
+      ed.draw = kind;
+      (kind === 'box' ? fpBoxBtn : fpPolyBtn).setAttribute('aria-selected', 'true');
+      map.getCanvas().style.cursor = 'crosshair';
+      if (kind === 'box') map.dragPan.disable();
+      else map.doubleClickZoom.disable();
+      msg(kind === 'box' ? 'Press and drag the two corners of the box.'
+        : 'Click each corner; double-click or Enter closes the shape.');
+    }
+    function finishDraw() {
+      exitDraw();
+      setKind('campus');   // most drawn shapes are the boundary no source has
+      fpName.value = '';
+      ed.id = null;
+      ed.sites = [];       // a new shape has only what it contains
+      showEditRow(false);
+      renderEdit();
+      msg('Adjust the corners if needed, then Save.');
+    }
+    const boxRing = (a, b) => {
+      const w = Math.min(a.lng, b.lng), e = Math.max(a.lng, b.lng);
+      const s = Math.min(a.lat, b.lat), n = Math.max(a.lat, b.lat);
+      return [[w, s], [e, s], [e, n], [w, n], [w, s]];
+    };
+    function closePath() {
+      // The two clicks under a double-click land twice; fold near-duplicates.
+      const pts = ed.path.filter((c, i, all) => !i
+        || Math.abs(c[0] - all[i - 1][0]) + Math.abs(c[1] - all[i - 1][1]) > 1e-9);
+      if (pts.length < 3) { msg('a polygon needs at least 3 corners', true); return; }
+      ed.polys = [[[...pts, [...pts[0]]]]];
+      finishDraw();
+    }
+
+    // ---- loading the layer by viewport ------------------------------------
+    // Below this the shapes are sub-pixel and the whole country is in frame,
+    // so there is nothing to draw and no point asking for it. A data centre
+    // hall is ~150 m across, which is one pixel at z11.
+    const FP_MIN_ZOOM = 11;
+    let fpLoadedFor = null;    // the bbox we last asked for
+    let fpSeq = 0;             // drops answers to superseded requests
+
+    const bboxOfView = () => {
+      const b = map.getBounds();
+      // A margin the width of the view again, so a short pan does not refetch.
+      const dx = (b.getEast() - b.getWest()) / 2, dy = (b.getNorth() - b.getSouth()) / 2;
+      return [b.getWest() - dx, b.getSouth() - dy, b.getEast() + dx, b.getNorth() + dy];
+    };
+    const covered = (view, had) => had
+      && view[0] >= had[0] && view[1] >= had[1] && view[2] <= had[2] && view[3] <= had[3];
+
+    async function loadFootprints(force) {
+      if (!state.layers.footprints || map.getZoom() < FP_MIN_ZOOM) {
+        if (footprints.features.length) {
+          footprints.features = [];
+          fpLoadedFor = null;
+          if (map.getSource('fp')) map.getSource('fp').setData(footprints);
+        }
+        return;
+      }
+      const b = map.getBounds();
+      const view = [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()];
+      if (!force && covered(view, fpLoadedFor)) return;
+      const want = bboxOfView();
+      const seq = ++fpSeq;
+      try {
+        const r = await fetch(`/api/footprints?w=${want[0]}&s=${want[1]}`
+                            + `&e=${want[2]}&n=${want[3]}`);
+        const fc = await r.json();
+        if (seq !== fpSeq) return;          // a later move already answered
+        footprints.features = fc.features || [];
+        fpLoadedFor = fc.clipped ? null : want;   // a clipped answer is not a cache
+        if (map.getSource('fp')) map.getSource('fp').setData(footprints);
+      } catch { /* a failed fetch leaves the last good shapes on screen */ }
+    }
+    map.on('moveend', () => loadFootprints(false));
+    map.on('load', () => loadFootprints(false));
+    window.__loadFootprints = loadFootprints;   // test hook + layer toggle
+
+    async function refreshFootprints() {
+      await loadFootprints(true);
+    }
+    async function saveEdit() {
+      // `saving` and not just the disabled button: Enter reaches saveEdit()
+      // through the key handler without going near the button, so a second
+      // press while the first POST was in flight appended a second shape.
+      // For a NEW shape the server mints a fresh fp-man-<id> each time, so
+      // that produced duplicate footprints stacked on the same ground.
+      if (!ed.polys || ed.saving) return;
+      const body = {
+        geometry: toGeom(ed.polys),
+        sites: attachedSites(),
+        name: fpName.value.trim(),
+        kind: ed.kind,
+      };
+      if (ed.id) body.id = ed.id;
+      ed.saving = true;
+      fpSaveBtn.disabled = true;
+      try {
+        const r = await fetch('/api/footprint', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
+        await refreshFootprints();
+        clearShape();
+        msg('Saved.');
+      } catch (err) {
+        msg(`Could not save: ${err.message}`, true);
+        fpSaveBtn.disabled = false;
+      } finally {
+        ed.saving = false;
+      }
+    }
+    async function deleteEdit() {
+      if (!ed.id) return;
+      // Two presses, no dialog: the first re-labels the button to say what
+      // the second will do. (The override log keeps the shape recoverable.)
+      if (!ed.confirm) {
+        ed.confirm = true;
+        fpDeleteBtn.textContent = 'Really delete?';
+        return;
+      }
+      try {
+        const r = await fetch('/api/footprint', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: ed.id, delete: true }),
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
+        await refreshFootprints();
+        clearShape();
+        msg('Deleted. (Recoverable from data/footprint_overrides.geojsonl.)');
+      } catch (err) {
+        msg(`Could not delete: ${err.message}`, true);
+      }
+    }
+
+    function setFpEdit(on) {
+      state.fpEdit = on;
+      fpBtn.setAttribute('aria-pressed', String(on));
+      fpbar.hidden = !on;
+      if (on) {
+        if (!ensureEditLayers()) msg('the map is still loading — try again', true);
+        else msg(READY_MSG);
+        // Editing a layer you cannot see is guesswork; switch it on.
+        if (!state.layers.footprints) {
+          state.layers.footprints = true;
+          document.getElementById('lyr-footprints').checked = true;
+          refreshView();
+        }
+        loadFootprints(false);
+      } else {
+        cancelEdit();
+        hideTip();
+      }
+    }
+    fpBtn.addEventListener('click', () => setFpEdit(!state.fpEdit));
+    document.getElementById('fp-close').addEventListener('click', () => setFpEdit(false));
+    fpBoxBtn.addEventListener('click', () => startDraw('box'));
+    fpPolyBtn.addEventListener('click', () => startDraw('poly'));
+    fpSaveBtn.addEventListener('click', saveEdit);
+    fpCancelBtn.addEventListener('click', cancelEdit);
+    fpDeleteBtn.addEventListener('click', deleteEdit);
+    // Marked dirty from the handlers rather than inside setKind, because
+    // loadFootprint calls setKind itself and a freshly loaded shape has not
+    // been edited by anybody.
+    kindBtns.building.addEventListener('click', () => { setKind('building'); ed.dirty = true; });
+    kindBtns.campus.addEventListener('click', () => { setKind('campus'); ed.dirty = true; });
+    fpName.addEventListener('input', () => { ed.dirty = true; });
+    // The globe has no draw surface; leaving 2D closes the editor.
+    modeBtn.addEventListener('click', () => {
+      if (state.mode === '3d' && state.fpEdit) setFpEdit(false);
+    });
+
+    // ---- drawing and dragging, on the map's own events ---------------------
+    map.on('mousedown', (e) => {
+      if (ed.draw === 'box') ed.boxStart = e.lngLat;
+    });
+    map.on('mousemove', (e) => {
+      if (ed.draw === 'box' && ed.boxStart) {
+        ed.polys = [[boxRing(ed.boxStart, e.lngLat)]];
+        renderEdit();
+      } else if (ed.drag) {
+        const { p, r, i } = ed.drag;
+        const ring = ed.polys[p][r];
+        ring[i] = [e.lngLat.lng, e.lngLat.lat];
+        if (i === 0) ring[ring.length - 1] = [...ring[0]];
+        ed.dirty = true;
+        renderEdit();
+      } else if (ed.draw === 'poly' && ed.path && ed.path.length) {
+        renderPath([e.lngLat.lng, e.lngLat.lat]);
+      }
+    });
+    // Bound to the WINDOW, not the map. MapLibre's 'mouseup' comes off the
+    // canvas container, so releasing the button over the edit bar, the layers
+    // pane or outside the window never fired it - and the corner stayed glued
+    // to the cursor, moving on a pointer that was no longer pressed. The last
+    // mousemove has already written the live geometry into ed.polys, so this
+    // needs no coordinate of its own and works wherever the release lands.
+    function endPointer() {
+      if (ed.draw === 'box' && ed.boxStart) {
+        ed.boxStart = null;
+        const ring = ed.polys && ed.polys[0] && ed.polys[0][0];
+        // A click, not a drag: nothing to keep, stay in box mode.
+        if (!ring || Math.abs(ring[0][0] - ring[1][0]) < 1e-7
+            || Math.abs(ring[1][1] - ring[2][1]) < 1e-7) {
+          ed.polys = null;
+          renderEdit();
+          return;
+        }
+        finishDraw();
+      }
+      if (ed.drag) {
+        ed.drag = null;
+        map.getCanvas().style.cursor = '';
+      }
+    }
+    window.addEventListener('mouseup', endPointer);
+    map.on('click', (e) => {
+      if (ed.draw !== 'poly') return;
+      ed.path = ed.path || [];
+      ed.path.push([e.lngLat.lng, e.lngLat.lat]);
+      renderPath();
+    });
+    map.on('dblclick', (e) => {
+      if (ed.draw === 'poly' && ed.path && ed.path.length >= 3) {
+        e.preventDefault();
+        closePath();
+      }
+    });
+    map.on('mousedown', 'fp-handles', (e) => {
+      if (!ed.polys || ed.draw) return;
+      e.preventDefault();   // the corner moves, not the map
+      const { p, r, i } = e.features[0].properties;
+      ed.drag = { p, r, i };
+      map.getCanvas().style.cursor = 'grabbing';
+    });
+    map.on('mousedown', 'fp-mids', (e) => {
+      if (!ed.polys || ed.draw) return;
+      e.preventDefault();
+      const { p, r, i } = e.features[0].properties;
+      ed.polys[p][r].splice(i + 1, 0, [e.lngLat.lng, e.lngLat.lat]);
+      ed.drag = { p, r, i: i + 1 };
+      ed.dirty = true;
+      renderEdit();
+    });
+    map.on('contextmenu', 'fp-handles', (e) => {
+      if (!ed.polys) return;
+      e.preventDefault();
+      const { p, r, i } = e.features[0].properties;
+      const ring = ed.polys[p][r];
+      if (ring.length - 1 <= 3) { msg('a shape needs at least 3 corners', true); return; }
+      ring.splice(i, 1);
+      if (i === 0) ring[ring.length - 1] = [...ring[0]];
+      ed.dirty = true;
+      renderEdit();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (!state.fpEdit) return;
+      if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+      if (e.key === 'Escape') {
+        if (ed.draw || ed.polys) cancelEdit();
+        else setFpEdit(false);
+      } else if (e.key === 'Enter') {
+        if (ed.draw === 'poly' && ed.path && ed.path.length >= 3) closePath();
+        else if (ed.polys && !ed.draw) saveEdit();
+      }
+    });
+
+    // ---- which shape did you mean? -----------------------------------------
+    // Footprints overlap by design: a campus boundary is drawn over the halls
+    // standing on it, and MapLibre hands back whichever renders on top, which
+    // is the campus. So clicking a building inside a campus selected the
+    // campus, every time, and the buildings could not be edited at all.
+    //
+    // THE SMALLEST SHAPE WINS, which is the same rule already applied one
+    // level up - a site dot beats the footprint under it because it is the
+    // finer target. A building is always smaller than the campus containing
+    // it, and a campus stays reachable through its own open ground.
+    //
+    // Except when it has none. A parcel drawn tight around a single hall is
+    // entirely covered by it, so clicking the SAME SPOT again steps outward to
+    // the next shape up. That makes every overlapping shape reachable without
+    // a modifier key or a list to read.
+    let lastPick = null;      // {x, y, ids: [...], i}
+    function pickAt(point) {
+      const hits = map.queryRenderedFeatures(point, { layers: ['fp-fill'] });
+      if (!hits.length) return null;
+      // Smallest first, deduped - a feature crossing a tile boundary comes
+      // back once per tile.
+      const byId = new Map();
+      for (const f of hits) {
+        if (!byId.has(f.properties.id)) byId.set(f.properties.id, f.properties);
+      }
+      const ranked = [...byId.values()].sort((a, b) => (+a.m2 || 0) - (+b.m2 || 0));
+      const ids = ranked.map(p => p.id).join(',');
+      const near = lastPick && Math.abs(lastPick.x - point.x) < 6
+                            && Math.abs(lastPick.y - point.y) < 6
+                            && lastPick.ids === ids;
+      const i = near ? (lastPick.i + 1) % ranked.length : 0;
+      lastPick = { x: point.x, y: point.y, ids, i };
+      if (ranked.length > 1 && state.fpEdit) {
+        const p = ranked[i];
+        msg(`${p.kind === 'campus' ? 'Boundary' : 'Building'} `
+          + `${i + 1} of ${ranked.length} here — click again for the next.`);
+      }
+      return ranked[i];
+    }
+
+    // ---- reading a footprint: hover and click ------------------------------
+    const fpFacts = (p) => {
+      const bbox = arr(p.bbox);
+      const m2 = +p.m2 || 0;
+      return `<div class="t">${esc(p.name || p.op || (p.kind === 'campus' ? 'Campus' : 'Building'))}</div>` +
+        `<div class="d">${esc(KIND_LABEL[p.kind] || p.kind)} · ${esc(SRC_LABEL[p.src] || p.src)}</div>` +
+        // The owner is the parcel record's own answer to "whose site is this",
+        // and it is a different claim from the operator on the dot: county
+        // records name the title holder, usually an SPV.
+        (p.op && p.op !== p.name ? `<div class="d">${esc(p.op)}${
+          p.locality ? ` · ${esc(p.locality)}` : ''}</div>` : '') +
+        (m2 ? `<div class="d">${fmtInt(m2 * 10.7639)} sq ft · ${fmtInt(m2)} m²</div>` : '') +
+        (p.buildings ? `<div class="d">${p.buildings} buildings · ${
+          Math.round((+p.built_ratio || 0) * 100)}% built</div>` : '') +
+        `<div class="d mono">bbox ${bbox.map(v => (+v).toFixed(5)).join(', ')}</div>`;
+    };
+    map.on('mousemove', 'fp-fill', (e) => {
+      if (ed.drag || ed.draw) return;
+      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+      map.getCanvas().style.cursor = 'pointer';
+      // The SAME shape a click would take, not the topmost one - a tip
+      // describing the campus while the click selects the building inside it
+      // is worse than no tip.
+      const hits = map.queryRenderedFeatures(e.point, { layers: ['fp-fill'] });
+      const byId = new Map();
+      for (const f of hits) if (!byId.has(f.properties.id)) byId.set(f.properties.id, f.properties);
+      const ranked = [...byId.values()].sort((a, b) => (+a.m2 || 0) - (+b.m2 || 0));
+      const p = ranked[0] || e.features[0].properties;
+      showTip(e.originalEvent.clientX, e.originalEvent.clientY, fpFacts(p) +
+        (ranked.length > 1
+          ? `<div class="d">${ranked.length} shapes here — click again to step out</div>` : '') +
+        `<div class="d">${state.fpEdit ? 'click to edit this shape' : 'click for details'}</div>`);
+    });
+    map.on('mouseleave', 'fp-fill', () => {
+      // Not while drawing: the crosshair belongs to the draw, and leaving a
+      // polygon on the way to the empty ground you are about to click is the
+      // normal path through a draw, not the end of a hover.
+      if (!ed.drag && !ed.draw) map.getCanvas().style.cursor = '';
+      hideTip();
+    });
+    map.on('click', 'fp-fill', (e) => {
+      // A dot on top of the shape wins the click - it is the finer target.
+      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+      const p = pickAt(e.point);
+      if (!p) return;
+      if (state.fpEdit) {
+        if (ed.draw) return;                 // mid-draw, a click is a corner
+        if (p.id === ed.id) return;          // already the one being edited
+        // Switching away from unsaved work asks once, the same way Delete
+        // does, rather than silently discarding a dozen dragged corners.
+        if (ed.polys && ed.dirty && !ed.confirmSwitch) {
+          ed.confirmSwitch = p.id;
+          msg('Unsaved changes here — click that shape again to discard them.', true);
+          return;
+        }
+        loadFootprint(p.id);
+        return;
+      }
+      hideTip();
+      const siteIds = arr(p.sites);
+      const links = siteIds.slice(0, 3).map(id =>
+        `<a href="/site/${encodeURIComponent(id)}" target="_blank" rel="noopener">${esc(id)}</a>`)
+        .join(' · ') + (siteIds.length > 3 ? ` · +${siteIds.length - 3}` : '');
+      pop.innerHTML = `<button class="x" aria-label="Close">✕</button>` +
+        fpFacts(p) +
+        (siteIds.length ? `<div class="d">${links}</div>` : '') +
+        `<button class="tb-btn" id="fp-copybbox">Copy bbox</button>`;
+      pop.hidden = false;
+      const pad = 14;
+      const x = e.originalEvent.clientX, y = e.originalEvent.clientY;
+      pop.style.left = Math.min(x + pad, innerWidth - pop.offsetWidth - pad) + 'px';
+      pop.style.top = Math.min(y + pad, innerHeight - pop.offsetHeight - pad) + 'px';
+      pop.querySelector('.x').onclick = hidePop;
+      const copy = pop.querySelector('#fp-copybbox');
+      copy.onclick = () => {
+        navigator.clipboard.writeText(JSON.stringify(arr(p.bbox)))
+          .then(() => { copy.textContent = 'Copied'; })
+          .catch(() => { copy.textContent = 'Copy failed'; });
+      };
+    });
+  }
+
   // ---- satellite basemap -----------------------------------------------------
   // The server decides which providers exist, because only it knows whether a
   // Google key is configured. Asking it means the UI never offers an option
@@ -2904,11 +3844,16 @@
       label: (o ? o.name : key) + (region ? ` · ${region}` : ''),
       count: all.length, unmapped: all.length - pts.length,
     });
-    // Both layers must be on or the filter looks broken: an operator with only
-    // AI sites shows nothing when the AI layer happens to be off.
-    for (const k of ['facilities', 'ai']) {
-      const cb = document.getElementById(`lyr-${k}`);
-      if (!cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change')); }
+    // Both kinds must be on or the filter looks broken: an operator with only
+    // AI sites shows nothing when the AI chip happens to be off.
+    const cb = document.getElementById('lyr-facilities');
+    if (!cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change')); }
+    if (state.dcKinds) {
+      state.dcKinds = null;
+      for (const b of document.querySelectorAll('#dckey [data-k]')) {
+        b.setAttribute('aria-pressed', 'true');
+      }
+      refreshView();
     }
     if (pts.length) frameSites(pts);
   }
@@ -3723,6 +4668,36 @@
         filterToOperator(key);
       }
     });
+  }
+
+  // ---- deep link: /?search=1 opens the command palette ------------------------
+  // The magnifier in the top bar of every server-rendered page is a plain link
+  // back here, because those pages have no palette of their own.
+  if (qs.has('search')) openPalette();
+
+  // ---- deep link: /?plant=<id>, /?fab=<id>, /?fabs=1 --------------------------
+  // Both dot layers start switched off, so flying to one without turning its
+  // layer on lands the camera on an empty map. Toggle through the checkbox
+  // rather than state.layers directly: the change handler above is what
+  // unhides the fuel legend and the licence notes, and setting state alone
+  // shows the dots while leaving the panel and legend out of sync.
+  const showLayer = (key) => {
+    const cb = document.getElementById(`lyr-${key}`);
+    if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change')); }
+  };
+  if (qs.has('fabs')) showLayer('fabs');
+  for (const [param, key, list, tip] of [
+    ['plant', 'plants', plants, plantTip],
+    ['fab', 'fabs', fabs, fabTip],
+  ]) {
+    const id = qs.get(param);
+    if (!id) continue;
+    const x = list.find(r => r.id === id);
+    if (!x || x.lat == null) continue;
+    showLayer(key);
+    map.flyTo({ center: [+x.lon, +x.lat], zoom: SITE_ZOOM, duration: 1200 });
+    new maplibregl.Popup({ closeOnClick: true, offset: 10 })
+      .setLngLat([+x.lon, +x.lat]).setHTML(tip(x)).addTo(map);
   }
 
   // ---- deep link: /?site=<id> flies to the site -------------------------------

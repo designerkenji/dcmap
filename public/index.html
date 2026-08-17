@@ -24,6 +24,12 @@
           title="Operators" aria-pressed="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5.5A1.5 1.5 0 0 1 5.5 4h7A1.5 1.5 0 0 1 14 5.5V21M14 21V10h4.5A1.5 1.5 0 0 1 20 11.5V21M2.5 21h19M7 8h4M7 12h4M7 16h4M17 14h.01M17 17.5h.01"/></svg>
   </button>
+  <!-- No summary-page nav here. Every layer row in the pane already carries an
+       ↗ to its own summary, and that is the better door: it sits beside the
+       thing it describes, and it grew a fourth entry for earthquakes without
+       the header having to find room. Duplicating them across the top made the
+       map's chrome a menu for pages you reach from the map anyway. The pages
+       keep their own nav, where it is sibling navigation rather than a repeat. -->
   <button id="themeBtn" class="icobtn" aria-label="Toggle day / night view"></button>
 </header>
 
@@ -34,21 +40,30 @@
 </button>
 
 <aside class="layers panel" id="layers" aria-label="Layers" hidden>
-  <div class="layers-head">
-    <span class="dotcount" id="dotcount" aria-live="polite">Data centres</span>
-    <button id="layersClose" class="tb-btn" aria-label="Collapse layers">✕</button>
-  </div>
-
   <h2 class="st-h">Layers</h2>
-  <label><input type="checkbox" id="lyr-facilities" checked> <i class="sw sw-fac"></i> Data Center Facilities</label>
-  <label><input type="checkbox" id="lyr-ai" checked> <i class="sw sw-ai"></i> AI Data Centers</label>
-  <label><input type="checkbox" id="lyr-ercot"> <i class="sw sw-ercot"></i> ERCOT Load Zones</label>
-  <label><input type="checkbox" id="lyr-pjm"> <i class="sw sw-pjm"></i> PJM Zones</label>
-  <label><input type="checkbox" id="lyr-nyiso"> <i class="sw sw-nyiso"></i> NYISO Load Zones</label>
-  <label><input type="checkbox" id="lyr-countries"> <i class="sw sw-cty"></i> Data Centres by Country</label>
-  <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes
-    <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
-  <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants
+  <!-- The live count lives on the layer it counts, not in a title slot of its
+       own. It is still a readout of what the map is actually drawing - every
+       filter, layer toggle and timeline step moves it - but it now reads as
+       what it is, a fact about this layer, and it sits in the same grey the
+       other layers use for theirs. -->
+  <label><input type="checkbox" id="lyr-facilities" checked> <i class="sw sw-fac"></i> Data Centers<a class="lyrlink" href="/datacentres" target="_blank" rel="noopener" title="All data centres — summary tables" aria-label="All data centres — summary tables">↗</a>
+    <span class="sublbl" id="dotcount" aria-live="polite"></span></label>
+  <!-- AI and traditional are two kinds of the same thing, so they are chips on
+       one layer rather than two layers. Same control the fuel key uses, for the
+       same reason: a legend that explains the colours may as well filter by
+       them. -->
+  <div class="fuelkey" id="dckey"></div>
+  <label><input type="checkbox" id="lyr-fabs"> <i class="sw sw-fab"></i> Semiconductor Fabs<a class="lyrlink" href="/fabs" target="_blank" rel="noopener" title="All fabs — summary tables" aria-label="All fabs — summary tables">↗</a>
+    <span class="sublbl">90 fabs — power is estimated, never measured</span></label>
+  <!-- The honesty this layer needs, stated once where it cannot be missed:
+       no fab on earth publishes its electricity demand. -->
+  <p class="hint pl-note" id="fb-note" hidden>
+    Hand-sourced per fab from company disclosures and CHIPS Act filings; each
+    record carries its source. No fab publishes its electricity demand, so MW is
+    <b>modelled</b> from wafer capacity and process node and is good to roughly a
+    factor of two — 14 of 90 have enough published data to estimate at all.
+  </p>
+  <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants<a class="lyrlink" href="/plants" target="_blank" rel="noopener" title="All power plants — summary tables" aria-label="All power plants — summary tables">↗</a>
     <span class="sublbl">100 MW and up, worldwide — hollow means the location is approximate</span></label>
   <!-- Legend and filter in one control: it has to explain the colours anyway,
        and the same click that asks "which one is coal" wants to see only coal. -->
@@ -62,18 +77,32 @@
     Global Integrated Power Tracker, August 2026, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
     Storage is US-only — GEM tracks batteries separately.
   </p>
-  <label><input type="checkbox" id="lyr-fabs"> <i class="sw sw-fab"></i> Semiconductor Fabs
-    <span class="sublbl">78 leading-edge fabs — power is estimated, never measured</span></label>
-  <!-- The honesty this layer needs, stated once where it cannot be missed:
-       no fab on earth publishes its electricity demand. -->
-  <p class="hint pl-note" id="fb-note" hidden>
-    Hand-sourced per fab from company disclosures and CHIPS Act filings; each
-    record carries its source. No fab publishes its electricity demand, so MW is
-    <b>modelled</b> from wafer capacity and process node and is good to roughly a
-    factor of two — 14 of 78 have enough published data to estimate at all.
-  </p>
+  <!-- The four dot layers group first, then the one polygon layer, then the
+       earthquakes. The note says the one thing that is visible on screen and
+       cannot be guessed: some of these outlines are inferred rather than
+       recorded, and those are the faded ones. Which source each came from is
+       on the shape itself, in its popup - that belongs there, not here. -->
+  <label><input type="checkbox" id="lyr-footprints" checked> <i class="sw sw-fp"></i> Building Footprints
+    <span class="sublbl">OSM, cadastre and the IM3 atlas, 2D only — faded outlines are
+      inferred, not recorded</span></label>
+  <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes<a class="lyrlink" href="/quakes" target="_blank" rel="noopener" title="All earthquakes — summary tables" aria-label="All earthquakes — summary tables">↗</a>
+    <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
 
-  <p class="hint">Click a dot to open that site's page in a new tab.</p>
+  <!-- The zone layers are CONTEXT, not subjects. Each one answers "which grid
+       operator's territory is this in" or "how does this country compare",
+       which is a question you arrive at after finding a site, not before. They
+       sat above Earthquakes and Power Plants purely by accident of the order
+       they were built in, pushing the layers people actually come for below
+       the fold. Folded away, and <details> rather than a scripted disclosure
+       because the browser already does this correctly, keyboard included. -->
+  <details class="morelyr">
+    <summary>More layers<span class="morecount" id="morecount"></span></summary>
+    <label><input type="checkbox" id="lyr-ercot"> <i class="sw sw-ercot"></i> ERCOT Load Zones</label>
+    <label><input type="checkbox" id="lyr-pjm"> <i class="sw sw-pjm"></i> PJM Zones</label>
+    <label><input type="checkbox" id="lyr-nyiso"> <i class="sw sw-nyiso"></i> NYISO Load Zones</label>
+    <label><input type="checkbox" id="lyr-countries"> <i class="sw sw-cty"></i> Data Centres by Country</label>
+  </details>
+
   <!-- Imagery attribution is a licence condition, not a nicety. It moved here
        when the basemap switch left the pane, and it must stay visible. -->
   <p class="hint bm-note" id="bm-note" hidden></p>
@@ -82,6 +111,10 @@
 <!-- Map controls, bottom right, over the map rather than in a chrome bar.
      Each is a single button showing the CURRENT state; clicking swaps it. -->
 <div class="mapctl" id="mapctl">
+  <button id="fpBtn" class="corner-btn" aria-label="Draw or edit footprints"
+          title="Draw / edit footprints" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 19.5 1-3.8L16.7 4.5a2 2 0 0 1 2.8 2.8L8.3 18.5l-3.8 1Z"/><path d="m14.5 6.7 2.8 2.8"/></svg>
+  </button>
   <button id="timeBtn" class="corner-btn" aria-label="Timeline of data centre build-out"
           title="Timeline" aria-pressed="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.2 2"/></svg>
@@ -109,6 +142,33 @@
   <span class="hb-end mono" id="hb-max"></span>
   <button class="hb-sw" id="hb-sw" role="switch" aria-checked="false"
           aria-label="Colour the dots by this measure"><i></i></button>
+</div>
+
+<!-- Footprint drawing and editing. Appears with the ✎ button; the second row
+     exists only while a shape is loaded, because a name field with nothing to
+     name is an invitation to type into the void. -->
+<div class="fpbar panel" id="fpbar" hidden>
+  <div class="fp-row">
+    <div class="seg" role="tablist" aria-label="Draw a new footprint">
+      <button id="fp-box" role="tab" aria-selected="false">Draw box</button>
+      <button id="fp-poly" role="tab" aria-selected="false">Draw polygon</button>
+    </div>
+    <span class="fp-msg" id="fp-msg">Click a footprint to edit it, or draw a new one.</span>
+    <span class="spacer"></span>
+    <button id="fp-close" class="tb-btn" aria-label="Close footprint editing">✕</button>
+  </div>
+  <div class="fp-row" id="fp-editrow" hidden>
+    <input id="fp-name" type="text" placeholder="Name (optional)" aria-label="Footprint name">
+    <div class="seg" role="tablist" aria-label="What the shape outlines">
+      <button id="fp-kind-building" role="tab" aria-selected="false">Building</button>
+      <button id="fp-kind-campus" role="tab" aria-selected="true">Campus</button>
+    </div>
+    <span class="fp-msg" id="fp-attach"></span>
+    <span class="spacer"></span>
+    <button id="fp-delete" class="tb-btn fp-danger" hidden>Delete</button>
+    <button id="fp-cancel" class="tb-btn">Cancel</button>
+    <button id="fp-save" class="tb-btn go">Save</button>
+  </div>
 </div>
 
 <div id="map2d" class="mapfull"></div>
@@ -177,6 +237,10 @@
 <aside id="eqpanel" class="tchart eqpanel panel" aria-label="Sites shaken by the earthquake" hidden>
   <div class="eq-head">
     <h2 id="eq-title"></h2>
+    <!-- The panel is transient and unlinkable; the page is neither. Same ↗ the
+         layer rows use to reach their summaries. -->
+    <a id="eq-page" class="lyrlink" href="/quakes" target="_blank" rel="noopener"
+       title="Open this earthquake's own page" aria-label="Open this earthquake's own page">↗</a>
     <button id="eq-close" class="tb-btn" aria-label="Close">✕</button>
   </div>
   <p class="hint" id="eq-sub"></p>
