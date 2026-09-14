@@ -11,6 +11,7 @@
 <header class="topbar">
   <span class="brand">Data Center Intelligence</span>
   <button id="chip" class="chip" hidden></button>
+  <button id="fpchip" class="chip" hidden title="Click to show all dots again"><b>missing footprints only</b> <span>✕</span></button>
   <span class="spacer"></span>
   <button id="listBtn" class="icobtn" aria-label="All data centres as a list"
           title="List — every site" aria-pressed="false">
@@ -54,17 +55,59 @@
        them. -->
   <div class="fuelkey" id="dckey"></div>
   <label><input type="checkbox" id="lyr-fabs"> <i class="sw sw-fab"></i> Semiconductor Fabs<a class="lyrlink" href="/fabs" target="_blank" rel="noopener" title="All fabs — summary tables" aria-label="All fabs — summary tables">↗</a>
-    <span class="sublbl">90 fabs — power is estimated, never measured</span></label>
+    <span class="sublbl" id="fabnote">power is estimated, never measured</span></label>
   <!-- The honesty this layer needs, stated once where it cannot be missed:
-       no fab on earth publishes its electricity demand. -->
+       no fab on earth publishes its electricity demand. The counts here and in
+       the label above are filled from the payload - the layer regrows every
+       time src/fabs.py is re-run, and a written-out number had already gone
+       stale once. -->
   <p class="hint pl-note" id="fb-note" hidden>
     Hand-sourced per fab from company disclosures and CHIPS Act filings; each
     record carries its source. No fab publishes its electricity demand, so MW is
     <b>modelled</b> from wafer capacity and process node and is good to roughly a
-    factor of two — 14 of 90 have enough published data to estimate at all.
+    factor of two — <span id="fb-est">only a minority</span> have enough
+    published data to estimate at all.
   </p>
   <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants<a class="lyrlink" href="/plants" target="_blank" rel="noopener" title="All power plants — summary tables" aria-label="All power plants — summary tables">↗</a>
     <span class="sublbl">100 MW and up, worldwide — hollow means the location is approximate</span></label>
+  <!-- The two halves of the dependency graph, under the plants they hang off:
+       the equipment, then the links to it. Both read the same ledger, so both
+       point at /power - at its own section. -->
+  <label><input type="checkbox" id="lyr-subs" checked> <i class="sw sw-power"></i> Power Substations<a class="lyrlink" href="/power#substations" target="_blank" rel="noopener" title="Shared substations — what fails together" aria-label="Shared substations — what fails together">↗</a>
+    <span class="sublbl">what fails together — substations a filing names as a load's
+      point of interconnection; a ring means more than one mega-load is behind it,
+      and only substations we have placed on the ground are drawn</span></label>
+  <label><input type="checkbox" id="lyr-trans" checked> <i class="sw sw-power"></i> Dependency Links<a class="lyrlink" href="/power#transmission" target="_blank" rel="noopener" title="Dependency links — the physical ones" aria-label="Dependency links — the physical ones">↗</a>
+    <span class="sublbl">the physical dependency drawn straight from load to substation
+      or generator — the LINK, not the route the conductors take; a contract is not
+      drawn here because it shares no equipment</span></label>
+  <!-- The routes the conductors DO take, which the layer above spends two lines
+       saying it is not. Separate layers because they are separate claims: a
+       dependency edge comes from a filing naming a point of interconnection, a
+       corridor is just where the wires run, and a corridor passing a substation
+       is not evidence that it serves anything. Off by default — it is a lot of
+       line work in service of context rather than of the registry's subject. -->
+  <label><input type="checkbox" id="lyr-lines"> <i class="sw sw-line"></i> Transmission Lines
+    <span class="sublbl">real corridors from OpenStreetMap, © OpenStreetMap contributors
+      (ODbL) — where the conductors run, which is <b>not</b> a statement about who is
+      served; only filings say that</span></label>
+  <!-- Water is the second physical dependency after power. These are the
+       service areas of the 577 community water systems that registry sites
+       sit inside - not every system in the country, only the ones a site
+       depends on - so a hover says which utility, how big it is, and how many
+       sites ride on it. Tiled, because raw they are 121 MB. -->
+  <label><input type="checkbox" id="lyr-water"> <i class="sw sw-water"></i> Water Service Areas
+    <span class="sublbl">the community water systems US sites sit inside, from EPA's
+      service-area boundaries — hover for the utility, the population it serves and
+      how many sites depend on it; a boundary is EPA's estimate where the utility
+      did not draw its own</span></label>
+  <!-- Named pairings only, never proximity: each green thread is a documented
+       arrangement (a PUCT docket, a PPA, an on-site plant) tying one campus
+       to one plant, researched with the source on both pages. -->
+  <label><input type="checkbox" id="lyr-supply" checked> <i class="sw sw-supply"></i> Supply Links<a class="lyrlink" href="/supply" target="_blank" rel="noopener" title="All supply links — the ledger as tables" aria-label="All supply links — the ledger as tables">↗</a>
+    <span class="sublbl">who sells power to whom — data centre ⇆ power plant pairings
+      someone has established, 2D only; green threads, rings mark them from world
+      zoom, click to frame the pair, and each dot's page tells the story</span></label>
   <!-- Legend and filter in one control: it has to explain the colours anyway,
        and the same click that asks "which one is coal" wants to see only coal. -->
   <div class="fuelkey" id="fuelkey" hidden></div>
@@ -77,16 +120,47 @@
     Global Integrated Power Tracker, August 2026, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
     Storage is US-only — GEM tracks batteries separately.
   </p>
-  <!-- The four dot layers group first, then the one polygon layer, then the
-       earthquakes. The note says the one thing that is visible on screen and
-       cannot be guessed: some of these outlines are inferred rather than
-       recorded, and those are the faded ones. Which source each came from is
-       on the shape itself, in its popup - that belongs there, not here. -->
-  <label><input type="checkbox" id="lyr-footprints" checked> <i class="sw sw-fp"></i> Building Footprints
-    <span class="sublbl">OSM, cadastre and the IM3 atlas, 2D only — faded outlines are
-      inferred, not recorded</span></label>
+  <!-- The registry's own assets group first, then the shapes drawn over them,
+       then the two event layers. The note says the one thing that is visible
+       on screen and cannot be guessed: some of these outlines are inferred
+       rather than recorded, and those are the faded ones. Which source each
+       came from is on the shape itself, in its popup - that belongs there,
+       not here. -->
+  <label><input type="checkbox" id="lyr-footprints" checked> <i class="sw sw-fp"></i> Building Footprints<a class="lyrlink" href="/footprints" target="_blank" rel="noopener" title="All footprints — coverage and licences" aria-label="All footprints — coverage and licences">↗</a>
+    <span class="sublbl">OSM, cadastre, the IM3 atlas and Overture Maps, 2D only —
+      faded outlines are inferred, not recorded; pink rings mark mapped
+      footprints from world zoom, click one to dive</span></label>
+  <!-- The worklist as a filter: every dot left visible is a footprint nobody
+       has mapped, and its site page carries the drawing tools. -->
+  <button type="button" class="tb-btn lyr-sub" id="fp-unmapped" aria-pressed="false"
+    title="Filter every visible dot layer to assets with no footprint — each one can be traced from its own page">
+    Only dots missing a footprint</button>
+  <!-- A dropped pin is a claim someone is in the middle of making, so it sits
+       with the parcel layers people check claims against rather than up among
+       the layers that are already records. -->
+  <label><input type="checkbox" id="lyr-points" checked> <i class="sw sw-point"></i> Dropped Points<a class="lyrlink" href="/" title="Drag the figure in the map controls to drop one">↗</a>
+    <span class="sublbl">hand-dropped pins, hollow until they are given a kind — a claim
+      waiting to become a record</span></label>
+  <!-- Deliberately its own layer rather than more footprints: half of these
+       parcels were bought to be CHECKED against the footprints above, and a
+       source cannot be verified from inside the layer it is verifying. -->
+  <label><input type="checkbox" id="lyr-regrid"> <i class="sw sw-regrid"></i> REGRID
+    <span class="sublbl">US parcel boundaries from Regrid, 2D only — azure rings mark
+      the lots from world zoom, click one to dive; dashed boundaries under the
+      pink footprints for side-by-side verification</span></label>
+  <label><input type="checkbox" id="lyr-precisely"> <i class="sw sw-precisely"></i> PRECISELY
+    <span class="sublbl">US parcel boundaries from Precisely, 2D only — violet, same
+      rings and dashed lots, so the two vendors and the footprints can be judged
+      side by side</span></label>
+  <!-- The two event layers, adjacent because they are the same geometry
+       pointed opposite ways: below is a thing that HAPPENED and USGS says so,
+       above is a thing somebody is asking about. Sitting them together is the
+       clearest place to say which is which. -->
+  <label><input type="checkbox" id="lyr-events" checked> <i class="sw sw-event"></i> Simulated Events<a class="lyrlink" href="/power" title="What a failure here would expose">↗</a>
+    <span class="sublbl">hand-placed failures — <b>not</b> records of anything that happened;
+      the ring is the radius, and the page walks the dependency ledger inside it</span></label>
   <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes<a class="lyrlink" href="/quakes" target="_blank" rel="noopener" title="All earthquakes — summary tables" aria-label="All earthquakes — summary tables">↗</a>
-    <span class="sublbl">USGS M5+, last 90 days — click one for its ShakeMap</span></label>
+    <span class="sublbl" id="quakenote">USGS, last 90 days — click one for its ShakeMap</span></label>
 
   <!-- The zone layers are CONTEXT, not subjects. Each one answers "which grid
        operator's territory is this in" or "how does this country compare",
@@ -111,6 +185,25 @@
 <!-- Map controls, bottom right, over the map rather than in a chrome bar.
      Each is a single button showing the CURRENT state; clicking swaps it. -->
 <div class="mapctl" id="mapctl">
+  <!-- Drag onto the map to place a SIMULATED failure. Above the pegman
+       because it is the same gesture aimed at a different question: the pin
+       asks "what is here", the bolt asks "what is behind here". -->
+  <button id="evtBtn" class="corner-btn boltman" draggable="true"
+    title="Drag onto the map to simulate a failure here"
+    aria-label="Drag onto the map to simulate a failure here">
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+      <path d="M13.2 2 4.8 13.4h5.3L9.4 22l8.8-11.7h-5.6z"/>
+    </svg>
+  </button>
+  <!-- Drag onto the map to drop a point. Google's pegman, doing this
+       registry's job: the gesture already means "put me THERE". -->
+  <button id="pegBtn" class="corner-btn pegman" draggable="true"
+    title="Drag onto the map to drop a point" aria-label="Drag onto the map to drop a point">
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+      <circle cx="12" cy="5.5" r="3.1"/>
+      <path d="M7.4 10.2h9.2l1.1 5.6h-2.5l-.5 6.2h-5.4l-.5-6.2H6.3z"/>
+    </svg>
+  </button>
   <button id="fpBtn" class="corner-btn" aria-label="Draw or edit footprints"
           title="Draw / edit footprints" aria-pressed="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 19.5 1-3.8L16.7 4.5a2 2 0 0 1 2.8 2.8L8.3 18.5l-3.8 1Z"/><path d="m14.5 6.7 2.8 2.8"/></svg>
@@ -119,29 +212,64 @@
           title="Timeline" aria-pressed="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.2 2"/></svg>
   </button>
-  <div class="ctl-zoom">
+  <div class="ctl-group ctl-zoom">
     <button id="zoomIn" class="corner-btn" aria-label="Zoom in">+</button>
     <button id="zoomOut" class="corner-btn" aria-label="Zoom out">&minus;</button>
   </div>
-  <!-- The two basemap-ish switches read as one pair, so they sit as one. -->
+  <!-- The two basemap-ish switches read as one pair, so they sit as one row.
+       Not a square pill like the zoom: these carry WORDS, and the words change
+       with the state - "Map" becomes "Satellite" the moment you press it. -->
   <div class="ctl-row">
     <button id="modeBtn" class="corner-btn" title="Switch to 3D">2D</button>
     <button id="bmBtn" class="corner-btn" title="Switch to Satellite">Map</button>
   </div>
 </div>
 
-<!-- Colour the dots by a measure. Bottom centre, above the timeline bar when
-     both are open. -->
-<div class="heatbar panel" id="heatbar">
+<!-- Colour the dots by a measure. Rides with the layers pane: both are
+     "what am I looking at" controls, so one button governs them - and the
+     timeline never has to share the bottom edge with it. -->
+<div class="heatbar panel" id="heatbar" hidden>
   <div class="hb-pick">
     <button class="tb-btn" id="hb-btn" aria-expanded="false">Heatmap: <b id="hb-lbl"></b></button>
     <div class="hb-menu" id="hb-menu" hidden></div>
   </div>
   <span class="hb-end mono" id="hb-min"></span>
-  <span class="hb-ramp" id="hb-ramp" aria-hidden="true"></span>
+  <button class="hb-ramp" id="hb-ramp" aria-expanded="false"
+          title="Distribution — click, then drag across the chart to narrow the colour range"
+          aria-label="Show this measure's distribution and narrow the colour range"></button>
   <span class="hb-end mono" id="hb-max"></span>
   <button class="hb-sw" id="hb-sw" role="switch" aria-checked="false"
           aria-label="Colour the dots by this measure"><i></i></button>
+  <!-- Distribution of the painted measure, opened from the ramp. The chart is
+       the ramp's own scale drawn as a histogram: each bar wears the colour its
+       values are painted, a drag narrows the domain to the selection, and the
+       chart re-bins over the narrowed domain so a second drag narrows further.
+       Values pushed outside the range stay on the map, clamped to the end
+       colours - the filter refines the scale, it never hides a dot. -->
+  <div class="hb-dist" id="hb-dist" hidden>
+    <div class="hbd-head">
+      <span id="hbd-title"></span>
+      <!-- Hiding the greys is a FILTER, not a repaint: it flows through the
+           same visibility machinery as every other filter, so the title count,
+           the globe and the 2D map agree about what is drawn. -->
+      <button class="tb-btn" id="hbd-hide" type="button" aria-pressed="false"
+              title="Hide the grey dots — the ones with no value for this measure">
+        Hide no-value dots</button>
+    </div>
+    <div id="hbd-chart"></div>
+    <!-- The typed twin of the brush: exact bounds, in the measure's own unit.
+         Enter or leaving the field applies; the chart and the map re-scale the
+         same way a drag would. -->
+    <div class="hbd-range">
+      <label>from <input id="hbd-lo" type="text" inputmode="decimal"
+             autocomplete="off" spellcheck="false" aria-label="Range minimum"></label>
+      <label>to <input id="hbd-hi" type="text" inputmode="decimal"
+             autocomplete="off" spellcheck="false" aria-label="Range maximum"></label>
+      <span class="hbd-unit" id="hbd-unit"></span>
+      <button class="tb-btn" id="hbd-reset" type="button" hidden>Reset range</button>
+    </div>
+    <div class="hbd-note" id="hbd-note"></div>
+  </div>
 </div>
 
 <!-- Footprint drawing and editing. Appears with the ✎ button; the second row
@@ -340,6 +468,7 @@
 
 <script src="/vendor/maplibre-gl.js"></script>
 <script src="/vendor/globe.gl.min.js"></script>
+<script src="/vendor/pmtiles.js"></script>
 <script src="/theme.js"></script>
 <script src="/app.js"></script>
 </body>

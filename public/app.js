@@ -5,16 +5,21 @@
  * day/night styles are just two palettes over the same sources.
  * 3D is globe.gl drawing the same polygons and points on a sphere.
  *
- * Dots are deduplicated sites; clicking one opens /site/<site_id> in a new
+ * Dots are deduplicated sites; clicking one opens /maps/site/<site_id> in a new
  * tab, which is the shareable unit.
  */
 (async function () {
   'use strict';
 
   const state = {
-    heat: { on: false, k: 'mw' },
+    // range: a hand-narrowed [lo, hi] for the ramp, set by dragging on the
+    // distribution chart; null means the domain is computed from the data.
+    // hideMissing: drop the grey no-value dots entirely while the ramp paints
+    // - a real filter through the visibility machinery, not a repaint.
+    heat: { on: false, k: 'mw', range: null, hideMissing: false },
     mode: '2d',
-    layers: { facilities: true, footprints: true, ercot: false, pjm: false,
+    fpOnly: false,
+    layers: { facilities: true, footprints: true, regrid: false, precisely: false, supply: true, subs: true, trans: true, lines: false, water: false, points: true, events: true, ercot: false, pjm: false,
       nyiso: false, countries: false, quake: false, plants: false, fabs: false },
     fuels: null,    // Set of fuel keys while the plant legend is filtering
     // AI and traditional are two KINDS of data centre, not two layers. They
@@ -33,9 +38,21 @@
     day: {
       ocean: '#DFE9F0', land: '#F6F8FA', border: '#C4CFD8',
       fac: '#0E8A7C', ai: '#B5761E', halo: '#FFFFFF',
+      // Place names and political boundaries, drawn from the vector basemap.
+      // Only used when imagery is OFF - over a photograph these lose to
+      // white-on-dark, whatever the theme. See labelInk().
+      lbl: '#3D4C59', lblHalo: 'rgba(255,255,255,0.85)', bnd: '#9BADBC',
       // See --fp in app.css: footprints are drawn over PHOTOGRAPHY, so the
       // hue is picked against the earth rather than against this palette.
       fp: '#E0148C', fpCase: 'rgba(28,4,18,0.55)',
+      // Regrid parcels get their own ink: azure, nothing else on the map owns
+      // it at parcel zoom, and the whole point of the layer is telling these
+      // apart from the pink footprints they are being checked against.
+      regrid: '#2563EB',
+      precisely: '#7C3AED',
+      // Supply links get green: energy flowing, and nothing else on the map
+      // owns a saturated green at any zoom.
+      supply: '#059669',
       ercot: '#B5761E', pjm: '#3B82C4', nyiso: '#2E9E83', cty: '#7C5FBF',
       // The globe was night in both themes: one hard-coded texture and a black
       // background in each palette. Day now gets a lit sky; night stays dark.
@@ -60,7 +77,11 @@
     night: {
       ocean: '#0A1016', land: '#151C24', border: '#2E3A46',
       fac: '#40C4B4', ai: '#E0A75C', halo: '#0A1016',
+      lbl: '#C3CFDA', lblHalo: 'rgba(10,16,22,0.85)', bnd: '#4A5B6D',
       fp: '#FF63BE', fpCase: 'rgba(0,0,0,0.6)',
+      regrid: '#60A5FA',
+      precisely: '#A78BFA',
+      supply: '#34D399',
       ercot: '#FFB03B', pjm: '#60A5EB', nyiso: '#4FD1AC', cty: '#A78BFA',
       bg3d: '#000000', atmosphere: '#274060',
       globeOcean: '#0C1B2A', globeLand: '#22303C', globeBorder: '#44586B',
@@ -77,16 +98,128 @@
   const pal = () => PALETTES[document.documentElement.dataset.theme === 'night' ? 'night' : 'day'];
 
   // ---- data ----------------------------------------------------------------
-  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants, fabs]
+  // Transmission is NOT in this list any more: it arrives as vector tiles for
+  // the viewport (see initTransmission below), with the GeoJSON as a fallback.
+  // It was 1.45 MB gzipped on every load for corridors mostly out of view.
+  const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants, fabs,
+         regridFC, preciselyFC, supplyLinks, fpLocators, substations, depLinks, points, events]
     = await Promise.all(
     ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants',
-     'fabs']
+     'fabs', 'regrid', 'precisely', 'supply_links', 'fp_locators', 'substations', 'dep_links', 'points', 'events']
       .map(n => fetch(`/data/${n}.json`).then(r => r.json())));
 
   // Footprints arrive per viewport from /api/footprints, not in one payload -
   // see the note on that route. This starts empty and is filled by
   // loadFootprints() below whenever the map settles somewhere close enough in.
   const footprints = { type: 'FeatureCollection', features: [] };
+
+  // Where the REGRID layer HAS data, visible from orbit: a 38-parcel layer at
+  // world zoom is an empty map, and an empty map reads as a broken toggle. So
+  // each parcel also becomes one point - its bbox centre - drawn as a hollow
+  // ring that fades out exactly as the real lot lines fade in. Clicking a
+  // ring dives to the lot.
+  const parcelDots = (fc) => ({
+    type: 'FeatureCollection',
+    features: (fc.features || []).map(f => {
+      let xs = [], ys = [];
+      const walk = (c) => (typeof c[0] === 'number'
+        ? (xs.push(c[0]), ys.push(c[1]))
+        : c.forEach(walk));
+      walk(f.geometry.coordinates);
+      return { type: 'Feature',
+        geometry: { type: 'Point', coordinates: [
+          (Math.min(...xs) + Math.max(...xs)) / 2,
+          (Math.min(...ys) + Math.max(...ys)) / 2] },
+        properties: f.properties };
+    }),
+  });
+  const regridDotFC = parcelDots(regridFC);
+  const preciselyDotFC = parcelDots(preciselyFC);
+
+  // Footprint locators: bare [lon,lat] pairs from the server, one per
+  // footprint-bearing asset, so the footprints toggle shows its coverage
+  // from world zoom instead of an empty map until z11.
+  const fpLocFC = { type: 'FeatureCollection',
+    features: fpLocators.map(c => ({ type: 'Feature',
+      geometry: { type: 'Point', coordinates: c }, properties: {} })) };
+
+  // Supply links drawn twice, for the same reason the parcels are: a line
+  // from a campus to the plant net-metering it is 4-40 km long - a subpixel
+  // at world zoom - so each pair also gets a hollow ring at its midpoint
+  // that hands over to the line as the pair becomes separable. Both carry
+  // the endpoints in properties so a click can frame the pair.
+  const SUPPLY_ST = { btm: 'Behind the meter', netmeter: 'Net-metered co-location',
+                      ppa: 'Front-of-meter contract', announced: 'Announced only' };
+  const supplyProps = (l) => ({ sid: l.sid, ann: l.ann ? 1 : 0, st: l.st,
+    pid: l.pid, sn: l.sn, pn: l.pn,
+    sx: l.s[0], sy: l.s[1], px: l.p[0], py: l.p[1] });
+  const supplyLineFC = { type: 'FeatureCollection',
+    features: supplyLinks.map(l => ({ type: 'Feature',
+      geometry: { type: 'LineString', coordinates: [l.s, l.p] },
+      properties: supplyProps(l) })) };
+  const supplyDotFC = { type: 'FeatureCollection',
+    features: supplyLinks.map(l => ({ type: 'Feature',
+      geometry: { type: 'Point',
+        coordinates: [(l.s[0] + l.p[0]) / 2, (l.s[1] + l.p[1]) / 2] },
+      properties: supplyProps(l) })) };
+  // Announced campuses have no registry dot to land the thread on, so the
+  // thread's campus end gets its own marker: hollow, the map's established
+  // dialect for "approximate / not yet real".
+  const supplySiteFC = { type: 'FeatureCollection',
+    features: supplyLinks.filter(l => l.ann).map(l => ({ type: 'Feature',
+      geometry: { type: 'Point', coordinates: l.s },
+      properties: supplyProps(l) })) };
+
+  // Substations carrying a dependency edge. A SEPARATE layer from Supply
+  // Links on purpose: that layer draws who SELLS power to whom, mostly
+  // contractual; this one draws the equipment whose failure takes several
+  // loads out at once. Collapsing them would undo the one distinction the
+  // dependency ledger exists to make.
+  const subFC = { type: 'FeatureCollection',
+    features: substations.map(x => ({ type: 'Feature',
+      geometry: { type: 'Point', coordinates: [x.lon, x.lat] },
+      properties: x })) };
+
+  // Dependency links as straight segments. Amber like the substations they
+  // mostly end at, dashed because a straight line between two dots is the
+  // RELATIONSHIP and not the path any conductor takes - the map should not
+  // imply a route it has never surveyed.
+  const depLinkFC = { type: 'FeatureCollection',
+    features: depLinks.map(l => ({ type: 'Feature',
+      geometry: { type: 'LineString', coordinates: [l.a, l.b] },
+      properties: { an: l.an, bn: l.bn, rel: l.rel, ev: l.ev, to: l.to } })) };
+
+  // Dropped points. Hollow, which is this map's established dialect for
+  // "asserted, not yet established" - the same shape an announced campus
+  // gets - because that is exactly what a dropped pin is.
+  const PT_KIND = { datacentre: 'Data centre', fab: 'Semiconductor fab',
+                    plant: 'Power plant', substation: 'Substation' };
+  const ptFC = { type: 'FeatureCollection',
+    features: points.map(x => ({ type: 'Feature',
+      geometry: { type: 'Point', coordinates: [x.lon, x.lat] },
+      properties: { id: x.id, n: x.n || '', kind: x.kind || '' } })) };
+
+  // Simulated events. The ring is a real geographic circle - a polygon of 72
+  // points - not a circle layer, whose radius is in PIXELS and would quietly
+  // change what the event means at every zoom.
+  const ringOf = (lat, lon, km, n = 72) => {
+    const out = [];
+    const dLat = km / 110.574;
+    const dLon = km / (111.320 * Math.cos(lat * Math.PI / 180) || 1e-6);
+    for (let i = 0; i <= n; i++) {
+      const t = (i / n) * 2 * Math.PI;
+      out.push([lon + dLon * Math.cos(t), lat + dLat * Math.sin(t)]);
+    }
+    return out;
+  };
+  const evRingFC = { type: 'FeatureCollection',
+    features: events.map(e => ({ type: 'Feature',
+      geometry: { type: 'Polygon', coordinates: [ringOf(e.lat, e.lon, e.radius_km)] },
+      properties: { id: e.id, n: e.name || '', kind: e.kind, r: e.radius_km } })) };
+  const evDotFC = { type: 'FeatureCollection',
+    features: events.map(e => ({ type: 'Feature',
+      geometry: { type: 'Point', coordinates: [e.lon, e.lat] },
+      properties: { id: e.id, n: e.name || '', kind: e.kind, r: e.radius_km } })) };
 
   const drawable = sites.filter(s => s.lat != null);
   const sitesFC = {
@@ -206,6 +339,15 @@
     ? ['in', ['get', 'f'], ['literal', [...state.fuels]]] : null);
 
   const mwText = (v) => `${Math.round(v).toLocaleString()} MW`;
+  // Project value arrives in US$ MILLIONS from every layer - sites, plants and
+  // fabs share the unit because they share a ramp. Formatted to two-ish
+  // significant figures: these are announcements, and "$65bn" is the precision
+  // they were announced at. $12,400 -> $12bn, $6,400 -> $6.4bn, $800 -> $800M.
+  const usdText = (m) => (m >= 950000
+    ? `$${(m / 1e6).toFixed(m >= 9.5e6 ? 0 : 1)}tn`
+    : m >= 1000
+      ? `$${m >= 9500 ? Math.round(m / 1000).toLocaleString() : (m / 1000).toFixed(1)}bn`
+      : `$${Math.round(m).toLocaleString()}M`);
   const plantTip = (p) => {
     const iso = BA_ISO[p.ba] || p.ba;
     const head = p.k === 'op'
@@ -224,6 +366,9 @@
     return `<div class="t">${esc(p.n)}</div>` +
       `<div class="d">${esc(kind)}</div>` +
       `<div class="d">${head}</div>` +
+      // Announced for a project, reported for a build - the note on the
+      // plant's page says which, and what the figure covers.
+      (p.inv ? `<div class="d">${usdText(p.inv)} announced/reported cost</div>` : '') +
       // The two lines that answer the co-location question, when they apply:
       // capacity about to free up, and capacity being added on the same pad.
       // EIA gives the capacity that is leaving; GEM gives only the date. Both
@@ -245,7 +390,7 @@
   // ---- semiconductor fabs ---------------------------------------------------
   // A third class of thing on one map, so a third visual language: data centres
   // are solid dots, plants are rings, fabs are a solid dot with a dark rim in a
-  // colour nothing else uses. 78 of them, so they can all be drawn at any zoom.
+  // colour nothing else uses. Few enough that they can all be drawn at any zoom.
   //
   // They are here because a leading-edge fab draws 100-500 MW and competes with
   // data centres for the same interconnection queue - it is the same grid
@@ -269,6 +414,9 @@
     return `<div class="t">${esc(f.n)}</div>` +
       `<div class="d">${esc(f.op)}</div>` +
       (spec ? `<div class="d">${esc(spec)}</div>` : '') +
+      // Announced, not modelled - the one figure on this layer that is a
+      // reading rather than an estimate. What it covers is on the fab's page.
+      (f.inv ? `<div class="d">${usdText(f.inv)} announced investment</div>` : '') +
       // ESTIMATED, said every single time. No fab on earth publishes its
       // electricity demand, so this is modelled from wafer capacity and node
       // and is good to about a factor of two. Printing it bare would turn a
@@ -281,7 +429,7 @@
       '<div class="d">click to open this fab\u2019s page</div>';
   };
 
-  const openSite = (id) => window.open(`/site/${encodeURIComponent(id)}`, '_blank', 'noopener');
+  const openSite = (id) => window.open(`/maps/site/${encodeURIComponent(id)}`, '_blank', 'noopener');
   window.__openSite = openSite; // test hook
 
 
@@ -314,7 +462,10 @@
   const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   const siteFacts = (p) => {
-    const bits = [p.o, p.ci || p.c, p.mw ? p.mw.toLocaleString() + ' MW' : '', p.u]
+    // `est.` on the capex, always: it is Epoch's estimate at projected peak,
+    // not an announcement - the same contract as a fab's modelled MW.
+    const bits = [p.o, p.ci || p.c, p.mw ? p.mw.toLocaleString() + ' MW' : '',
+                  p.inv ? usdText(p.inv) + ' est. capex' : '', p.u]
       .filter(Boolean).map(esc).join(' · ');
     return `<div class="t">${esc(p.n || p.o || 'Data centre')}</div>` +
            (bits ? `<div class="d">${bits}</div>` : '') +
@@ -337,7 +488,7 @@
   // A real anchor rather than a click handler, so the site page can also be
   // opened in a background tab or a new window the usual ways.
   const sitePopup = (p) => siteFacts(p) +
-    `<a class="pop-open" href="/site/${encodeURIComponent(p.id)}" ` +
+    `<a class="pop-open" href="/maps/site/${encodeURIComponent(p.id)}" ` +
     `target="_blank" rel="noopener">Open site page →</a>`;
 
   // ---- 2D: MapLibre ---------------------------------------------------------
@@ -363,18 +514,43 @@
     // it: both dot layers rendered nothing at all until this was inverted.
     // So interpolate is outermost and the per-feature `case` goes in the stops.
     const z = (near, far) => ['interpolate', ['linear'], ['zoom'], 11, near, 14, far];
+    // The dot hands over to the footprint. Once you are close enough that the
+    // building itself is on screen, the dot is a worse target than the roof it
+    // stands on - it covers the thing it is pointing at, and clicking "the
+    // site" should mean clicking the site. So a dot whose asset HAS a
+    // footprint shrinks to nothing between z14 and z15.5, by which point
+    // footprints (loaded from z11) have long been drawn, and the shape takes
+    // over both the seeing and the clicking. The radius goes to zero as well
+    // as the opacity, deliberately: an invisible circle still answers
+    // queryRenderedFeatures, which would leave a dot you cannot see but can
+    // still click - exactly the thing this removes.
+    //
+    // A site with NO footprint keeps its dot at every zoom. It is the only
+    // mark that asset has, and fading it out would erase the site.
+    // Same crossfade the fp-loc locator ring already does at z11.5.
+    // Interpolate OUTERMOST, the per-feature case inside the stops - the same
+    // inversion the radius above needs, and for the same reason: a zoom
+    // expression nested inside a `case` is a hard MapLibre validation error
+    // that takes the whole style down. It did, again, writing this.
+    const hasFp = ['==', ['get', 'fp'], 1];
+    const handoff = (vis, off = 0) => ['interpolate', ['linear'], ['zoom'],
+      14, vis, 15.5, ['case', hasFp, off, vis]];
     return {
       'circle-color': ['case', town, 'rgba(0,0,0,0)', colour],
-      'circle-radius': z(base, base * 1.5),
-      // No zoom term: these are the same whether you are looking at the world
-      // or at one building.
-      'circle-opacity': ['case', town, 0, 0.92],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'],
+        11, base, 14, base * 1.5, 15.5, ['case', hasFp, 0, base * 1.5]],
+      // No zoom term below the handoff: these are the same whether you are
+      // looking at the world or at a city.
+      'circle-opacity': ['interpolate', ['linear'], ['zoom'],
+        14, ['case', town, 0, 0.92],
+        15.5, ['case', town, 0, ['case', hasFp, 0, 0.92]]],
       'circle-stroke-color': ['case', town, colour, halo],
       // The ring thickens with zoom because it is proportionally thinner as
       // the dot grows, and a town ring stays thicker than a halo since for
       // town dots the ring IS the marker.
       'circle-stroke-width': z(['case', town, 1.6, 0.8], ['case', town, 2.2, 1.8]),
-      'circle-stroke-opacity': 0.95,
+      // The ring goes with the dot, or a halo hangs over the roof alone.
+      'circle-stroke-opacity': handoff(0.95),
     };
   }
 
@@ -442,7 +618,10 @@
     const clamp01 = (e) => ['min', 1, ['max', 0, e]];
     return {
       version: 8,
-      glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
+      // Served out of data/raw/glyphs by src/basemap_tiles.py. This pointed at
+      // demotiles.maplibre.org - MapLibre's DEMO host - which was harmless only
+      // because the style had no symbol layers to spend a glyph on. It has now.
+      glyphs: '/glyphs/{fontstack}/{range}.pbf',
       sources: {
         basemap: { type: 'geojson', data: basemap },
         cty: { type: 'geojson', data: ctyFC },
@@ -455,6 +634,21 @@
         fab: { type: 'geojson', data: fabFC },
         sites: { type: 'geojson', data: sitesFC },
         fp: { type: 'geojson', data: footprints },
+        regrid: { type: 'geojson', data: regridFC },
+        'regrid-dot': { type: 'geojson', data: regridDotFC },
+        precisely: { type: 'geojson', data: preciselyFC },
+        'precisely-dot': { type: 'geojson', data: preciselyDotFC },
+        sub: { type: 'geojson', data: subFC },
+        pts: { type: 'geojson', data: ptFC },
+        evring: { type: 'geojson', data: evRingFC },
+        evdot: { type: 'geojson', data: evDotFC },
+        deplink: { type: 'geojson', data: depLinkFC },
+        // OSM transmission corridors. Off by default: it is a lot of line
+        // work and it answers a different question from everything else here.
+        'supply-line': { type: 'geojson', data: supplyLineFC },
+        'supply-dot': { type: 'geojson', data: supplyDotFC },
+        'supply-site': { type: 'geojson', data: supplySiteFC },
+        'fp-loc': { type: 'geojson', data: fpLocFC },
       },
       layers: [
         { id: 'bg', type: 'background', paint: { 'background-color': c.ocean } },
@@ -504,6 +698,166 @@
         // outline is what makes it findable. At the 0.13 it started from, a
         // magenta wash sat over every roof and hid the thing the footprint is
         // there to help you look at.
+        // Regrid parcels sit UNDER the footprints: the comparison the layer
+        // exists for reads as a pink building standing on an azure lot, and
+        // dashes keep the boundary legible where the two lines coincide.
+        { id: 'regrid-fill', type: 'fill', source: 'regrid',
+          layout: { visibility: 'none' },
+          paint: { 'fill-color': c.regrid, 'fill-opacity': 0.06 } },
+        { id: 'regrid-line', type: 'line', source: 'regrid',
+          layout: { visibility: 'none' },
+          paint: { 'line-color': c.regrid, 'line-width': fpWidth(1.6),
+            'line-dasharray': [2, 1.6], 'line-opacity': 0.95 } },
+        // A hollow ring, not a disc: most of these parcels have a site dot at
+        // the same coordinate, and a disc would sit on top of it. The ring
+        // hands over to the actual lot lines between z12 and z13.5.
+        { id: 'regrid-dot', type: 'circle', source: 'regrid-dot',
+          layout: { visibility: 'none' },
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 6, 8, 8, 12, 10],
+            'circle-stroke-color': c.regrid,
+            'circle-stroke-width': 2,
+            'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+              12, 0.95, 13.5, 0] } },
+        // Precisely, the second vendor on trial: identical treatment in
+        // violet, so agreement and disagreement with Regrid's azure lots are
+        // both visible at a glance.
+        { id: 'precisely-fill', type: 'fill', source: 'precisely',
+          layout: { visibility: 'none' },
+          paint: { 'fill-color': c.precisely, 'fill-opacity': 0.06 } },
+        { id: 'precisely-line', type: 'line', source: 'precisely',
+          layout: { visibility: 'none' },
+          paint: { 'line-color': c.precisely, 'line-width': fpWidth(1.6),
+            'line-dasharray': [2, 1.6], 'line-opacity': 0.95 } },
+        { id: 'precisely-dot', type: 'circle', source: 'precisely-dot',
+          layout: { visibility: 'none' },
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 6, 8, 8, 12, 10],
+            'circle-stroke-color': c.precisely,
+            'circle-stroke-width': 2,
+            'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+              12, 0.95, 13.5, 0] } },
+        // The green thread from a campus to the plant somebody has tied it
+        // to. Below the dots deliberately: a link is a relationship between
+        // two subjects, and must never cover either one.
+        { id: 'ev-fill', type: 'fill', source: 'evring',
+          layout: { visibility: 'visible' },
+          paint: { 'fill-color': '#B91C1C', 'fill-opacity': 0.07 } },
+        { id: 'ev-ring', type: 'line', source: 'evring',
+          layout: { visibility: 'visible' },
+          paint: { 'line-color': '#B91C1C', 'line-width': 1.6,
+                   'line-dasharray': [3, 2], 'line-opacity': 0.85 } },
+        { id: 'ev-dot', type: 'circle', source: 'evdot',
+          layout: { visibility: 'visible' },
+          paint: { 'circle-color': '#B91C1C',
+                   'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 3.5, 10, 7],
+                   'circle-stroke-color': '#fff', 'circle-stroke-width': 1.8 } },
+        // Corridors sit at the BOTTOM of the overlay stack — under the
+        // dependency edges, under every dot, and under the dropped-point
+        // labels. The ordering is the argument: a corridor is context, a
+        // dependency edge is evidence, and evidence must never be buried
+        // under context. Placing it above pt-label let 9,368 grey lines
+        // cross the text of hand-dropped pins.
+        // power-line is added by initTransmission(), before pt-dot, once the
+        // tile archive (or its GeoJSON fallback) is known to be there.
+        { id: 'pt-dot', type: 'circle', source: 'pts',
+          layout: { visibility: 'visible' },
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 4, 10, 8, 14, 11],
+            'circle-stroke-color': ['case', ['==', ['get', 'kind'], ''], '#7c3aed', '#0E8A7C'],
+            'circle-stroke-width': 2.4 } },
+        { id: 'pt-label', type: 'symbol', source: 'pts',
+          layout: { visibility: 'visible', 'text-field': ['get', 'n'], 'text-size': 11,
+                    'text-offset': [0, 1.3], 'text-anchor': 'top', 'text-allow-overlap': false },
+          paint: { 'text-color': '#5b21b6', 'text-halo-color': '#fff', 'text-halo-width': 1.4,
+                   'text-opacity': ['interpolate', ['linear'], ['zoom'], 9, 0, 10, 1] } },
+        { id: 'dep-line', type: 'line', source: 'deplink',
+          layout: { 'line-cap': 'round', visibility: 'visible' },
+          paint: { 'line-color': '#D97706',
+            'line-width': ['interpolate', ['linear'], ['zoom'], 4, 1, 9, 2, 14, 3],
+            'line-dasharray': [2, 1.6],
+            'line-opacity': 0.85 } },
+        // Amber, and square-shouldered: every other node layer on this map
+        // is a circle, so a substation reads as a different KIND of thing at
+        // a glance rather than as another asset. Size follows how many loads
+        // stand behind it - the accumulation is the point.
+        { id: 'sub-dot', type: 'circle', source: 'sub',
+          layout: { visibility: 'visible' },
+          paint: {
+            'circle-color': '#D97706',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'],
+              3, ['case', ['>', ['get', 'as'], 1], 4, 2.5],
+              8, ['case', ['>', ['get', 'as'], 1], 8, 5],
+              13, ['case', ['>', ['get', 'as'], 1], 13, 8]],
+            'circle-stroke-color': '#fff',
+            'circle-stroke-width': 1.6,
+            'circle-opacity': 0.92 } },
+        // A ring around the ones carrying more than one load: the shared
+        // points are the whole reason this layer exists, so they are the
+        // ones visible from further out.
+        { id: 'sub-share', type: 'circle', source: 'sub',
+          filter: ['>', ['get', 'as'], 1],
+          layout: { visibility: 'visible' },
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 8, 8, 14, 13, 22],
+            'circle-stroke-color': '#D97706',
+            'circle-stroke-width': 1.6,
+            'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'], 6, 0.75, 12, 0.25] } },
+        { id: 'sub-label', type: 'symbol', source: 'sub',
+          layout: { visibility: 'visible',
+            'text-field': ['get', 'n'],
+            'text-size': 11,
+            'text-offset': [0, 1.3],
+            'text-anchor': 'top',
+            'text-allow-overlap': false },
+          paint: { 'text-color': '#B45309', 'text-halo-color': '#fff',
+                   'text-halo-width': 1.4,
+                   'text-opacity': ['interpolate', ['linear'], ['zoom'], 8.5, 0, 9.5, 1] } },
+        { id: 'supply-line', type: 'line', source: 'supply-line',
+          layout: { 'line-cap': 'round', visibility: 'visible' },
+          paint: { 'line-color': c.supply,
+            'line-width': ['interpolate', ['linear'], ['zoom'], 4, 1, 9, 2.5, 14, 4],
+            'line-opacity': 0.85 } },
+        // A pair 4-40 km apart is a subpixel from orbit, so the ring marks
+        // where a link EXISTS from world zoom and dissolves once the line
+        // itself is legible - the vendor rings' trick at a wider zoom band.
+        { id: 'supply-dot', type: 'circle', source: 'supply-dot',
+          layout: { visibility: 'visible' },
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 7, 8, 9],
+            'circle-stroke-color': c.supply,
+            'circle-stroke-width': 2,
+            'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+              7.5, 0.9, 9, 0] } },
+        // Where a verified pairing's campus is not a registry dot yet, the
+        // thread still needs an end: hollow green, fading in exactly as the
+        // locator ring above fades out.
+        { id: 'supply-site', type: 'circle', source: 'supply-site',
+          layout: { visibility: 'visible' },
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 8, 4, 13, 7],
+            'circle-stroke-color': c.supply,
+            'circle-stroke-width': 1.8,
+            'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+              7.5, 0, 9, 0.9] } },
+        // The footprint layer's own vendor-ring trick: shapes only load from
+        // z11, so these tiny hollow rings say "footprints mapped here" from
+        // orbit and dissolve exactly as the real outlines take over. At the
+        // very bottom of the thematic stack - a locator loses to everything.
+        { id: 'fp-loc', type: 'circle', source: 'fp-loc',
+          paint: {
+            'circle-color': 'rgba(0,0,0,0)',
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 6, 3.5, 10, 6],
+            'circle-stroke-color': c.fp,
+            'circle-stroke-width': 1.1,
+            'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+              0, 0.5, 8, 0.65, 10.5, 0.65, 11.5, 0] } },
         { id: 'fp-fill', type: 'fill', source: 'fp',
           paint: { 'fill-color': c.fp,
             'fill-opacity': ['case', ['==', ['get', 'kind'], 'campus'], 0.04, 0.07] } },
@@ -511,14 +865,18 @@
         // colour and same shape - they are footprints either way - but a
         // building nobody labelled should not look as certain on the map as
         // one somebody did.
+        // Overture fades with osm-site: both are inferences - a big building
+        // on a known site, a model's read of a roof - not somebody's label.
         { id: 'fp-line-case', type: 'line', source: 'fp',
           filter: ['!=', ['get', 'kind'], 'campus'],
           paint: { 'line-color': c.fpCase, 'line-width': fpWidth(2.6),
-            'line-opacity': ['case', ['==', ['get', 'src'], 'osm-site'], 0.5, 0.85] } },
+            'line-opacity': ['case',
+              ['in', ['get', 'src'], ['literal', ['osm-site', 'overture']]], 0.5, 0.85] } },
         { id: 'fp-line', type: 'line', source: 'fp',
           filter: ['!=', ['get', 'kind'], 'campus'],
           paint: { 'line-color': c.fp, 'line-width': fpWidth(1.3),
-            'line-opacity': ['case', ['==', ['get', 'src'], 'osm-site'], 0.62, 1] } },
+            'line-opacity': ['case',
+              ['in', ['get', 'src'], ['literal', ['osm-site', 'overture']]], 0.62, 1] } },
         // A derived boundary fades the same way an inferred hall does. It is
         // the hull of the buildings, not a line anybody surveyed, and it must
         // not read as firmly as a parcel somebody mapped.
@@ -572,16 +930,131 @@
     };
   }
 
+  // The view IS the URL, in Google Maps' own dialect: /@lat,lon,4370m
+  // (or ...,12z). The path is parsed for the opening camera and rewritten
+  // on every pan and zoom, so the address bar is always a shareable link
+  // back to this exact view. The metres form is what Google shares: the
+  // viewport's ground height, which converts through the web-mercator
+  // ground resolution (156543.03 * cos(lat) / 2^z metres per pixel).
+  const GROUND = 156543.03392;
+  const viewH = () => document.getElementById('map2d').clientHeight || 800;
+  const zoomForMetres = (m, lat) =>
+    Math.log2(GROUND * Math.cos(lat * Math.PI / 180) * viewH() / Math.max(1, m));
+  const metresForZoom = (z, lat) =>
+    Math.round(GROUND * Math.cos(lat * Math.PI / 180) * viewH() / Math.pow(2, z));
+  let initCenter = [-30, 28], initZoom = 1.7;
+  // /maps/@lat,lon,zoom is the canonical camera, spelled the way Google
+  // spells it. The bare /@... form is still read here as well as redirected
+  // server-side: the redirect handles a fresh navigation, and this handles a
+  // link opened straight into an already-running page.
+  const atPath = location.pathname.match(
+    /^(?:\/maps)?\/@(-?[\d.]+),(-?[\d.]+)(?:,([\d.]+)(m|z))?/);
+  const oldHash = location.hash.match(/^#v=([\d.]+)\/(-?[\d.]+)\/(-?[\d.]+)/);
+  if (atPath) {
+    const lat = +atPath[1];
+    initCenter = [+atPath[2], lat];
+    initZoom = atPath[4] === 'z' ? +atPath[3]
+      : atPath[4] === 'm' ? zoomForMetres(+atPath[3], lat)
+      : 14;
+  } else if (oldHash) {
+    // The short-lived #v= links keep working.
+    initCenter = [+oldHash[3], +oldHash[2]];
+    initZoom = +oldHash[1];
+  }
+
   const map = new maplibregl.Map({
     container: 'map2d',
     style: buildStyle(),
-    center: [-30, 28],
-    zoom: 1.7,
+    center: initCenter,
+    zoom: Math.max(0, Math.min(22, initZoom)),
     attributionControl: false,
   });
+  map.on('moveend', () => {
+    const c = map.getCenter();
+    // replaceState, not pushState: panning is one continuous act, not a
+    // browser-history entry per wiggle. Deep-link params are dropped once
+    // the camera moves - the view in the bar is now the truth to share.
+    history.replaceState(null, '', '/maps/@' + c.lat.toFixed(7) + ','
+      + c.lng.toFixed(7) + ',' + metresForZoom(map.getZoom(), c.lat) + 'm');
+  });
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+  // A bar that says how far. Every distance on this map - a 3 km nearby-dot
+  // radius, a substation's reach, how far a dot moved when somebody corrected
+  // it - is quoted in kilometres, and until now the map gave no way to see
+  // what a kilometre looks like at the current zoom. Metric only: the registry
+  // states distances in km throughout and a bar that disagreed with the prose
+  // would be worse than no bar.
+  map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }),
+                 'bottom-left');
+
+  // North stays up. On a 2D registry map, rotation (right-drag, touch twist,
+  // shift+arrows) and touch pitch only ever happen by accident, and with the
+  // compass hidden there is no control to undo them with.
+  map.dragRotate.disable();
+  map.touchZoomRotate.disableRotation();
+  map.touchPitch.disable();
+  if (map.keyboard && map.keyboard.disableRotation) map.keyboard.disableRotation();
 
   window.__map = map; window.__state = state; // test hooks
+
+  // Wait for the map to be genuinely ready, EVEN IN A HIDDEN TAB.
+  //
+  // Browsers suspend requestAnimationFrame while a tab or pane is hidden, and
+  // MapLibre's render loop rides on rAF. A map built while hidden therefore
+  // never finishes: isStyleLoaded() stays false, getLayer() returns undefined
+  // for layers that are right there in the style, and queryRenderedFeatures
+  // comes back empty. Every one of those reads EXACTLY like a broken layer,
+  // which has now cost two debugging sessions chasing a bug that was not
+  // there.
+  //
+  // It cannot be worked around from in here, and it is worth being exact
+  // about why. MapLibre's Style.loadJSON wraps _load in frameAsync(), a
+  // requestAnimationFrame promise. Hidden means that promise never settles,
+  // so there is no parsed style at all - map.redraw() has nothing to render
+  // and pumping it from setTimeout (which IS still delivered, throttled to
+  // about 1 Hz) changes nothing. Measured: 26 pumps over 25 s, style still
+  // unparsed. Nor is this a bug to fix: a background tab that declines to
+  // build a WebGL scene is behaving correctly, and a reader who focuses the
+  // tab gets their map.
+  //
+  // So the fix is to make the deadlock ANNOUNCE ITSELF instead of looking
+  // like a broken layer. Anything driving this map from automation should
+  // await __mapReady() first and read `blocked`.
+  window.__mapReady = (timeoutMs = 20000) => new Promise((resolve) => {
+    const t0 = Date.now();
+    // Three states, because they license different assertions:
+    //   parsed  - getStyle()/getLayer() are meaningful. Layer existence and
+    //             querySourceFeatures() can be trusted.
+    //   settled - tiles have actually rendered, so queryRenderedFeatures()
+    //             is meaningful too. Needs CONTINUOUS frames.
+    // A hidden pane gets neither until something composites it; one
+    // screenshot buys 'parsed', sustained visibility buys 'settled'.
+    const parsed = () => { try { return !!map.getStyle(); } catch { return false; } };
+    const st = () => ({ hidden: document.hidden, ms: Date.now() - t0,
+      parsed: parsed(), settled: map.isStyleLoaded() && map.loaded() });
+    const tick = () => {
+      const s = st();
+      if (s.settled) return resolve({ ok: true, rendered: true, ...s });
+      // Parsed but not settled is the normal hidden-pane state after one
+      // forced frame: assert on layers, do NOT trust rendered-feature reads.
+      if (s.parsed && document.hidden && s.ms > 600) {
+        return resolve({ ok: true, rendered: false, ...s,
+          note: 'Style parsed, tiles not settled (pane hidden). getLayer and '
+              + 'querySourceFeatures are valid; queryRenderedFeatures may return [].' });
+      }
+      if (!s.parsed && document.hidden && s.ms > 1000) {
+        return resolve({ ok: false, rendered: false, blocked: 'hidden-tab', ...s,
+          why: 'The pane or tab is hidden, so requestAnimationFrame is suspended and '
+             + 'MapLibre never runs the frame its style load is wrapped in. getLayer() '
+             + 'returns undefined for layers that are present and fine.',
+          remedy: 'Force one composited frame - screenshot the pane, or show it - then '
+                + 'call again. Do not read this as a missing layer.' });
+      }
+      if (s.ms > timeoutMs) return resolve({ ok: false, rendered: false, blocked: 'timeout', ...s });
+      setTimeout(tick, 100);
+    };
+    tick();
+  });
 
   // The container's final size can land after construction (fonts, the fixed
   // topbar, embedded panes); MapLibre keeps the stale canvas size otherwise.
@@ -601,7 +1074,16 @@
     // in colour and size, which is a paint difference, not a subject one. The
     // kind chips below decide which of the two is drawn.
     facilities: ['sites', 'sites-ai'],
-    footprints: ['fp-fill', 'fp-line-case', 'fp-line', 'fp-line-campus-case', 'fp-line-campus'],
+    footprints: ['fp-fill', 'fp-line-case', 'fp-line', 'fp-line-campus-case', 'fp-line-campus', 'fp-loc'],
+    regrid: ['regrid-fill', 'regrid-line', 'regrid-dot'],
+    precisely: ['precisely-fill', 'precisely-line', 'precisely-dot'],
+    supply: ['supply-line', 'supply-dot', 'supply-site'],
+    subs: ['sub-share', 'sub-dot', 'sub-label'],
+    trans: ['dep-line'],
+    lines: ['power-line'],
+    water: ['water-fill', 'water-line'],
+    points: ['pt-dot', 'pt-label'],
+    events: ['ev-fill', 'ev-ring', 'ev-dot'],
     ercot: ['ercot', 'ercot-line'],
     pjm: ['pjm', 'pjm-line'],
     nyiso: ['nyiso', 'nyiso-line'],
@@ -616,6 +1098,21 @@
     sites: ['!=', ['get', 'ft'], 'ai'],
     'sites-ai': ['==', ['get', 'ft'], 'ai'],
   };
+
+  // Where the dot hands the site over to its own footprint. The paint fades
+  // the dot out between z14 and here (see dotPaint); at this zoom the feature
+  // leaves the layer altogether.
+  //
+  // Fading alone was not enough, and the reason is worth keeping: a circle
+  // with radius 0 and opacity 0 is invisible but STILL ANSWERS
+  // queryRenderedFeatures, so the dot stayed clickable - a target you cannot
+  // see, sitting on top of the roof you are trying to click. A filter is the
+  // honest instrument: a filtered-out feature is not rendered and not hit,
+  // and every consumer - click, hover cursor, the search-facet paths - reads
+  // the same truth without being told about zoom.
+  const FP_HANDOFF_ZOOM = 15.5;
+  const handoffClause = () =>
+    (map.getZoom() >= FP_HANDOFF_ZOOM ? ['!=', ['get', 'fp'], 1] : null);
   // 519 events span 0.98 of a quarter, so a quarterly slider cannot sequence
   // them at all - every one lands on the same stop. The cursor therefore has
   // two resolutions: quarters for an 11-year build-out, days for an event
@@ -673,9 +1170,26 @@
   const dcKind = (d) => (d.ft === 'ai' ? 'ai' : 'traditional');
   const dcOn = (d) => !state.dcKinds || state.dcKinds.has(dcKind(d));
 
+  // "Hide no-value dots" from the distribution panel. Active only while the
+  // ramp is painting, and implemented as a FILTER through this file's normal
+  // visibility machinery - shown() for the count/globe/search, a MapLibre
+  // filter clause per layer for 2D - never as transparent paint, which would
+  // leave invisible dots hoverable and a title count that lies.
+  const hideMissingActive = () => !!(state.heat.on && state.heat.hideMissing);
+  // heatHas and heatSpec are defined with the heatmap block far below; both
+  // are only ever CALLED at runtime, the same arrangement pointColour uses.
+  const hideMissingClause = (which) => {
+    if (!hideMissingActive()) return null;
+    const m = heatSpec();
+    const key = which === 'plant' ? m.pk : which === 'fab' ? m.fk : m.k;
+    if (!key) return null;   // measure means nothing on this layer: not grey, keep
+    return m.zeroIsReal ? ['has', key] : ['>', ['to-number', ['get', key], 0], 0];
+  };
+
   const shown = () => drawable.filter(d =>
     state.layers.facilities && dcOn(d) &&
-    matchesFilter(d) && inTime(d) && inList(d));
+    matchesFilter(d) && inTime(d) && inList(d) &&
+    (!hideMissingActive() || heatHas(d)));
 
   // Events are always time-aware, in both resolutions: show what had happened
   // at or before the cursor. With the timeline closed, show everything.
@@ -716,6 +1230,10 @@
 
   updateCount();   // paint the real number now; the style takes seconds to load
 
+  // The worklist filter: dots whose asset has no footprint. The flag is only
+  // ever present (fp: 1) on outlined assets, so "missing" is the absent key.
+  const unmappedClause = () => (state.fpOnly ? ['!', ['has', 'fp']] : null);
+
   function applyVisibility() {
     for (const [id, kind] of Object.entries(KIND_FILTER)) {
       if (map.getLayer(id)) {
@@ -729,11 +1247,27 @@
         if (listIds) parts.push(['in', ['get', 'id'], ['literal', [...listIds]]]);
         const dc = dateClause();
         if (dc) parts.push(dc);
+        const hm = hideMissingClause('site');
+        if (hm) parts.push(hm);
+        const uc = unmappedClause();
+        if (uc) parts.push(uc);
+        // Zoomed in past the handoff, a footprint-bearing site IS its
+        // footprint; the dot would only be in the way.
+        const ho = handoffClause();
+        if (ho) parts.push(ho);
         map.setFilter(id, parts.length > 1 ? ['all', ...parts] : kind);
       }
     }
     if (map.getLayer('epicentre')) map.setFilter('epicentre', eventClause());
-    if (map.getLayer('plant')) map.setFilter('plant', plantClause());
+    if (map.getLayer('plant')) {
+      const pp = [plantClause(), hideMissingClause('plant'), unmappedClause()].filter(Boolean);
+      map.setFilter('plant', pp.length > 1 ? ['all', ...pp] : (pp[0] || null));
+    }
+    // The fab layer never had a filter before this; null clears it again.
+    if (map.getLayer('fab')) {
+      const fp_ = [hideMissingClause('fab'), unmappedClause()].filter(Boolean);
+      map.setFilter('fab', fp_.length > 1 ? ['all', ...fp_] : (fp_[0] || null));
+    }
     for (const [key, ids] of Object.entries(LAYER_IDS)) {
       for (const id of ids) {
         if (map.getLayer(id)) {
@@ -759,6 +1293,16 @@
   // throws while the style is loading - which wedged the style in a permanently
   // "not done loading" state. 'style.load' fires once, after load completes.
   map.on('load', applyVisibility);
+  // Re-filter only when the handoff threshold is actually crossed. Refiltering
+  // on every zoom frame would rebuild both dot layers' filters continuously
+  // for a change that happens twice a session.
+  let pastHandoff = null;
+  map.on('zoom', () => {
+    const now = map.getZoom() >= FP_HANDOFF_ZOOM;
+    if (now === pastHandoff) return;
+    pastHandoff = now;
+    applyVisibility();
+  });
   map.on('style.load', applyVisibility);
 
   for (const id of ['sites', 'sites-ai']) {
@@ -837,7 +1381,7 @@
   map.on('click', 'plant', (e) => {
     if (state.fpEdit) return;     // see the sites handler above
     const f = e.features && e.features[0];
-    if (f) window.open('/plant/' + encodeURIComponent(f.properties.id), '_blank', 'noopener');
+    if (f) window.open('/maps/plant/' + encodeURIComponent(f.properties.id), '_blank', 'noopener');
   });
   map.on('mouseenter', 'plant', () => { map.getCanvas().style.cursor = 'pointer'; });
   map.on('mouseleave', 'plant', () => { map.getCanvas().style.cursor = ''; });
@@ -850,10 +1394,434 @@
   map.on('click', 'fab', (e) => {
     if (state.fpEdit) return;     // see the sites handler above
     const f = e.features && e.features[0];
-    if (f) window.open('/fab/' + encodeURIComponent(f.properties.id), '_blank', 'noopener');
+    if (f) window.open('/maps/fab/' + encodeURIComponent(f.properties.id), '_blank', 'noopener');
   });
   map.on('mouseenter', 'fab', () => { map.getCanvas().style.cursor = 'pointer'; });
   map.on('mouseleave', 'fab', () => { map.getCanvas().style.cursor = ''; });
+
+  // ---- Regrid parcels --------------------------------------------------------
+  // Hover only - the layer is a comparison surface, not a subject, so it gets
+  // a tooltip saying whose lot this is and why it was bought, and no page.
+  const regridTip = (p) => {
+    const meta = [p.ref, p.locality, p.acres ? p.acres + ' ac' : ''].filter(Boolean);
+    return `<div class="t">${esc(p.op || 'Parcel')}</div>` +
+      (meta.length ? `<div class="d">${esc(meta.join(' \u00b7 '))}</div>` : '') +
+      `<div class="d">${p.grp === 'verify'
+        ? 'bought to verify against the footprint drawn here'
+        : 'new coverage \u2014 no footprint existed for this site'}</div>` +
+      `<div class="d">${p.src === 'precisely' ? 'Precisely' : 'Regrid'} parcel</div>`;
+  };
+  for (const vendor of ['regrid', 'precisely']) {
+    map.on('mousemove', `${vendor}-fill`, (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+      if (!e.features.length) return hideTip();
+      showTip(e.originalEvent.clientX, e.originalEvent.clientY, regridTip(e.features[0].properties));
+    });
+    map.on('mouseleave', `${vendor}-fill`, hideTip);
+    map.on('mousemove', `${vendor}-dot`, (e) => {
+      if (!e.features.length) return hideTip();
+      const p = e.features[0].properties;
+      showTip(e.originalEvent.clientX, e.originalEvent.clientY,
+        regridTip(p) + '<div class="d">click to dive to the lot</div>');
+    });
+    map.on('mouseleave', `${vendor}-dot`, hideTip);
+    map.on('mouseenter', `${vendor}-dot`, () => { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('click', `${vendor}-dot`, (e) => {
+      if (!e.features.length) return;
+      map.flyTo({ center: e.features[0].geometry.coordinates, zoom: 15.3 });
+    });
+  }
+
+  // Footprint locators: any dot wins the hover and the click; on bare ground
+  // a ring dives to where its shapes will actually render.
+  const DOT_LAYERS = ['sites', 'sites-ai', 'plant', 'fab'];
+  map.on('mousemove', 'fp-loc', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    if (!e.features.length) return hideTip();
+    map.getCanvas().style.cursor = 'pointer';
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY,
+      '<div class="t">Building footprints mapped here</div>'
+      + '<div class="d">click to dive to the outlines</div>');
+  });
+  map.on('mouseleave', 'fp-loc', () => { map.getCanvas().style.cursor = ''; hideTip(); });
+  map.on('click', 'fp-loc', (e) => {
+    if (!e.features.length) return;
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    map.flyTo({ center: e.features[0].geometry.coordinates, zoom: 13.2 });
+  });
+
+  // The dependency link. The tooltip says what KIND of dependency, because a
+  // straight amber line is otherwise indistinguishable from the green supply
+  // thread it deliberately is not.
+  const DEP_REL = { primary_feed: 'Primary feed', secondary_feed: 'Secondary feed',
+    behind_meter: 'Behind the meter', net_metered: 'Net-metered co-location',
+    generation_source: 'Injects into', transmission_path: 'Transmission path' };
+  map.on('mousemove', 'dep-line', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    if (!e.features.length) return hideTip();
+    const p = e.features[0].properties;
+    map.getCanvas().style.cursor = 'pointer';
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY,
+      `<div class="t">${esc(p.an)} → ${esc(p.bn)}</div>`
+      + `<div class="d">${esc(DEP_REL[p.rel] || p.rel)}</div>`
+      + '<div class="d">the dependency, drawn straight — not the route the '
+      + 'conductors take</div>');
+  });
+  map.on('mouseleave', 'dep-line', () => { map.getCanvas().style.cursor = ''; hideTip(); });
+
+  // Corridors get a hover tip and NOTHING on click. The server already trims
+  // the payload down to these two fields, so without this they shipped on
+  // 9,368 features and were never read by anything.
+  //
+  // Guarded on DOT_LAYERS like every other line handler here: 9,368 grey lines
+  // cross a great many dots, and a corridor stealing the hover from a data
+  // centre would make the registry's own subject unclickable. Deliberately no
+  // click handler - a corridor has no page to open, and it is not evidence of
+  // anything a reader should be invited to follow.
+  map.on('mousemove', 'power-line', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    if (!e.features.length) return hideTip();
+    const p = e.features[0].properties;
+    map.getCanvas().style.cursor = 'default';
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY,
+      `<div class="t">${esc(p.n || 'Transmission line')}</div>`
+      + (p.kv ? `<div class="d">${esc(p.kv)} kV</div>` : '')
+      + '<div class="d">a corridor from OpenStreetMap — where the conductors '
+      + 'run, not a statement about who is served</div>');
+  });
+  map.on('mouseleave', 'power-line', () => { map.getCanvas().style.cursor = ''; hideTip(); });
+  // The water utility under the cursor: the same facts the site page states,
+  // read off the tile. Anything that IS a site beats the area it sits in.
+  map.on('mousemove', 'water-fill', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: [...DOT_LAYERS, 'fp-fill'] }).length) {
+      return hideTip();
+    }
+    if (!e.features.length) return hideTip();
+    const p = e.features[0].properties;
+    map.getCanvas().style.cursor = 'default';
+    const n = (v) => (v ? (+v).toLocaleString('en-US') : '');
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY,
+      `<div class="t">${esc(p.n || 'Community water system')}</div>`
+      + (p.pop ? `<div class="d">serving ${n(p.pop)} people` + (p.conn ? `, ${n(p.conn)} connections` : '') + '</div>' : '')
+      + `<div class="d">${n(p.s)} registry ${+p.s === 1 ? 'site' : 'sites'} inside · ${esc(p.m || 'boundary')}</div>`
+      + `<div class="d">EPA service area · ${esc(p.pwsid)}</div>`);
+  });
+  map.on('mouseleave', 'water-fill', () => { map.getCanvas().style.cursor = ''; hideTip(); });
+  map.on('click', 'dep-line', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    if (e.features.length) window.open('/power#transmission', '_blank', 'noopener');
+  });
+
+  // A shared drag: both corner figures are carried onto the map and dropped,
+  // so the gesture lives once and each button says what to do with the
+  // coordinate it lands on.
+  // `dangle` hangs the figure from a pivot ABOVE the cursor and lets it swing,
+  // the way the pegman does on Google's map. It is a pendulum rather than a
+  // tilt: the lean is driven by how fast the pointer is moving and then springs
+  // back, so flicking the figure across the map swings it and stopping lets it
+  // settle upright.
+  //
+  // The pivot sits at the top of the ghost, 30px above the pointer, which is
+  // the one detail that keeps this honest: the FEET stay at the cursor at rest
+  // and swing in an arc around it, so the drop point is still the point the
+  // figure is standing on. Pivoting at the cursor instead would hang the body
+  // over the map and put the feet 28px from where the pin actually lands.
+  //
+  // Only the pin gets it. A lightning bolt is not a thing that hangs from your
+  // fingers, and swinging it would say something about the gesture that is not
+  // true.
+  function dragToDrop(btn, onDrop, { dangle = false } = {}) {
+    if (!btn) return;
+    btn.addEventListener('dragstart', (e) => e.preventDefault());
+    let ghost = null, raf = 0;
+    let angle = 0, avel = 0, lean = 0, lastX = null, lastT = 0;  // degrees
+    const move = (x, y) => { if (ghost) { ghost.style.left = (x - 14) + 'px'; ghost.style.top = (y - 30) + 'px'; } };
+
+    function swing() {
+      if (!ghost) { raf = 0; return; }
+      // Spring the angle toward the lean the motion is asking for, then decay
+      // the lean itself. That second decay is what makes it settle upright
+      // instead of hanging crooked wherever the pointer happened to stop.
+      avel += (lean - angle) * 0.15;
+      avel *= 0.80;
+      angle += avel;
+      lean *= 0.88;
+      if (Math.abs(angle) < 0.02 && Math.abs(avel) < 0.02 && Math.abs(lean) < 0.02) {
+        angle = avel = lean = 0;
+      }
+      ghost.style.transform = 'rotate(' + angle.toFixed(2) + 'deg)';
+      raf = requestAnimationFrame(swing);
+    }
+
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      // Whatever the last drag left behind goes first. Reassigning `ghost`
+      // without this abandons the previous node in the DOM with nothing
+      // holding a reference to it - a second figure stuck beside the button
+      // that no later pointerup can ever remove, because the handler only
+      // knows about the newest one.
+      clear();
+      try { btn.setPointerCapture(e.pointerId); } catch { /* not capturable */ }
+      ghost = btn.querySelector('svg').cloneNode(true);
+      ghost.setAttribute('width', '28'); ghost.setAttribute('height', '28');
+      ghost.style.cssText = 'position:fixed;z-index:60;pointer-events:none;fill:currentColor;'
+        + 'color:' + getComputedStyle(btn).color
+        + ';filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))'
+        + (dangle ? ';transform-origin:50% 0' : '');
+      document.body.appendChild(ghost);
+      document.body.classList.add('pegging');
+      angle = avel = lean = 0; lastX = null;
+      move(e.clientX, e.clientY);
+      if (dangle && !raf) raf = requestAnimationFrame(swing);
+    });
+
+    btn.addEventListener('pointermove', (e) => {
+      move(e.clientX, e.clientY);
+      if (!dangle || !ghost) return;
+      const now = performance.now();
+      if (lastX != null) {
+        // Guard the interval: two moves in the same millisecond would divide
+        // by ~0 and fling the figure round like a propeller.
+        const dt = Math.max(8, now - lastT);
+        const vx = (e.clientX - lastX) / dt * 16;      // px per 60Hz frame
+        // A hanging figure lags behind the hand carrying it, so it leans
+        // AGAINST the direction of travel.
+        // Clamped well short of the angle you actually want to see: the spring
+        // overshoots its target by roughly a fifth, so a 32 degree lean peaks
+        // near 38 and the figure never looks like it is spinning.
+        lean = Math.max(-32, Math.min(32, -vx * 2.0));
+      }
+      lastX = e.clientX; lastT = now;
+    });
+
+    const clear = () => {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      if (ghost) { ghost.remove(); ghost = null; }
+      document.body.classList.remove('pegging');
+    };
+
+    btn.addEventListener('pointerup', async (e) => {
+      if (!ghost) return;
+      clear();
+      // Released over the controls, the layer pane, the timeline bar or off
+      // the map entirely: no drop. This used to test the canvas RECTANGLE,
+      // which is the whole window - so letting go on the very button you
+      // picked the figure up from dropped a point underneath the button, and
+      // a plain click on the pegman quietly created one.
+      const under = document.elementFromPoint(e.clientX, e.clientY);
+      if (!under || !map.getCanvasContainer().contains(under)) return;
+      const r = map.getCanvas().getBoundingClientRect();
+      const ll = map.unproject([e.clientX - r.left, e.clientY - r.top]);
+      await onDrop(ll);
+    });
+    btn.addEventListener('pointercancel', clear);
+
+    // A release the button never hears about still has to end the drag.
+    // setPointerCapture throws on some pointers (the call above is wrapped for
+    // exactly that reason), and a pointerup over browser chrome never reaches
+    // any element in the page - either way the ghost outlives the gesture.
+    // Window-level, and guarded on `ghost`, so the button's own handler runs
+    // first and this only mops up what it missed.
+    addEventListener('pointerup', () => { if (ghost) clear(); });
+    addEventListener('pointercancel', () => { if (ghost) clear(); });
+    addEventListener('blur', () => { if (ghost) clear(); });
+  }
+
+  // The bolt: drop a SIMULATED failure and read what is behind it. Same
+  // gesture as the pin, opposite question - and the only thing this map draws
+  // that is not a record of something real, which is why its page opens
+  // saying so.
+  dragToDrop(document.getElementById('evtBtn'), async (ll) => {
+    try {
+      const resp = await fetch('/api/event', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat: ll.lat, lon: ll.lng, kind: 'outage', radius_km: 25 }),
+      });
+      const out = await resp.json();
+      if (!resp.ok) throw new Error(out.error || ('HTTP ' + resp.status));
+      const lat = +ll.lat.toFixed(6), lon = +ll.lng.toFixed(6);
+      evRingFC.features.push({ type: 'Feature',
+        geometry: { type: 'Polygon', coordinates: [ringOf(lat, lon, 25)] },
+        properties: { id: out.id, n: '', kind: 'outage', r: 25 } });
+      evDotFC.features.push({ type: 'Feature',
+        geometry: { type: 'Point', coordinates: [lon, lat] },
+        properties: { id: out.id, n: '', kind: 'outage', r: 25 } });
+      if (map.getSource('evring')) map.getSource('evring').setData(evRingFC);
+      if (map.getSource('evdot')) map.getSource('evdot').setData(evDotFC);
+      window.open(out.href, '_blank', 'noopener');
+    } catch (err) { alert('could not place an event: ' + err.message); }
+  });
+
+  const EV_KIND = { outage: 'Supply outage', substation: 'Substation failure',
+                    generation: 'Generation loss' };
+  const evTip = (p) => `<div class="t">${esc(p.n || 'Simulated event')}</div>`
+    + `<div class="d">${esc(EV_KIND[p.kind] || p.kind)} · ${p.r} km radius</div>`
+    + '<div class="d">simulated — not a record of anything that happened</div>'
+    + '<div class="d">click for what it would expose</div>';
+  for (const lyr of ['ev-dot', 'ev-ring']) {
+    map.on('mousemove', lyr, (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+      if (!e.features.length) return hideTip();
+      map.getCanvas().style.cursor = 'pointer';
+      showTip(e.originalEvent.clientX, e.originalEvent.clientY, evTip(e.features[0].properties));
+    });
+    map.on('mouseleave', lyr, () => { map.getCanvas().style.cursor = ''; hideTip(); });
+    map.on('click', lyr, (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+      if (e.features.length) {
+        window.open('/event/' + encodeURIComponent(e.features[0].properties.id),
+                    '_blank', 'noopener');
+      }
+    });
+  }
+
+  // ---- the pegman ---------------------------------------------------------
+  // Drag the figure onto the map and let go: the drop point becomes a dropped
+  // point, and its page opens. HTML5 drag-and-drop is avoided deliberately -
+  // its drop coordinates are unreliable over a WebGL canvas and it cannot be
+  // driven from touch at all - so this is a plain pointer drag, which works
+  // the same for a mouse, a trackpad and a finger.
+  // This used to be a second copy of the whole pointer-drag, which made the
+  // shared helper's "the gesture lives once" comment untrue and left two
+  // implementations to keep in step. It is the same gesture; only the dangle
+  // and what happens to the coordinate differ.
+  dragToDrop(document.getElementById('pegBtn'), async (ll) => {
+    try {
+      const resp = await fetch('/api/point', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat: ll.lat, lon: ll.lng }),
+      });
+      const out = await resp.json();
+      if (!resp.ok) throw new Error(out.error || ('HTTP ' + resp.status));
+      // Draw it immediately rather than waiting for a reload: the pin
+      // should stay where it was let go.
+      ptFC.features.push({ type: 'Feature',
+        geometry: { type: 'Point', coordinates: [+ll.lng.toFixed(6), +ll.lat.toFixed(6)] },
+        properties: { id: out.id, n: '', kind: '' } });
+      if (map.getSource('pts')) map.getSource('pts').setData(ptFC);
+
+      // The drop used to open the point's page in a new tab immediately, which
+      // took you off the map for a gesture that is easy to make by accident -
+      // and left a record behind whether or not you meant it. The pin lands,
+      // and a popup says where it went and offers the page: opening it is a
+      // decision now rather than a consequence. Remove is offered in the same
+      // breath, because the moment you can see it is wrong is this one.
+      const popup = new maplibregl.Popup({ closeOnClick: false, offset: 10 })
+        .setLngLat([ll.lng, ll.lat])
+        .setHTML('<div class="t">Dropped point</div>'
+          + '<div class="d mono">' + ll.lat.toFixed(6) + ', ' + ll.lng.toFixed(6) + '</div>'
+          + '<div class="d">not yet anything in particular — its page is where you '
+          + 'say what it is</div>'
+          + '<a class="pop-open" href="' + out.href + '" target="_blank" '
+          + 'rel="noopener">Open its page →</a>'
+          + '<button type="button" class="pop-undo">Remove</button>')
+        .addTo(map);
+
+      const undo = popup.getElement().querySelector('.pop-undo');
+      undo.addEventListener('click', async () => {
+        undo.disabled = true;
+        undo.textContent = 'removing…';
+        try {
+          const del = await fetch('/api/point/' + encodeURIComponent(out.id), {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ delete: true }),
+          });
+          if (!del.ok) throw new Error('HTTP ' + del.status);
+          ptFC.features = ptFC.features.filter(f => f.properties.id !== out.id);
+          if (map.getSource('pts')) map.getSource('pts').setData(ptFC);
+          popup.remove();
+        } catch (err) {
+          undo.disabled = false;
+          undo.textContent = 'Remove';
+          alert('could not remove the point: ' + err.message);
+        }
+      });
+    } catch (err) {
+      alert('could not drop a point: ' + err.message);
+    }
+  }, { dangle: true });
+
+  // A dropped point names itself if it has been given a name, and says what
+  // it is still waiting to become if it has not.
+  const ptTip = (p) => `<div class="t">${esc(p.n || 'Dropped point')}</div>`
+    + `<div class="d">${p.kind ? esc(PT_KIND[p.kind] || p.kind)
+        + ' — dropped by hand, not yet in that layer'
+        : 'not yet anything in particular'}</div>`
+    + '<div class="d">click to open its page</div>';
+  map.on('mousemove', 'pt-dot', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    if (!e.features.length) return hideTip();
+    map.getCanvas().style.cursor = 'pointer';
+    showTip(e.originalEvent.clientX, e.originalEvent.clientY, ptTip(e.features[0].properties));
+  });
+  map.on('mouseleave', 'pt-dot', () => { map.getCanvas().style.cursor = ''; hideTip(); });
+  map.on('click', 'pt-dot', (e) => {
+    if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+    if (e.features.length) {
+      window.open('/maps/point/' + encodeURIComponent(e.features[0].properties.id),
+                  '_blank', 'noopener');
+    }
+  });
+
+  // Substations: the hover answers the accumulation question directly -
+  // how many loads stand behind this, and how much of them.
+  const subTip = (p) => {
+    // MapLibre flattens nested feature properties to JSON strings.
+    let who = [];
+    try { who = typeof p.who === 'string' ? JSON.parse(p.who) : (p.who || []); } catch { who = []; }
+    const names = who.slice(0, 4).map(w =>
+      `<div class="d">· ${esc(w.n)}${w.mw ? ' — ' + Number(w.mw).toLocaleString() + ' MW' : ''}`
+      + `${w.reg ? '' : ' <span class="dim">filed only</span>'}</div>`).join('');
+    const more = who.length > 4 ? `<div class="d dim">+ ${who.length - 4} more</div>` : '';
+    return `<div class="t">${esc(p.n)}${p.kv ? ' · ' + p.kv + ' kV' : ''}</div>`
+      + `<div class="d">${p.as > 1
+          ? p.as + ' mega-loads depend on this substation'
+          : 'one mega-load depends on this substation'}`
+      + `${p.mw ? ' · ' + Number(p.mw).toLocaleString() + ' MW' : ''}</div>`
+      + names + more
+      + '<div class="d">click for the substation page</div>';
+  };
+  for (const lyr of ['sub-dot', 'sub-share']) {
+    map.on('mousemove', lyr, (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+      if (!e.features.length) return hideTip();
+      map.getCanvas().style.cursor = 'pointer';
+      showTip(e.originalEvent.clientX, e.originalEvent.clientY, subTip(e.features[0].properties));
+    });
+    map.on('mouseleave', lyr, () => { map.getCanvas().style.cursor = ''; hideTip(); });
+    map.on('click', lyr, (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: DOT_LAYERS }).length) return;
+      if (!e.features.length) return;
+      window.open('/maps/substation/' + encodeURIComponent(e.features[0].properties.id),
+                  '_blank', 'noopener');
+    });
+  }
+
+  // Supply links: hover names the pair and the arrangement; click frames
+  // both ends, from where each dot's own click opens its page - the pages
+  // carry the filings, the map carries the geometry.
+  const supplyTip = (p) => `<div class="t">${esc(p.sn)} ⇆ ${esc(p.pn)}</div>` +
+    `<div class="d">${esc(SUPPLY_ST[p.st] || p.st)}</div>` +
+    (p.ann ? '<div class="d">announced campus — not yet a registry dot; '
+           + 'the plant page carries the story</div>' : '') +
+    '<div class="d">click to frame the pair — each dot opens its page</div>';
+  for (const lyr of ['supply-line', 'supply-dot', 'supply-site']) {
+    map.on('mousemove', lyr, (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai', 'plant'] }).length) return;
+      if (!e.features.length) return hideTip();
+      showTip(e.originalEvent.clientX, e.originalEvent.clientY, supplyTip(e.features[0].properties));
+    });
+    map.on('mouseleave', lyr, hideTip);
+    map.on('mouseenter', lyr, () => { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('click', lyr, (e) => {
+      if (!e.features.length) return;
+      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai', 'plant'] }).length) return;
+      const p = e.features[0].properties;
+      map.fitBounds([[Math.min(p.sx, p.px), Math.min(p.sy, p.py)],
+                     [Math.max(p.sx, p.px), Math.max(p.sy, p.py)]],
+                    { padding: 110, maxZoom: 12.5, duration: 900 });
+    });
+  }
 
   // Clicking an epicentre loads that event's precomputed footprint.
   map.on('click', 'epicentre', (e) => {
@@ -939,8 +1907,8 @@
     const row = e.target.closest('.eq-row');
     if (!row) return;
     const k = row.dataset.kind;
-    if (k === 'plant') window.open('/plant/' + encodeURIComponent(row.dataset.id), '_blank', 'noopener');
-    else if (k === 'fab') window.open('/fab/' + encodeURIComponent(row.dataset.id), '_blank', 'noopener');
+    if (k === 'plant') window.open('/maps/plant/' + encodeURIComponent(row.dataset.id), '_blank', 'noopener');
+    else if (k === 'fab') window.open('/maps/fab/' + encodeURIComponent(row.dataset.id), '_blank', 'noopener');
     else openSite(row.dataset.id);
   });
   eqRows.addEventListener('mousemove', (e) => {
@@ -1458,6 +2426,7 @@
     el.style.background = p.ax ? 'transparent'
       : col + (heat ? '9e' : p.k === 'op' ? '44' : p.k === 'plan' ? '24' : '10');
     el.title = [p.n, `${FUEL_LABEL[p.f]} · ${mwText(p.smw)}`,
+      p.inv ? usdText(p.inv) + ' announced/reported cost' : '',
       STATUS_LABEL[p.k] + (p.ry ? ` ${p.ry}` : ''),
       (p.src === 'gem' ? p.cy : [p.st, BA_ISO[p.ba] || p.ba].filter(Boolean).join(' · ')),
       p.ax ? 'approximate location' : ''].filter(Boolean).join('\n');
@@ -1470,7 +2439,17 @@
     el.className = 'fab-marker' + (f.k === 'operating' ? '' : ' fab-plan');
     const px = f.mw ? Math.max(9, Math.min(26, 3.2 * Math.sqrt(f.mw / 100) * 2)) : 9;
     el.style.width = el.style.height = px.toFixed(1) + 'px';
+    // Same rule as the plant markers and the 2D fab dots: fab pink normally,
+    // the shared ramp while the heatmap paints a measure a fab also has - and
+    // full opacity then, because on the ramp the colour is the reading.
+    const hm = heatSpec();
+    if (state.heat.on && heatDomain && hm.fk) {
+      const v = heatVal(f, hm.fk, hm);
+      el.style.background = v == null ? HEAT_NONE : heatColour(v);
+      el.style.opacity = 1;
+    }
     el.title = [f.n, f.op,
+      f.inv ? usdText(f.inv) + ' announced investment' : '',
       f.mw ? '~' + f.mw.toLocaleString() + ' MW estimated' : 'power not estimated',
       [FAB_STATUS[f.k] || f.k, f.pl].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
     return el;
@@ -1505,11 +2484,32 @@
     close = close || closeSites();
     closeKey = close.map(w => w.site.id).join(',');
     const promoted = new Set(close.map(w => w.site.id));
-    globe.pointsData(promoted.size ? shown().filter(d => !promoted.has(d.id)) : shown());
+    // Same rule the 2D layers get from circle-sort-key: while the ramp is
+    // painting, low values draw first and high values draw last, so the dot
+    // the ramp exists to surface is never buried under its grey neighbours.
+    // Points render in array order; HTML markers stack in DOM order, which IS
+    // array order here. Missing values sort as -1 and go to the bottom.
+    const hm = heatSpec();
+    const heated = state.heat.on && heatDomain;
+    const byVal = (key) => (a, b) =>
+      (heatVal(a, key, hm) ?? -1) - (heatVal(b, key, hm) ?? -1);
+    let pts = promoted.size ? shown().filter(d => !promoted.has(d.id)) : shown();
+    if (heated) pts = [...pts].sort(byVal(hm.k));
+    globe.pointsData(pts);
+    // shown() already applies the hide-no-value filter for sites; the plant
+    // and fab wrappers apply the same rule here, so the globe and the 2D
+    // filters can never disagree about which markers exist.
+    const hideGrey = hideMissingActive();
+    let plantWraps = visiblePlants();
+    if (hideGrey && hm.pk) plantWraps = plantWraps.filter(w => heatVal(w.plant, hm.pk, hm) != null);
+    if (heated && hm.pk) plantWraps.sort((a, b) => byVal(hm.pk)(a.plant, b.plant));
+    let fabWraps = state.layers.fabs ? fabs.map(f => ({ lat: f.lat, lng: f.lon, fab: f })) : [];
+    if (hideGrey && hm.fk) fabWraps = fabWraps.filter(w => heatVal(w.fab, hm.fk, hm) != null);
+    if (heated && hm.fk) fabWraps = fabWraps.sort((a, b) => byVal(hm.fk)(a.fab, b.fab));
     globe.htmlElementsData([
       ...(state.layers.quake ? quakes.map(q => ({ lat: q.lat, lng: q.lon, q })) : []),
-      ...visiblePlants(),
-      ...(state.layers.fabs ? fabs.map(f => ({ lat: f.lat, lng: f.lon, fab: f })) : []),
+      ...plantWraps,
+      ...fabWraps,
       ...close,
     ]);
   }
@@ -1683,6 +2683,9 @@
         map.setPaintProperty(id, prop, val);
       }
     }
+    // Labels take their ink from the theme too - but only when imagery is
+    // off, which is why this is a call and not five more rows above.
+    paintLabels();
   }
 
   function setMode(mode) {
@@ -1735,6 +2738,13 @@
   function setLayersOpen(on) {
     layersPane.hidden = !on;
     layersBtn.setAttribute('aria-expanded', String(on));
+    // The heatmap bar rides with the pane: both answer "what am I looking
+    // at", so one button governs them and the bottom edge holds one control.
+    document.getElementById('heatbar').hidden = !on;
+    // And the timeline is the OTHER thing the bottom edge can hold - the two
+    // are exclusive in both directions, so opening either closes the other.
+    const tb = document.getElementById('timebar');
+    if (on && tb && !tb.hidden) setTimelineOpen(false);
   }
   layersBtn.addEventListener('click', () => setLayersOpen(layersPane.hidden));
 
@@ -1824,6 +2834,46 @@
 
   // The layers folded into "More layers". Listed here rather than read from
   // the DOM so the count cannot drift if the markup is reordered again.
+  // The quake layer's magnitude floor is an argument to src/quakes.py, so the
+  // label reads it off the events rather than stating a number that goes stale
+  // the next time the ingest is run with a different one.
+  {
+    const note = document.getElementById('quakenote');
+    if (note && quakes.length) {
+      const lo = Math.min(...quakes.map(q => q.mag));
+      note.textContent = `USGS M${lo.toFixed(1)}+, last 90 days — `
+                       + `${quakes.length.toLocaleString()} events, click one for its ShakeMap`;
+    }
+  }
+
+  // The fab labels read their counts off the payload for the same reason: the
+  // layer regrows whenever src/fabs.py is re-run, and a written-out "90 fabs"
+  // had already gone stale once.
+  {
+    const est = fabs.filter(f => f.mw).length;
+    document.getElementById('fabnote').textContent =
+      `${fabs.length.toLocaleString()} fabs — power is estimated, never measured`;
+    document.getElementById('fb-est').textContent =
+      `${est} of ${fabs.length.toLocaleString()}`;
+  }
+
+  // The unmapped-only toggle: filters every visible dot layer to assets
+  // with no footprint. Lives under the footprints entry because the rings
+  // and this filter are two views of the same coverage question.
+  // The chip in the top bar is the filter's conscience: the toggle lives in
+  // a panel that scrolls away, and an invisible active filter reads as
+  // missing dots - which is exactly how it was reported.
+  const fpUnmapped = document.getElementById('fp-unmapped');
+  const fpChip = document.getElementById('fpchip');
+  function setFpOnly(on) {
+    state.fpOnly = on;
+    if (fpUnmapped) fpUnmapped.setAttribute('aria-pressed', String(on));
+    if (fpChip) fpChip.hidden = !on;
+    refreshView();
+  }
+  if (fpUnmapped) fpUnmapped.addEventListener('click', () => setFpOnly(!state.fpOnly));
+  if (fpChip) fpChip.addEventListener('click', () => setFpOnly(false));
+
   const MORE_LAYERS = ['ercot', 'pjm', 'nyiso', 'countries'];
   const moreCount = document.getElementById('morecount');
   function updateMoreCount() {
@@ -2277,6 +3327,9 @@
     // The map controls share the bottom edge with the timeline bar now, so
     // they have to get out of its way.
     document.body.classList.toggle('timeline-open', !!on);
+    // Exclusive with the layers pane (and the heatmap bar that rides with
+    // it): see setLayersOpen, which closes this one in the other direction.
+    if (on && !layersPane.hidden) setLayersOpen(false);
     timebar.hidden = !on;
     timeBtn.setAttribute('aria-pressed', String(on));
     if (on) {
@@ -2601,7 +3654,7 @@
       `<div class="d">${[e.t.o, ccName2.get(e.t.c) || e.t.c].filter(Boolean).map(esc).join(' · ')}</div>` +
       (e.t.pu ? `<div class="d">primary user: ${esc(e.t.pu)}</div>` : '') +
       `<div class="d">${qtr} · ${fmtCompute(e.v)} H100e</div>` +
-      `<a href="/site/${encodeURIComponent(e.t.id)}" target="_blank" rel="noopener">View data centre →</a>`;
+      `<a href="/maps/site/${encodeURIComponent(e.t.id)}" target="_blank" rel="noopener">View data centre →</a>`;
     pop.hidden = false;
     const pad = 14;
     pop.style.left = Math.min(x + pad, innerWidth - pop.offsetWidth - pad) + 'px';
@@ -2707,6 +3760,13 @@
                         derived: 'derived — the hull of the halls on this site, '
                                + 'not a surveyed boundary',
                         parcel: 'county parcel record — the recorded boundary',
+                        'osm-plant': 'OpenStreetMap — the plant site’s mapped '
+                                   + 'perimeter, not a building',
+                        // Overture merges OSM with Microsoft's and Google's
+                        // ML-extracted buildings; the shape is a model's read
+                        // of a roof, standing on a site the registry located.
+                        overture: 'Overture Maps (ODbL) — the building at this '
+                                + 'site’s coordinate, largely ML-extracted',
                         manual: 'drawn by hand' };
     const KIND_LABEL = { building: 'building footprint', campus: 'campus boundary' };
     // MapLibre stringifies nested feature properties on the way through its
@@ -3260,7 +4320,11 @@
     };
     map.on('mousemove', 'fp-fill', (e) => {
       if (ed.drag || ed.draw) return;
-      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+      // Any dot beats the shape under it - and that now includes plants and
+      // fabs, whose own perimeters sit beneath them since the osm-plant and
+      // Overture passes landed.
+      if (map.queryRenderedFeatures(e.point,
+          { layers: ['sites', 'sites-ai', 'plant', 'fab'] }).length) return;
       map.getCanvas().style.cursor = 'pointer';
       // The SAME shape a click would take, not the topmost one - a tip
       // describing the campus while the click selects the building inside it
@@ -3284,7 +4348,10 @@
     });
     map.on('click', 'fp-fill', (e) => {
       // A dot on top of the shape wins the click - it is the finer target.
-      if (map.queryRenderedFeatures(e.point, { layers: ['sites', 'sites-ai'] }).length) return;
+      // Plant and fab dots included: a plant dot inside its own perimeter
+      // must open the plant, not the perimeter.
+      if (map.queryRenderedFeatures(e.point,
+          { layers: ['sites', 'sites-ai', 'plant', 'fab'] }).length) return;
       const p = pickAt(e.point);
       if (!p) return;
       if (state.fpEdit) {
@@ -3303,7 +4370,7 @@
       hideTip();
       const siteIds = arr(p.sites);
       const links = siteIds.slice(0, 3).map(id =>
-        `<a href="/site/${encodeURIComponent(id)}" target="_blank" rel="noopener">${esc(id)}</a>`)
+        `<a href="/maps/site/${encodeURIComponent(id)}" target="_blank" rel="noopener">${esc(id)}</a>`)
         .join(' · ') + (siteIds.length > 3 ? ` · +${siteIds.length - 3}` : '');
       pop.innerHTML = `<button class="x" aria-label="Close">✕</button>` +
         fpFacts(p) +
@@ -3323,6 +4390,277 @@
       };
     });
   }
+
+  // ---- place names and political boundaries ----------------------------------
+  // This map had no city names, no state lines and no country borders, and
+  // could not have had any: its only geometry was Natural Earth admin-0 - 177
+  // country polygons, a coastline and nothing inside it - and the style
+  // carried zero symbol layers, so there was no text anywhere in it by
+  // construction. src/basemap_tiles.py fetches a global OpenStreetMap vector
+  // tileset as one PMTiles file plus the glyph ranges to letter it with, and
+  // server.mjs serves both.
+  //
+  // Added at RUNTIME rather than declared in buildStyle() because that archive
+  // is 1.6 GB and untracked - a fresh clone does not have it. A source
+  // declared up front would have every such clone loading a style that 404s on
+  // every tile it asks for. Probing first costs seven bytes and degrades to
+  // precisely the map that existed before this.
+  const PLACE_NAME = ['coalesce', ['get', 'name:en'], ['get', 'name']];
+  // Clamped, because interpolate EXTRAPOLATES past its outermost stop: an
+  // unclamped population_rank lets whichever city ranks highest choose its own
+  // type size, and the ramp below stops being a ramp at both ends.
+  const PLACE_RANK = ['min', 14, ['max', 6,
+    ['to-number', ['coalesce', ['get', 'population_rank'], 8]]]];
+  let labelsReady = false;
+
+  function labelInk() {
+    const c = pal();
+    // Over imagery the background is a photograph - a white roof, wet asphalt,
+    // a wheat field - and no single ink reads against all of it. White on a
+    // dark halo does, which is the argument the footprint casings already make.
+    // Over the drawn map it is ink on paper and the theme decides.
+    return currentBasemap
+      ? { text: '#FFFFFF', halo: 'rgba(0,0,0,0.78)', bnd: 'rgba(255,255,255,0.5)' }
+      : { text: c.lbl, halo: c.lblHalo, bnd: c.bnd };
+  }
+
+  // One definition of these layers, read twice: once to add them and once per
+  // repaint to re-read their colours. Listing the paint properties separately
+  // in a theme table is how the footprint casings would have drifted from the
+  // lines they case - see THEME_PAINT's note about the dots.
+  function labelLayers(ink) {
+    const halo = (w) => ({ 'text-color': ink.text, 'text-halo-color': ink.halo,
+                           'text-halo-width': w, 'text-halo-blur': 0.3 });
+    return [
+      { id: 'bnd-country', type: 'line', source: 'pm', 'source-layer': 'boundaries',
+        filter: ['match', ['get', 'kind'], ['country', 'map_unit'], true, false],
+        layout: { 'line-join': 'round' },
+        paint: { 'line-color': ink.bnd, 'line-opacity': 0.9,
+          'line-width': ['interpolate', ['linear'], ['zoom'], 2, 0.7, 6, 1.3, 12, 2.2] } },
+      // A line somebody disputes is drawn as a line somebody disputes. Dropping
+      // these leaves a gap in the border of every country that has one;
+      // drawing them solid is this map taking a side in a question it has no
+      // business answering. Dashed is the convention and it is the honest one.
+      { id: 'bnd-disputed', type: 'line', source: 'pm', 'source-layer': 'boundaries',
+        filter: ['match', ['get', 'kind'],
+                 ['unrecognized_country', 'unrecognized_region', 'overlay_limit'], true, false],
+        paint: { 'line-color': ink.bnd, 'line-opacity': 0.7,
+          'line-width': ['interpolate', ['linear'], ['zoom'], 2, 0.7, 12, 1.8],
+          'line-dasharray': [2.5, 2] } },
+      // States and provinces. Counties are in the data too and are left out:
+      // at the zoom this registry is read at they are a mesh, not a landmark.
+      { id: 'bnd-region', type: 'line', source: 'pm', 'source-layer': 'boundaries',
+        filter: ['match', ['get', 'kind'], ['region', 'macroregion'], true, false],
+        minzoom: 3,
+        paint: { 'line-color': ink.bnd, 'line-opacity': 0.5,
+          'line-width': ['interpolate', ['linear'], ['zoom'], 3, 0.5, 12, 1.4],
+          'line-dasharray': [4, 2.5] } },
+      // Once you are inside a country its name is not telling you anything you
+      // do not already know, so it stops at 8 and leaves the room to the
+      // cities. Same reasoning one level down for regions.
+      { id: 'place-country', type: 'symbol', source: 'pm', 'source-layer': 'places',
+        filter: ['==', ['get', 'kind'], 'country'], maxzoom: 8,
+        layout: { 'text-field': PLACE_NAME, 'text-font': ['Noto Sans Medium'],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 2, 9, 6, 12],
+          'text-transform': 'uppercase', 'text-letter-spacing': 0.12,
+          'text-max-width': 7, 'text-padding': 6, 'text-allow-overlap': false },
+        paint: halo(1.5) },
+      { id: 'place-region', type: 'symbol', source: 'pm', 'source-layer': 'places',
+        filter: ['==', ['get', 'kind'], 'region'], minzoom: 3.5, maxzoom: 11,
+        layout: { 'text-field': PLACE_NAME, 'text-font': ['Noto Sans Medium'],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 4, 9, 9, 11],
+          'text-transform': 'uppercase', 'text-letter-spacing': 0.08,
+          'text-max-width': 8, 'text-padding': 5 },
+        paint: { ...halo(1.4), 'text-opacity': 0.85 } },
+      // Cities and towns. Nothing here filters by zoom: the tiler already
+      // decided which places belong at each level, and where two labels still
+      // collide MapLibre drops one - so the only thing left to say is WHICH one
+      // it should drop, which is what sort_key is for. Filtering by population
+      // on top of that would throw away the tiler's judgement and keep a county
+      // seat over the town the data centre is actually in.
+      { id: 'place-locality', type: 'symbol', source: 'pm', 'source-layer': 'places',
+        filter: ['==', ['get', 'kind'], 'locality'],
+        layout: { 'text-field': PLACE_NAME, 'text-font': ['Noto Sans Regular'],
+          // Tops out at zoom 10 on purpose. Past the archive's zoom 9 the tiles
+          // are overzoomed and the label set stops changing, so a ramp that
+          // kept climbing would just magnify the same handful of names until
+          // they were the loudest thing on a map about somewhere else.
+          'text-size': ['interpolate', ['linear'], ['zoom'],
+            3, ['interpolate', ['linear'], PLACE_RANK, 6, 8, 14, 10.5],
+            10, ['interpolate', ['linear'], PLACE_RANK, 6, 9.5, 14, 13]],
+          'text-max-width': 8, 'text-padding': 4,
+          'symbol-sort-key': ['to-number', ['coalesce', ['get', 'sort_key'], 0]] },
+        paint: halo(1.4) },
+    ];
+  }
+
+  function paintLabels() {
+    if (!labelsReady) return;
+    for (const l of labelLayers(labelInk())) {
+      if (!map.getLayer(l.id)) continue;
+      for (const [prop, val] of Object.entries(l.paint)) {
+        map.setPaintProperty(l.id, prop, val);
+      }
+    }
+  }
+
+  // The transmission layer's spec, in one place, because it is added by two
+  // paths - tiles or the GeoJSON fallback - and the only thing that differs
+  // between them is the source. `source-layer` is set only for tiles.
+  const powerLineLayer = () => ({
+    id: 'power-line', type: 'line',
+    layout: { 'line-cap': 'round', 'line-join': 'round', visibility: 'none' },
+    paint: { 'line-color': '#6B7A88',
+      'line-width': ['interpolate', ['linear'], ['zoom'], 5, 0.4, 9, 0.9, 14, 2.2],
+      'line-opacity': ['interpolate', ['linear'], ['zoom'], 5, 0.35, 9, 0.55, 13, 0.75] },
+  });
+
+  // One registration, however many archives use it. MapLibre tolerates a
+  // repeat call, but a flag says what happened without leaning on that.
+  let pmRegistered = false;
+  const registerPmtiles = () => {
+    if (pmRegistered) return true;
+    if (!window.pmtiles || !maplibregl.addProtocol) return false;
+    maplibregl.addProtocol('pmtiles', new pmtiles.Protocol().tile);
+    pmRegistered = true;
+    return true;
+  };
+  // The basemap's own probe, reused: a 7-byte range read that takes a 200 as
+  // a yes rather than consuming a body that might be the whole archive.
+  async function pmtilesPresent(url) {
+    try {
+      const r = await fetch(url, { headers: { Range: 'bytes=0-6' } });
+      if (!r.ok) return false;
+      if (r.status === 206) {
+        return new TextDecoder().decode(await r.arrayBuffer()) === 'PMTiles';
+      }
+      r.body?.cancel();
+      return true;
+    } catch { return false; }
+  }
+
+  // A tiled layer: tiles when the archive is there and the protocol is
+  // available, a GeoJSON fallback when one is offered and either is not.
+  // The layers land in the same place in the stack whichever path fed them,
+  // and the layer toggle finds them by id. Attempt-and-retry on a timer, for
+  // the reason initLabels gives.
+  async function initTiled({ archive, source, sourceLayer, layers, before, fallbackUrl, onMissing }) {
+    const tiled = await pmtilesPresent(archive) && registerPmtiles();
+    let fallback = null;
+    if (!tiled) {
+      if (!fallbackUrl) { if (onMissing) onMissing(); return; }
+      try { fallback = await fetch(fallbackUrl).then(r => r.json()); }
+      catch { if (onMissing) onMissing(); return; }
+    }
+    const add = () => {
+      if (map.getLayer(layers[0].id)) return true;
+      try {
+        map.addSource(source, tiled
+          ? { type: 'vector', url: `pmtiles://${location.origin}${archive}` }
+          : { type: 'geojson', data: fallback });
+        const beforeId = map.getLayer(before) ? before : undefined;
+        for (const spec of layers) {
+          map.addLayer({ ...spec, source, ...(tiled ? { 'source-layer': sourceLayer } : {}) },
+                       beforeId);
+        }
+        applyVisibility();           // honour the layer toggle's current state
+        return true;
+      } catch { return false; }
+    };
+    if (add()) return;
+    let tries = 0;
+    const retry = setInterval(() => {
+      if (add() || ++tries > 40) clearInterval(retry);
+    }, 400);
+  }
+
+  // Transmission corridors: under the dropped-point dots, for the reason
+  // buildStyle gives. Falls back to the whole GeoJSON.
+  initTiled({
+    archive: '/transmission.pmtiles', source: 'powerline', sourceLayer: 'transmission',
+    layers: [powerLineLayer()], before: 'pt-dot', fallbackUrl: '/data/power_lines.json',
+  });
+
+  // Water service areas: the 577 community water systems that registry sites
+  // sit inside (src/water_service.py names them, src/tiles.py draws them).
+  // Context, so they go UNDER everything that is a site - below the parcel
+  // layers, the footprints and every dot - and under the place labels, which
+  // are inserted above regrid-fill. No GeoJSON fallback: raw, these polygons
+  // are 121 MB, and a layer that costs that much is worse than a disabled
+  // checkbox that says why.
+  initTiled({
+    archive: '/water.pmtiles', source: 'water', sourceLayer: 'water',
+    layers: [
+      { id: 'water-fill', type: 'fill', layout: { visibility: 'none' },
+        paint: { 'fill-color': '#0369A1',
+          'fill-opacity': ['interpolate', ['linear'], ['zoom'], 3, 0.10, 8, 0.14, 12, 0.10] } },
+      { id: 'water-line', type: 'line', layout: { visibility: 'none', 'line-join': 'round' },
+        paint: { 'line-color': '#0369A1',
+          'line-width': ['interpolate', ['linear'], ['zoom'], 3, 0.4, 8, 0.9, 12, 1.6],
+          'line-opacity': 0.7 } },
+    ],
+    before: 'regrid-fill',
+    onMissing: () => {
+      const cb = document.getElementById('lyr-water');
+      if (cb) {
+        cb.disabled = true;
+        cb.closest('label')?.setAttribute('title',
+          'No water tiles on this server — run src/tiles.py after water_service.py');
+      }
+    },
+  });
+
+  async function initLabels() {
+    if (!window.pmtiles || !maplibregl.addProtocol) return;
+    try {
+      const r = await fetch('/basemap.pmtiles', { headers: { Range: 'bytes=0-6' } });
+      if (!r.ok) return;
+      // Read the body ONLY if the server honoured the range. If something in
+      // front of it strips Range and answers 200, that body is the whole 1.6 GB
+      // archive, and consuming it to check a seven-byte magic number would be
+      // the worst thing this app does to anyone. Take the 200 as a yes instead.
+      if (r.status === 206) {
+        if (new TextDecoder().decode(await r.arrayBuffer()) !== 'PMTiles') return;
+      } else {
+        r.body?.cancel();
+      }
+    } catch {
+      return;             // no archive, no labels, same map as before
+    }
+    if (!registerPmtiles()) return;
+
+    const add = () => {
+      if (map.getSource('pm')) return true;
+      try {
+        map.addSource('pm', {
+          type: 'vector',
+          url: `pmtiles://${location.origin}/basemap.pmtiles`,
+          attribution: '© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
+        });
+        // Above the zone choropleths and below the footprints. A place name is
+        // context for the sites, so nothing that IS a site may hide behind one,
+        // and nothing that merely tints a region may sit on top of one.
+        const before = map.getLayer('fp-fill') ? 'fp-fill' : undefined;
+        for (const l of labelLayers(labelInk())) map.addLayer(l, before);
+        labelsReady = true;
+        // The note was already drawn, before there was anything to credit.
+        showBasemapNote(currentBasemap);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    // Attempt-and-retry on a TIMER, for the reason setBasemap spells out: the
+    // one error MapLibre raises here is "Style is not done loading", and
+    // hanging the retry off map.once('load') is the trap a throttled tab never
+    // comes back from.
+    if (add()) return;
+    let tries = 0;
+    const retry = setInterval(() => {
+      if (add() || ++tries > 40) clearInterval(retry);
+    }, 400);
+  }
+  initLabels();
 
   // ---- satellite basemap -----------------------------------------------------
   // The server decides which providers exist, because only it knows whether a
@@ -3429,6 +4767,9 @@
       return;
     }
     currentBasemap = id;
+    // Must follow the assignment: labelInk() reads currentBasemap to decide
+    // between white-on-photograph and ink-on-paper.
+    paintLabels();
     showBasemapNote(id);
     applyGlobeBasemap();
   }
@@ -3447,8 +4788,17 @@
   function showBasemapNote(id) {
     if (!bmNote) return;
     const p = providers.find(x => x.id === id);
-    bmNote.textContent = p ? `${p.attribution.replace(/&copy;/g, '©')} · ${p.licence || ''}` : '';
-    bmNote.hidden = !p;
+    const parts = [];
+    if (p) parts.push(`${p.attribution.replace(/&copy;/g, '©')} · ${p.licence || ''}`);
+    // Not a clause bolted onto the imagery credit - a credit that OUTLIVES it.
+    // The map is built with attributionControl:false, so a source's own
+    // attribution string is never rendered and this note is the only place a
+    // credit can appear. The labels and borders are ODbL and are drawn in BOTH
+    // basemap modes, so switching imagery off must not switch their credit off
+    // with it, which is what a single `hidden = !p` did.
+    if (labelsReady) parts.push('Labels & borders © OpenStreetMap contributors (ODbL)');
+    bmNote.textContent = parts.join('  ·  ');
+    bmNote.hidden = !parts.length;
   }
 
   bmBtn.addEventListener('click', () => {
@@ -3501,7 +4851,18 @@
   // the whole scale and everything else is one shade of green. Log also makes
   // the comparison a RATIO, which is what "draws more than it supplies" means.
   const HEAT_MEASURES = [
-    { k: 'mw',  pk: 'mw',  log: true, label: 'Power (MW)' },
+    { k: 'mw',  pk: 'mw',  log: true, label: 'Power (MW)', unit: 'MW' },
+    // `fk` is the same quantity on a FAB record, the way `pk` is on a plant -
+    // this measure is the first where all three layers carry the figure, so
+    // fabs join the shared ramp here for the first time. US$ MILLIONS on every
+    // layer. The figure means a slightly different thing per layer and each
+    // surface says which: a data centre's is Epoch's ESTIMATED capex at
+    // projected peak, a fab's and a plant's are the ANNOUNCED investment from
+    // the operator or the press, URL kept per record. `log` because value is
+    // log-distributed exactly like capacity: a $300M solar farm and a $165bn
+    // fab campus on a linear ramp is one red dot on a green planet.
+    { k: 'inv', pk: 'inv', fk: 'inv', log: true, money: true, label: 'Project value (US$)',
+      unit: 'US$' },
     // Generation ≤25 km used to be here and is a list column now. Once plants
     // joined this ramp it stopped earning a slot: the generation near a site
     // IS the plant rings, in the same colours, already on the screen. Floor
@@ -3509,12 +4870,12 @@
     // where a measure that is explicitly ABOUT nearby generation, sitting in a
     // list beside a generation layer that ignored it, only invited the
     // question of why the plants had not changed colour.
-    { k: 'ft2', log: true, label: 'Floor area (sq ft)' },
+    { k: 'ft2', log: true, label: 'Floor area (sq ft)', unit: 'sq ft' },
     // Zero is a legitimate longitude and latitude but never a legitimate build
     // year or capacity, so "has a value" is not the same test for all of them.
-    { k: 'by',  pk: 'y',   label: 'Year built' },
-    { k: 'lon', pk: 'lon', label: 'Longitude', zeroIsReal: true },
-    { k: 'lat', pk: 'lat', label: 'Latitude',  zeroIsReal: true },
+    { k: 'by',  pk: 'y',   label: 'Year built', unit: 'year' },
+    { k: 'lon', pk: 'lon', label: 'Longitude', zeroIsReal: true, unit: '°' },
+    { k: 'lat', pk: 'lat', label: 'Latitude',  zeroIsReal: true, unit: '°' },
   ];
   const heatSpec = () => HEAT_MEASURES.find(m => m.k === state.heat.k) || HEAT_MEASURES[0];
   const heatVal = (d, key, m) => {
@@ -3527,6 +4888,9 @@
   // a plant. Both halves matter: plants off means they must not stretch the
   // domain, and a site-only measure means they must keep their fuel colours.
   const plantsInHeat = () => !!(heatSpec().pk && state.layers.plants);
+  // And the same gate for fabs: on the ramp only when the fab layer is on AND
+  // the measure has a fab key, for the same two reasons.
+  const fabsInHeat = () => !!(heatSpec().fk && state.layers.fabs);
 
   const hbBtn = document.getElementById('hb-btn');
   const hbMenu = document.getElementById('hb-menu');
@@ -3534,6 +4898,8 @@
   const hbLbl = document.getElementById('hb-lbl');
   const hbMin = document.getElementById('hb-min');
   const hbMax = document.getElementById('hb-max');
+  const hbRamp = document.getElementById('hb-ramp');
+  const hbDist = document.getElementById('hb-dist');
 
   let heatDomain = null;              // [lo, hi] over the visible set, or null
   let heatSig = '';                   // last painted heat state, for the globe
@@ -3557,6 +4923,44 @@
     return HEAT_STOPS[Math.round(heatT(v) * (HEAT_STOPS.length - 1))];
   }
 
+  // Every value the current measure has on the currently painted set. The ONE
+  // list both the domain and the distribution chart are computed from, so the
+  // chart can never disagree with the ramp about what is on it.
+  function heatValues() {
+    const m = heatSpec();
+    const out = [];
+    for (const d of shown()) {
+      const v = heatVal(d, m.k, m);
+      if (v != null) out.push(v);
+    }
+    // Plants stretch the SAME domain when they are on the same ramp. If they
+    // had their own the colours would not be comparable, and comparing them
+    // is the reason both are painted.
+    if (plantsInHeat()) {
+      for (const p of plants) {
+        if (!fuelOn(p.f)) continue;
+        const v = heatVal(p, m.pk, m);
+        if (v != null) out.push(v);
+      }
+    }
+    if (fabsInHeat()) {
+      for (const f of fabs) {
+        const v = heatVal(f, m.fk, m);
+        if (v != null) out.push(v);
+      }
+    }
+    return out;
+  }
+
+  // The measure's own number format - shared by the bar's end readouts and
+  // every label on the distribution chart, so the two can never disagree
+  // about what $12,400 is called.
+  const fmtHeat = (v) => {
+    const m = heatSpec();
+    return m.k === 'by' ? String(Math.round(v))
+      : m.money ? usdText(v) : Math.round(v).toLocaleString();
+  };
+
   // Recomputed whenever the visible set changes, which is why it hangs off
   // applyVisibility rather than off the switch.
   function applyHeat() {
@@ -3567,19 +4971,22 @@
     heatDomain = null;
     if (state.heat.on) {
       let lo = Infinity, hi = -Infinity;
-      const see = (v) => { if (v == null) return; if (v < lo) lo = v; if (v > hi) hi = v; };
-      for (const d of shown()) see(heatVal(d, m.k, m));
-      // Plants stretch the SAME domain when they are on the same ramp. If they
-      // had their own the colours would not be comparable, and comparing them
-      // is the reason both are painted.
-      if (plantsInHeat()) {
-        for (const p of plants) {
-          if (fuelOn(p.f)) see(heatVal(p, m.pk, m));
-        }
-      }
+      for (const v of heatValues()) { if (v < lo) lo = v; if (v > hi) hi = v; }
       if (lo <= hi) heatDomain = [lo, hi];
+      // A hand-narrowed range REPLACES the computed domain rather than
+      // clipping it: the ramp stretches over the chosen band, and everything
+      // outside saturates at the end colours. Nothing is hidden - the filter
+      // refines the scale so the middle of the data can use the whole ramp,
+      // which one $168bn outlier otherwise denies it. Only when something is
+      // painted at all, so "none shown" keeps meaning none.
+      if (heatDomain && state.heat.range) heatDomain = state.heat.range.slice();
     }
-    const fmt = (v) => (m.k === 'by' ? String(Math.round(v)) : Math.round(v).toLocaleString());
+    // Say when the readouts are a hand choice, not the data's extremes - and
+    // only when the choice is actually APPLIED: with nothing painted carrying
+    // the measure the stored range is inert, and a ring around a bar reading
+    // "none shown" would be the indicator contradicting its own readouts.
+    hbRamp.classList.toggle('hb-narrowed', !!(state.heat.on && state.heat.range && heatDomain));
+    const fmt = fmtHeat;
     // Switched on over a set where nothing carries the measure, every dot goes
     // grey and blank ends read as a broken control rather than as an answer.
     hbMin.textContent = heatDomain ? fmt(heatDomain[0]) : (state.heat.on ? 'none shown' : '');
@@ -3609,12 +5016,20 @@
     const missingFor = (key) => (m.zeroIsReal
       ? ['==', ['has', key], false]
       : ['<=', ['to-number', ['get', key], 0], 0]);
+    // Draw order follows the value while the ramp is painting: MapLibre sorts
+    // a layer's circles ascending by this key, so the red dot renders ON TOP
+    // of the green and grey ones around it. Without it, feature order decides
+    // - and in Ashburn or Tainan that buried exactly the dot the ramp exists
+    // to surface. Missing values coerce to 0 and sink to the bottom. Cleared
+    // (null) when the heat is off, so the layers keep their native order.
+    const sortFor = (key) => ['to-number', ['get', key], 0];
 
     // Rebuild the two dot layers' colour. Everything else dotPaint sets - the
     // radius, the hollow town ring, the halo - is left alone.
     const town = ['==', ['get', 'gp'], 'town'];
     for (const [id, key] of [['sites', 'fac'], ['sites-ai', 'ai']]) {
       if (!map.getLayer(id)) continue;
+      map.setLayoutProperty(id, 'circle-sort-key', heatDomain ? sortFor(m.k) : null);
       if (!heatDomain) {
         map.setPaintProperty(id, 'circle-color', ['case', town, 'rgba(0,0,0,0)', pal()[key]]);
         continue;
@@ -3632,6 +5047,7 @@
         : base['circle-color'];
       map.setPaintProperty('plant', 'circle-color', colour);
       map.setPaintProperty('plant', 'circle-stroke-color', colour);
+      map.setLayoutProperty('plant', 'circle-sort-key', on ? sortFor(m.pk) : null);
       // Fuel rings are deliberately faint because they are context. On the
       // shared ramp they are the subject, and a 26%-opacity fill cannot be
       // compared by eye against a 92%-opacity dot. Approximate locations stay
@@ -3639,6 +5055,23 @@
       map.setPaintProperty('plant', 'circle-opacity', on
         ? ['case', ['==', ['get', 'ax'], 1], 0, 0.62]
         : base['circle-opacity']);
+    }
+
+    // Fabs, same deal, when the measure carries a fab key. The fill takes the
+    // ramp; the dark rim stays, because the rim - not the hue - is what tells
+    // a fab from a data centre dot once both are painted from one palette.
+    // Announced fabs drop their half-transparency on the ramp for the same
+    // reason the plant rings drop their faintness: normally they are context,
+    // here they are the subject, and Terafab at 45% opacity cannot be read
+    // against an operating fab at 90%.
+    if (map.getLayer('fab')) {
+      const base = fabPaint();
+      const on = heatDomain && m.fk;
+      map.setPaintProperty('fab', 'circle-color', on
+        ? ['case', missingFor(m.fk), HEAT_NONE, rampFor(m.fk)]
+        : base['circle-color']);
+      map.setPaintProperty('fab', 'circle-opacity', on ? 0.92 : base['circle-opacity']);
+      map.setLayoutProperty('fab', 'circle-sort-key', on ? sortFor(m.fk) : null);
     }
     if (globe) globe.pointColor(pointColour);
 
@@ -3653,8 +5086,19 @@
       plantWrap.clear();
       if (globe) refreshGlobe();
     }
+
+    // The chart bins over the domain this function just set, so it re-renders
+    // here - after every repaint, not only after its own brush - or a layer
+    // toggle would leave it drawing a population the map no longer paints.
+    if (!hbDist.hidden) renderDist();
   }
   window.__applyHeat = applyHeat;   // called from applyVisibility
+
+  // Repaint after a heat-state change. Mostly applyHeat alone - but with the
+  // hide-no-value filter armed, switching the measure or the toggle changes
+  // WHICH dots exist, and that is applyVisibility's jurisdiction (the 2D
+  // filters, the count, the globe), which then calls applyHeat itself.
+  const reheat = () => (state.heat.hideMissing ? refreshView() : applyHeat());
 
   hbBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -3663,6 +5107,10 @@
       hbMenu.innerHTML = HEAT_MEASURES.map(m =>
         '<button type="button" data-m="' + m.k + '"><span class="tick">'
         + (m.k === state.heat.k ? '✓' : '') + '</span>' + esc(m.label) + '</button>').join('');
+      // One popover at a time: the menu and the distribution panel share the
+      // strip above the bar, and both open meant the panel painting over the
+      // menu. Defined later in this block, hence the window hook.
+      if (window.__closeDist) window.__closeDist();
     }
     hbMenu.hidden = !open;
     hbBtn.setAttribute('aria-expanded', String(open));
@@ -3670,13 +5118,16 @@
   hbMenu.addEventListener('click', (e) => {
     const b = e.target.closest('[data-m]');
     if (!b) return;
+    // A narrowed range belongs to the measure it was drawn on - $14M-$40bn
+    // means nothing in megawatts, so switching measures resets it.
+    if (state.heat.k !== b.dataset.m) state.heat.range = null;
     state.heat.k = b.dataset.m;
     // Choosing a measure means you want to see it. Switching on for you is
     // less surprising than showing the name of a measure that is not painted.
     state.heat.on = true;
     hbMenu.hidden = true;
     hbBtn.setAttribute('aria-expanded', 'false');
-    applyHeat();
+    reheat();
   });
   document.addEventListener('click', (e) => {
     if (!hbMenu.hidden && !hbBtn.closest('.hb-pick').contains(e.target)) {
@@ -3684,7 +5135,466 @@
       hbBtn.setAttribute('aria-expanded', 'false');
     }
   });
-  hbSw.addEventListener('click', () => { state.heat.on = !state.heat.on; applyHeat(); });
+  hbSw.addEventListener('click', () => { state.heat.on = !state.heat.on; reheat(); });
+
+  // ---- distribution panel ----------------------------------------------------
+  // The ramp compresses a shape into a gradient; this panel shows the shape.
+  // Clicking the ramp opens a histogram of the painted measure over exactly
+  // the set applyHeat computed its domain from, each bar wearing the colour
+  // its values are painted. Dragging across it narrows the domain to the
+  // selection: the ramp stretches over the chosen band, outliers saturate at
+  // the end colours, and the chart re-bins over the new domain so a second
+  // drag narrows further. That is the whole point - one $168bn project
+  // otherwise owns the top of a log ramp and flattens everything else into
+  // green, and the only way to compare the middle is to take the scale back.
+  //
+  // Narrowing refines the SCALE, it never hides a dot: excluded values stay
+  // on the map at the end colours, and the two dim bars flanking the chart
+  // say how many sit outside. Hiding them would turn a legend control into a
+  // silent data filter, which is a different and more dangerous tool.
+  const hbdTitle = document.getElementById('hbd-title');
+  const hbdChart = document.getElementById('hbd-chart');
+  const hbdReset = document.getElementById('hbd-reset');
+  const hbdNote = document.getElementById('hbd-note');
+  const hbdLo = document.getElementById('hbd-lo');
+  const hbdHi = document.getElementById('hbd-hi');
+  const hbdUnit = document.getElementById('hbd-unit');
+
+  const DIST_BINS = 36;
+  const DIST_TOTAL = 446;          // viewBox width = panel's content width
+  const DIST_SLOT = 10;            // the out-of-range bar at each end
+  const DIST_X0 = DIST_SLOT + 2;   // plot area
+  const DIST_W = DIST_TOTAL - 2 * DIST_X0;
+  const DIST_H = 84;
+
+  // Inverse of heatT: the value at position t on the current domain. The two
+  // must stay the same curve or the brush selects a different band than the
+  // one the user drew over.
+  function distValueAt(t) {
+    const [lo, hi] = heatDomain;
+    if (heatSpec().log && lo > 0) return lo * Math.pow(hi / lo, t);
+    return lo + (hi - lo) * t;
+  }
+
+  function renderDist() {
+    // A rebuild means the domain or the population moved (a layer toggle, a
+    // timeline tick, a measure switch). Any drag in flight was drawn against
+    // the OLD chart, so it is abandoned rather than committed against a scale
+    // the user never saw.
+    cancelBrush();
+    const m = heatSpec();
+    hbdTitle.innerHTML = '<b>' + esc(m.label) + '</b> — distribution';
+    hbdReset.hidden = !state.heat.range;
+    if (!state.heat.on || !heatDomain) {
+      hbdChart.innerHTML = '';
+      hbdNote.textContent = state.heat.on
+        ? 'Nothing currently shown carries this measure.'
+        : 'Switch the heatmap on to see the distribution.';
+      syncInputs();
+      return;
+    }
+    const [lo, hi] = heatDomain;
+    const vals = heatValues();
+    const bins = new Array(DIST_BINS).fill(0);
+    let below = 0, above = 0;
+    for (const v of vals) {
+      if (v < lo) { below++; continue; }
+      if (v > hi) { above++; continue; }
+      // heatT clamps, so v === hi lands on t = 1; keep it in the last bin.
+      bins[Math.min(DIST_BINS - 1, Math.floor(heatT(v) * DIST_BINS))]++;
+    }
+    // The scale is the IN-RANGE peak, deliberately. After a couple of drills
+    // most values sit outside the band, and letting the 152-outside bar set
+    // the scale flattened the in-band shape to slivers - the very shape the
+    // panel exists to show. The overflow bars saturate at full height instead
+    // and carry their true count on hover; "a wall at the edge" is the right
+    // message at any magnitude.
+    const peak = Math.max(1, ...bins);
+    const bw = DIST_W / DIST_BINS;
+    // Height is linear in count with a floor: the one-project bin is exactly
+    // the anomaly this panel exists to spot, and at 1/peak of 84px it would
+    // otherwise be invisible.
+    const hOf = (count) => (count
+      ? Math.max(2, Math.min(DIST_H - 4, (count / peak) * (DIST_H - 4))) : 0);
+    const rect = (x, w, count, fill, cls, label) => {
+      const h = hOf(count);
+      if (!h) return '';
+      return `<rect class="${cls}" x="${x.toFixed(1)}" y="${(DIST_H - h).toFixed(1)}"` +
+        ` width="${w.toFixed(1)}" height="${h.toFixed(1)}"${fill ? ` fill="${fill}"` : ''}>` +
+        `<title>${esc(label)}</title></rect>`;
+    };
+    const parts = [];
+    for (let i = 0; i < DIST_BINS; i++) {
+      const a = distValueAt(i / DIST_BINS), b = distValueAt((i + 1) / DIST_BINS);
+      parts.push(rect(DIST_X0 + i * bw, bw - 0.6, bins[i],
+        heatColour(distValueAt((i + 0.5) / DIST_BINS)), 'hbd-bar',
+        `${fmtHeat(a)} – ${fmtHeat(b)} · ${bins[i]}`));
+    }
+    parts.push(rect(0, DIST_SLOT, below, '', 'hbd-out',
+      `${below} below ${fmtHeat(lo)} — clamped to the low colour`));
+    parts.push(rect(DIST_TOTAL - DIST_SLOT, DIST_SLOT, above, '', 'hbd-out',
+      `${above} above ${fmtHeat(hi)} — clamped to the high colour`));
+
+    // The y axis: count gridlines at the in-range peak and its midpoint,
+    // labelled inside the plot's top-left. Drawn UNDER the bars (pushed to
+    // the front of parts) so a tall bar is never sliced by its own gridline's
+    // label. Only two lines - the min-height floor on tiny bars already makes
+    // an exact reading impossible below ~2 counts, and pretending finer
+    // precision with a denser grid would be a lie drawn in ink.
+    const grid = [];
+    for (const c of peak > 1 ? [peak, Math.round(peak / 2)] : [peak]) {
+      if (!c || (grid.length && c === peak)) continue;
+      const y = DIST_H - (c / peak) * (DIST_H - 4);
+      grid.push(`<line class="hbd-grid" x1="${DIST_X0}" y1="${y.toFixed(1)}"` +
+        ` x2="${DIST_X0 + DIST_W}" y2="${y.toFixed(1)}"/>` +
+        `<text class="hbd-lbl" x="${DIST_X0 + 3}" y="${(y - 2).toFixed(1)}">${c}</text>`);
+    }
+    parts.unshift(...grid);
+
+    // The x axis: the domain's values at five even positions of the SCALE -
+    // even in t, not in value, so on a log ramp the ticks land log-spaced,
+    // which is the truth about where the colours change. First and last stick
+    // to their ends so the extremes never clip.
+    const AXIS_H = 14;
+    const ticks = [];
+    const tickTs = hi > lo ? [0, 0.25, 0.5, 0.75, 1] : [0.5];
+    for (const t of tickTs) {
+      const x = DIST_X0 + t * DIST_W;
+      const anchor = t === 0 ? 'start' : t === 1 ? 'end' : 'middle';
+      ticks.push(`<line class="hbd-tick" x1="${x.toFixed(1)}" y1="${DIST_H + 1}"` +
+        ` x2="${x.toFixed(1)}" y2="${DIST_H + 4}"/>` +
+        `<text class="hbd-lbl" x="${x.toFixed(1)}" y="${DIST_H + 12}"` +
+        ` text-anchor="${anchor}">${esc(fmtHeat(distValueAt(t)))}</text>`);
+    }
+
+    hbdChart.innerHTML =
+      `<svg viewBox="0 0 ${DIST_TOTAL} ${DIST_H + AXIS_H}" role="img"` +
+      ` aria-label="Histogram of ${esc(m.label)}">` +
+      parts.join('') +
+      `<line class="hbd-axis" x1="0" y1="${DIST_H + 0.5}" x2="${DIST_TOTAL}" y2="${DIST_H + 0.5}"/>` +
+      ticks.join('') +
+      `<rect id="hbd-brush" class="hbd-brush" x="0" y="0" width="0" height="${DIST_H}"/>` +
+      // The hover crosshair: where a drag would start, before it starts.
+      // Positioned by the chart's own pointermove, hidden the moment a drag
+      // begins - the selection readout owns the chart from then on.
+      `<line id="hbd-cur" class="hbd-cur" x1="-9" x2="-9" y1="0" y2="${DIST_H}"/>` +
+      `<text id="hbd-curlbl" class="hbd-sel-lbl" y="11"></text>` +
+      // The live readout: the drag's start and end values, filled in by
+      // pointermove and emptied whenever the brush ends or dies.
+      `<text id="hbd-selA" class="hbd-sel-lbl" y="11"></text>` +
+      `<text id="hbd-selB" class="hbd-sel-lbl" y="11"></text>` +
+      '</svg>';
+    syncInputs();
+    hbdNote.textContent = `${vals.length.toLocaleString()} values on the ramp`
+      + (below || above
+        ? ` · ${below ? `${below} below` : ''}${below && above ? ', ' : ''}` +
+          `${above ? `${above} above` : ''} the range, clamped to the end colours`
+        : '')
+      + (hi > lo ? ' · drag across the chart to narrow the range' : ' · every value is the same');
+  }
+
+  // The brush. Down starts a selection, move stretches the highlight, up
+  // narrows the domain to it - unless the drag was too small to be one, which
+  // is a click and does nothing. Listeners on window, not the svg: the svg is
+  // rebuilt on every render and a drag routinely leaves the panel.
+  //
+  // A brush is a fragile thing and every way it can be interrupted must
+  // CANCEL it, not half-apply it. The failure the review pass found: Escape
+  // mid-drag hid the panel but left the drag armed, and the next release
+  // committed a range computed against a display:none chart whose zero-width
+  // rect turned the pixel maths into Infinity - a filter the user never drew,
+  // applied silently. So: the gesture is bound to one pointerId; the domain
+  // it maps through is CAPTURED at pointerdown (never the live one, which a
+  // timeline tick can move mid-drag); pointercancel, window blur, a panel
+  // close and a chart re-render all abandon it; and a dead rect abandons it
+  // too rather than dividing by it.
+  let brush = null;   // { id, xA, xB, dom, log } - viewBox units + frozen scale
+  const valIn = (dom, useLog, t) => (useLog
+    ? dom[0] * Math.pow(dom[1] / dom[0], t)
+    : dom[0] + (dom[1] - dom[0]) * t);
+  const brushX = (clientX) => {
+    const svg = hbdChart.querySelector('svg');
+    const r = svg && svg.getBoundingClientRect();
+    return r && r.width > 0 ? (clientX - r.left) / r.width * DIST_TOTAL : null;
+  };
+  const cancelBrush = () => {
+    if (!brush) return;
+    brush = null;
+    const el = hbdChart.querySelector('#hbd-brush');
+    if (el) el.setAttribute('width', '0');
+    for (const id of ['hbd-selA', 'hbd-selB']) {
+      const t = hbdChart.querySelector('#' + id);
+      if (t) t.textContent = '';
+    }
+    syncInputs();   // the boxes tracked the drag; put the real domain back
+  };
+
+  // ---- the typed twin of the brush -------------------------------------------
+  // Two boxes holding the domain's exact bounds in the measure's OWN unit
+  // (hbd-unit says which), because a drag is precise to about a bin and
+  // "everything from exactly $10bn" is not. Enter or leaving an EDITED field
+  // applies; garbage, a reversed pair typed as equal, or a non-positive
+  // bound on a log measure quietly reverts to what the domain really is -
+  // the boxes never show a range the map is not painting.
+  //
+  // WHAT COUNTS AS AN EDIT IS TRACKED EXPLICITLY, never inferred from the
+  // browser's change event. The review pass proved change-on-blur is the
+  // wrong oracle three different ways: it fires a second apply after Enter,
+  // it fires an apply for an edit Escape had just abandoned (Blink compares
+  // against the value before the FIRST user edit, so restoring a moved
+  // domain's bound still reads as changed), and it converts a drag the user
+  // walked away from into a committed range. An `input` event - which only
+  // real keystrokes fire, never assignments to .value - marks a box dirty;
+  // apply consumes the mark; every programmatic write clears it.
+  const dirty = new Set();
+  const setBox = (el, text) => { el.value = text; dirty.delete(el); };
+  // Numbers for the boxes: exact enough to round-trip - a bound the user did
+  // NOT edit is never re-parsed from this text anyway (applyTyped keeps its
+  // true value), so display rounding can no longer shift a committed range.
+  // Years skip the thousands separator: "2,026" is a number, not a year.
+  // MONEY IS SHOWN AND TYPED IN FULL DOLLARS - "85,730,000,000", not the
+  // internal US$-millions unit - because a box captioned US$ that means
+  // millions is a thousand-fold trap. inputNum multiplies out, parseTyped
+  // divides back; the internal unit never leaks past these two functions.
+  const inputNum = (v) => (heatSpec().k === 'by' ? String(Math.round(v))
+    : heatSpec().money ? Math.round(v * 1e6).toLocaleString('en-US')
+      : Math.abs(v) >= 100 ? Math.round(v).toLocaleString('en-US')
+        : String(Math.round(v * 100) / 100));
+  function syncInputs() {
+    const m = heatSpec();
+    hbdUnit.textContent = m.unit || '';
+    const live = state.heat.on && heatDomain;
+    hbdLo.disabled = hbdHi.disabled = !live;
+    // Never overwrite a field the user is typing in - a timeline tick
+    // re-rendering the chart mid-edit must not eat their number.
+    if (document.activeElement !== hbdLo) setBox(hbdLo, live ? inputNum(heatDomain[0]) : '');
+    if (document.activeElement !== hbdHi) setBox(hbdHi, live ? inputNum(heatDomain[1]) : '');
+  }
+  // "27bn" is how the money figures are said everywhere else on this map, so
+  // the boxes accept it - k/m/bn/tn as plain dollar magnitudes now that the
+  // boxes hold full dollars ("27bn" and "27,000,000,000" are the same entry).
+  // Other measures take plain numbers only - "k" is ambiguous the moment the
+  // unit is not money. Money returns converted to the internal US$ millions.
+  const parseTyped = (s) => {
+    s = String(s || '').trim().toLowerCase().replace(/[\s,$]/g, '');
+    const mm = s.match(/^(-?\d*\.?\d+)(k|m|b|bn|t|tn)?$/);
+    if (!mm) return NaN;
+    const v = parseFloat(mm[1]);
+    if (!heatSpec().money) return mm[2] ? NaN : v;
+    const dollars = v * (mm[2] ? { k: 1e3, m: 1e6, b: 1e9, bn: 1e9, t: 1e12, tn: 1e12 }[mm[2]] : 1);
+    return dollars / 1e6;
+  };
+  function applyTyped() {
+    if (!state.heat.on || !heatDomain || !dirty.size) return;
+    // Only an EDITED bound goes through the parser; the other keeps the
+    // domain's exact value rather than a re-parse of its rounded display
+    // text, so committing one bound can never quietly shift the other.
+    let lo = dirty.has(hbdLo) ? parseTyped(hbdLo.value) : heatDomain[0];
+    let hi = dirty.has(hbdHi) ? parseTyped(hbdHi.value) : heatDomain[1];
+    dirty.clear();
+    if (!Number.isFinite(lo) || !Number.isFinite(hi)) { syncInputs(); return; }
+    if (lo > hi) [lo, hi] = [hi, lo];
+    if (lo === hi || (heatSpec().log && lo <= 0)) { syncInputs(); return; }
+    state.heat.range = [lo, hi];
+    applyHeat();
+  }
+  for (const el of [hbdLo, hbdHi]) {
+    el.addEventListener('input', () => dirty.add(el));
+    el.addEventListener('blur', () => { applyTyped(); syncInputs(); });
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter') el.blur(); });
+  }
+  hbdChart.addEventListener('pointerdown', (e) => {
+    // Primary button and primary pointer only: a right-click opens a context
+    // menu (its release never reaches us) and a second finger must not steal
+    // or corrupt the first finger's drag.
+    if (e.button !== 0 || !e.isPrimary) return;
+    if (!state.heat.on || !heatDomain || heatDomain[0] === heatDomain[1]) return;
+    const x = brushX(e.clientX);
+    if (x == null) return;
+    // Starting a drag supersedes a half-typed edit. preventDefault below
+    // keeps the browser from moving focus, so without this a box focused
+    // before the drag would STAY focused while the mirror writes into it -
+    // and the abandoned text, or the mirrored value, could later be applied
+    // by its blur. Restore, unmark, blur: the blur then applies nothing.
+    for (const el of [hbdLo, hbdHi]) {
+      if (document.activeElement === el) { dirty.delete(el); el.blur(); }
+    }
+    syncInputs();
+    brush = { id: e.pointerId, xA: x, xB: x, dom: heatDomain.slice(),
+              log: !!(heatSpec().log && heatDomain[0] > 0) };
+    hideCursor();   // the drag readout owns the chart now
+    e.preventDefault();
+  });
+  window.addEventListener('pointermove', (e) => {
+    if (!brush || e.pointerId !== brush.id) return;
+    const x = brushX(e.clientX);
+    if (x == null) { cancelBrush(); return; }
+    brush.xB = x;
+    const el = hbdChart.querySelector('#hbd-brush');
+    if (!el) return;
+    const a = Math.max(DIST_X0, Math.min(brush.xA, brush.xB));
+    const b = Math.min(DIST_X0 + DIST_W, Math.max(brush.xA, brush.xB));
+    el.setAttribute('x', String(a));
+    el.setAttribute('width', String(Math.max(0, b - a)));
+    // The values under the drag's edges, live - through the FROZEN scale, so
+    // the readout is exactly what release will commit. One combined label
+    // while the selection is too narrow for two, else one per edge, each
+    // flipped inward when its end nears the border so nothing clips.
+    const selA = hbdChart.querySelector('#hbd-selA');
+    const selB = hbdChart.querySelector('#hbd-selB');
+    if (selA && selB) {
+      const vA = valIn(brush.dom, brush.log, (a - DIST_X0) / DIST_W);
+      const vB = valIn(brush.dom, brush.log, (b - DIST_X0) / DIST_W);
+      // Flip thresholds sized to the WIDEST label (~62px for a ten-character
+      // value at 10px monospace), not a guess: the svg clips at its border,
+      // so a threshold narrower than the text is a readout that vanishes
+      // exactly at the extremes, where it is needed most.
+      if (b - a < 90) {
+        const mid = Math.min(DIST_TOTAL - 2, Math.max(2, (a + b) / 2));
+        selA.textContent = `${fmtHeat(vA)} – ${fmtHeat(vB)}`;
+        selA.setAttribute('x', String(mid));
+        selA.setAttribute('text-anchor',
+          mid < 70 ? 'start' : mid > DIST_TOTAL - 70 ? 'end' : 'middle');
+        selB.textContent = '';
+      } else {
+        selA.textContent = fmtHeat(vA);
+        selA.setAttribute('x', String(a));
+        selA.setAttribute('text-anchor', a < 66 ? 'start' : 'end');
+        selB.textContent = fmtHeat(vB);
+        selB.setAttribute('x', String(b));
+        selB.setAttribute('text-anchor', b > DIST_TOTAL - 66 ? 'end' : 'start');
+      }
+      // And in the boxes below, so the drag and the typed range read as one
+      // control. pointerdown blurred the boxes, so nothing here fights
+      // syncInputs' dont-overwrite-while-typing rule - and setBox keeps them
+      // unmarked, so a voided drag's mirrored text can never be applied.
+      setBox(hbdLo, inputNum(vA));
+      setBox(hbdHi, inputNum(vB));
+    }
+  });
+  window.addEventListener('pointerup', (e) => {
+    if (!brush || e.pointerId !== brush.id) return;
+    const { xA, xB, dom, log } = brush;
+    brush = null;
+    if (hbDist.hidden) return;   // closed mid-drag: the gesture is void
+    const a = Math.max(DIST_X0, Math.min(xA, xB));
+    const b = Math.min(DIST_X0 + DIST_W, Math.max(xA, xB));
+    if (b - a >= 5) {
+      state.heat.range = [valIn(dom, log, (a - DIST_X0) / DIST_W),
+                          valIn(dom, log, (b - DIST_X0) / DIST_W)];
+      applyHeat();
+    } else {
+      renderDist();          // clear the stray highlight
+    }
+  });
+  // A cancelled touch (system gesture, orientation change) fires pointercancel
+  // and never pointerup; without this the stale anchor waited around to pair
+  // with some unrelated press minutes later. Blur is the same story for a
+  // mouse that alt-tabs away mid-drag.
+  window.addEventListener('pointercancel', cancelBrush);
+  window.addEventListener('blur', cancelBrush);
+
+  hbdReset.addEventListener('click', () => {
+    state.heat.range = null;
+    applyHeat();
+  });
+
+  // Hide the greys. A FILTER, so it goes through refreshView - the 2D layer
+  // filters, the live title count, the globe arrays and this chart all move
+  // together; the panel's own note then reports the smaller population.
+  const hbdHide = document.getElementById('hbd-hide');
+  hbdHide.addEventListener('click', () => {
+    state.heat.hideMissing = !state.heat.hideMissing;
+    hbdHide.setAttribute('aria-pressed', String(state.heat.hideMissing));
+    refreshView();
+  });
+
+  // The crosshair: hovering the chart shows the value under the cursor, so
+  // the starting point of a drag is known BEFORE the button goes down.
+  // Chart-local listeners - this is a hover affordance, not a gesture - and
+  // the drag readout owns the chart from the moment a brush starts.
+  const hideCursor = () => {
+    const cur = hbdChart.querySelector('#hbd-cur');
+    const lbl = hbdChart.querySelector('#hbd-curlbl');
+    if (cur) { cur.setAttribute('x1', '-9'); cur.setAttribute('x2', '-9'); }
+    if (lbl) lbl.textContent = '';
+  };
+  hbdChart.addEventListener('pointermove', (e) => {
+    if (brush || !state.heat.on || !heatDomain) return;
+    const cur = hbdChart.querySelector('#hbd-cur');
+    const lbl = hbdChart.querySelector('#hbd-curlbl');
+    if (!cur || !lbl) return;
+    const x = brushX(e.clientX);
+    if (x == null) return;
+    const cx = Math.max(DIST_X0, Math.min(DIST_X0 + DIST_W, x));
+    cur.setAttribute('x1', String(cx));
+    cur.setAttribute('x2', String(cx));
+    lbl.textContent = fmtHeat(distValueAt((cx - DIST_X0) / DIST_W));
+    lbl.setAttribute('x', String(cx));
+    lbl.setAttribute('text-anchor',
+      cx < 70 ? 'start' : cx > DIST_TOTAL - 70 ? 'end' : 'middle');
+  });
+  hbdChart.addEventListener('pointerleave', hideCursor);
+
+  const closeDist = () => {
+    if (hbDist.hidden) return;
+    hbDist.hidden = true;
+    hbRamp.setAttribute('aria-expanded', 'false');
+    cancelBrush();
+  };
+  window.__closeDist = closeDist;  // the measure menu closes the panel; see hbBtn
+
+  hbRamp.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = hbDist.hidden;
+    if (open) {
+      // The two popovers share the strip above the bar and would overlap, so
+      // opening one closes the other.
+      hbMenu.hidden = true;
+      hbBtn.setAttribute('aria-expanded', 'false');
+      hbDist.hidden = false;
+      hbRamp.setAttribute('aria-expanded', 'true');
+      // Clicking the ramp means you want to see the measure, same contract as
+      // picking one from the menu. applyHeat re-renders the chart itself.
+      if (!state.heat.on) { state.heat.on = true; reheat(); } else renderDist();
+    } else {
+      closeDist();
+    }
+  });
+  // Which click is allowed to close the panel is decided by where the PRESS
+  // landed, not where the click's target ends up: a drag that starts on the
+  // chart (or anywhere on the panel) and releases over the map fires its
+  // click at the common ancestor - body - and closing on that would shut the
+  // panel the moment a range was chosen. A flag consumed by the click, and
+  // reset by every new press, also cannot latch the way the old
+  // swallow-one-click flag did on touch drags that fire no click at all.
+  let pressInPanel = false;
+  window.addEventListener('pointerdown', (e) => {
+    pressInPanel = hbDist.contains(e.target);
+  }, true);
+  document.addEventListener('click', (e) => {
+    if (pressInPanel) { pressInPanel = false; return; }
+    if (!hbDist.hidden && !document.getElementById('heatbar').contains(e.target)) {
+      closeDist();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    // defaultPrevented is the layering signal: an overlay that already
+    // consumed this Escape (the search dialog closes itself) keeps it.
+    if (e.key !== 'Escape' || e.defaultPrevented) return;
+    // Escape in a range box abandons the EDIT, not the panel: restore the
+    // field and drop its dirty mark, so the blur that follows applies
+    // nothing. The restore is direct because syncInputs deliberately
+    // refuses to touch a focused field.
+    if (e.target === hbdLo || e.target === hbdHi) {
+      const live = state.heat.on && heatDomain;
+      setBox(e.target, live
+        ? inputNum(e.target === hbdLo ? heatDomain[0] : heatDomain[1]) : '');
+      e.target.blur();
+      return;
+    }
+    closeDist();
+  });
 
   // applyVisibility may well have run before this block existed - it guards on
   // window.__applyHeat - so paint the bar once now that it does.

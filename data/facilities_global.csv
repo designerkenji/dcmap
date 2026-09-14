@@ -4712,6 +4712,13 @@ ai,epoch,Meta Sarpy,Meta Sarpy,Meta,US,41.08184,-96.131094,town,,,,Meta,,,"14436
 ai,epoch,OpenAI Stargate Lordstown,OpenAI Stargate Lordstown,Softbank,US,41.236795,-80.819042,town,,,,OpenAI,,,"2300 Hallock Young Rd, Warren, OH 44481",,,,,,,,,,,,site-428eb8956f
 ai,epoch,OpenAI Stargate UAE,OpenAI Stargate UAE,G42,AE,24.479292,52.313949,town,,,,OpenAI,,,"Nexus L&T Project Office, Al Bihouth, Al Dhafrah, Abu Dhabi, United Arab Emirates",,,,,,,,,,,,site-01078bea30
 ai,epoch,QTS Cedar Rapids,QTS Cedar Rapids,,US,41.90562,-91.750987,exact,,,,,Alliant Energy,,"6200 76th Ave SW, Fairfax, IA 52228",,,,,,,,,,,,site-ecf2b9f202
+traditional,manual,,,,US,47.234367,-119.853505,town,,,,,,,"1515 Port Industrial Way, Quincy, WA, USA",,,,,,,,,,,,site-65de06c201
+ai,manual,OpenAI Project Camellia,,OpenAI,US,32.251000,-81.236000,exact,3210,,,,,,"Savannah Gateway Industrial Hub, Rincon, GA, USA",,,,,,single,hyperscale self-build,,,,,site-0adf271aee
+ai,manual,Google Project Tembo,,Google,US,41.033000,-104.755000,exact,2700,,,,,,"Switchgrass Industrial Park, Cheyenne, WY, USA",,,,,,single,hyperscale self-build,,,,,site-c1f1dfb23f
+ai,manual,Meta El Paso (BlackRock JV),,Meta,US,31.848000,-106.430000,exact,1000,,,,,,"El Paso, TX, USA",,,,,,single,hyperscale self-build,,,,,site-475cee3a49
+ai,manual,Meta Sturgeon County,,Meta,CA,53.800000,-113.450000,exact,1000,,,,,,"Sturgeon County, Alberta, Canada",,,,,,single,hyperscale self-build,,,,,site-d096aed88e
+ai,manual,Justified Data Campus,,TeraWulf,US,37.899000,-86.754000,exact,401,,,,,,"Hawesville, KY, USA",,,,,,,,,,,,site-f3e3864878
+ai,manual,Crusoe Childress (with Lancium),,Crusoe,US,34.426500,-100.204000,exact,1000,,,,,,"Childress, TX, USA",,,,,,,,,,,,site-c323f6fbc0
 traditional,peeringdb,Digital Realty NYC (111 8th Ave),,Digital Realty,US,40.741469,-74.003387,exact,,,,,,,111 8th Ave,,New York,,,,multi,peeringdb net_count=130,130,16,Digital Realty,,site-3880540cb7
 traditional,peeringdb,The Mission Street Center,,UnitedLayer LLC,US,37.780351,-122.408954,exact,,,,,,,1019 Mission Street,,San Francisco,,,,,,0,24,UnitedLayer LLC,no_interconnection,site-290b2102b6
 traditional,peeringdb,SVTIX San Jose,,SVTIX San Jose,US,37.333765,-121.904828,exact,,,,,,,250 Stockton St,,San Jose,,,,multi,peeringdb net_count=3,3,33,SVTIX San Jose,,site-34004a3784

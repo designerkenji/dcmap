@@ -67,7 +67,59 @@ RE_DATE = re.compile(r"(?:in-service|target|requested in-service)\s*(?:date)?\s*
                      r"(\d{1,2}/\d{1,2}/\d{4}|[A-Z][a-z]+ \d{1,2},? \d{4})", re.I)
 RE_ENTITY = re.compile(r"\b(DEV Distribution|DEV|REC|NOVEC|ODEC|Rappahannock[\w ]*)\b"
                        r"\s+has submitted", re.I)
-RE_SUB = re.compile(r"\(([A-Z][A-Za-z ]{2,28})\)\s*(?:to be located|substation|delivery)?", re.I)
+# ---- substations ------------------------------------------------------------
+# Dominion names them four ways, and these are ordered by how much they prove:
+#
+#   "a new substation (Flamingo) to serve a data center in Hanover County"
+#       the parenthetical - the strongest, because the same sentence usually
+#       says what the substation is FOR.
+#   "terminates at New Road Substation"          a capitalised name + the word
+#   "between CIA and Idylwood substations"       a pair sharing one plural
+#   "located at Pleasant View, Greenwich, Liberty ... and Newport News
+#    substations"                                a list sharing one plural
+#
+# Extraction runs on the FULL page text, not the 400-character `text` column
+# the CSV carries: ten names in this corpus appear only past that cut, and the
+# column exists for eyeballing rather than for parsing.
+# RE_NEED is anchored to the literal "Need Number:" label, which is right for
+# identifying WHOSE slide this is and useless for finding the others cited on
+# it. Do-No-Harm slides list co-studied needs as bare ids in prose.
+RE_NEED_ANY = re.compile(r"\b(DOM-\d{4}-\d{4}(?:-\w+)?)\b")
+RE_SUB_PAREN = re.compile(r"substation\s*\(([A-Z][A-Za-z0-9'. -]{2,30})\)", re.I)
+RE_SUB_NAMED = re.compile(r"\b([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+){0,2})\s+[Ss]ubstation\b")
+RE_SUB_LIST = re.compile(r"\b((?:[A-Z][A-Za-z'.]+(?:\s+[A-Z][A-Za-z'.]+){0,2}"
+                         r"(?:,\s*|\s+and\s+)){1,12}[A-Z][A-Za-z'.]+"
+                         r"(?:\s+[A-Z][A-Za-z'.]+){0,2})\s+substations\b")
+# Words that pass the shape test and name nothing.
+SUB_STOP = {
+    "the", "a", "an", "new", "proposed", "existing", "future", "this", "that",
+    "line", "lines", "both", "each", "other", "same", "two", "three", "four",
+    "dominion", "energy", "dev", "distribution", "customer", "data", "center",
+    "supplemental", "transmission", "zone", "need", "project", "problem",
+    "statement", "solution", "status", "planning", "model", "rtep", "teac",
+    "cap", "bank", "banks", "breaker", "position", "segment", "circuit",
+    "single", "double", "mile", "miles", "extend", "loop", "cut", "rebuild",
+    "between", "located", "terminates", "serve", "serving", "in-service",
+    # Descriptors that sit immediately before the word "substation" in ratings
+    # and scope sentences: "...1573 MVA. Upgrade substation equipment..."
+    "mva", "mw", "kv", "upgrade", "upgrades", "equipment", "rating", "ratings",
+    "summer", "winter", "normal", "minimum", "maximum", "achieve", "standards",
+    "replace", "replacement", "install", "add", "build", "construct", "at",
+}
+
+
+# Verbs and qualifiers Dominion puts in front of a name. "Construct James
+# Hill substation" is James Hill; "Proposed Stockholm" is Stockholm, and it
+# also appears bare elsewhere, so leaving the qualifier on would split one
+# substation into two.
+# "new" is NOT in this list, deliberately: New Post and New Road are real
+# substations in this corpus, and stripping the qualifier turned them into
+# "Post" and "Road" - two inventions replacing two facts. A qualifier that is
+# also a name is not safe to strip, and "new substation (Flamingo)" is caught
+# by the parenthetical pattern anyway.
+RE_LEAD = re.compile(r"^(?:construct|constructing|expand|expanding|rebuild|"
+                     r"rebuilding|proposed|existing|future|the|a|an)\s+", re.I)
+
 
 
 def _head_ok(url: str) -> bool:
@@ -86,9 +138,14 @@ def _head_ok(url: str) -> bool:
 
 def discover() -> list[str]:
     """Find deck URLs: scrape the committee page, then probe known past dates."""
-    if INDEX.exists():
-        return json.loads(INDEX.read_text())
-    urls: list[str] = []
+    # The index is a CACHE OF WHAT WAS FOUND, not a decision that discovery is
+    # done. It used to short-circuit the whole function whenever the file
+    # existed, which meant the September 2026 deck - posted, 5.95 MB, and eight
+    # times the size of the one before it - could never be seen: the registry
+    # would have gone on reporting a corpus that stopped in August forever,
+    # with nothing to indicate it had stopped looking. Scrape every run, merge,
+    # and let the date-probing below fill gaps the page no longer lists.
+    urls: list[str] = json.loads(INDEX.read_text()) if INDEX.exists() else []
     try:
         req = urllib.request.Request(TEAC_PAGE, headers=UA)
         with urllib.request.urlopen(req, timeout=60) as r:
@@ -98,6 +155,8 @@ def discover() -> list[str]:
     except Exception as e:  # noqa: BLE001
         print(f"  committee page scrape failed: {e}")
     listed = {u.rsplit("/", 1)[-1][:8] for u in urls}
+    if urls:
+        print(f"  {len(listed)} meeting(s) known after scraping the committee page")
     for d in KNOWN_DATES:
         if d in listed:
             continue
@@ -125,6 +184,57 @@ def fetch(url: str) -> pathlib.Path:
     return dest
 
 
+def clean_sub(name: str) -> str:
+    n = " ".join(name.split()).strip(" .,;:-")
+    prev = None
+    while prev != n:                      # "Proposed New Stockholm"
+        prev = n
+        n = RE_LEAD.sub("", n).strip()
+    if not n or n.lower() in SUB_STOP:
+        return ""
+    # A need id is not a substation.
+    if RE_NEED_ANY.fullmatch(n) or n.upper().startswith("DOM-"):
+        return ""
+    # A name whose every word is a stop word names nothing; one that merely
+    # starts with one usually does ("New Road", "Pleasant View").
+    if all(w.lower() in SUB_STOP for w in n.split()):
+        return ""
+    if any(ch.isdigit() for ch in n):     # "approximately 14 miles"
+        return ""
+    if len(n) < 3 or len(n) > 34:
+        return ""
+    return n
+
+
+def substations(text: str) -> list[str]:
+    """Substation names on one slide, best-evidence first, de-duplicated."""
+    found: list[str] = []
+    taken: list[tuple[int, int]] = []     # spans a stronger pattern already read
+
+    def add(n: str) -> None:
+        n = clean_sub(n)
+        if n and n.lower() not in {f.lower() for f in found}:
+            found.append(n)
+
+    for m in RE_SUB_PAREN.finditer(text):
+        add(m.group(1))
+        taken.append(m.span(1))
+    # The list pattern must run BEFORE the singular one and claim its span:
+    # "Valley and Newport News substations" splits into two names, but the
+    # singular pattern reading the same text sees one called "Valley Newport
+    # News". Whoever reads a stretch of text first owns it.
+    for m in RE_SUB_LIST.finditer(text):
+        for part in re.split(r",\s*|\s+and\s+", m.group(1)):
+            add(part)
+        taken.append(m.span(1))
+    for m in RE_SUB_NAMED.finditer(text):
+        a, b = m.span(1)
+        if any(a < tb and ta < b for ta, tb in taken):
+            continue
+        add(m.group(1))
+    return found
+
+
 def parse_deck(path: pathlib.Path, meeting: str) -> list[dict]:
     """One row per project slide that names a load."""
     out = []
@@ -139,6 +249,17 @@ def parse_deck(path: pathlib.Path, meeting: str) -> list[dict]:
         need = RE_NEED.search(t)
         if not need:
             continue
+        # Every need id on the slide, not only the labelled one. Do-No-Harm
+        # slides cite the needs studied TOGETHER as bare ids in prose -
+        # Dominion's own grouping of what shares a constraint, which is
+        # stronger evidence of shared dependency than two needs happening to
+        # name the same substation. RE_NEED is anchored to the "Need Number:"
+        # label and so can never see them.
+        all_needs = []
+        for n in RE_NEED_ANY.findall(t):
+            if n not in all_needs:
+                all_needs.append(n)
+        subs = substations(t)
         county = RE_COUNTY.search(t)
         ent = RE_ENTITY.search(t)
         dt = RE_DATE.search(t)
@@ -162,6 +283,8 @@ def parse_deck(path: pathlib.Path, meeting: str) -> list[dict]:
             "meeting": meeting,
             "page": i + 1,
             "need_number": need.group(1),
+            "needs_on_slide": " ".join(all_needs),
+            "substations": " | ".join(subs),
             "process_stage": (RE_STAGE.search(t).group(1).strip() if RE_STAGE.search(t) else ""),
             "driver": driver,
             "county": (county.group(1).title() if county else ""),
@@ -200,8 +323,24 @@ def consolidate(rows: list[dict]) -> list[dict]:
             if x["mw"] and x["mw"] not in seen:
                 seen.add(x["mw"])
                 hist.append(f"{x['meeting']}:{x['mw']}")
+        # Union across every slide the need appears on: a substation named at
+        # the Need Meeting and a load stated at the Solution Meeting belong to
+        # the same need even though no single slide carries both.
+        subs, seen_s = [], set()
+        for x in g:
+            for n in (x.get("substations") or "").split(" | "):
+                if n and n.lower() not in seen_s:
+                    seen_s.add(n.lower())
+                    subs.append(n)
+        with_needs = []
+        for x in g:
+            for n in (x.get("needs_on_slide") or "").split():
+                if n != need and n not in with_needs:
+                    with_needs.append(n)
         out.append({
             "need_number": need,
+            "substations": " | ".join(subs),
+            "studied_with": " ".join(with_needs),
             "county": first("county"),
             "requesting_entity": first("requesting_entity"),
             "is_data_center": "yes" if any(x["is_data_center"] for x in g) else "",
@@ -233,7 +372,8 @@ def main() -> None:
         print(f"  {meeting}  {len(r):>3} project slides")
         rows.extend(r)
     dest = ROOT / "data" / "teac_projects.csv"
-    cols = ["meeting", "page", "need_number", "process_stage", "driver", "county",
+    cols = ["meeting", "page", "need_number", "needs_on_slide", "substations",
+            "process_stage", "driver", "county",
             "requesting_entity", "mw", "mw_basis", "mw_all_values", "in_service",
             "is_data_center", "text"]
     with dest.open("w", newline="") as fh:

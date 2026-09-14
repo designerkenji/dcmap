@@ -5,6 +5,9 @@
   --bg:#F3F5F7; --panel:#FFFFFF; --line:#D8DEE4; --line-soft:#E7ECF0;
   --ink:#161C22; --ink-2:#4A5763; --ink-3:#77848F;
   --accent:#2C6E8F; --accent-soft:#E3EDF2;
+  /* One edge length for every ICON button that floats over the map. The two
+     word buttons are deliberately not bound by it - see .ctl-row. */
+  --ctl:36px;
   --fac:#0E8A7C; --ai:#B5761E; --ercot:#B5761E; --pjm:#3B82C4; --nyiso:#2E9E83; --cty:#7C5FBF;
   /* Footprints are the one layer drawn ON TOP OF PHOTOGRAPHY rather than over
      our own basemap, so the hue is chosen against the planet, not the palette.
@@ -13,6 +16,11 @@
      imagery never contains - it is green, brown, grey and blue - so it cannot
      be camouflaged by whatever a site happens to be built on. */
   --fp:#E0148C;
+  --regrid:#2563EB;
+  --precisely:#7C3AED;
+  --cadastre:#0E7490;
+  --water:#0369A1;
+  --supply:#059669; --weak:#B23A38;
   --ocean:#DFE9F0; --land:#F6F8FA; --border:#C4CFD8;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -23,6 +31,9 @@ html[data-theme=night] {
   --accent:#6FB4D6; --accent-soft:#1B2A34;
   --fac:#40C4B4; --ai:#E0A75C; --ercot:#FFB03B; --pjm:#60A5EB; --nyiso:#4FD1AC; --cty:#A78BFA;
   --fp:#FF63BE;
+  --regrid:#60A5FA;
+  --precisely:#A78BFA;
+  --supply:#34D399; --weak:#F0918F;
   --ocean:#0A1016; --land:#151C24; --border:#2E3A46;
 }
 * { box-sizing:border-box }
@@ -141,7 +152,18 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 }
 
 /* ---- top-15 compute chart ---- */
-.tchart { position:fixed; top:64px; right:12px; z-index:25; width:min(340px,calc(100vw - 24px));
+/* Steps left of the map-control column, exactly as .eqpanel does below and
+   for the same reason. The old rule kept right:12px on the argument that this
+   panel's max-height "ends above the controls" - which was simply not true:
+   top:64px + calc(100vh - 240px) puts its foot at 100vh-176px, while the
+   control stack starts around 100vh-330px, so the buttons painted over the
+   H100e column for the bottom third of the list.
+   Fixed by moving, not by raising z-index. Winning the stacking order would
+   only have swapped which thing is unreachable - the panel would then cover
+   the lightning, person, pencil and clock buttons, and a control you cannot
+   click is worse than a number you cannot read. Out of each other's way, the
+   question does not arise. 14px margin + 36px of button + a 24px gap. */
+.tchart { position:fixed; top:64px; right:74px; z-index:25; width:min(340px,calc(100vw - 86px));
   padding:14px 16px; display:flex; flex-direction:column; gap:8px;
   max-height:calc(100vh - 240px); overflow-y:auto }
 .tchart h2 { margin:0; font-size:14px; font-weight:640 }
@@ -155,10 +177,23 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .tcr-val { font-family:var(--mono); font-size:11.5px; font-variant-numeric:tabular-nums;
   color:var(--ink-2) }
 .tcr-bar { height:7px; border-radius:3px; background:var(--ai); opacity:.85; min-width:2px }
+/* right:74px clears the 36px ICON column, but the stack's last row carries
+   WORDS - 2D and Map - and is 101px wide, so the panel's bottom corner still
+   caught it. With the timeline open the controls ride up to make room for it,
+   which is exactly when the panel is longest, so that is the one state where
+   the two can still meet. Bound the height there rather than pushing the panel
+   another 50px off the edge for a collision that happens in one state. */
+body.timeline-open .tchart { max-height:calc(100vh - 310px) }
+
 @media (max-width:720px) { .tchart, #tchartBtn { display:none } }
 
 /* ---- earthquake exposure panel ---- */
-.eqpanel { max-height:calc(100vh - 96px) }
+/* Taller than the Top-15 chart it borrows .tchart from - tall enough to run
+   down behind the map-control column at right:14px, whose higher z-index then
+   paints the buttons over the panel's km column. So it alone steps left of
+   the stack: 14px margin + ~46px of buttons + a 14px gap. The chart keeps
+   right:12px because its own max-height ends above the controls. */
+.eqpanel { max-height:calc(100vh - 96px); right:74px }
 .eq-head { display:flex; align-items:flex-start; gap:8px }
 .eq-head h2 { flex:1 }
 .eq-bands { display:flex; flex-direction:column; gap:3px; margin:2px 0 4px }
@@ -250,6 +285,11 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .sw-quake { background:#c00000 }
 /* An outline, because the layer is one: filled swatches are for dots. */
 .sw-fp { background:transparent; border:1.5px dashed var(--fp); border-radius:2px }
+.sw-regrid { background:transparent; border:1.5px dashed var(--regrid); border-radius:2px }
+.sw-precisely { background:transparent; border:1.5px dashed var(--precisely); border-radius:2px }
+.sw-supply { background:linear-gradient(135deg, transparent 42%, var(--supply) 42%, var(--supply) 58%, transparent 58%) }
+.lyr-sub { margin:0 0 10px 26px; font-size:12px }
+.lyr-sub[aria-pressed="true"] { background:var(--fp); color:#fff; border-color:var(--fp) }
 /* A ring, because that is what the layer draws: generation is context around
    the data centres, and a solid swatch would claim to be another dot layer. */
 .sw-plant { background:transparent; border:2.5px solid #8B5CF6; border-radius:50% }
@@ -489,7 +529,12 @@ html[data-theme=night] #themeBtn::before { content:"🌙" }
 .lv-empty { padding:26px 14px; color:var(--ink-3); font-size:13px }
 
 /* ---- heatmap bar ---- */
-.heatbar { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:26;
+/* z-index 28, above the footprint bar's 27: the distribution panel is a CHILD
+   of this element and cannot escape its stacking context, and at 26 the fpbar
+   sat exactly over the strip the panel opens into. The two bars themselves
+   never overlap - different bottom offsets - so this only decides who wins
+   while the transient panel is actually open. */
+.heatbar { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:28;
   display:flex; align-items:center; gap:13px; padding:8px 12px }
 /* Shares the bottom edge with the timeline, so it steps aside when that opens -
    the same lift the map controls take. */
@@ -497,9 +542,54 @@ body.timeline-open .heatbar { bottom:150px }
 .hb-pick { position:relative }
 .hb-end { font-size:12px; color:var(--ink-2); min-width:4ch; text-align:center }
 /* The same five stops the paint expression interpolates, so the strip is the
-   legend rather than a decoration that resembles one. */
-.hb-ramp { width:190px; height:11px; border-radius:6px; border:1px solid var(--line);
+   legend rather than a decoration that resembles one. A button now: it opens
+   the distribution panel, where the scale can be narrowed by hand. */
+.hb-ramp { width:190px; height:11px; padding:0; border-radius:6px; cursor:pointer;
+  border:1px solid var(--line);
   background:linear-gradient(to right, #2E9E6B, #8DC63F, #F2C744, #F08A24, #D7263D) }
+/* A hand-narrowed scale must not look like the automatic one - the readouts at
+   its ends are no longer the extremes of the data, and the ring says so. */
+.hb-ramp.hb-narrowed { box-shadow:0 0 0 2px var(--accent) }
+
+/* ---- distribution panel ---- */
+.hb-dist { position:absolute; bottom:calc(100% + 8px); left:50%;
+  transform:translateX(-50%); z-index:2; width:470px; padding:10px 12px 8px;
+  background:var(--panel); border:1px solid var(--line); border-radius:9px;
+  box-shadow:0 10px 30px rgb(0 0 0 / 20%) }
+.hbd-head { display:flex; align-items:center; justify-content:space-between;
+  gap:8px; font-size:12.5px; color:var(--ink); margin-bottom:6px }
+.hbd-head b { font-weight:600 }
+#hbd-reset { font-size:12px; padding:2px 9px }
+#hbd-chart svg { display:block; width:100%; height:auto; touch-action:none;
+  cursor:crosshair }
+.hbd-bar { stroke:none }
+/* Values a hand-narrowed range pushed off the scale: still on the map, clamped
+   to the end colours, and these two dim bars are where the chart admits it. */
+.hbd-out { fill:var(--ink-2); opacity:.35 }
+.hbd-brush { fill:var(--accent); opacity:.22 }
+.hbd-axis { stroke:var(--line); stroke-width:1 }
+.hbd-tick { stroke:var(--line); stroke-width:1 }
+.hbd-grid { stroke:var(--line); stroke-width:1; stroke-dasharray:3 3; opacity:.6 }
+.hbd-lbl { fill:var(--ink-2); font-size:9px;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace }
+/* The live readout riding the brush: the values under the drag's two edges.
+   Haloed in the panel colour so it stays readable over any bar it crosses. */
+.hbd-sel-lbl { fill:var(--ink); font-size:10px; font-weight:600;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+  stroke:var(--panel); stroke-width:3; paint-order:stroke }
+.hbd-range { display:flex; align-items:center; gap:10px; margin-top:7px;
+  font-size:11.5px; color:var(--ink-2) }
+.hbd-range label { display:flex; align-items:center; gap:5px }
+.hbd-range input { width:130px; font-size:12px; padding:2px 6px; color:var(--ink);
+  background:var(--line-soft); border:1px solid var(--line); border-radius:6px;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace }
+.hbd-range input:focus { outline:none; border-color:var(--accent) }
+.hbd-range input:disabled { opacity:.45 }
+.hbd-unit { margin-left:auto }
+#hbd-hide { font-size:12px; padding:2px 9px }
+/* The hover crosshair: where a drag would start, before it starts. */
+.hbd-cur { stroke:var(--ink-2); stroke-width:1; stroke-dasharray:2 3; opacity:.8 }
+.hbd-note { font-size:11px; color:var(--ink-2); margin-top:6px }
 .hb-sw { width:44px; height:25px; padding:0; border-radius:20px; cursor:pointer;
   border:1px solid var(--line); background:var(--line-soft); position:relative;
   transition:background .13s }
@@ -515,6 +605,48 @@ body.timeline-open .heatbar { bottom:150px }
   background:none; color:var(--ink) }
 .hb-menu button:hover { background:var(--accent-soft) }
 .hb-menu button .tick { width:13px; color:var(--accent) }
+
+/* ---- wayback-lite (dot pages: fabs and plants) ---- */
+.wbl { position:relative }
+.wbl-frame { position:relative; overflow:hidden; height:460px; border-radius:9px;
+  background:#20242a; cursor:grab; touch-action:none; user-select:none }
+.wbl-frame:active { cursor:grabbing }
+.wbl-frame img { position:absolute; pointer-events:none }
+.wbl-frame svg.wbl-fp { position:absolute; left:0; top:0; pointer-events:none }
+.wbl-frame svg.wbl-fp path { pointer-events:auto }
+.wbl-dot { position:absolute; width:13px; height:13px; margin:-7px 0 0 -7px;
+  border-radius:50%; background:var(--fac, #0E8A7C); border:2.5px solid #fff;
+  box-shadow:0 1px 4px rgb(0 0 0 / 50%); pointer-events:none }
+/* Lower right, stacked — the same corner the main map and the Live map tab
+   use. Zoom is zoom wherever you are in this app, and switching tabs should
+   not send you hunting for it. No attribution to clear inside this frame, so
+   it sits closer to the bottom than the live map's column does. */
+.wbl-tools { position:absolute; right:8px; bottom:8px; z-index:2;
+  display:flex; flex-direction:column; gap:4px }
+/* Full screen keeps its own corner on the archive too. Same 8px inset as the
+   Live map's, so the button does not shift under the cursor when the tab
+   changes - the two views sit in the same place on the page. */
+.wbl-fscorner { position:absolute; top:8px; right:8px; z-index:3 }
+.wbl:fullscreen { background:var(--panel); padding:10px }
+.wbl:fullscreen .wbl-frame { height:calc(100vh - 70px) }
+.wbl-bar { display:flex; align-items:center; gap:12px; margin-top:9px }
+.wbl-slider { flex:1 }
+.wbl-date { font-size:12.5px; color:var(--ink-2); white-space:pre;
+  font-variant-numeric:tabular-nums }
+
+/* ---- table filter & sort (tables.js, every summary page) ---- */
+.tfilter { display:flex; align-items:center; gap:10px; margin:0 0 8px }
+.tfilter input { flex:0 1 340px; font:inherit; font-size:13px; padding:5px 10px;
+  color:var(--ink); background:var(--panel); border:1px solid var(--line);
+  border-radius:7px }
+.tfilter input:focus { outline:none; border-color:var(--accent) }
+.tcount { font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums }
+th.tsort { cursor:pointer; user-select:none; white-space:nowrap }
+th.tsort:hover { color:var(--ink) }
+th.tsort::after { content:'↕'; opacity:.28; margin-left:5px; font-size:10px }
+th.tsort.sort-asc::after { content:'▲'; opacity:.9; color:var(--accent) }
+th.tsort.sort-desc::after { content:'▼'; opacity:.9; color:var(--accent) }
+th.tsort:focus-visible { outline:2px solid var(--accent); outline-offset:-2px }
 
 /* ---- footprint edit bar ---- */
 /* Sits above the heatbar's slot so the two can be open at once. */
@@ -549,27 +681,53 @@ body.timeline-open .fpbar { bottom:198px }
    see, which matters when the controls sit over the map rather than in a bar. */
 .mapctl { position:fixed; right:14px; bottom:16px; z-index:26;
   display:flex; flex-direction:column; align-items:flex-end; gap:10px }
-.ctl-zoom { display:flex; flex-direction:column; gap:1px }
-.ctl-row { display:flex; gap:8px }
-/* The timeline lives here now rather than in the header, so it needs the
-   pressed state the header icons had. */
-.corner-btn[aria-pressed=true] { color:#fff; background:var(--accent);
-  border-color:var(--accent) }
-/* The timeline bar is centred on the bottom edge and the controls are in the
-   corner; on a narrow window they meet. Lift the stack above it while it is
-   open rather than letting them overlap. */
-body.timeline-open .mapctl { bottom:150px }
-.corner-btn { min-width:40px; height:40px; padding:0 12px; font:inherit; font-size:14px;
-  font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel);
+/* Every ICON control is one square, and the size lives in --ctl rather than in
+   each rule. They used to be sized by their contents - min-width:40px with
+   12px of side padding - so the stack came out at four different widths and
+   not one of them was actually square. A control strip only reads as a strip
+   when the boxes agree, and a glyph does not get a vote on how wide its button
+   is. A WORD does, though: see .ctl-row. */
+.corner-btn { width:var(--ctl); height:var(--ctl); padding:0; flex:none;
+  font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+  color:var(--ink); background:var(--panel);
   border:1px solid var(--line); border-radius:9px;
   box-shadow:0 2px 10px rgb(0 0 0 / 12%); display:inline-flex;
   align-items:center; justify-content:center }
 .corner-btn:hover { border-color:var(--accent); color:var(--accent) }
-.corner-btn svg { width:20px; height:20px; fill:none; stroke:currentColor;
+.corner-btn svg { width:18px; height:18px; fill:none; stroke:currentColor;
   stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round }
-.ctl-zoom .corner-btn { border-radius:0; font-size:19px; font-weight:400 }
-.ctl-zoom .corner-btn:first-child { border-radius:9px 9px 0 0 }
-.ctl-zoom .corner-btn:last-child { border-radius:0 0 9px 9px; border-top:0 }
+/* The timeline lives here now rather than in the header, so it needs the
+   pressed state the header icons had. */
+.corner-btn[aria-pressed=true] { color:#fff; background:var(--accent);
+  border-color:var(--accent) }
+
+/* Controls that belong together share one pill with a hairline between them,
+   the way a map's zoom control always has. The GROUP owns the border, the
+   radius and the shadow; the buttons inside own nothing but their glyph. That
+   keeps a pair reading as one object while every box stays the same square,
+   and it is why the 10px gap between pills means something - grouping is
+   carried by adjacency, not by a smaller gap nobody can measure by eye. */
+.ctl-group { display:flex; flex-direction:column; background:var(--panel);
+  border:1px solid var(--line); border-radius:11px; overflow:hidden;
+  box-shadow:0 2px 10px rgb(0 0 0 / 12%) }
+.ctl-group .corner-btn { border:0; border-radius:0; box-shadow:none }
+.ctl-group .corner-btn + .corner-btn { border-top:1px solid var(--line) }
+/* Inside a group the border belongs to the pill, so it cannot carry hover.
+   The surface does it instead. */
+.ctl-group .corner-btn:hover { background:var(--accent-soft) }
+.ctl-zoom .corner-btn { font-size:18px; font-weight:400 }
+
+/* The two word buttons, side by side and sized by their words. They are the
+   one place the square rule must NOT apply: each shows the state you are IN
+   and its label changes with it - "Map" becomes "Satellite", which is twice as
+   wide and simply falls out of a 36px box. Squaring these clipped "Satellite"
+   to about four letters. A glyph fits any box; a word brings its own width. */
+.ctl-row { display:flex; gap:8px }
+.ctl-row .corner-btn { width:auto; min-width:var(--ctl); padding:0 11px }
+/* The timeline bar is centred on the bottom edge and the controls are in the
+   corner; on a narrow window they meet. Lift the stack above it while it is
+   open rather than letting them overlap. */
+body.timeline-open .mapctl { bottom:150px }
 /* MapLibre's own zoom control is replaced by ours. */
 .maplibregl-ctrl-top-right { display:none }
 
@@ -653,6 +811,13 @@ body.timeline-open .mapctl { bottom:150px }
   font-size:12.5px; color:var(--ink-2) }
 .updated i { width:9px; height:9px; border-radius:50%; background:var(--ink-3) }
 .subhead { margin:2px 0 0; font-size:14px; color:var(--ink-2) }
+/* The coordinates cluster in the site header, and its satellite-view pin. */
+.subhead .coord { font-size:13px }
+.coord-map { display:inline-block; margin-left:6px; color:var(--accent);
+  vertical-align:-3px }
+.coord-map svg { width:15px; height:15px; fill:none; stroke:currentColor;
+  stroke-width:2; stroke-linecap:round; stroke-linejoin:round }
+.coord-map:hover { color:var(--ink) }
 .lede { margin:0; font-size:15.5px; line-height:1.6; max-width:70ch }
 
 .spec-hero { display:flex; flex-direction:column; gap:5px; padding-bottom:12px;
@@ -696,7 +861,12 @@ body.timeline-open .mapctl { bottom:150px }
 .wb-frame { position:relative; width:100%; height:340px; overflow:hidden;
   border-radius:9px; border:1px solid var(--line); background:var(--line-soft) }
 .wb-grid { position:absolute; left:50%; top:50% }
-.wb-frame img { position:absolute; width:256px; height:256px; display:block }
+ /* pointer-events:none is what makes PANNING work with a real mouse: without
+   it, pressing on a tile starts the browser's native image drag, which
+   cancels the pointer stream and kills the pan. Synthetic test events never
+   trigger native drag, which is how this shipped broken. */
+.wb-frame img { position:absolute; width:256px; height:256px; display:block;
+  pointer-events:none; user-select:none; -webkit-user-drag:none }
 /* The site itself, so you can see WHICH building appeared. It lives INSIDE the
    grid, at the grid's origin, so that panning carries it with the ground
    rather than leaving it stuck to the middle of the frame pointing at
@@ -736,6 +906,94 @@ body.timeline-open .mapctl { bottom:150px }
    solid-building / dashed-campus grammar as the map layer, so the two read as
    one thing seen twice rather than two overlays that happen to look alike. */
 .wb-fplayer { position:absolute; overflow:visible; pointer-events:none }
+/* The supply link inside the archive viewer: the clipped thread, its
+   arrowhead, and the pill that names the plant and opens its page. */
+.wb-suplayer { position:absolute; overflow:visible; pointer-events:none }
+.wb-supline { stroke:var(--supply); stroke-width:2.5; fill:none; opacity:.9;
+  stroke-linecap:round }
+.wb-suphead { fill:var(--supply); opacity:.95 }
+.wb-supring { fill:none; stroke:var(--supply); stroke-width:2.5; opacity:.95 }
+.wb-suplbl { position:absolute; transform:translate(-50%,-50%);
+  background:var(--supply); color:#fff; font-size:11px; line-height:1;
+  padding:4px 8px; border-radius:999px; white-space:nowrap;
+  text-decoration:none; box-shadow:0 1px 4px rgba(0,0,0,.35); z-index:4 }
+.wb-suplbl:hover { filter:brightness(1.12) }
+/* The Live map tab: MapLibre in the site page, homepage ergonomics. */
+/* Tabs, not buttons. These pick which view you are looking at, which is a
+   different act from pressing something that does a thing - so they read as
+   labels with the selected one underlined, and carry no button chrome at all.
+   The bordered pill they used to wear put them in the same visual class as
+   "Pull REGRID parcel", which performs an action and costs money. */
+.wb-head { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px;
+  margin-bottom:2px }
+.wb-tabs { display:inline-flex; gap:18px; border-bottom:1px solid var(--line);
+  margin-right:auto }
+.wb-tabs button { font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  padding:5px 1px 7px; border:0; background:none; color:var(--ink-3);
+  border-bottom:2px solid transparent; margin-bottom:-1px }
+.wb-tabs button:hover { color:var(--ink-2) }
+.wb-tabs button[aria-selected=true] { color:var(--ink); border-bottom-color:var(--accent) }
+.wb-tabs button:focus-visible { outline:2px solid var(--accent); outline-offset:2px }
+/* .wb-pull is gone from both viewers: the parcel buttons moved onto the map
+   with every other tool. Only the tabs live in .wb-head now. */
+/* Same height as .wb-frame: switching tabs must not jump the page. */
+.sm-wrap { position:relative }
+/* The pick bar overlays the map's foot: selection controls live where the
+   shapes are. Fixed light chrome on imagery, same reasoning as .wb-tool -
+   a theme-aware surface goes invisible over satellite ground. The right
+   inset leaves MapLibre's attribution ⓘ reachable. */
+/* left:52px, not 8px: the layers button owns the bottom-left corner now, and
+   a selection bar running under it would cover the one control that reveals
+   every other one. */
+.sm-wrap .wb-sel { position:absolute; left:52px; right:44px; bottom:8px; z-index:2;
+  margin-top:0; background:rgb(255 255 255 / 94%); color:#14202b;
+  border-color:rgb(0 0 0 / 18%); box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
+.sm-wrap .wb-sel .tb-btn { background:#fff; color:#14202b;
+  border-color:rgb(0 0 0 / 25%) }
+.sm-wrap .wb-sel .tb-btn:hover:not(:disabled) { border-color:var(--accent, #0E8A7C) }
+.wb-tool[aria-pressed="true"] { background:var(--accent, #0E8A7C); color:#fff;
+  border-color:var(--accent, #0E8A7C) }
+/* The plant/fab pages' Live map tab: same wrap, their own frame height -
+   each page's live map matches ITS year-by-year frame, and .wbl-frame is
+   a notch taller than the site page's. */
+#dotmap { height:460px; border-radius:10px; overflow:hidden;
+  background:var(--line-soft, #dfe5ea) }
+#wbl-live .wb-toolbar { display:flex; align-items:center; gap:10px;
+  margin-top:10px; flex-wrap:wrap }
+#wbl-live .wb-status { margin-top:0 }
+#wbl-live:fullscreen { background:var(--bg); padding:14px; display:flex;
+  flex-direction:column }
+#wbl-live:fullscreen .sm-wrap { flex:1; display:flex; flex-direction:column;
+  min-height:0 }
+#wbl-live:fullscreen #dotmap { flex:1; height:auto }
+#sitemap { height:340px; border-radius:10px; overflow:hidden; background:var(--line-soft, #dfe5ea) }
+#wb-live:fullscreen { background:var(--bg); padding:14px; display:flex; flex-direction:column }
+#wb-live:fullscreen .sm-wrap { flex:1; display:flex; flex-direction:column; min-height:0 }
+#wb-live:fullscreen #sitemap { flex:1; height:auto }
+#wb-live .wb-toolbar { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap }
+/* One home for every message in the section; fixed height so text coming
+   and going never reflows the page under the pointer. */
+.wb-status { min-height:22px; margin-top:6px }
+/* The edit pen: the one page-level action, in the header's top corner. */
+.sitehead h1 { position:relative; padding-right:52px }
+.edit-pen { position:absolute; right:0; top:50%; transform:translateY(-50%);
+  color:var(--ink-2, #47555f); border-color:var(--line, #d4dce2) }
+.edit-pen svg { width:18px; height:18px; fill:none; stroke:currentColor;
+  stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round }
+.edit-pen[aria-pressed="true"] { background:var(--accent, #0E8A7C); color:#fff;
+  border-color:var(--accent, #0E8A7C) }
+/* The footprint tracer: the in-progress ring while a person draws it. */
+.wb-drawlayer { position:absolute; overflow:visible; pointer-events:none }
+.wb-drawpath { fill:var(--fp); fill-opacity:.10; stroke:var(--fp);
+  stroke-width:2; stroke-dasharray:5 3 }
+.wb-drawpt { fill:var(--fp); stroke:#fff; stroke-width:1.2 }
+/* The reshaper: solid handles are corners (drag/select), hollow ones sit
+   mid-edge and add a corner when grabbed. */
+.wb-edlayer { position:absolute; overflow:visible; pointer-events:none }
+.wb-edpt { pointer-events:auto; cursor:grab; fill:var(--fp); stroke:#fff; stroke-width:1.4 }
+.wb-edpt.on { fill:#fff; stroke:var(--fp); stroke-width:2.2 }
+.wb-edmid { pointer-events:auto; cursor:copy; fill:#fff; fill-opacity:.75;
+  stroke:var(--fp); stroke-width:1.2 }
 .wb-fp { pointer-events:auto; cursor:pointer; fill:var(--fp); fill-opacity:.07;
   stroke:var(--fp); stroke-width:1.6; paint-order:stroke fill;
   /* The dark casing is one shadow rather than a second path: over a photograph
@@ -746,6 +1004,13 @@ body.timeline-open .mapctl { bottom:150px }
    context, and drawn thinner so a dense campus does not read as one blob. */
 .wb-fp:not(.mine) { stroke-width:1.1; stroke-opacity:.62; fill-opacity:.03 }
 .wb-fp:hover { fill-opacity:.16; stroke-width:2.4 }
+/* Vendor parcels over the imagery: each in its map colour, dashed like the
+   lots on the map, bolder than the not-mine footprints they sit among. */
+.wb-fp.v-regrid, .wb-fp.v-precisely, .wb-fp.v-cadastre { stroke-dasharray:5 3; stroke-width:2;
+  stroke-opacity:.95; fill-opacity:.05; cursor:default; pointer-events:auto }
+.wb-fp.v-regrid { stroke:var(--regrid); fill:var(--regrid) }
+.wb-fp.v-precisely { stroke:var(--precisely); fill:var(--precisely) }
+.wb-fp.v-cadastre { stroke:var(--cadastre); fill:var(--cadastre) }
 .wb-fp.on { stroke:#fff; stroke-width:2.6; fill:var(--fp); fill-opacity:.2;
   filter:drop-shadow(0 0 2px rgb(0 0 0 / 85%)) }
 
@@ -758,7 +1023,15 @@ body.timeline-open .mapctl { bottom:150px }
 
 .wb-frame { cursor:grab }
 .wb-frame.wb-drag { cursor:grabbing }
-.wb-tools { position:absolute; top:8px; right:8px; z-index:2; display:flex; gap:4px }
+/* Lower right, stacked, like the main map's control column — one place to
+   look for zoom on every map in this app. Lifted clear of the bottom edge so
+   MapLibre's attribution ⓘ stays reachable underneath it. */
+.wb-tools { position:absolute; right:8px; bottom:34px; z-index:2;
+  display:flex; flex-direction:column; gap:4px }
+/* The archive frame carries no MapLibre attribution, so its column does not
+   need the 34px the live map's leaves for the ⓘ. */
+.wb-frame .wb-tools { bottom:10px }
+.wb-frame .wbl-fscorner { position:absolute; top:8px; right:8px; z-index:3 }
 /* Fixed dark on fixed white, NOT var(--ink): these chips sit on satellite
    imagery, which looks the same in both themes, so a theme-aware ink turns
    the labels invisible on the white chip the moment night mode is on. */
@@ -767,6 +1040,10 @@ body.timeline-open .mapctl { bottom:150px }
   border:1px solid rgb(0 0 0 / 18%); border-radius:6px;
   box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
 .wb-tool:hover { background:#fff; border-color:var(--accent) }
+/* Move-the-dot mode: crosshair says "your click means something now", and the
+   ghost is the proposal - same mark as the dot, drained of its certainty. */
+.wb-frame.wb-moving, .wb-frame.wb-moving:active { cursor:crosshair }
+.wb-x.wb-ghost { opacity:.65; filter:hue-rotate(150deg) saturate(1.6) }
 
 /* Full screen is where the wheel earns its keep: the frame becomes the window
    and the imagery finally has room to be zoomed into. */
@@ -896,10 +1173,32 @@ body.timeline-open .mapctl { bottom:150px }
 .card h2 { margin:0; font-size:15px; font-weight:620 }
 .facts { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px 22px }
 .fact { display:flex; flex-direction:column; gap:1px }
-.fk { font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+/* Scoped, and resetting the box explicitly. `.fk` is also the map's filter
+   chip up at line ~287, and a bare `.fk` here only overrode that rule's font
+   and colour - so every fact label on every dot page inherited the chip's
+   border, background and padding and rendered as an empty pill above its
+   value. Same class name, two unrelated components; the fix is to make this
+   one specific and to undo what it is not asking for. */
+.fact .fk, .place-form .fk, .co-chips .fk { display:block; padding:0; border:0; background:none;
+  border-radius:0; cursor:auto;
+  font-family:var(--mono); font-size:10px; letter-spacing:.08em; line-height:1.5;
   text-transform:uppercase; color:var(--ink-3) }
 .fv { font-size:13.5px }
 .note { font-size:12.5px; color:var(--ink-3); margin:0; max-width:80ch }
+/* A licence credit, not commentary: quieter than a note, and sitting hard
+   under the map it credits rather than floating in the section's prose. */
+.imagery-credit { font-size:11px; margin-top:8px }
+.stale-age { color:#B45309; font-weight:600 }
+/* The scale bar shares the bottom-left corner with the layers button, so it
+   steps aside by exactly that button's width plus a gap. Styled to the app's
+   own palette rather than MapLibre's default white-on-nothing, which is
+   invisible over satellite imagery. */
+.maplibregl-ctrl-bottom-left .maplibregl-ctrl-scale {
+  margin:0 0 14px 56px; background:var(--panel); color:var(--ink-2);
+  border:1px solid var(--line); border-top:none; border-radius:0 0 3px 3px;
+  font:600 10px/1.5 var(--mono); letter-spacing:.02em; padding:1px 5px;
+  box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
 .dim { color:var(--ink-3) }
 .mono { font-family:var(--mono); font-variant-numeric:tabular-nums }
 .tablewrap { overflow-x:auto }
@@ -1078,3 +1377,365 @@ a { color:var(--accent) }
 .pl-note { font-size:10.5px; line-height:1.45; max-width:100%;
   margin:2px 0 6px 22px !important }
 .pl-note a { color:var(--accent) }
+
+/* Confidence bands on the power-dependency page. A word, not a decimal:
+   "0.85" reads as a measurement and this is a class default, so the number
+   stays on the title attribute where a curious reader can still find it. */
+/* Matched to .chain-state: one chip idiom on the page, not two. The pill
+   shape and the proportional face were a second dialect saying the same kind
+   of thing as the chain's squared mono chips. */
+.conf { display:inline-block; font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.09em; padding:2px 8px; border-radius:3px; border:1px solid;
+  white-space:nowrap; text-transform:uppercase }
+/* Coloured from the app's own tokens, so they follow the sun/moon toggle
+   like everything else. These were written against prefers-color-scheme -
+   the standalone chain page's idiom - which meant a dark OS put dark-variant
+   chips on a light card, because this app never sets data-theme="light". */
+.conf-high { color:var(--fac); border-color:var(--fac);
+  background:color-mix(in srgb, var(--fac) 11%, transparent) }
+.conf-good { color:var(--accent); border-color:var(--accent);
+  background:color-mix(in srgb, var(--accent) 12%, transparent) }
+.conf-fair { color:var(--ai); border-color:var(--ai);
+  background:color-mix(in srgb, var(--ai) 13%, transparent) }
+.conf-weak { color:var(--weak); border-color:var(--weak);
+  background:color-mix(in srgb, var(--weak) 12%, transparent) }
+
+/* Power-dependency layer: amber, so it reads as grid equipment rather than
+   as another asset dot, and distinct from the supply layer's green. */
+.sw-power { background:#D97706; border-radius:2px }
+
+/* The pegman. Amber like the dependency layer would be wrong - this is not
+   grid equipment - so it takes the accent, and grabs rather than points. */
+/* Yellow, because a yellow figure you drag onto a map is a gesture people have
+   already learned somewhere else - borrowing the colour borrows the
+   affordance. Deliberately not --ai amber, which on this map means an AI data
+   centre: a control must not wear a data layer's colour. */
+.pegman { cursor:grab; color:#DFA000 }
+html[data-theme=night] .pegman { color:#FFCB3D }
+.pegman:active { cursor:grabbing }
+.pegman svg { fill:currentColor; display:block; margin:0 auto }
+body.pegging #map2d { cursor:crosshair }
+/* Drop target hint: the map edge lights up while a point is being carried. */
+body.pegging .mapfull { outline:2px dashed var(--accent); outline-offset:-6px }
+.sw-point { background:transparent; border:2px solid #7c3aed; border-radius:50% }
+
+/* The bolt: a simulated failure, so it borrows the map's warning register
+   rather than a subject colour - nothing on this map that is red is a record
+   of something real. */
+.boltman { cursor:grab; color:#B91C1C }
+.boltman:active { cursor:grabbing }
+.boltman svg { fill:currentColor; display:block; margin:0 auto }
+/* This guard used to read :root:not([data-theme="light"]) plus
+   :root[data-theme="dark"], which is a light/dark convention this app does not
+   use - the themes here are day and night. So the second selector never
+   matched anything, and the first matched ALWAYS (day is not light), which
+   meant the bolt wore its dark-theme pink in broad daylight and the #B91C1C
+   above had never once been drawn. */
+html[data-theme=night] .boltman { color:#F0918F }
+.sw-event { background:transparent; border:2px dashed #B91C1C; border-radius:50% }
+
+/* ---- the accumulation chain ------------------------------------------------
+   Ported from the standalone chain page, expressed in this app's tokens so it
+   reads as part of the registry rather than as a visiting document. The number
+   sits in its own column BESIDE the question, not above it: the sequence is
+   real information - each link has to hold before the next one means anything -
+   and a number stacked on its own line reads as a bullet instead of a step. */
+/* Framing on the container, separators between siblings. NOT :first-of-type
+   / :last-of-type: those match per ELEMENT TYPE, and this list is a mix of
+   <details> (links with a table) and <div> (links without), so link 2 was the
+   last details and link 3 the first div - each drew a line and the gap
+   between them got two. Adjacency cannot make that mistake. */
+.chain-list { border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
+.chainlink + .chainlink { border-top:1px solid var(--line-soft) }
+/* The whole summary is the row and the whole row is the click target: number
+   and question on the first line, the answer on the second. The answer stays
+   visible closed - a collapsed link that hides its finding is just a heading. */
+.chain-sum { display:grid; grid-template-columns:46px 1fr; column-gap:14px;
+  row-gap:5px; padding:16px 0; align-items:baseline; list-style:none }
+.chainlink > summary.chain-sum { cursor:pointer }
+.chain-sum::-webkit-details-marker { display:none }
+.chainlink > summary:hover .chain-q { color:var(--accent) }
+.chainlink > summary:focus-visible { outline:2px solid var(--accent);
+  outline-offset:2px; border-radius:4px }
+.chain-n { grid-column:1; grid-row:1; font-family:var(--mono); font-size:12px;
+  letter-spacing:.08em; color:var(--ink-3); font-variant-numeric:tabular-nums }
+/* Only the expandable links get a caret; a static row must not advertise a
+   disclosure it does not have. */
+.chainlink > summary .chain-n::before { content:"\25B8"; display:inline-block;
+  width:11px; margin-right:5px; transition:transform .12s ease; color:var(--ink-3) }
+.chainlink[open] > summary .chain-n::before { transform:rotate(90deg) }
+@media (prefers-reduced-motion: reduce) {
+  .chainlink > summary .chain-n::before { transition:none }
+}
+.chainlink-static .chain-n { padding-left:16px }
+.chain-h { grid-column:2; grid-row:1; display:flex; align-items:baseline;
+  gap:10px; flex-wrap:wrap }
+.chain-q { font-size:16.5px; font-weight:640; letter-spacing:-.01em; color:var(--ink) }
+.chain-lede { grid-column:2; grid-row:2 }
+.chain-lede > p { margin:0 }
+.chain-lede > p + p { margin-top:7px }
+/* The revealed part lines up under the question, not under the number. */
+.chain-b { padding:0 0 16px 60px }
+.chain-b .tablewrap { margin-top:2px }
+.chainlink.chain-gap { border-left:3px solid var(--ai); padding-left:11px;
+  margin-left:-14px; background:linear-gradient(90deg,
+    color-mix(in srgb, var(--ai) 8%, transparent), transparent 55%) }
+.chain-head { display:flex; align-items:center; justify-content:space-between;
+  gap:14px; flex-wrap:wrap; margin-bottom:8px }
+.chain-head h2 { margin:0 }
+.chain-state { font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; padding:2px 8px;
+  border-radius:3px; border:1px solid; white-space:nowrap }
+.cs-held { color:var(--fac); border-color:var(--fac);
+  background:color-mix(in srgb, var(--fac) 11%, transparent) }
+.cs-gap { color:var(--ai); border-color:var(--ai);
+  background:color-mix(in srgb, var(--ai) 13%, transparent) }
+.cs-empty { color:var(--ink-3); border-color:var(--ink-3);
+  background:color-mix(in srgb, var(--ink-3) 12%, transparent) }
+.cs-none { color:var(--ink-3); border-color:var(--line) }
+
+/* The event header: an accent rail and a mono eyebrow, the two devices that
+   carried the standalone page's identity and survive a change of typeface. */
+.evhead { border-left:3px solid var(--fp); padding-left:16px }
+.eyebrow { display:block; font-family:var(--mono); font-size:11px;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--fp);
+  margin-bottom:10px }
+.evsim { font-weight:640; color:var(--ink) }
+
+/* ---- impact list -----------------------------------------------------------
+   The three biggest things a page is about, stated before any table. Lifted
+   from the standalone chain page, where seeing the load names immediately
+   under the totals was what made the totals mean anything: "1,376 MW" is a
+   number, "Micron 1,056 · Ranalli 270 · OOWWTP 50" is an answer. Everything
+   else stays below for a reader who wants it. */
+.impact { margin-top:16px; padding-top:14px; border-top:1px solid var(--line-soft);
+  display:flex; flex-direction:column; gap:9px }
+.impact-row { display:flex; justify-content:space-between; align-items:baseline;
+  gap:14px; flex-wrap:wrap }
+.impact-nm { font-weight:640 }
+.impact-meta { font-size:12.5px; color:var(--ink-3); font-weight:400 }
+.impact-v { font-family:var(--mono); font-size:14px; white-space:nowrap;
+  font-variant-numeric:tabular-nums; color:var(--ink-2) }
+.impact-more { font-size:12.5px; color:var(--ink-3); margin-top:3px }
+
+/* Placing an unlocated substation. The form is a commitment, not a control
+   strip: it sits under the map rather than in the transient selection bar,
+   because the note is the part that makes the coordinate worth holding and a
+   bar that disappears is the wrong place to ask for one. */
+.co-chips { display:flex; flex-wrap:wrap; align-items:center; gap:8px }
+.co-chip[disabled] { opacity:.5; cursor:not-allowed }
+.co-chip[disabled]:hover { border-color:var(--line); color:var(--ink-2) }
+.place-form { display:flex; flex-direction:column; gap:10px; padding:14px;
+  border:1px solid var(--line); border-radius:9px; background:var(--bg) }
+.pf-row { display:flex; flex-direction:column; gap:3px }
+.pf-row > select, .pf-row > input {
+  font:inherit; font-size:13px; padding:6px 8px; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line); border-radius:7px }
+.pf-row > select:focus-visible, .pf-row > input:focus-visible {
+  outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent) }
+.pf-act { flex-direction:row; align-items:center; gap:8px }
+.pf-act .wb-status { margin-top:0 }
+/* Disabled until the note exists — the rule the server enforces, shown rather
+   than sprung on the placer after they have written a coordinate. */
+.place-form .tb-btn[disabled] { opacity:.5; cursor:not-allowed }
+.place-form .tb-btn[disabled]:hover { border-color:var(--line); color:var(--ink-2) }
+
+/* Remove, offered beside the link in a dropped point's popup. Quiet, and
+   deliberately not styled as a danger button: undoing a pin you just placed by
+   accident is the ordinary case, not a destructive one. */
+.maplibregl-popup-content .pop-undo { display:inline-block; margin:6px 0 0 10px;
+  font:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
+  padding:2px 8px; color:var(--ink-2); background:var(--bg);
+  border:1px solid var(--line); border-radius:6px }
+.maplibregl-popup-content .pop-undo:hover { border-color:var(--accent); color:var(--ink) }
+.maplibregl-popup-content .pop-undo[disabled] { opacity:.6; cursor:default }
+
+/* ---- /data : the registry's own change log ------------------------------ */
+/* A change is a heading (when, why, who) over a list of files. The files are a
+   bare table rather than the page's usual bordered one: they are the detail of
+   the heading above them, not a table you read on its own. */
+.chg { border:1px solid var(--line-soft); border-radius:9px; padding:10px 12px;
+  background:var(--bg) }
+.chg + .chg { margin-top:8px }
+.chg-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px }
+.chg-when { font-size:11px; color:var(--ink-3); flex:none }
+.chg-subject { font-weight:600; font-size:13.5px; flex:1 1 12ch; min-width:0 }
+.chg-meta { font-size:11px; flex:none }
+.chg-files { width:100%; min-width:0; border-collapse:collapse; margin-top:6px }
+.chg-files td { padding:2px 0; font-size:12.5px; border:0; vertical-align:top }
+.chg-files td.num { text-align:right; white-space:nowrap; padding-left:12px }
+.chg-files td.mono { font-family:var(--mono); font-size:11.5px }
+.add { color:var(--supply) }
+.del { color:var(--weak) }
+/* The range switch reuses .seg, whose buttons are <a> here. */
+.seg .tb-btn { border:0; border-radius:0; box-shadow:none }
+.seg .tb-btn.on { background:var(--accent); color:var(--panel) }
+.run-grp { margin:14px 0 0; font-size:12px; font-family:var(--mono);
+  letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3) }
+.run-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px }
+/* Money is called out on the button itself, not only in a confirm dialog that
+   arrives after the decision to click has been made. */
+.cost { font-size:10px; font-family:var(--mono); letter-spacing:.04em;
+  text-transform:uppercase; color:var(--weak); margin-left:5px }
+.run-status { padding:8px 10px; border:1px solid var(--line); border-radius:8px;
+  background:var(--bg); font-size:13px }
+.run-log { max-height:280px; overflow:auto; padding:10px 12px; margin:0;
+  border:1px solid var(--line); border-radius:8px; background:var(--bg);
+  font-family:var(--mono); font-size:11.5px; line-height:1.5;
+  white-space:pre-wrap; word-break:break-word; color:var(--ink-2) }
+/* Transmission corridors: grey, because they are context rather than a claim.
+   Every other line on this map asserts a relationship somebody sourced; this
+   one only says where the wires are.
+   Drawn as a BAR, not a rounded square: .sw is a 3px-radius block built for
+   dot and area layers, and a line layer wearing it announced itself with the
+   same swatch shape as Data Centers. */
+.sw-line { background:#6B7A88; height:3px; border-radius:1px; align-self:center }
+/* An area, filled: the swatch language says a translucent block is a region
+   you stand inside, which is what a service area is. */
+.sw-water { background:color-mix(in srgb, var(--water) 22%, transparent);
+  border:1.5px solid var(--water); border-radius:2px }
+
+/* Vendor parcel popup: a definition list, because that is what county data is
+   — a label and the value the assessor recorded against it. */
+.maplibregl-popup-content .pf-g { margin:8px 0 3px; font-family:var(--mono);
+  font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3) }
+.maplibregl-popup-content .pf { display:grid; grid-template-columns:minmax(0,auto) 1fr;
+  gap:2px 10px; margin:0 }
+.maplibregl-popup-content .pf dt { font-size:11.5px; color:var(--ink-3); white-space:nowrap }
+.maplibregl-popup-content .pf dd { font-size:11.5px; margin:0; color:var(--ink);
+  overflow-wrap:anywhere }
+/* The parcel list can run long; keep the popup a readable panel, not a column
+   taller than the map it is drawn over. */
+.maplibregl-popup-content { max-height:340px; overflow-y:auto }
+
+/* Tools ON the map, not beside it. Only the map element goes fullscreen, so a
+   control living outside it disappears exactly when there is finally room to
+   work — which is when somebody is editing.
+   Fixed light chrome, the same reasoning as .wb-tool and .wb-sel: a
+   theme-aware surface goes invisible over satellite ground. The right inset
+   clears the zoom column; the bottom is left free for the selection bar. */
+/* pointer-events:none on the BAR, auto on its children. The bar is a wide
+   absolutely-positioned box and most of it is empty air over the map; without
+   this it swallows every click that lands in the gaps — which is exactly what
+   it did to the zoom, home and pen buttons, whose column its box overlaps.
+   Full screen escaped only because it sits outside the bar's right edge. */
+/* right:46px reserves the top-right corner for full screen. pointer-events
+   would stop the BAR blocking it, but a wrapped button landing there would
+   still cover it. */
+.sm-wrap .map-tools, .sm-wrap .map-layers {
+  position:absolute; left:8px; top:8px; right:46px; z-index:3;
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0;
+  pointer-events:none }
+.sm-wrap .map-tools > *, .sm-wrap .map-layers > * { pointer-events:auto }
+
+/* The layer panel, scoped to one asset. Same shape as the homepage's rows —
+   checkbox, swatch, name — on the fixed light chrome every control over
+   imagery uses. */
+.sm-wrap .map-layers { flex-direction:column; align-items:stretch; gap:0;
+  width:min(252px, calc(100% - 60px)); padding:8px 10px; border-radius:9px;
+  background:rgb(255 255 255 / 94%); color:#14202b;
+  box-shadow:0 1px 5px rgb(0 0 0 / 28%) }
+.sm-wrap .map-layers label { display:flex; align-items:center; gap:8px;
+  font-size:12.5px; cursor:pointer; padding:3px 0; min-height:26px }
+.sm-wrap .map-layers input { accent-color:var(--accent, #0E8A7C); margin:0 }
+/* The pencil takes the slot .lyrlink uses on the homepage: hard right, same
+   20px square, so the row reads the same way in both places. */
+.lyr-edit { margin-left:auto; flex:none; width:22px; height:22px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; cursor:pointer;
+  color:#47555f; background:#fff; border:1px solid rgb(0 0 0 / 22%);
+  border-radius:5px }
+.lyr-edit svg { fill:none; stroke:currentColor; stroke-width:1.9;
+  stroke-linecap:round; stroke-linejoin:round }
+.lyr-edit:hover { border-color:var(--accent, #0E8A7C); color:#14202b }
+/* Armed: this is the layer the map is about to change. */
+.lyr-edit[aria-pressed=true] { background:var(--accent, #0E8A7C); color:#fff;
+  border-color:var(--accent, #0E8A7C) }
+/* The armed layer's tools, under the rows they belong to. */
+.sm-wrap .lyr-tools { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px }
+.sm-wrap .lyr-tools:empty { display:none }
+.sm-wrap .lyr-tools .tb-btn { background:#fff; color:#14202b;
+  border-color:rgb(0 0 0 / 22%); font-size:12px }
+.sm-wrap .lyr-tools .tb-btn:hover:not(:disabled) { border-color:var(--accent, #0E8A7C) }
+.sm-wrap .lyr-tools .tb-btn[aria-pressed=true] { background:var(--accent, #0E8A7C);
+  color:#fff; border-color:var(--accent, #0E8A7C) }
+/* Swatches, following the shape language the homepage panel already uses:
+   a filled block is a DOT layer, an outline is an AREA layer, and a ring is
+   CONTEXT — something on the map that is not this page's subject.
+   So: the asset's own coordinate is a filled block like .sw-fac; the two
+   footprint kinds are outlines in the footprint magenta, solid for a traced
+   building and dashed for a campus boundary; and the neighbours are a ring,
+   because they belong to other assets. */
+.sw-near { background:transparent; border:2px solid #8fa3b0; border-radius:50% }
+.sw-dotcoord { background:var(--fac, #0E8A7C) }
+.sw-bldg { background:transparent; border:1.5px solid var(--fp, #E0148C); border-radius:2px }
+.sw-campus { background:transparent; border:1.5px dashed var(--fp, #E0148C); border-radius:2px }
+.sm-wrap .map-tools .tb-btn { background:rgb(255 255 255 / 94%); color:#14202b;
+  border-color:rgb(0 0 0 / 22%); box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
+.sm-wrap .map-tools .tb-btn:hover:not(:disabled) { border-color:var(--accent, #0E8A7C);
+  background:#fff }
+.sm-wrap .map-tools .tb-btn[aria-pressed=true] { background:var(--accent, #0E8A7C);
+  color:#fff; border-color:var(--accent, #0E8A7C) }
+/* The status line needs its own ground too — grey text on imagery is unreadable. */
+.sm-wrap .map-tools .wb-status { min-height:0; margin:0; padding:3px 8px;
+  font-size:12px; color:#14202b; background:rgb(255 255 255 / 92%);
+  border-radius:6px; box-shadow:0 1px 4px rgb(0 0 0 / 25%) }
+.sm-wrap .map-tools .wb-status:empty { display:none }
+
+/* Full screen keeps the top-right corner it has always had; zoom and home
+   moved to the lower right with the main map's column. Separated because they
+   are different jobs: one navigates within the map, the other changes how much
+   map there is. */
+.sm-wrap .wb-fscorner { position:absolute; top:8px; right:8px; z-index:3 }
+
+/* Map notifications. Top right, tucked under the full-screen button — the
+   toolbar owns the top left and the selection bar owns the foot. Fixed light
+   chrome for the same reason as every other chip on imagery. */
+.sm-wrap .map-toast { position:absolute; top:46px; right:8px; z-index:4;
+  max-width:min(46ch, calc(100% - 60px)); margin:0; padding:5px 10px;
+  font-size:12px; line-height:1.4; text-align:right;
+  color:#14202b; background:rgb(255 255 255 / 94%); border-radius:7px;
+  box-shadow:0 1px 5px rgb(0 0 0 / 28%); pointer-events:none }
+.sm-wrap .map-toast:empty { display:none }
+/* The site page nests its message in a span, so an empty CHILD must vanish too
+   or the chip hangs around as a blank white tab. */
+.sm-wrap .map-toast:has(> .note:empty) { display:none }
+.sm-wrap .map-toast .note { color:inherit; font-size:inherit; margin:0 }
+
+/* Archive loading state. Centred on the frame's own dark ground, so it reads
+   as "the picture is coming" rather than as an error. */
+.wbl-loading { position:absolute; inset:0; z-index:1; display:flex;
+  flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  color:rgb(255 255 255 / 78%); font-size:12.5px; pointer-events:none }
+.wbl-loading[hidden] { display:none }
+.wbl-loading i { width:22px; height:22px; border-radius:50%;
+  border:2px solid rgb(255 255 255 / 25%); border-top-color:rgb(255 255 255 / 85%);
+  animation:wbl-spin 900ms linear infinite }
+@keyframes wbl-spin { to { transform:rotate(360deg) } }
+/* A failure is a finished state: stop the spinner rather than implying that
+   waiting longer will help. */
+.wbl-loading-failed i { animation:none; border-top-color:rgb(255 255 255 / 25%) }
+@media (prefers-reduced-motion: reduce) { .wbl-loading i { animation:none } }
+/* The site page's archive uses the same overlay treatment; its own class name
+   predates the dot pages' viewer. */
+.wb-frame .wb-loading { position:absolute; inset:0; z-index:1; margin:0; padding:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; color:rgb(255 255 255 / 78%); font-size:12.5px; pointer-events:none }
+.wb-frame .wb-loading[hidden] { display:none }
+.wb-frame .wb-loading i { width:22px; height:22px; border-radius:50%;
+  border:2px solid rgb(255 255 255 / 25%); border-top-color:rgb(255 255 255 / 85%);
+  animation:wbl-spin 900ms linear infinite }
+.wb-frame .wb-loading.wbl-loading-failed i { animation:none;
+  border-top-color:rgb(255 255 255 / 25%) }
+@media (prefers-reduced-motion: reduce) { .wb-frame .wb-loading i { animation:none } }
+
+/* The layers button on a dot page's live map: the homepage's control in the
+   homepage's corner — bottom left — so it is in the same place on every map in
+   this app. The pane opens UPWARD from just above it, exactly as it does
+   there. */
+.sm-wrap .map-layers-btn { position:absolute; left:8px; bottom:8px; top:auto;
+  z-index:4 }
+.sm-wrap .map-layers-btn[aria-expanded=true] { color:#fff;
+  background:var(--accent, #0E8A7C); border-color:var(--accent, #0E8A7C) }
+.sm-wrap .map-layers { top:auto; bottom:52px;
+  max-height:calc(100% - 70px); overflow-y:auto }
+.sm-wrap .map-layers[hidden] { display:none }

@@ -70,7 +70,18 @@ def build_query(region: str) -> str:
         area_def = f'area["{key}"="{region.upper()}"]->.a;'
         area_ref = "(area.a)"
     body = "\n  ".join(s.replace("{area}", area_ref) for s in SELECTORS)
-    return f"[out:json][timeout:600];\n{area_def}\n(\n  {body}\n);\nout tags center;\n"
+    # `out geom` rather than `out center`: ways and relations come back with
+    # their full ring coordinates, which is what footprints.py builds polygons
+    # from. Overpass allows one geolocation modifier per out statement, so the
+    # centre this file used to request is derived in rows() instead.
+    #
+    # NOT `out tags geom`, which looks like it should mean "tags and geometry"
+    # and does not. `tags` is a VERBOSITY level meaning "ids and tags only",
+    # and it suppresses the member list a relation expresses its geometry
+    # through - so ways came back with coordinates, relations came back with
+    # nothing but bounds, and all 62 relation-mapped campuses were dropped in
+    # silence. `geom` implies body verbosity, which carries tags anyway.
+    return f"[out:json][timeout:600];\n{area_def}\n(\n  {body}\n);\nout geom;\n"
 
 
 def snapshot_age_days(payload: dict) -> float | None:
@@ -124,11 +135,27 @@ def fetch(region: str = "US-VA", force: bool = False) -> dict:
     return payload
 
 
+def centre(e: dict) -> dict:
+    """Representative point for an element, whatever the out statement was.
+
+    Nodes carry lat/lon directly. Cached files fetched with `out center` carry
+    a `center` object; fresh `out geom` responses carry `bounds` instead, and
+    the midpoint of the bounds is the same point Overpass's own centre is.
+    """
+    if e.get("center"):
+        return e["center"]
+    b = e.get("bounds")
+    if b:
+        return {"lat": (b["minlat"] + b["maxlat"]) / 2,
+                "lon": (b["minlon"] + b["maxlon"]) / 2}
+    return {"lat": e.get("lat"), "lon": e.get("lon")}
+
+
 def rows(payload: dict, region: str) -> list[dict]:
     out = []
     for e in payload.get("elements", []):
         t = e.get("tags") or {}
-        c = e.get("center") or {"lat": e.get("lat"), "lon": e.get("lon")}
+        c = centre(e)
         if not c.get("lat"):
             continue
         out.append({

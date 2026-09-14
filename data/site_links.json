@@ -215,6 +215,12 @@
   "url": "https://www.digitalrealty.com/data-centers/americas/portland/pdx10/",
   "via": "code"
  },
+ "site-0d3906d987": {
+  "name": "datacenters.com",
+  "operator": "",
+  "url": "https://www.datacenters.com/microsoft-azure-west-us-2-washington",
+  "via": "manual"
+ },
  "site-0e1c882d16": {
   "name": "NY9",
   "operator": "equinix",
