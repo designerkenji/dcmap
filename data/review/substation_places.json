@@ -1,0 +1,934 @@
+{
+ "_status": "RESEARCH-GRADE. OSM identities proposed by agents 2026-09-09 and MECHANICALLY VERIFIED here: each id looked up in the regional OSM extract (centroid, tags) and reverse-geocoded for county. Nothing applied; tier A rows are proposed for data/substation_aliases.csv when a person vouches.",
+ "places": [
+  {
+   "sub_id": "sub-adams",
+   "name": "Adams",
+   "region": "NY",
+   "filing_counties": [
+    "Niagara"
+   ],
+   "osm": "way/178196881",
+   "agent_name": "Buffalo Avenue Substation",
+   "agent_conf": "medium-high",
+   "in_extract": true,
+   "lat": 43.0804949,
+   "lon": -79.0424253,
+   "tags": {
+    "name": "Buffalo Avenue Substation",
+    "operator": "National Grid",
+    "power": "substation",
+    "substation": "yes",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 8,
+   "osm_county": "Niagara County",
+   "reasoning": "NYISO queue 1681 names the POI 'Adams to Packard 115kV lines 187 and 188' (utility NM-NG). OSM has no substation named Adams, but way 178196881 (name=Buffalo Avenue Substation, ref=215, operator=National Grid, voltage=115000, ~8,150 m2) sits on the grounds of the 1895 Adams Power Plant: the historic Adams Power Plant Transformer House (OSM way 593546305, Wikipedia 43.08176,-79.04284, 'off 15th St just south of Buffalo Avenue') is 160 m NNE of the yard. Topology corroborates: OSM way 148652941 is a double-circuit (circuits=2, cables=6) 115 kV line running directly from this yard (43.07877,-79.04190) to the Packard 115 kV yard (43.09833,-79.00556) \u2014 exactly the two Adams-Packard circuits 187/188. A second unnamed 115 kV yard (way 178197181) abuts it on the west, same site. Automated match failed because the mapper named it for the street rather than the utility's 'Adams' station name. Reverse geocode: City of Niagara Falls, Niagara County \u2014 agrees with filing.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/178196881.json",
+    "https://api.openstreetmap.org/api/0.6/way/148652941/full.json",
+    "https://en.wikipedia.org/wiki/Adams_Power_Plant_Transformer_House",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queue 1681)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-adirondack",
+   "name": "Adirondack",
+   "region": "NY",
+   "filing_counties": [
+    "St Lawrence"
+   ],
+   "osm": "way/162784585",
+   "agent_name": "Adirondack Substation",
+   "agent_conf": "medium",
+   "in_extract": true,
+   "lat": 43.9220105,
+   "lon": -75.3199028,
+   "tags": {
+    "name": "Adirondack Substation",
+    "operator": "New York Power Authority",
+    "power": "substation",
+    "substation": "distribution",
+    "voltage": "230000;115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Lewis County",
+   "reasoning": "COUNTY MISMATCH: the substation is in Belfort, Town of Croghan, Lewis County (Nominatim reverse on the centroid; NYPA's Smart Path Connect page also places the new Adirondack 345 kV substation in Croghan). The filings (1446, 1728-1731, 1745) list St Lawrence because that is where the loads (Massena/Arconic/ZeroC) sit; their POI is the Haverstock-Adirondack 345 kV lines HA-1/HA-2, whose St Lawrence-side terminus is Haverstock (see sub-haverstock). OSM object: way 162784585, name=Adirondack Substation, operator=New York Power Authority, voltage=230000;115000, with fixme 'Will eventually need to be updated to reflect new 345 kV southeast of here'. The new 345 kV yard itself is mapped only as landuse=construction way 1435308154 (name='New 345 kV substation', note 'Per Google Maps aerial', added 2025-10) at 43.91935,-75.31903, ~300 m SE, also Effley Falls Road, Croghan, Lewis County. Name variant 'Adirondak' in the queue is a spelling variant. Automated match likely failed on the county filter, not the name.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/162784585.json",
+    "https://api.openstreetmap.org/api/0.6/way/1435308154/history.json",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.92201&lon=-75.3199&format=jsonv2",
+    "St. Lawrence County planning document (local stlawco.txt): 'Adirondack 345 kV sub (new)'"
+   ],
+   "tier": "B-unnamed-or-medium"
+  },
+  {
+   "sub_id": "sub-albany-bethlehem",
+   "name": "Albany?Bethlehem",
+   "region": "NY",
+   "filing_counties": [
+    "Albany"
+   ],
+   "osm": "way/321933884",
+   "agent_name": "Albany Steam Substation",
+   "agent_conf": "medium",
+   "in_extract": true,
+   "lat": 42.5949834,
+   "lon": -73.7623284,
+   "tags": {
+    "name": "Albany Steam Substation",
+    "power": "substation",
+    "substation": "generation",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Albany County",
+   "reasoning": "The '?' is a mangled en-dash: queue 1754 (EKG Group, Kenwood Tech Center, 180 MW) lists the POI as 'Albany\u2013Bethlehem 115 kV Line #18', i.e. a National Grid 115 kV line between the 'Albany' and 'Bethlehem' stations, not a single yard. 'Albany' = the 115 kV switchyard at the former Albany Steam Station (now PSEG Bethlehem Energy Center, way 425545119): OSM way 321933884 name=Albany Steam Substation, voltage=115000, substation=generation, River Road, Glenmont, Town of Bethlehem, Albany County. 'Bethlehem' = OSM way 591683785 name=Bethlehem Station 21, operator=National Grid, voltage=115000, at 42.6029,-73.79969, Feura Bush Road, Glenmont, Albany County. OSM maps a 115 kV line between the two yards (e.g. ways 1434585377, 1434640783). Both termini are in Albany County, so the county agrees whichever end is used; Albany Steam is returned as the anchor because it is the larger transmission node. Automated match failed because the filing names a line, not a substation.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/321933884.json",
+    "https://api.openstreetmap.org/api/0.6/way/591683785.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.59498&lon=-73.76233&format=jsonv2",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queue 1754)"
+   ],
+   "tier": "B-unnamed-or-medium"
+  },
+  {
+   "sub_id": "sub-beck-packard",
+   "name": "Beck Packard",
+   "region": "NY",
+   "filing_counties": [
+    "Niagara",
+    "Niagara Falls"
+   ],
+   "osm": "way/147381638",
+   "agent_name": "Packard Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 43.0988011,
+   "lon": -79.0075011,
+   "tags": {
+    "name": "Packard Substation",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "230000;115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Niagara County",
+   "reasoning": "Queues 1747/1748 (Globe DH) list the POI 'Beck Packard 76 230kV' \u2014 the Sir Adam Beck (Ontario Power Generation, Queenston ON) to Packard (Niagara Falls NY) 230 kV international tie; the New York point of interconnection is the Packard substation. OSM way 147381638 name=Packard Substation, voltage=230000;115000, substation=transmission, with mapped 230 kV busbars/bays; reverse geocode: New Road, City of Niagara Falls, Niagara County \u2014 agrees with both filing county spellings (Niagara / Niagara Falls). Automated match failed because the filing string is the tie-line name ('Beck Packard 76') rather than the station name.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/147381638.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.0988&lon=-79.0075&format=jsonv2",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queues 1747, 1748)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-broad-street-34-5-kv",
+   "name": "Broad Street 34.5 kV",
+   "region": "NY",
+   "filing_counties": [
+    "Horseheads"
+   ],
+   "osm": "way/1445235249",
+   "agent_name": "(no name tag; operator=NYSEG)",
+   "agent_conf": "medium",
+   "in_extract": true,
+   "lat": 42.1641951,
+   "lon": -76.8392506,
+   "tags": {
+    "operator": "NYSEG",
+    "power": "substation",
+    "substation": "yes"
+   },
+   "agent_dist_m": 7,
+   "osm_county": "Chemung County",
+   "reasoning": "Queue 1761 (URI TALY, 150 MW, 'county' field literally 'Horseheads') lists POI 'Broad Street 34.5 kV Line 93', utility NYSEG. The only NYSEG-tagged yard in the Village of Horseheads is OSM way 1445235249 (power=substation, substation=yes, operator=NYSEG, no name, ~1,180 m2); Nominatim reverse gives 833 West Broad Street, Village of Horseheads, Town of Horseheads, Chemung County, and the yard is 72 m from the West Broad Street way (909490904), with OSM minor_lines (sub-transmission class) entering it (ways 1507509413-16). Other Horseheads yards (Tuttle Ave way 1257582411, 475 m from E Broad St; way 705859997 by the Southern Tier Expressway) are smaller and not on Broad Street. Horseheads is in Chemung County, consistent with the filing's 'Horseheads'. Match failed because the yard has no name tag.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/1445235249.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.16424&lon=-76.83931&format=jsonv2&zoom=18",
+    "Overpass: highway ways named 'Broad Street' in Horseheads (ways 909490904, 13037976, 13017426)",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queue 1761)"
+   ],
+   "tier": "B-unnamed-or-medium"
+  },
+  {
+   "sub_id": "sub-greenidge",
+   "name": "Greenidge",
+   "region": "NY",
+   "filing_counties": [
+    "Yates"
+   ],
+   "osm": "way/114751052",
+   "agent_name": "(no name tag; power=substation, substation=generation, voltage=115000)",
+   "agent_conf": "medium-high",
+   "in_extract": true,
+   "lat": 42.6795537,
+   "lon": -76.9510034,
+   "tags": {
+    "power": "substation",
+    "substation": "generation",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 22,
+   "osm_county": "Yates County",
+   "reasoning": "Queues 0776/1725 list the POI 'NYSEG - Greenidge 115 kV Substation'. OSM maps the Greenidge plant as way 253670259 under the misspelled name 'Greenridge Generation LLC Power Plant' (operator Greenidge Generation Holdings), which is why a 'Greenidge' name match fails, and the 115 kV switchyard beside it as unnamed way 114751052 (voltage=115000, substation=generation, ~8,100 m2) at 42.6795,-76.9508 \u2014 the Greenidge 115 kV bus that NYSEG retained after the plant was divested. A separate small NYSEG-tagged yard, way 756239073 (~430 m2, no voltage) 450 m west on Lampman Hill Road, is a distribution sub, not the 115 kV station. Reverse geocode: Town of Torrey (Dresden), Yates County \u2014 agrees.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/114751052/full.json",
+    "https://api.openstreetmap.org/api/0.6/way/756239073.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.67955&lon=-76.951&format=jsonv2",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queues 0776, 1725)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-harings-corner",
+   "name": "Harings Corner",
+   "region": "NY",
+   "filing_counties": [
+    "Rockland"
+   ],
+   "osm": "way/95197289",
+   "agent_name": "Harings Corner Substation",
+   "agent_conf": "medium",
+   "in_extract": false,
+   "reasoning": "COUNTY MISMATCH: OSM way 95197289 (name=Harings Corner Substation, operator=Orange & Rockland, ref=30, voltage=138000;69000) carries addr tags 218 Orangeburgh Road, Old Tappan, NJ, and Nominatim reverse confirms Old Tappan, Bergen County, New Jersey (about 300 m south of the NY/NJ line). Queue 1715 (1547 CSR - Orangeburg LLC, 30 MW) lists the POI as '138kV Line 703 between Corporate Drive and Harings Corner' and even records county=Rockland with state=NJ, i.e. the filing county describes the load site in Orangeburg, NY. The Rockland County terminus of Line 703 is Corporate Drive Substation, OSM way 570133029 (O&R, 138 kV) at 41.0386,-73.98772, Corporate Drive, Pearl River, Town of Orangetown, Rockland County \u2014 use that if a Rockland-County anchor is required. The name match presumably failed on the county/state filter.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/95197289.json",
+    "https://api.openstreetmap.org/api/0.6/way/570133029.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=41.02296&lon=-73.96809&format=jsonv2&zoom=18",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queue 1715)"
+   ],
+   "tier": "C-not-in-extract"
+  },
+  {
+   "sub_id": "sub-haverstock",
+   "name": "Haverstock",
+   "region": "NY",
+   "filing_counties": [
+    "St Lawrence"
+   ],
+   "osm": "way/1344542590",
+   "agent_name": "Haverstock Substation",
+   "agent_conf": "high",
+   "in_extract": false,
+   "reasoning": "Haverstock is NYPA's new 345 kV substation built under Smart Path Connect (NYPA project page: one of three new NYPA digital substations, 'located in Massena'; St. Lawrence County planning doc lists 'Haverstock 345 kV sub (new)'). It is the northern terminus of the rebuilt Moses-Adirondack circuits, now labelled HA-1/HA-2 (Haverstock-Adirondack) and HW1/HW2 (Haverstock-Willis) in queues 1446, 1724, 1728-1731, 1745. In OSM it exists as way 1344542590 with name=Haverstock Substation but tagged landuse=construction + construction=industrial (mapper note, 2024-12-21: 'Mostly complete per GSV on Fregoe Road'), ~66,000 m2 polygon \u2014 NOT power=substation, which is why a power-only matcher missed it. Centroid 44.97638,-74.79700; Nominatim reverse: 112 Fregoe Road, Town of Massena, Saint Lawrence County \u2014 agrees with filing. It is ~3 km south of the NYPA Moses Switching Station (way 79293030). Built, not merely proposed, per the mapper's Street View check; the OSM tag should eventually become power=substation.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/1344542590/history.json",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect",
+    "https://nominatim.openstreetmap.org/reverse?lat=44.97596&lon=-74.79659&format=jsonv2&zoom=18",
+    "St. Lawrence County planning document (local stlawco.txt): 'Haverstock 345 kV sub (new)'",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queues 1446, 1724, 1728-1731, 1745)"
+   ],
+   "tier": "C-not-in-extract"
+  },
+  {
+   "sub_id": "sub-ilion-municipal",
+   "name": "Ilion Municipal",
+   "region": "NY",
+   "filing_counties": [
+    "Herkimer"
+   ],
+   "osm": "way/1318905044",
+   "agent_name": "(no name tag; operator=Village of Ilion)",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 43.0199236,
+   "lon": -75.041474,
+   "tags": {
+    "operator": "Village of Ilion",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 9,
+   "osm_county": "Herkimer County",
+   "reasoning": "Queue 1735 (Turin Management, Remington Factory Redevelopment, 100 MW, utility IMEU) lists POI 'Ilion Municipal 115kV substation'. OSM way 1318905044 is an unnamed power=substation with operator='Village of Ilion', voltage=115000, substation=minor_distribution, ~3,750 m2; Nominatim reverse: 201 West Clark Street, Village of Ilion, Town of German Flatts, Herkimer County \u2014 agrees. An adjacent small unnamed yard (way 1485150800, 43.02067,-75.04056) is part of the same site. Match failed because the yard has no name tag (the municipal ownership is only in the operator tag).",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/1318905044/full.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.01992&lon=-75.04147&format=jsonv2&zoom=18",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queue 1735)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-johnson-rd",
+   "name": "Johnson Rd",
+   "region": "NY",
+   "filing_counties": [
+    "Albany"
+   ],
+   "osm": "way/139791029",
+   "agent_name": "Johnson Road Station",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 42.764723,
+   "lon": -73.7433122,
+   "tags": {
+    "name": "Johnson Road Station",
+    "operator": "National Grid",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Albany County",
+   "reasoning": "Queue 0290A (Green Island Power Authority, in service) lists POI 'Maplewood - Johnson Rd 115kV'. OSM way 139791029 name=Johnson Road Station, operator=National Grid, ref=352, voltage=115000, substation=minor_distribution; reverse geocode: Columbia Street Extension, Boght Corners, Town of Colonie (Latham), Albany County \u2014 agrees. The other end of the line, Maplewood Substation, is OSM way 139791683 at 42.74541,-73.70846 (also Colonie). Match failed on the abbreviation: filing 'Johnson Rd' vs OSM 'Johnson Road Station'.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/139791029.json",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.76472&lon=-73.74331&format=jsonv2",
+    "NYISO Interconnection Queue (local nyiso-queue.xlsx, Load Projects, queue 0290A)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-kintigh",
+   "name": "Kintigh",
+   "region": "NY",
+   "filing_counties": [
+    "Genesee",
+    "Niagara"
+   ],
+   "osm": "way/115339578",
+   "agent_name": "Somerset Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 43.3523732,
+   "lon": -78.6086996,
+   "tags": {
+    "name": "Somerset Substation",
+    "operator": "NYSEG",
+    "power": "substation",
+    "substation": "generation",
+    "voltage": "345000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Niagara County",
+   "reasoning": "OSM maps the Kintigh 345 kV yard under the retired plant's/town's name 'Somerset Substation' (operator NYSEG, voltage 345000, substation=generation) at the former Kintigh/Somerset Generating Station, Town of Somerset. Nominatim reverse-geocode: Town of Somerset, Niagara County, which matches the filing's 'Genesee / Niagara'. NYISO 2025 Gold Book queue lists 'BPP NY Somerset BESS I LLC - Kintigh 345kV', tying the Kintigh name to Somerset.",
+   "sources": [
+    "https://www.openstreetmap.org/way/115339578",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.3523732&lon=-78.6086996",
+    "https://www.nyiso.com/documents/20142/2226333/2025-Gold-Book-Public.pdf (queue row C24-091 Kintigh 345kV, Somerset)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-knickerbocker",
+   "name": "Knickerbocker",
+   "region": "NY",
+   "filing_counties": [
+    "Albany"
+   ],
+   "osm": "way/1221667976",
+   "agent_name": "Knickerbocker Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 42.4943641,
+   "lon": -73.7373851,
+   "tags": {
+    "name": "Knickerbocker Substation",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "345000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Rensselaer County",
+   "reasoning": "OSM 'Knickerbocker Substation' (power=substation, substation=transmission, 345000) is the LS Power/NY Energy Solution 345 kV station in the Town of Schodack. COUNTY DISAGREES WITH FILING: Nominatim places it in Rensselaer County (Schodack), east of the Hudson, not Albany County; there is no Knickerbocker substation in Albany County. The filing's 'Albany' most likely records the queue project's own location rather than the substation's. Gold Book 2025 confirms Segment B 'Knickerbocker-PV' and queue C24-222 'KNICKERBOCKER 345 kV' in Zone F.",
+   "sources": [
+    "https://www.openstreetmap.org/way/1221667976",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.494364&lon=-73.737385",
+    "https://www.nyiso.com/documents/20142/2226333/2025-Gold-Book-Public.pdf (Segment B Knickerbocker-PV; queue C24-222)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-mcknownville",
+   "name": "McKnownville",
+   "region": "NY",
+   "filing_counties": [
+    "Albany"
+   ],
+   "osm": "way/86356092",
+   "agent_name": "McKownville Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 42.6839787,
+   "lon": -73.8429139,
+   "tags": {
+    "name": "McKownville Substation",
+    "operator": "National Grid",
+    "power": "substation",
+    "substation": "distribution",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Albany County",
+   "reasoning": "Spelling variant: OSM tags it 'McKownville Substation' (no second n), operator National Grid, 115000 V, substation=distribution, in the McKownville hamlet of Guilderland. Nominatim reverse-geocode: Town of Guilderland, Albany County - matches filing.",
+   "sources": [
+    "https://www.openstreetmap.org/way/86356092",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.683979&lon=-73.842914"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-milliken",
+   "name": "Milliken",
+   "region": "NY",
+   "filing_counties": [
+    "Cayuga",
+    "Tompkins"
+   ],
+   "osm": "way/571688108",
+   "agent_name": "(no name tag)",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 42.6025321,
+   "lon": -76.6328347,
+   "tags": {
+    "power": "substation",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Tompkins County",
+   "reasoning": "The Milliken 115 kV yard is mapped without a name tag: way 571688108 (power=substation, voltage=115000) at the Cayuga Power Plant (the renamed Milliken Station) on Milliken Station Road, Lansing; an adjacent unnamed 34.5 kV yard is way 571688107. NYISO 2025 Gold Book queue rows use 'Milliken 115kV (aka Cayuga 115kV)' and 'Milliken 115 kV Substation'. Nominatim: Town of Lansing, Tompkins County, matching the filing's 'Cayuga / Tompkins'.",
+   "sources": [
+    "https://www.openstreetmap.org/way/571688108",
+    "https://nominatim.openstreetmap.org/search?q=Milliken+Station+New+York (Cayuga Power Plant, Town of Lansing, Tompkins County)",
+    "https://www.nyiso.com/documents/20142/2226333/2025-Gold-Book-Public.pdf (queue C24-048 'Milliken 115kV (aka Cayuga 115kV)', C24-135)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-niagara-packard",
+   "name": "Niagara Packard",
+   "region": "NY",
+   "filing_counties": [
+    "Niagara Falls"
+   ],
+   "osm": "way/147381638",
+   "agent_name": "Packard Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 43.0988011,
+   "lon": -79.0075011,
+   "tags": {
+    "name": "Packard Substation",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "230000;115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Niagara County",
+   "reasoning": "OSM 'Packard Substation' (substation=transmission, voltage 230000;115000) in the City of Niagara Falls; the automated match failed only because the filing prefixes 'Niagara'. Nominatim: City of Niagara Falls, Niagara County, consistent with the filing's 'Niagara Falls'. Gold Book 2025 references Packard-Huntley 230 kV Line #78 and Packard 115 kV works.",
+   "sources": [
+    "https://www.openstreetmap.org/way/147381638",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.098801&lon=-79.007501",
+    "https://www.nyiso.com/documents/20142/2226333/2025-Gold-Book-Public.pdf (Packard-Huntley 230 kV Line #78)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-oak-street",
+   "name": "Oak Street",
+   "region": "NY",
+   "filing_counties": [
+    "Orange",
+    "Rockland"
+   ],
+   "osm": "way/998496432",
+   "agent_name": "(no name tag; operator Orange & Rockland, substation=transition, 138000)",
+   "agent_conf": "medium-low",
+   "in_extract": true,
+   "lat": 41.0437548,
+   "lon": -73.9652837,
+   "tags": {
+    "operator": "Orange & Rockland",
+    "power": "substation",
+    "substation": "transition",
+    "voltage": "138000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Rockland County",
+   "reasoning": "Oak Street is an existing Orange & Rockland 138 kV station in Orangetown, Rockland County: PSC order in Case 21-T-0569 says Line 705 relieves '138-kV overhead Line 702 between its Burns and Oak Street Substations' (data-center load in Orangeburg); NYISO queue #1713 'Project Sycamore Orangeburg' (JPMorgan data center at 140 Old Orangeburg Rd, the Rockland Psychiatric Center campus) lists POI 'Oak Street 138kV', O&R; a DPS exhibit list names Burns, West Nyack, Oak Street, Corporate Drive and Harings Corner one-lines together. No OSM substation carries the name. On the O&R 702/703 corridor between West Nyack and Harings Corner the only 138 kV node in OSM is this unnamed yard tagged substation=transition: O&R line 703 (138 kV) passes through it, a 69 kV line ties in, and the underground 138 kV cables tagged '702/703' to Corporate Drive Substation terminate here. It is ~700 m SE of the RPC campus's internal road named Oak Street (OSM way 239325911) and ~400 m from the Project Sycamore site. Caveat: OSM draws only a 36x30 m outline and no name, so it may capture just the cable-transition part of the Oak Street station or the station may be unmapped; county (Rockland, Town of Orangetown, Orangeburg 10962) agrees with the filing's 'Orange / Rockland'.",
+   "sources": [
+    "https://www.openstreetmap.org/way/998496432",
+    "https://www.interconnection.fyi/project/nyiso-1713 (Project Sycamore Orangeburg, POI 'Oak Street 138kV', O&R, Rockland)",
+    "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B6041B38D-0000-C01E-B003-B7FF35BBA5E7%7D (PSC order 21-T-0569: Line 702 Burns-Oak Street)",
+    "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B23759D3D-DB96-4817-B5B6-6DE8194EEF48%7D (exhibit list: Burns, West Nyack, Oak Street, Corporate Drive, Harings Corner)",
+    "https://reinventalbany.org/2026/04/ny-taxpayers-spend-77m-for-one-jp-morgan-data-center-job-by-far-largest-subsidy-per-job-in-history-report/ (Project Sycamore at 140 Old Orangeburg Road)",
+    "https://www.oru.com/en/our-energy-future/our-energy-projects/line-705-project"
+   ],
+   "tier": "X-excluded"
+  },
+  {
+   "sub_id": "sub-reynolds",
+   "name": "Reynolds",
+   "region": "NY",
+   "filing_counties": [
+    "St Lawrence"
+   ],
+   "osm": "way/396623554",
+   "agent_name": "(no name tag; substation=generation, 115000)",
+   "agent_conf": "medium-high",
+   "in_extract": true,
+   "lat": 44.9800056,
+   "lon": -74.7516612,
+   "tags": {
+    "power": "substation",
+    "substation": "generation",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Franklin County",
+   "reasoning": "'Reynolds' is NYPA's 115 kV substation at the former Reynolds Metals (later Alcoa East) smelter in Rooseveltown, Town of Massena: NYSDEC spill record #0005321 names 'REYNOLDS ELECTRICAL SUBST', 194 County Route 45 (typed 54), Massena, spiller NY Power Authority, and 194 CR 45 geocodes to 44.9812,-74.7453 inside the OSM landuse 'Alcoa - St-Lawrence - Massena, Smelter'; the 2025 Gold Book lists NYPA 'Moses-St.Lawrence - Reynolds' 115 kV (MR3 line back to service to supply loads). The only 115 kV yard OSM maps on that site is unnamed way 396623554, terminal of the 115 kV lines from Moses Switching Station. The nearby named 'Engstrom' substation (way 481083065) is Massena Electric Department's 2002 115/27 kV distribution station and is excluded. County-level reverse geocode: Saint Lawrence County (finer-zoom Nominatim returns the Akwesasne CDP/Franklin County by quirk; the plant is in the Town of Massena, St. Lawrence County), matching the filing.",
+   "sources": [
+    "https://www.openstreetmap.org/way/396623554",
+    "https://opendatany.com/spill.php?id=0005321 (Reynolds Electrical Subst, 194 County Route 54 Massena, spiller NY Power Authority)",
+    "https://nominatim.openstreetmap.org/search?q=194+County+Route+45,+Massena,+NY",
+    "https://www.nyiso.com/documents/20142/2226333/2025-Gold-Book-Public.pdf (NYPA Moses-St.Lawrence - Reynolds 115 kV MR3)",
+    "https://massena.us/176/Electric-Department (Engstrom Substation is Massena Electric's, 2002)"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-rotterdam",
+   "name": "Rotterdam",
+   "region": "NY",
+   "filing_counties": [
+    "Schoharie"
+   ],
+   "osm": "way/139587105",
+   "agent_name": "Rotterdam Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 42.8288873,
+   "lon": -73.9978463,
+   "tags": {
+    "name": "Rotterdam Substation",
+    "operator": "National Grid",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "345000;230000;115000;69000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Schenectady County",
+   "reasoning": "OSM 'Rotterdam Substation' (National Grid, 345000;230000;115000;69000, access=no) is the well-known Rotterdam bulk station; the 115 kV bus is where lines #43/#44 toward Luther Forest originate. COUNTY DISAGREES WITH FILING: Nominatim places it in the Town of Rotterdam, Schenectady County; there is no Rotterdam substation in Schoharie County. The filing's 'Schoharie' most likely records the interconnecting project's own county (a Schoharie County project interconnecting at Rotterdam 115 kV).",
+   "sources": [
+    "https://www.openstreetmap.org/way/139587105",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.828887&lon=-73.997846"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-round-lake",
+   "name": "Round Lake",
+   "region": "NY",
+   "filing_counties": [
+    "Saratoga"
+   ],
+   "osm": "way/139955408",
+   "agent_name": "Malta Station 443",
+   "agent_conf": "low",
+   "in_extract": true,
+   "lat": 42.964341,
+   "lon": -73.7992401,
+   "tags": {
+    "name": "Malta Station 443",
+    "operator": "National Grid",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Saratoga County",
+   "reasoning": "No OSM object of any kind is named 'Round Lake' with a power tag anywhere in Saratoga County, and no 115 kV line or substation lies within 2.5 km of Round Lake village. 'Round Lake 115kV' is NYISO's point of interconnection for queue #205 'Luther Forest' (National Grid, Saratoga County, 40 MW load, queued 2005, still 'Active'), i.e. a bus on National Grid 115 kV lines #43/#44 (OSM route relations 'Rotterdam - Luther Forest #44' and 'Lasher Rd - Luther Forest #43'). The corridor's only bused 115 kV station in the Round Lake area is OSM 'Malta Station 443' (National Grid, ref 443, 115 kV busbars/transformer, portals), in the Round Lake ZIP 12151 area beside I-87 exit 11, 3 km north of the village; it is the point where lines 43/44 go underground toward Luther Forest (the 2009 extension), so it is the most plausible pre-extension 'Round Lake' terminal. Alternative: the unnamed 115 kV transition yard way 162320148 at 42.960656,-73.780379 (Stonebreak Rd Ext), 1.6 km east. The 2025 Gold Book contains no 'Round Lake' entry, so the name may be a legacy/planning bus name; treat the coordinate as tentative. County Saratoga (Town of Malta) agrees with the filing.",
+   "sources": [
+    "https://www.openstreetmap.org/way/139955408",
+    "https://www.openstreetmap.org/way/162320148",
+    "https://www.interconnection.fyi/project/nyiso-205 (Luther Forest, National Grid, POI 'Round Lake 115kV', Saratoga County)",
+    "https://nominatim.openstreetmap.org/reverse?lat=42.964341&lon=-73.79924 (Town of Malta, Saratoga County, 12151)",
+    "https://nyisoviewer.etariff.biz/ViewerDocLibrary/Filing/Filing67/Attachments/Natl%20Grid%20-%20Luther%20Forest%20P%20and%20SA%20Filing%20Letter%209-14-10.pdf (four new 115 kV lines and substation connecting the campus to National Grid)"
+   ],
+   "tier": "X-excluded"
+  },
+  {
+   "sub_id": "sub-sills-rd",
+   "name": "Sills Rd",
+   "region": "NY",
+   "filing_counties": [
+    "Suffolk"
+   ],
+   "osm": "way/1485150706",
+   "agent_name": "(no name tag)",
+   "agent_conf": "medium-high",
+   "in_extract": true,
+   "lat": 40.8194371,
+   "lon": -72.9387045,
+   "tags": {
+    "power": "substation"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Suffolk County",
+   "reasoning": "Sills Road is an existing LIPA 138 kV substation in Yaphank: FERC docket EL15-84 (Caithness Long Island II) states 'the proposed point of interconnection is at LIPA Sills Road 138 kV substation', Newsday places it near the Sills Road exit of the LIE on Caithness-owned land, and the 2025 Gold Book queue lists a 'Sills Rd - Brookhaven 138 kV line'. In OSM the only substation there is unnamed way 1485150706 (added 2026), tied into LIPA's '138kV Transmission line' (way 83188626) and adjacent to the Caithness Long Island Energy Center (way 826242294, 50 Zorn Blvd) on Sills Road / CR 101 at LIE exit 66. The two OSM ways named 'Yaphank Substation' (ref 8EX, ways 83469873 and 88734946) connect only 69 kV lines and are not Sills Road. Nominatim: Yaphank, Town of Brookhaven, Suffolk County, matching the filing.",
+   "sources": [
+    "https://www.openstreetmap.org/way/1485150706",
+    "https://www.ferc.gov/sites/default/files/2020-05/E-20_18.pdf (Caithness Long Island II: POI at LIPA Sills Road 138 kV substation)",
+    "https://www.newsday.com/long-island/environment/caithness-battery-storage-roviudbo",
+    "https://www.nyiso.com/documents/20142/2226333/2025-Gold-Book-Public.pdf (queue C24-167 'Sills Rd - Brookhaven 138 kV line')",
+    "https://nominatim.openstreetmap.org/reverse?lat=40.819437&lon=-72.938705"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-stamp",
+   "name": "STAMP",
+   "region": "NY",
+   "filing_counties": [
+    "Genesee"
+   ],
+   "osm": "way/1442727125",
+   "agent_name": "Future Yellowtail Energy Substation",
+   "agent_conf": "medium-high",
+   "in_extract": false,
+   "reasoning": "The STAMP 345/115 kV main substation (NYPA 345 kV side / National Grid 115 kV side, 600 MW, energizing 2026) is in OSM as way 1442727125, but tagged with the lifecycle prefix planned:power=substation (plus substation=yes, voltage=345000;115000, fixme='Verify exact limits and name') and named 'Future Yellowtail Energy Substation', so a power=substation name match cannot find it. Identity: the OSM note cites GCEDC Resolution 10/2022-02, which authorizes Yellowtail Energy LLC (a Plug Power affiliate) to build 'an approximately 345kV to 115kV main substation' on Lewiston Road (NY-77) in the Town of Alabama, tax parcels 6-1-84 and 10-1-4.112 - i.e. the STAMP main substation. Location fits: the polygon (43.0957-43.0982 N, -78.4120 to -78.4101 W, ~250 m x 150 m) abuts the NYPA 345 kV 'Dysinger - Station 255' double-circuit corridor and sits directly north of the Stream US Data Centers North Campus POI (43.094727,-78.410585), which Stream's April 2026 SEQR utility summary says is fed 'straight north to south' from the STAMP substation; mapped 115 kV lines terminate along its south edge. Town of Alabama, Genesee County - agrees with the filing. Nearby unnamed power=substation ways 1485150858 (43.0636,-78.3917) and 1485150859 (43.0651,-78.2968) are small distribution yards, not STAMP; way 1442727127 (landuse=construction, 43.0837,-78.4068) is the existing Stream/ex-Plug Power 115/34.5 kV customer substation, not the POI.",
+   "sources": [
+    "https://www.openstreetmap.org/way/1442727125",
+    "https://www.gcedc.com/file-library/100038/YellowtailEnergyLLC.AuthorizingResolution.10.6.22.pdf",
+    "https://www.gcedc.com/file-library/100319/STREAMUSDataCentersLLC.SEQRDevelopmentApplication.4.6.26.III.I.UtilityPowerTechnicalSummary.pdf",
+    "https://www.gcedc.com/documents/stamp/STAMP.Brochure.24.pdf",
+    "https://www.nationalgridus.com/News/National-Grid-Relocates-1-9-Miles-of-Transmission-Line-to-Support-Genesee-County-Growth/"
+   ],
+   "tier": "C-not-in-extract"
+  },
+  {
+   "sub_id": "sub-teall-ln",
+   "name": "Teall LN",
+   "region": "NY",
+   "filing_counties": [
+    "Onondaga"
+   ],
+   "osm": "way/220947888",
+   "agent_name": "Teall Avenue Station",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 43.0888497,
+   "lon": -76.1230072,
+   "tags": {
+    "name": "Teall Avenue Station",
+    "operator": "National Grid",
+    "power": "substation",
+    "substation": "distribution",
+    "voltage": "115000;34500"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Onondaga County",
+   "reasoning": "OSM maps the yard as 'Teall Avenue Station' (power=substation, operator=National Grid, voltage=115000;34500), so 'Teall' matched nothing because of the 'Avenue Station' suffix. National Grid's substation list filed with the NY DPS lists 'TEALL SUBSTATION', Central division, Town of Salina, 115/34.5 kV with 9 transmission feed circuits - consistent with a 115 kV POI. The way sits on Teall Ave at the Syracuse/Salina line, Onondaga County - agrees with the filing.",
+   "sources": [
+    "https://www.openstreetmap.org/way/220947888",
+    "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B3F86059C-C872-415C-BA34-BCF6D20A831F%7D"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-va-chickahominy",
+   "name": "Chickahominy",
+   "region": "VA",
+   "filing_counties": [
+    "Henrico"
+   ],
+   "osm": "way/81595538",
+   "agent_name": "Chickahominy Substation",
+   "agent_conf": "high on identity; filing county disagrees (Charles City, not Henrico)",
+   "in_extract": true,
+   "lat": 37.437002,
+   "lon": -77.158692,
+   "tags": {
+    "name": "Chickahominy Substation",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "500000;230000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Charles City County",
+   "reasoning": "OSM way 81595538 'Chickahominy Substation', power=substation, substation=transmission, voltage=500000;230000 (no operator tag) \u2014 Dominion's Chickahominy 500/230 kV hub, the only substation of that name in Virginia and the terminal of Lines #2050, #2091 and #2294 named in the SCC/Dominion documents above. Centroid 37.437002, -77.158692. County check: US Census geocoder and Nominatim reverse both place the centroid in Charles City County (District 1), roughly 2 km east of the Henrico line near Elko/Roxbury; SCC PUR-2025-00077 (Chickahominy\u2013Elmont rebuild) lists 'Charles City, Henrico, Hanover'. So the filing's 'Henrico' is loose/incorrect for the yard itself, which likely explains the automated county-filtered miss; the match is otherwise unambiguous. (The 'Chickahominy' locality node in Henrico at 37.608 -77.413 is an unrelated place name with no substation.)",
+   "sources": [
+    "https://www.openstreetmap.org/way/81595538",
+    "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?x=-77.158692&y=37.437002&benchmark=Public_AR_Current&vintage=Current_Current&format=json",
+    "https://www.scc.virginia.gov/consumers/public-utility/electricity-faqs/transmission-line-projects/",
+    "https://cdn-dominionenergy-prd-001.azureedge.net/-/media/content/about/power-line-projects/technology-boulevard-electric-transmission-project/pdf/scc-final-order-(1).pdf"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-va-enon",
+   "name": "Enon",
+   "region": "VA",
+   "filing_counties": [],
+   "osm": "way/868888651",
+   "agent_name": "Enon Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 37.3396253,
+   "lon": -77.323312,
+   "tags": {
+    "name": "Enon Substation",
+    "operator": "Virginia Electric and Power Company",
+    "power": "substation",
+    "substation": "distribution",
+    "voltage": "230000;34500"
+   },
+   "agent_dist_m": 10,
+   "osm_county": "Chesterfield County",
+   "reasoning": "Existing Dominion (Virginia Electric and Power Company) 230/34.5 kV substation at 13725 North Enon Church Road, Chester 23836, tagged power=substation, substation=distribution, voltage=230000;34500, name='Enon Substation' (way 868888651, ~1 acre fenced yard; the adjoining 34.5 kV yard is way 868888650). Nominatim reverse geocode confirms Chesterfield County (filing county not stated). It is the Enon named in PJM Dominion supplemental decks (Lines 2049/2370 area, Meadowville load area) and is the only 'Enon' substation in the regional OSM dump.",
+   "sources": [
+    "https://api.openstreetmap.org/api/0.6/way/868888651",
+    "https://nominatim.openstreetmap.org/reverse?lat=37.33963&lon=-77.32331&format=json&zoom=10",
+    "https://www.pjm.com/-/media/DotCom/committees-groups/committees/teac/2026/20260707/20260707-item-14---dom-supplemental-projects.pdf"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-va-gordonsville",
+   "name": "Gordonsville",
+   "region": "VA",
+   "filing_counties": [
+    "Louisa"
+   ],
+   "osm": "way/97721028",
+   "agent_name": "Gordonsville Substation",
+   "agent_conf": "medium-high",
+   "in_extract": true,
+   "lat": 38.1266153,
+   "lon": -78.2215078,
+   "tags": {
+    "name": "Gordonsville Substation",
+    "operator": "Virginia Electric and Power Company",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "230000;115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Albemarle County",
+   "reasoning": "OSM way 97721028 'Gordonsville Substation', operator Virginia Electric and Power Company, substation=transmission, voltage 230000;115000, ~150 m x 140 m fenced yard with 230 kV and 115 kV busbars, centroid 38.1266153,-78.2215078 (Lovers Lane, west of the town of Gordonsville). This is Dominion's Gordonsville 230 kV bus that the filing names (Line #2088 Gordonsville-Louisa CT and Line #2199/#2276 Remington-Gordonsville both reference it). COUNTY MISMATCH TO FLAG: both Overpass is_in (relation Albemarle County, admin_level 6) and Nominatim reverse geocoding put this yard in Albemarle County, about 1 km from the Albemarle/Louisa/Orange tri-point at Gordonsville. The filing county 'Louisa' comes from need DOM-2025-0072 (Wesbey Drive, Louisa County), where Gordonsville is only the far endpoint of the 19-mile #2088/#2074/#2202/#2298 rebuild, so the county attribute describes the need, not this yard. The nearest yard that IS in Louisa County is the unnamed VEPCO 230 kV switching station way 638385315 at 38.1174613,-78.2156135 on Kloeckner Road (1.1 km SSE), which appears to be the Gordonsville Energy (EIA 54844) plant switchyard, not the transmission bus; the OSM plant landuse polygon way 149931756 is drawn in Orange County. Recommend accepting way 97721028 with county Albemarle.",
+   "sources": [
+    "https://www.openstreetmap.org/way/97721028",
+    "https://www.openstreetmap.org/way/638385315",
+    "https://www.pjm.com/-/media/DotCom/committees-groups/committees/teac/2026/20260310/20260310-item-09---dom-supplemental-projects.pdf",
+    "https://nominatim.openstreetmap.org/reverse?lat=38.1266153&lon=-78.2215078&format=json&zoom=18"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-va-new-post",
+   "name": "New Post",
+   "region": "VA",
+   "filing_counties": [
+    "Spotsylvania"
+   ],
+   "osm": "way/1065955232",
+   "agent_name": "(no name tag) - tags: power=substation, substation=distribution, voltage=230000, operator=Virginia Electric and Power Company",
+   "agent_conf": "medium",
+   "in_extract": true,
+   "lat": 38.2117483,
+   "lon": -77.4717491,
+   "tags": {
+    "operator": "Virginia Electric and Power Company",
+    "power": "substation",
+    "substation": "distribution",
+    "voltage": "230000"
+   },
+   "agent_dist_m": 3,
+   "osm_county": "Spotsylvania County",
+   "reasoning": "New Post is a real, energized Dominion facility: PJM need DOM-2023-0016 ('New Post 230 kV Delivery - DEV') built a New Post 230 kV switching station (4-breaker ring bus) by cutting Line #2090 (Fredericksburg-Ladysmith CT) and extending double-circuit 230 kV ~0.3 mi to it, in-service 2025; Dominion's Tributary application says Line #2090 runs New Post-Ladysmith CT 'after energizing New Post Substation in 2025', and Dominion's Orrock page calls it 'the New Post substation currently on Massaponax Church Road in Spotsylvania County'. OSM's only substation on that road is unnamed way 1065955232 (VEPCO, 230 kV, fenced), west side of Massaponax Church Rd (SR 608) 520 m SW of Hickory Hill Dr, sitting against the Line #2090 corridor with a 230 kV spur (way 1234261748) into it; Nominatim reverse-geocodes it to Massaponax Church Road, Lee's Hill, Spotsylvania County. Caveat: the mapped yard is only 1.4 acres with two transformers (first mapped June 2022 as minor_distribution), which matches REC's 2017 SUP17-0004 'Massaponax Road' distribution substation (1,540 ft south of Hickory Hill Dr), while Esri imagery shows a much larger new yard under construction on the adjacent parcel to the SW at about 38.2096, -77.4743 that fits the 2025 Dominion switching station; the live OSM extract of that block has no second substation, construction landuse, or relation. So this way is the OSM object at the New Post site (and carries the Dominion 230 kV tags), but the switching station proper is ~300 m SW of its centroid and unmapped. County agrees with the filing (Spotsylvania).",
+   "sources": [
+    "https://www.openstreetmap.org/way/1065955232",
+    "https://www.pjm.com/-/media/DotCom/committees-groups/committees/teac/2025/20250401/20250401-item-11---dom-supplemental-projects.pdf",
+    "https://www.pjm.com/-/media/DotCom/committees-groups/committees/teac/2026/20260203/20260203-item-12---dom-supplemental-projects.pdf",
+    "https://www.dominionenergy.com/about/delivering-energy/electric-projects/power-line-projects/orrock-substation",
+    "https://www.dominionenergy.com/-/media/content/about/power-line-projects/tributary/pdfs/tributary-application-vol-1-part-1-of-4.pdf",
+    "https://spotsylvania.novusagenda.com/agendapublic/AttachmentViewer.ashx?AttachmentID=11174&ItemID=5139",
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=-77.4790,38.2075,-77.4640,38.2175&bboxSR=4326&size=1400,1180&format=png&f=image"
+   ],
+   "tier": "B-unnamed-or-medium"
+  },
+  {
+   "sub_id": "sub-va-sunset-hill",
+   "name": "Sunset Hill",
+   "region": "VA",
+   "filing_counties": [],
+   "osm": "way/692003687",
+   "agent_name": "Subset Hills Substation",
+   "agent_conf": "medium-high",
+   "in_extract": true,
+   "lat": 38.9481447,
+   "lon": -77.3283952,
+   "tags": {
+    "name": "Subset Hills Substation",
+    "power": "substation",
+    "substation": "distribution",
+    "voltage": "230000"
+   },
+   "agent_dist_m": 1,
+   "osm_county": "Fairfax County",
+   "reasoning": "Existing station; the automated match failed on a typo. PJM DOM-2025-0030 (Need 01/06/2026, Solution 07/07/2026): DEV DP request to install a second 84 MVA 230/34.5 kV transformer at 'Sunset Hill Substation in Herndon, VA' for non-data-center load growth (100 MW), in-service 12/31/2028. Dominion's station is the Sunset Hills distribution substation on Sunset Hills Road (SR 675) in Reston; OSM maps it as way 692003687 tagged power=substation, substation=distribution, voltage=230000, name='Subset Hills Substation' (a misspelling of Sunset Hills), centroid 38.94814,-77.32840, ~55 m north of Sunset Hills Road beside the W&OD trail; the z17 ArcGIS imagery tile shows a small fenced yard with 230 kV equipment at that spot, consistent with a single-transformer 230/34.5 kV distribution sub, and Mapcarta lists the same object in Fairfax County near Reston Post Office. The filing's 'Herndon' is loose (the yard is in Reston, ZIP 20190, Fairfax County); no other Sunset Hill(s)-named substation exists in the Herndon/Reston area (Herndon Park, Reston, Dranesville, Dulles etc. are separately named). Filing county not stated, so no conflict.",
+   "sources": [
+    "https://www.pjm.com/-/media/DotCom/committees-groups/committees/teac/2026/20260707/20260707-item-14---dom-supplemental-projects.pdf",
+    "https://www.openstreetmap.org/way/692003687",
+    "https://mapcarta.com/W692003687"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-va-white-oak",
+   "name": "White Oak",
+   "region": "VA",
+   "filing_counties": [
+    "Henrico"
+   ],
+   "osm": "way/578427832",
+   "agent_name": "White Oak Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 37.4861101,
+   "lon": -77.247119,
+   "tags": {
+    "name": "White Oak Substation",
+    "operator": "Dominion Energy",
+    "power": "substation",
+    "substation": "industrial",
+    "voltage": "230000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Henrico County",
+   "reasoning": "OSM way 578427832 'White Oak Substation', operator=Dominion Energy, power=substation, substation=industrial, voltage=230000, fenced, centroid 37.48611,-77.24712; Nominatim places it in Henrico County (agrees with filing). HIFLD's line 'WHITE OAK - ELKO 230 kV, Virginia Electric & Power Co, in service' ends at 37.48612,-77.24707, i.e. exactly this yard. It is the 230 kV transmission-level station at the former White Oak Semiconductor (now QTS) campus in White Oak Technology Park, fed by a 230 kV double circuit from Techpark Place/Elko (OSM lines 640902211/640902212/708155010). The filing DOM-2024-0018 (Thicket 230 kV Delivery) treats White Oak as an existing station: approved DOM-2022-0038-DNH loops existing 230 kV line #2075 (Elmont-Chickahominy) in and out of White Oak, creating line #2294 (Chickahominy-White Oak), which Thicket then cuts. The automated match presumably failed because the OSM name carries the 'Substation' suffix. Note the adjacent 'Techpark Place Substation' (way 1265396511) and 'Elko Substation' (way 578427831) are separate Dominion stations.",
+   "sources": [
+    "Overpass API (mail.ru mirror) way 578427832 with out geom",
+    "HIFLD Electric_Power_Transmission_Lines: WHITE OAK-ELKO 230 kV",
+    "scratchpad pjm/20250107-item-10, 20250506-item-09, 20260508-item-09 Dominion supplemental texts (DOM-2024-0018, DOM-2022-0038-DNH, DOM-2024-0049)",
+    "Nominatim reverse geocode"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-walck-rd",
+   "name": "Walck Rd",
+   "region": "NY",
+   "filing_counties": [
+    "Niagara"
+   ],
+   "osm": "way/1074065468",
+   "agent_name": "(no name tag)",
+   "agent_conf": "medium",
+   "in_extract": true,
+   "lat": 43.0485628,
+   "lon": -78.8541863,
+   "tags": {
+    "power": "substation",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Niagara County",
+   "reasoning": "NYISO queue 1465 is Digihost Technologies' 50.2 MW load interconnection at 'Walck Rd. 115kV' (NM-NG), i.e. Digihost's North Tonawanda site, the former Fortistar North Tonawanda combined-cycle plant (OSM power=plant way 899806019, 65.7 MW, EIA 54131; Google Maps lists Fortistar at 1070 Erie Ave). OSM way 1074065468 is an unnamed power=substation, voltage=115000 at the SW corner of that plant polygon (bbox 43.04836-43.04877N, -78.85452 to -78.85385W), with 115 kV line stubs (ways 1074065467, 148650687, 1441688510/11) tying it to the National Grid system; it sits 275 m north of the Walck Road / Erie Avenue intersection (Walck Road way 1429934808 ends at 43.0455,-78.8548), which is why National Grid calls the bus Walck Rd. Nominatim: City of North Tonawanda, Niagara County (agrees with filing). Caveats: the yard has no name tag and HIFLD has no WALCK entry, so the identification is by location; the mapped polygon may be the plant's own switchyard rather than a separate National Grid yard. The only other nearby National Grid yard, 5 Ridge Road (way 255465804, 43.04796,-78.87588), has no voltage tag and no mapped 115 kV lines and is a distribution station, so it was rejected.",
+   "sources": [
+    "scratchpad nyiso_queue.xlsx Load Projects row 1465 (Digihost load, 'Walck Rd. 115kV')",
+    "Overpass API (mail.ru mirror) substations, lines and roads around 43.0485,-78.854 with out geom",
+    "Google Maps search 'Digihost North Tonawanda' (Fortistar, 1070 Erie Ave)",
+    "Nominatim reverse geocode"
+   ],
+   "tier": "B-unnamed-or-medium"
+  },
+  {
+   "sub_id": "sub-willis",
+   "name": "Willis",
+   "region": "NY",
+   "filing_counties": [
+    "St Lawrence"
+   ],
+   "osm": "way/175766583",
+   "agent_name": "Willis Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 44.8891135,
+   "lon": -74.1186425,
+   "tags": {
+    "name": "Willis Substation",
+    "operator": "New York Power Authority",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "345000;230000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Franklin County",
+   "reasoning": "OSM way 175766583 'Willis Substation', operator=New York Power Authority, substation=transmission, voltage=345000;230000 (fixme notes the 345 kV expansion from Smart Path Connect), centroid 44.88911,-74.11864. HIFLD's WILLIS node is at 44.88916,-74.11867 (Willis-Moses 230 kV, Willis-Plattsburgh taps, NYSEG Lyon Mt 115 kV). COUNTY DISAGREES with the filing: Nominatim places the yard on Harnnet Road, Town of Chateaugay, Franklin County, not St Lawrence. The filing county comes from NYISO queue 1724 (Alcoa 'Alcoa East Energy Allocation Project', 200 MW, county St. Lawrence = Alcoa Massena), whose POI is 'Haverstock - Willis 345kV lines HW1 & HW2'; the Willis end of those lines is in Franklin County, while the Haverstock end (OSM way 1344542590 'Haverstock Substation', landuse=construction, 44.97502,-74.79898, Massena) is in St Lawrence County. The name match likely failed because the OSM name has the 'Substation' suffix and the yard lies outside the St Lawrence bbox. The parent may prefer Haverstock (way 1344542590) if it wants a St Lawrence County point for this queue entry.",
+   "sources": [
+    "Overpass API name~Willis substation search 44.4-45.05N",
+    "HIFLD Electric_Power_Transmission_Lines: WILLIS-MOSES 230 kV etc.",
+    "scratchpad nyiso_queue.xlsx Load Projects row 1724 and In Service row 1125 (NNYPTP)",
+    "Nominatim reverse geocode"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-wood-street",
+   "name": "Wood Street",
+   "region": "NY",
+   "filing_counties": [
+    "Dutchess"
+   ],
+   "osm": "way/86249380",
+   "agent_name": "Wood Street Substation",
+   "agent_conf": "high",
+   "in_extract": true,
+   "lat": 41.3531296,
+   "lon": -73.7937876,
+   "tags": {
+    "name": "Wood Street Substation",
+    "operator": "NYSEG",
+    "power": "substation",
+    "substation": "transmission",
+    "voltage": "345000;115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Putnam County",
+   "reasoning": "OSM way 86249380 'Wood Street Substation', operator=NYSEG, substation=transmission, voltage=345000;115000, centroid 41.35313,-73.79379. HIFLD's WOOD STREET node is at 41.35384,-73.79396 with the 'E. FISHKILL - WOOD STREET 345 kV' lines (two circuits), 'PLEASANT VALLEY - WOOD STREET 345 kV', 'MILLWOOD - WOOD STREET 345 kV' and NYSEG 115 kV to Armawalk, matching NYISO's 'Wood St. 345/115kV' (NYSEG, queue 0396A). COUNTY DISAGREES with the filing: Nominatim places it in the Town of Carmel, Putnam County. The filing county (Dutchess) is the project county of NYISO queue 1738 (Donovan Drive Holdings, '1 Gig Data Center East Fishkill, NY', 1000 MW), whose POI is the 'East Fishkill to Wood Street 345 kV lines (38 and 39)'; the East Fishkill end (HIFLD 41.5681,-73.83498) is in Dutchess, the Wood Street end in Putnam. Name match likely failed on the 'Substation' suffix plus the county bbox.",
+   "sources": [
+    "Overpass API substation dump of Dutchess/Putnam bbox",
+    "HIFLD Electric_Power_Transmission_Lines: WOOD STREET lines",
+    "scratchpad nyiso_queue.xlsx Load Projects row 1738, In Service row 0396A",
+    "Nominatim reverse geocode"
+   ],
+   "tier": "A"
+  },
+  {
+   "sub_id": "sub-zinco",
+   "name": "ZINCO",
+   "region": "NY",
+   "filing_counties": [
+    "St Lawrence"
+   ],
+   "osm": "way/1290639809",
+   "agent_name": "(no name tag)",
+   "agent_conf": "medium",
+   "in_extract": true,
+   "lat": 44.2635086,
+   "lon": -75.4080427,
+   "tags": {
+    "power": "substation",
+    "substation": "industrial",
+    "voltage": "115000"
+   },
+   "agent_dist_m": 0,
+   "osm_county": "Saint Lawrence County",
+   "reasoning": "'ZINCO' is the National Grid bus at the Zinc Corporation of America (now Titan Mining Empire State Mine) works at Balmat, Town of Fowler. NYISO queue 1764 is Titan Mining's 15 MW 'Kilbourne Graphite Concentrator Plant' load at 'ZINCO 115' (National Grid, St Lawrence); Titan's site says the Kilbourne pit is 'within 4,000 ft of existing ESM mill' and the concentrator/demonstration plant sits 'within the Empire State Mines mill complex', and that the Balmat #4 shaft is adjacent to the 1971 mill. Google Maps places 'Empire State Mines' at 408 Sylvia Lake Rd, Gouverneur (plus code 7H7R+R8, about 44.2645,-75.4093). OSM way 1290639809 is an unnamed fenced power=substation, substation=industrial, voltage=115000 at 44.26351,-75.40804, 130 m from that point, inside the northern Balmat industrial cluster (50-100 m mill buildings, ways 813017543/813017337/813017373) on the NE shore of Sylvia Lake, and it is fed by a dedicated spur off National Grid's 115 kV line #5 (OSM route relation 17694044 'Battle Hill - Balmat #5', ref T3020) - the classic layout for a utility delivery point to a mine. Nominatim: Old Beach Road, Town of Fowler, Saint Lawrence County (agrees with filing). Caveats: no OSM object carries the Zinco name and HIFLD has no ZINCO entry, so the identification rests on the mine location; the alternative is the second unnamed 115 kV industrial yard way 1290639811 (44.25708,-75.39833), in-line on line #5 at the older #2 shaft surface plant 750 m SE. National Grid's own 'Balmat Station' (way 1290564521, ref 904, 115/23 kV distribution) is a different bus ('Battle Hill - Balmat 115kV' appears separately as a POI in the queue).",
+   "sources": [
+    "scratchpad nyiso_queue.xlsx Load Projects row 1764 (Titan Mining, 'ZINCO 115') and Withdrawn row 1039 ('Battle Hill - Balmat 115kV')",
+    "Overpass API (mail.ru mirror) power features, buildings and roads within 2.5 km of 44.26,-75.405",
+    "https://www.titanminingcorp.com/projects/zinc/ and /projects/graphite/",
+    "Google Maps search 'Empire State Mine Balmat NY' (408 Sylvia Lake Rd, plus code 7H7R+R8)",
+    "Nominatim reverse geocode"
+   ],
+   "tier": "B-unnamed-or-medium"
+  }
+ ]
+}

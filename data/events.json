@@ -1,0 +1,32 @@
+[
+ {
+  "id": "ev-6syz3azbn9",
+  "lat": 43.200879,
+  "lon": -76.193502,
+  "kind": "outage",
+  "radius_km": 25,
+  "name": "",
+  "note": "",
+  "created": "2026-08-30T17:54:03Z"
+ },
+ {
+  "id": "ev-gtkpqjxted",
+  "lat": 22.867072,
+  "lon": 51.593789,
+  "kind": "outage",
+  "radius_km": 25,
+  "name": "",
+  "note": "",
+  "created": "2026-09-07T01:18:28Z"
+ },
+ {
+  "id": "ev-musizvya4o",
+  "lat": 29.012733,
+  "lon": 32.318541,
+  "kind": "outage",
+  "radius_km": 25,
+  "name": "",
+  "note": "",
+  "created": "2026-09-07T01:18:50Z"
+ }
+]

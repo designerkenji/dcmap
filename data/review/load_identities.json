@@ -1,0 +1,623 @@
+{
+ "_status": "RESEARCH-GRADE. Identities established by web-research agents 2026-09-09 (every confident registry match re-checked by a skeptic; all upheld). Nothing applied. Registry attachments go to data/load_site_links.csv only when a person vouches; campuses the registry lacks go to data/manual_sites.csv the same way.",
+ "matches": [
+  {
+   "queue": "1743",
+   "project": "St. Lawrence Infrastructure 2",
+   "asset_id": "none",
+   "confidence": "medium",
+   "campus_name": "Unidentified Massena-area site on NYPA Moses-Massena 230 kV (MMS-1/MMS-2) corridor",
+   "operator": "St. Lawrence Infrastructure, LLC (Delaware, formed Aug 2025; beneficial owner undisclosed)",
+   "evidence": "NYISO #1743 (queued 2025-09-02), 1,935 MW load, St. Lawrence County, POI NYPA 230 kV Moses Massena 1 & 2; sibling #SLI-1 is 860 MW (two sites = 2,795 MW). Syracuse.com/nny360 (Tim Knauss, 8 May 2026): 'St. Lawrence Infrastructure LLC, a company registered in August 2025 in Delaware, has asked to connect two sites totaling 2,795 megawatts. Planners and economic development officials in St. Lawrence County last month said they don't know who the company is or what site they are targeting.' The MMS lines run between NYPA's Moses Switching Station (45.0040,-74.8047) and NYPA's Massena Substation (44.9198,-74.8352), both in the Town of Massena (OSM/Overpass), so the campus is in the Massena/Louisville area. Eliminated as the same campus: NCCS/NYDIG at 182-194 County Road 45 (files separately as 'North Country Data Center', says it uses existing approved capacity and is 'not affiliated with ... other data center proposals in Massena'); Arconic (files as 'Arsenal Data Site'); Petawatt Holdings (200 MW, County Route 42, Dennison 115 kV); American Data Center Partners (466 Pontoon Bridge Rd, 250 MW); Sabey 'SDC St. Lawrence' (120 MW). RACER Trust's former GM Powertrain site (56 Chevrolet Rd, ~217 ac, marketed to data-center developers; a 2025 buyer withdrew over a power deal) is a plausible unconfirmed candidate but no source links SLI to it. The registry holds no asset in Massena or on this corridor (nearest: Old Main/Clarkson, Potsdam; NYGC Chateaugay), so no registry asset can be this load; campus coordinates not established, lat/lon deliberately omitted.",
+   "sources": [
+    "https://www.nny360.com/news/stlawrencecounty/data-centers-descend-on-needy-upstate-ny-towns-is-anyone-looking-out-for-us/article_93198557-09ad-545e-9420-cb9e3036cac3.html",
+    "https://www.interconnection.fyi/project/nyiso-1743",
+    "https://www.datacenter.fyi/public-record/st-lawrence-infrastructure-1-e1e32973",
+    "https://www.datacenter.fyi/power-market/nyiso",
+    "https://watertownpost.com/massena-faces-massive-data-center-power-requests-in-nyiso-queue/",
+    "https://www.nccs.one/massena",
+    "https://massenadatacenterwatch.org/",
+    "https://www.northcountrypublicradio.org/news/story/53469/20260522/massena-town-planning-board-takes-no-action-at-data-center-meeting",
+    "https://cleanview.co/data-centers/new-york/2053/north-country-data-center",
+    "https://cleanview.co/data-centers/new-york/2049/petawatt-massena-data-center",
+    "https://assets.ctfassets.net/o03ihmgd94o7/6g8J7vaxbb3PWHw54vwwQ3/56d4ff7d846acee474e1e41f0ddfd704/200_MW_HydroPowered_Data_Center_Site_NY.pdf",
+    "https://www.northcountrypublicradio.org/news/story/51693/20250506/the-gm-site-in-massena-almost-had-a-buyer-the-search-goes-on-with-key-designation",
+    "https://www.racer-massena.com/",
+    "https://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"power\"=\"substation\"](44.85,-75.05,45.05,-74.70);node[\"power\"=\"substation\"](44.85,-75.05,45.05,-74.70););out center tags;"
+   ]
+  },
+  {
+   "queue": "1738",
+   "project": "1 Gig Data Center East Fishkill, NY",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "Treetop Development / Donovan Drive Holdings site, Lime Kiln Corporate Park, Donovan Drive, East Fishkill (Hopewell Junction)",
+   "operator": "Treetop Companies (Treetop Development, Teaneck NJ) via SPV Donovan Drive Holdings LLC",
+   "lat": 41.5225,
+   "lon": -73.8123,
+   "evidence": "NYISO #1738 (queued 2025-07-17), 1,000 MW, Dutchess County, Con Edison, POI East Fishkill-Wood Street 345 kV lines 38/39, filer Donovan Drive Holdings LLC. Town of East Fishkill forestry inspection letter (5 Dec 2024) describes 'the Donovan Drive Holdings LLC property (Treetop Development Project)', tying the SPV to Treetop. Planning Board agenda (21 Apr 2026), application #2023-053 'Treetop Development, Donovan Drive, Lime Kiln Road, E. Hook Cross Rd. and Griffin Lane (6455-00-400593, 301596, 540732, 330505)': four adjacent parcels totaling 137.7 acres in the I-1 zone (warehouse plan). Highlands Current (3 Jul 2026): Treetop asked NYISO to study an AI/cloud data center 'at its property off of Donovan Drive'; town adopted a data-center moratorium to 1 Jul 2029; no formal application filed. Town Industrial Lands Study: Donovan Drive serves Lime Kiln Corporate Park in Study Area 7, south of I-84, with 'the IBM facility north of Interstate 84'. OSM centerlines: Donovan Drive 41.5225,-73.8123; E. Hook Cross Rd 41.5223,-73.8089; Lime Kiln Rd 41.523,-73.8145; Griffin Lane 41.5294,-73.7949. Registry check: f034 onsemi fab (Hudson Valley Research Park / iPark 84, 2070 Route 52) at 41.5461,-73.8246 is ~2.7 km north on the opposite side of I-84 under different ownership (National Resources/onsemi vs Treetop) - a different campus, not this load; CyrusOne Wappingers Falls (site-ddda31ed79) is ~10 km away. No registry asset is this campus.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1738",
+    "https://www.datacenter.fyi/public-record/1-gig-data-center-east-fishkill-ny-ac207c52",
+    "https://highlandscurrent.org/2026/07/03/data-centers-face-backlash/",
+    "https://eastfishkillny.gov/wp-content/uploads/2026/04/PB-AgendaApril-21-2026.pdf",
+    "https://eastfishkillny.gov/wp-content/uploads/2024/12/Treetop-Inspection-12-5-24.pdf",
+    "https://eastfishkillny.gov/wp-content/uploads/2023/08/19_09-10-East-Fishkill-Industrial-Lands-Study.pdf",
+    "https://cicbca.org/202605-east-fishkill-supervisor-pulls-plug-on-plan-to-build-big-data-center/",
+    "https://www.alittlebeaconblog.com/blog/by-unanimous-vote-east-fishkill-town-board-passes-3-year-moratorium-on-data-centers",
+    "https://overpass-api.de/api/interpreter?data=[out:json];way[\"highway\"][\"name\"~\"Donovan Drive|East Hook Cross Road|Griffin Lane|Lime Kiln Road\"](41.45,-73.95,41.65,-73.70);out center;"
+   ]
+  },
+  {
+   "queue": "1730",
+   "project": "Arsenal Data Site 1000",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "Arconic Massena Operations (former Alcoa West plant), 45 County Route 42, Massena NY",
+   "operator": "Arconic Corporation (Apollo Global Management portfolio company; 'Arsenal' = Arsenal AIC Parent LLC acquisition vehicle)",
+   "lat": 44.9524,
+   "lon": -74.8875,
+   "evidence": "NYISO #1730 (queued 2025-03-07), 467 MW load, St. Lawrence County, filer Arconic Corporation, POI NYPA 'Haverstock to Adirondak 345kV line HA-1'. datacenter.fyi lists three Arconic entries - Arsenal Data Site 250 (233 MW), 500 (233 MW), 1000 (467 MW) = 933 MW - matching nny360/Syracuse.com (8 May 2026): 'Sheet metal manufacturer Arconic ... is looking to use some of its excess space in Massena to build a 933 MW data center. Apollo Global Management, which owns Arconic, also owns Stream Data Centers.' SEC DEFM14A (2023): Arsenal AIC Parent LLC / Arsenal AIC MergeCo Inc., affiliates of funds managed by Apollo, acquired Arconic - explaining the 'Arsenal' project name. NYPA Smart Path Connect page: Haverstock is NYPA's new digital substation 'in Massena' on the rebuilt 345 kV corridor toward Adirondack (Croghan). Arconic's only St. Lawrence County plant is Massena Operations; OSM way 615570020 'Arconic Massena Operations', addr 45 CR 42, Massena 13662, landuse=industrial, centroid 44.9524,-74.8875 (bounds 44.940-44.966 N, -74.909 to -74.860 W); the plant's 115 kV Alcoa Station is at 44.9619,-74.8917. The filing's 'zone E' conflicts with Massena's usual zone D but the county and POI both place it in Massena. Registry has no Massena asset (NCCS/Coinmint at Alcoa East, Petawatt, GM site are also absent), so no registry asset is this load.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1730",
+    "https://www.datacenter.fyi/power-market/nyiso",
+    "https://www.nny360.com/news/stlawrencecounty/data-centers-descend-on-needy-upstate-ny-towns-is-anyone-looking-out-for-us/article_93198557-09ad-545e-9420-cb9e3036cac3.html",
+    "https://www.sec.gov/Archives/edgar/data/1790982/000114036123030186/ny20009102x2_defm14a.htm",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect",
+    "https://www.openstreetmap.org/api/0.6/way/615570020/full",
+    "https://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"power\"=\"substation\"](44.85,-75.05,45.05,-74.70);node[\"power\"=\"substation\"](44.85,-75.05,45.05,-74.70););out center tags;"
+   ]
+  },
+  {
+   "queue": "0979",
+   "project": "North Country Data Center",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "North Country Colocation Services (NCCS) Massena \u2014 former Reynolds Metals / Alcoa East smelter, 194 County Road 45",
+   "operator": "North Country Colocation Services (NCCS), wholly owned subsidiary of North Country Data Center Corp.; affiliate of NYDIG (New York Digital Investment Group / Stone Ridge)",
+   "lat": 44.9816,
+   "lon": -74.7512,
+   "evidence": "Queue applicant 'North Country Data Center' = North Country Data Center Corp. (NY DOS ID 5318609, One Vanderbilt Ave 65th Fl, NYC). NCCS's Feb-2024 comment letter (on letterhead '194 County Road 45, Massena, NY 13662') states NCCS is 'a wholly owned subsidiary of North Country Data Center Corp. (NCDC)', operates 'at a large plant formerly operated by Alcoa Corp. in Massena', uses ~160 MW today, and 'NYISO has granted NCDC approval to increase its load up to 435 MW' \u2014 exactly this queue entry's 435 MW. The Dec-2021 NYISO queue snapshot lists #0979 as 'Load Increase at North Country Data Center' (IR 1/22/2020); the St. Lawrence County planning deck's queue table shows #0979 North Country Data Center, POI 'Reynolds 115kV', utility NYPA, zone D. Reynolds 115 kV is the NYPA supply to the former Reynolds Metals plant, which NCCS's own site calls the 'Legacy Reynolds industrial parcel' powered from Moses-Saunders; nny360 (May 2026) describes the expansion on the 'former Alcoa East site' with NYDIG/Stone Ridge as parent and 635 MW total (435 + 200 MW new request). Coordinates: OSM industrial landuse polygon 'Alcoa - St-Lawrence - Massena, Smelter' centers at 44.9815556,-74.7511952; Nominatim resolves County Road 45 at 44.9828,-74.7569; EPA Superfund profile places the Reynolds plant on the St. Lawrence River ~8 miles east of Massena village \u2014 all consistent. Registry check: no Massena asset exists; nearest NY entries (LogInToUs Malone 44.86,-74.29; NYGC Chateaugay 44.89,-74.07; Clarkson Old Main Potsdam 44.67,-74.98) are different operators/towns 25-40 km away. Real, operating campus (since 2017) the registry lacks.",
+   "sources": [
+    "https://www.bakerbotts.com/~/media/files/comment-letters/north-country-colocation-services-comments-(1).pdf",
+    "https://www.nccs.one/massena",
+    "https://www.stlawco.gov/sites/default/files/Planning/Trainings/LGC%202025%20Planning%20&%20Zoning%20Presentation%20-%20Final.pdf",
+    "https://duanesburgneighbors.com/wp-content/uploads/2021/12/2021-12-25-NYISO-Interconnection-Queue.numbers-Interconnection-Queue.pdf",
+    "https://opengovny.com/corporation/5318609",
+    "https://www.nny360.com/news/stlawrencecounty/county-planning-board-massena-data-center-site-plan-contains-more-questions-than-answers/article_8cfc5871-eee7-5db0-be86-6bc56f761d5c.html",
+    "https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0201465",
+    "https://cleanview.co/data-centers/new-york/2053/north-country-data-center",
+    "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B(nwr%5B%22power%22%3D%22substation%22%5D%5B%22name%22~%22Reynolds%22%2Ci%5D(44.90%2C-74.95%2C45.05%2C-74.65)%3Bnwr%5B%22landuse%22%3D%22industrial%22%5D%5B%22name%22~%22Alcoa%7CReynolds%22%2Ci%5D(44.90%2C-74.95%2C45.05%2C-74.65)%3B)%3Bout%20center%3B",
+    "https://nominatim.openstreetmap.org/search?q=194+County+Road+45+Massena+NY&format=json&limit=3"
+   ]
+  },
+  {
+   "queue": "0580",
+   "project": "WNY STAMP",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "WNY STAMP (Science, Technology & Advanced Manufacturing Park) \u2014 Stream US Data Centers 'Genesee County Data Center Campus' / Project Double Reed, Stamp Drive, Town of Alabama",
+   "operator": "Genesee County Economic Development Center (substation owner / queue holder); end user Stream US Data Centers (Stream Data Centers, Dallas)",
+   "lat": 43.0859,
+   "lon": -78.3975,
+   "evidence": "interconnection.fyi shows #0580 'WNY STAMP', Genesee County Economic Development, 300 MW load, POI 'Kintigh/Niagara - New Rochester 345kV', TO NYPA, queued 9/27/2016 (the Dec-2021 snapshot carried it at 500 MW). GCEDC's STAMP page: the 1,250-acre park in the Town of Alabama 'is approved for 600 megawatts of power' via a '4x-redundant 345-kV transmission system at an on-site 600 megawatt substation and an on-site 115-kV distribution system', energized 2026 \u2014 i.e. #0580 (300 MW) + #1484 (300 MW) are the two halves of that single IDA-owned STAMP substation. The data-centre end use is Stream US Data Centers: GCEDC board approved a $6.3B, 900k sq ft, 59-acre data center at STAMP on 3/10/2025 (WXXI: 250 MW with a 600 MW substation); GCEDC retracted SEQR in Sept 2025 so Stream could enlarge it, and Stream resubmitted 'Project Double Reed' \u2014 2.2M sq ft, three buildings on ~90 acres (a 50-acre parcel plus the 40-acre former Plug Power parcel) at STAMP; Stream's own page says the campus 'connects directly to the 345kV Bulk Power System'. Coordinates: OSM 'Stamp Drive' (the park's internal road, Town of Alabama, 14013) centroid 43.0859139,-78.3974874; an unnamed OSM power=substation lies at 43.0636,-78.3917 within the park's southern extent. Registry check: no asset in Genesee County or the Town of Alabama; nearest entries (Anthropic/Core42 Lake Mariner, Somerset 43.36,-78.60; H5 Lockport 43.17,-78.75; Blockfusion Niagara Falls) are 30+ km away and unrelated developers. Real campus (approved site, substation under construction) the registry lacks.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-0580",
+    "http://www.gcedc.com/stamp",
+    "https://www.gcedc.com/news/article/current/2025/03/10/100123/stream-us-data-centers-investing-6.3-billion-in-genesee-county",
+    "https://www.wxxinews.org/local-news/2025-03-03/stamp-board-to-consider-proposal-for-regions-largest-data-center",
+    "https://www.btpm.org/local/2025-09-18/genesee-county-stamp-site-data-center-on-hold-as-expansion-gets-pursued",
+    "https://www.thedailynewsonline.com/news/stream-u-s-submits-seqr-application-for-2-2-million-square-foot-data-center-at/article_c1dc5183-19aa-42ba-ab8b-8808b354bcf7.html",
+    "https://www.streamdatacenters.com/project-stamp/",
+    "https://duanesburgneighbors.com/wp-content/uploads/2021/12/2021-12-25-NYISO-Interconnection-Queue.numbers-Interconnection-Queue.pdf",
+    "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B(nwr%5B%22power%22%3D%22substation%22%5D(43.05%2C-78.45%2C43.12%2C-78.35)%3Bnwr%5B%22name%22~%22STAMP%7CStream%7CPlug%22%2Ci%5D(43.05%2C-78.45%2C43.12%2C-78.35)%3B)%3Bout%20center%3B",
+    "https://nominatim.openstreetmap.org/search?q=Stamp+Drive,+Alabama,+Genesee+County,+NY&format=json&limit=3"
+   ]
+  },
+  {
+   "queue": "1484",
+   "project": "580 STAMP load increase",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "WNY STAMP (Science, Technology & Advanced Manufacturing Park) \u2014 Stream US Data Centers 'Genesee County Data Center Campus' / Project Double Reed, Stamp Drive, Town of Alabama (SAME CAMPUS AS #0580 \u2014 do not create a second entry)",
+   "operator": "Genesee County Economic Development Center (substation owner / queue holder); end user Stream US Data Centers (Stream Data Centers, Dallas)",
+   "lat": 43.0859,
+   "lon": -78.3975,
+   "evidence": "This is the second 300 MW block of the same STAMP substation as queue #0580, not a separate campus. interconnection.fyi: #1484 '580 STAMP load increase', GCEDC, 300 MW load, POI '115 kv STAMP substation', TO National Grid (NM-NG), queued 12/2/2022, active. The project name literally references #0580, and GCEDC's STAMP page describes one on-site 600 MW substation (345 kV supply, 115 kV on-site distribution) \u2014 #0580's 300 MW at the 345 kV tap plus #1484's 300 MW at the 115 kV side sum to that 600 MW ceiling; WXXI and GCEDC likewise report NYISO approval for 300 MW expanding to 600 MW. Same physical site (STAMP, Town of Alabama, Genesee County; Stream's ~90-acre parcel on Stamp Drive; OSM Stamp Drive centroid 43.0859,-78.3975). Registry holds no Genesee County asset; nearest entries (Lake Mariner Somerset, H5 Lockport) are unrelated and 30+ km away. Treat as the same 'new' campus record as #0580.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1484",
+    "https://www.interconnection.fyi/project/nyiso-0580",
+    "http://www.gcedc.com/stamp",
+    "https://www.wxxinews.org/local-news/2025-03-03/stamp-board-to-consider-proposal-for-regions-largest-data-center",
+    "https://www.gcedc.com/news/article/current/2025/03/10/100123/stream-us-data-centers-investing-6.3-billion-in-genesee-county",
+    "https://www.thedailynewsonline.com/news/stream-u-s-submits-seqr-application-for-2-2-million-square-foot-data-center-at/article_c1dc5183-19aa-42ba-ab8b-8808b354bcf7.html",
+    "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B(nwr%5B%22power%22%3D%22substation%22%5D(43.05%2C-78.45%2C43.12%2C-78.35)%3Bnwr%5B%22name%22~%22STAMP%7CStream%7CPlug%22%2Ci%5D(43.05%2C-78.45%2C43.12%2C-78.35)%3B)%3Bout%20center%3B"
+   ]
+  },
+  {
+   "queue": "1726",
+   "project": "Data & Technology Campus",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "Riverview Innovation & Technology Campus (former Tonawanda Coke site)",
+   "operator": "Riverview Innovation & Technology Campus, Inc. (owners Jon Williams & John Yensan; unnamed developer partner)",
+   "lat": 42.983,
+   "lon": -78.9264,
+   "evidence": "Riverview Innovation & Technology Campus, Inc. is the entity redeveloping the former Tonawanda Coke plant at 3875 and 3800 River Road, Town of Tonawanda, Erie County (~140 ac; coke plant 1917-2018, bought at auction 2019 by Williams/Yensan; DEC BCP site C915353). Proposal: 300 MW, 500,000 sq ft AI data center, ~$2B, $50M substation; NYISO queue 1726 (queue date 2025-01-31, POI Huntley-Packard 230 kV line 78, National Grid) - Huntley station is the neighbouring River Road site. Town SEQRA/site-plan review temporarily paused mid-2026 pending power clarity. Coordinates: PropertyShark parcel centroid for 3875 River Rd (parcel 64.80-1-10, 102.42 ac) 42.98297,-78.92641; Census/Nominatim road-frontage point 42.9798,-78.9341. Registry check: no Tonawanda asset; nearest NY entries are Frontier Science Amherst (~9 km), 325 Delaware/Buffalo colo sites (~10 km), I-Evolve Amherst (~12 km), Getzville (~18 km), Blockfusion/US Bitcoin Niagara Falls (~12+ km) - none is this site or lineage. Real campus absent from registry.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1726",
+    "https://baxtel.com/data-center/riverview-innovation-technology-campus-ritc",
+    "https://www.wkbw.com/niagara-county/proposed-2b-ai-data-center-at-former-industrial-site-raises-questions-in-town-of-tonawnada",
+    "https://www.propertyshark.com/mason/Property/5910061/3875-River-Rd-Tonawanda-NY-14150/",
+    "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=3875+River+Rd,+Tonawanda,+NY+14150&benchmark=Public_AR_Current&format=json",
+    "https://nominatim.openstreetmap.org/search?q=3875+River+Road,+Tonawanda,+NY&format=json&limit=3"
+   ]
+  },
+  {
+   "queue": "1731",
+   "project": "New York State Artificial Intelligence Data Center",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "ZeroC / Petawatt Massena campus (417 County Route 42)",
+   "operator": "ZeroC Data Centers, LLC (majority-owned by Petawatt Holdings, Inc.)",
+   "lat": 44.9491,
+   "lon": -74.8627,
+   "evidence": "Massena Town Planning Board minutes 2025-02-20 (Site Plan Review #2): applicant 'ZeroC Data Centers LLC & Petawatt Holdings, Inc.', site 417 County Route 42, Massena (tax map 10.001-1-7.21, Industrial zone); Petawatt rep 'James K' stated the deed was transferred to ZeroC Data Center and Petawatt is majority shareholder; ~$30M substation needed to hold NYISO queue position; 'currently a 200 MW site', ~900k sq ft building, MED service territory; approved 4-0. nny360 (Jan 2025): Petawatt clearing a 14-ac industrial parcel on CR 42 for a 240x240 ft substation. Compass listing: 417 CR 42 is a 67.8-ac 'Miscellaneous Industrial' parcel, APN 10.001-1-7.21, sold 2024-11-21 for $250k. zeroc.ai: 'Massena, New York (140 acres)', 2.75 GW+ ambition, PSA with an EPC firm 2025-10-31. Queue 1731 (2025-03-14, NYPA, POI Haverstock-Adirondack 345 kV HA-2) is the re-filing of withdrawn 1719 (same project name/developer/county, 2024-09-18, POI Dennison 115 kV, National Grid); Haverstock is NYPA's new Smart Path Connect substation in Massena, Dennison is also in Massena. Coordinates: US Census geocode of 417 CO RD 42 Massena = 44.94912,-74.86268 (reverse-geocodes to CR 42, Town of Massena). Registry check: no Massena asset; nearest are Clarkson Old Main Potsdam (~33 km), Malone (~50 km), NYGC Chateaugay (~63 km) - none shares site or lineage. Real campus absent from registry.",
+   "sources": [
+    "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061",
+    "https://www.interconnection.fyi/project/nyiso-1731",
+    "https://www.interconnection.fyi/project/nyiso-1719",
+    "https://www.zeroc.ai/",
+    "https://www.nny360.com/communitynews/business/land-clearing-underway-for-new-massena-data-center-substation/article_1dae11cf-5643-59a4-a182-f96a425cb9a2.html",
+    "https://www.compass.com/homedetails/417-County-Route-42-Massena-NY-13662/6313Q_pid/",
+    "https://cleanview.co/data-centers/new-york/2049/petawatt-massena-data-center",
+    "https://www.datacenter.fyi/public-record/new-york-state-artificial-intelligence-data-center-70624c82",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect",
+    "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=417+County+Route+42,+Massena,+NY+13662&benchmark=Public_AR_Current&format=json",
+    "https://nominatim.openstreetmap.org/reverse?lat=44.9491&lon=-74.8627&format=json&zoom=17"
+   ]
+  },
+  {
+   "queue": "1736",
+   "project": "Ranalli SuperDC",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "Ranalli Lysander SuperDC site (Hencle Blvd & Oswego Rd, Town of Lysander)",
+   "operator": "Ranalli Super DC, LLC (James Ranalli / United Auto Supply)",
+   "lat": 43.1849,
+   "lon": -76.3512,
+   "evidence": "Ranalli Super DC, LLC owns a ~124-ac (listed 123.5 ac) vacant industrial-zoned parcel at the Hencle Boulevard / Oswego Road (NY-48) junction, Town of Lysander, Baldwinsville 13027 (Onondaga County), bought ~2020 for $833k; a 2021 auto-parts warehouse plan was cancelled in 2022. Applied to NYISO in May 2025 for a 300 MW data center (queue 1736, queue date 2025-05-07, 270 MW, NYPA, POI Clay-Pannell 345 kV PC-1/PC-2 - the NYPA 345 kV corridor that fronts the parcel along Oswego Rd per Eagle News). Site is marketed by Cushman & Wakefield/Pyramid Brokerage as '2200 Hencle Blvd' - '300 MW Data Center Site' with assignable NYISO application, $60M ask (earlier reported $4M); Eagle News gives the address as 2750 Hencle Blvd. Town says no formal application received; 1,500+ signature petition, moratorium being drafted. Coordinates: Nominatim geocode of 2200 Hencle Blvd Baldwinsville = 43.18487,-76.35120 (Hencle Blvd, Town of Lysander); precision ~\u00b1300 m within the 124-ac parcel. Registry check: no Lysander/Baldwinsville asset; nearest are Micron Clay fab f052 (~16 km E), Lightboard/Northland Syracuse (~21 km), SU Green DC (~24 km) - none is this site or lineage. Real campus absent from registry.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1736",
+    "https://www.eaglenewsonline.com/baldwinsville_messenger/possible-massive-data-center-in-lysander-faces-community-opposition-town-attorney-to-draft-moratorium/article_635b1885-9f97-4747-bdf4-604d468fc641.html",
+    "https://cnycentral.com/news/local/lysander-residents-challenge-potential-data-center-as-site-is-listed-for-60m",
+    "https://cleanview.co/data-centers/new-york/2042/ranalli-lysander-data-center",
+    "https://www.propertyshark.com/cre/commercial-property/us/ny/baldwinsville/2200-hencle-blvd-1/",
+    "https://nominatim.openstreetmap.org/search?q=2200+Hencle+Blvd,+Baldwinsville,+NY&format=json&limit=3",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.1849&lon=-76.3512&format=json&zoom=17"
+   ]
+  },
+  {
+   "queue": "849",
+   "project": "Somerset Load",
+   "asset_id": "site-b034c54b77",
+   "confidence": "high",
+   "evidence": "Somerset Operating Company, LLC is the owner of the former Somerset/Kintigh coal plant (Paul Prager founded it in 2012; the plant 'would eventually mine bitcoin and change its name to Lake Mariner' - hntrbrk) and is the named landlord in TeraWulf's Oct 10, 2024 Lake Mariner ground lease (157 acres, 35+45 yr, 'infrastructure capacity of up to 750 MW'). The Dec 2021 NYISO queue snapshot row reads: 0849 | Somerset Operating Company, LLC | Somerset Load | 5/21/19 | 250 MW | L | Niagara | NY | Zone A | Kintigh 345kV | NYSEG | SIS 11/2021. The 2021 govtech article confirms Beowulf-owned Somerset Operating Co.'s subsidiary Lake Mariner Data LLC applied to the town for four buildings east of the defunct plant on Lake Road, Somerset, needing 'as much as 250 additional megawatts' - i.e. this request is the original 250 MW tranche of the Lake Mariner campus (7725 Lake Rd, Barker NY 14012). Registry holds this campus twice: site-b034c54b77 (Anthropic Lake Mariner) and site-d561c8dc4c (Core42 Lake Mariner), both at 43.3587,-78.6041; returned the first, the second is a duplicate of the same campus.",
+   "lat": 43.3597,
+   "lon": -78.6053,
+   "operator": "TeraWulf (Lake Mariner Data LLC; landlord Somerset Operating Company LLC / Beowulf)",
+   "campus_name": "Lake Mariner Data (former Somerset/Kintigh coal plant), 7725 Lake Rd, Barker/Somerset, Niagara County NY",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-849",
+    "https://duanesburgneighbors.com/wp-content/uploads/2021/12/2021-12-25-NYISO-Interconnection-Queue.numbers-Interconnection-Queue.pdf",
+    "https://www.govtech.com/news/defunct-coal-power-plant-owner-plans-shift-to-data-mining",
+    "https://investors.terawulf.com/news-events/press-releases/detail/88/terawulf-enters-into-long-term-ground-lease-at-lake-mariner",
+    "https://newsletter.hntrbrk.com/p/coal-crypto-and-false-branding-inside",
+    "https://www.gem.wiki/Lake_Mariner_facility",
+    "https://en.wikipedia.org/wiki/Kintigh_Generating_Station"
+   ]
+  },
+  {
+   "queue": "1670",
+   "project": "Lake Mariner Data II",
+   "asset_id": "site-b034c54b77",
+   "confidence": "high",
+   "evidence": "interconnection.fyi record: queue 1670, Lake Mariner Data LLC, 250 MW load, Niagara County, POI Kintigh 345kV Substation, NYSEG, request date Jan 23, 2024, Active In Queue. Lake Mariner Data LLC is a 100%-owned Delaware subsidiary of TeraWulf Inc. (Exhibit 21.1 to the FY2023 10-K). TeraWulf's Lake Mariner campus is at 7725 Lake Rd, Barker NY (GEM coords 43.35973,-78.60527), on the former Somerset Generation Plant site, with 'an existing substation and dual high-capacity 345 kV power lines' from the coal plant. NPM (2025) reports NYISO approved an additional 250 MW at Lake Mariner bringing total approved to 500 MW - this request is that second 250 MW tranche. Registry duplicate: site-d561c8dc4c (Core42 Lake Mariner) at the identical coordinates is the same campus.",
+   "lat": 43.3597,
+   "lon": -78.6053,
+   "operator": "TeraWulf (Lake Mariner Data LLC)",
+   "campus_name": "Lake Mariner Data, 7725 Lake Rd, Barker/Somerset, Niagara County NY",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1670",
+    "https://www.sec.gov/Archives/edgar/data/1083301/000108330124000072/exhibit211-listofsubsidi.htm",
+    "https://www.gem.wiki/Lake_Mariner_facility",
+    "https://newprojectmedia.com/financing-terawulf-launching-usd-300m-project-finance-deal-next-week-to-support-three-ny-data-centers/",
+    "https://datacenterrichness.substack.com/p/inside-an-accelerated-ai-data-center",
+    "https://www.terawulf.com/our-sites"
+   ]
+  },
+  {
+   "queue": "1732",
+   "project": "Wulf Compute Data Center II",
+   "asset_id": "site-b034c54b77",
+   "confidence": "high",
+   "evidence": "interconnection.fyi record: queue 1732, TeraWulf Brookings LLC, 250 MW load, Niagara County, POI Kintigh 345kV sub-station, NYSEG, request date Mar 29, 2025, Active In Queue. TeraWulf Brookings LLC is a 100%-owned Delaware subsidiary of TeraWulf Inc. (Exhibit 21.1) and the direct parent of WULF Compute LLC, TeraWulf's HPC/AI data-center arm - hence the 'Wulf Compute Data Center' project name. TeraWulf's only Niagara County site is Lake Mariner (its other NY site, Cayuga/Lake Hawkeye, is in Lansing, Tompkins County), and Kintigh 345kV is the Lake Mariner switchyard. TeraWulf's FY2025 10-K: Lake Mariner ~500 MW near term 'with potential expansion to approximately 750 MW, subject to additional approvals from the NYISO'; NPM: company intends to file for another 250 MW to reach 750 MW - this request is that third tranche. Local reporting (Buffalo News via Yahoo) describes Wulf Compute's AI expansion at 7725 Lake Road on the 410-acre former AES coal-plant parcel, i.e. the same campus, with 750 MW allocated from NYSEG/NYPA. Registry duplicate: site-d561c8dc4c (Core42 Lake Mariner) at identical coordinates.",
+   "lat": 43.3597,
+   "lon": -78.6053,
+   "operator": "TeraWulf / WULF Compute (TeraWulf Brookings LLC)",
+   "campus_name": "Lake Mariner Data, 7725 Lake Rd, Barker/Somerset, Niagara County NY",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1732",
+    "https://www.sec.gov/Archives/edgar/data/1083301/000108330124000072/exhibit211-listofsubsidi.htm",
+    "https://www.sec.gov/Archives/edgar/data/1083301/000108330126000031/wulf-20251231.htm",
+    "https://newprojectmedia.com/financing-terawulf-launching-usd-300m-project-finance-deal-next-week-to-support-three-ny-data-centers/",
+    "https://tech.yahoo.com/ai/articles/somerset-ai-data-center-proposal-214700588.html",
+    "https://finance.yahoo.com/news/lake-mariner-campus-adding-more-121600237.html",
+    "https://www.terawulf.com/our-sites",
+    "https://www.datacenterfrontier.com/site-selection/article/55379784/terawulfs-lake-mariner-campus-how-a-retired-coal-plant-became-an-ai-factory-prototype"
+   ]
+  },
+  {
+   "queue": "1745",
+   "project": "Pontoon Bridge Road Data Center",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "466 Pontoon Bridge Road (former Air Products Massena Green Hydrogen parcel), Town of Massena, NY",
+   "operator": "American Data Center Partners LLC (Delaware LLC formed 2025-06-17; NY qualification 2025-09-15 with office in St. Lawrence County; service address is a UPS Store mailbox at 7804-C Fairview Rd, Charlotte NC; principals not identified in public sources)",
+   "lat": 44.959,
+   "lon": -74.911,
+   "evidence": "Watertown Post's NYISO-queue piece names the pending project as 'the land sale involving American Data Centers Partners, LLC at 466 Pontoon Bridge Road' in Massena. Nominatim places no. 466 at 44.9593,-74.9129 on Pontoon Bridge Road, Town of Massena (parcel lies on the east side of the road). That stretch of road is the ex-Air Products Massena Green Hydrogen site: Massena Planning Board minutes (Apr 2023) list it as 'Pontoon Bridge Road (Tax Map #4.004-1-18 / #4.004-1-19)', nny360/Yahoo describe an ~84.4-acre parcel bought from Tony Zappia on the east side of Pontoon Bridge Road just past the Alcoa entrance, and the Air Products NYSDEC Public Participation Plan site plan (Fig. 2) shows the parcel fronting Pontoon Bridge Rd with the NYPA 345 kV transmission easement along its south edge \u2014 matching the queue POI (Haverstock\u2013Adirondack 345 kV, NYPA's Smart Path Connect line whose Haverstock substation is in Massena). Air Products cancelled the project 2025-02-24 and said the site would be sold; ADCP LLC was formed four months later and the NY qualification notice says its office is in St. Lawrence County. Neighbouring stakeholder addresses in the PPP (345, 544, 548, 554 Pontoon Bridge Rd) bracket no. 466, consistent with 466 being the hydrogen parcel. datacenter.fyi/interconnection.fyi list the load as 250 MW, utility NYPA, St. Lawrence County. The registry's New York list has no Massena or St. Lawrence County data-centre asset (nearest is Clarkson Old Main in Potsdam and NYGC Chateaugay in Franklin County), so this is a campus the registry lacks. Exact-parcel identity (466 = tax parcels 4.004-1-18/19) is inferred rather than documented by a deed, but the road, town and POI are certain.",
+   "sources": [
+    "https://watertownpost.com/massena-faces-massive-data-center-power-requests-in-nyiso-queue/",
+    "https://www.nny360.com/classifieds/community/announcements/general/notice-of-qualification-of-american-data-center-partners-llc-authority/ad_a67c2c96-ffb5-52ce-8133-91519dcad31e.html",
+    "https://cleanview.co/data-centers/new-york/2243/pontoon-bridge-road-data-center",
+    "https://www.datacenter.fyi/power-market/nyiso",
+    "https://www.interconnection.fyi/data-center/state/NY",
+    "https://finance.yahoo.com/news/pontoon-bridge-road-eyed-massena-045900057.html",
+    "https://finance.yahoo.com/news/air-products-cancels-plans-massena-231900123.html",
+    "https://dec.ny.gov/news/environmental-notice-bulletin/2023-12-27/completed-application/town-of-massena-air-products-chemicals-massena-facility",
+    "https://www.cscos.com/wp-content/uploads/2023/07/FINAL-Massena_NYSDEC_PPP-7-12-2023.pdf",
+    "https://massena.us/AgendaCenter/ViewFile/Agenda/_04202023-854",
+    "https://nominatim.openstreetmap.org/search?q=466+Pontoon+Bridge+Road+Massena+NY&format=json&addressdetails=1",
+    "https://nominatim.openstreetmap.org/search?q=544+Pontoon+Bridge+Rd+Massena+NY&format=json&addressdetails=1",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect"
+   ]
+  },
+  {
+   "queue": "1728",
+   "project": "Arsenal Data Site 250",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "Arconic Massena Operations, 45 County Route 42 (Alcoa/Arconic Massena West complex), Town of Massena, NY",
+   "operator": "Arconic Corporation (owned by Apollo Funds via Arsenal AIC Parent LLC since Aug 2023)",
+   "lat": 44.9528,
+   "lon": -74.883,
+   "evidence": "Queue filer is Arconic Corporation; 'Arsenal' is the name of Apollo's acquisition vehicle for Arconic (SEC DEFM14A: Parent = 'Arsenal AIC Parent LLC', Merger Sub = 'Arsenal AIC MergeCo Inc.', affiliates of Apollo funds; deal closed Aug 2023), so the project name is Arconic's own post-Apollo branding, not a third party. Arconic's only New York / St. Lawrence County property is Massena Operations, 45 County Route 42, Massena NY 13662 (arconic.com extrusions locations; EPA RCRA handler NYD002232304 'Arconic Massena Operations', 45 County Route 42). EPA ECHO gives 44.950425,-74.893685 for the '45 Co Rte 42' Massena West plant record (Alcoa/Arconic entity names); OSM's 'Arconic Massena Operations' industrial polygon centroid is 44.9528,-74.8830 \u2014 both inside the Massena West complex, which a 2018 nny360 piece describes as having 163- and 76-acre Arconic West parcels marketed for redevelopment. POI (Haverstock\u2013Adirondack 345 kV line HA-1) is NYPA's Smart Path Connect line with the Haverstock substation in Massena, consistent with the plant. datacenter.fyi lists Arsenal Data Site 250/500/1000 at 233/233/467 MW, developer Arconic Corporation, utility NYPA; interconnection.fyi confirms St. Lawrence County, 2025 application. Sites 250 and 500 are alternative sizings on the same Arconic Massena land (same filer, same POI, same county). No registry asset exists in Massena or St. Lawrence County, so this is a campus the registry lacks; it is a distinct parcel from the Pontoon Bridge Road load (~1.5 km west), which is on ex-Zappia/Air Products land, not Arconic's.",
+   "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1790982/000114036123030186/ny20009102x2_defm14a.htm",
+    "https://www.arconic.com/extrusions-locations",
+    "https://ordspub.epa.gov/ords/cimc/f?p=CIMC%3ARCRA%3A%3A%3A%3A%3AP14_RCRA_HANDLER_ID%3ANYD002232304",
+    "https://echodata.epa.gov/echo/dfr_rest_services.get_dfr?p_id=NYD002232304&output=JSON",
+    "https://nominatim.openstreetmap.org/search?q=Arconic+Massena+NY&format=json&addressdetails=1",
+    "https://www.nny360.com/news/interest-reported-in-use-of-two-alcoa-sites/article_2356552b-7fad-577e-94f1-21efa9dc289a.html",
+    "https://www.datacenter.fyi/power-market/nyiso",
+    "https://www.interconnection.fyi/data-center/state/NY",
+    "https://www.interconnection.fyi/data-center/project/arsenal-data-site-250-a1312603",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect"
+   ]
+  },
+  {
+   "queue": "1729",
+   "project": "Arsenal Data Site 500",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "Arconic Massena Operations, 45 County Route 42 (Alcoa/Arconic Massena West complex), Town of Massena, NY",
+   "operator": "Arconic Corporation (owned by Apollo Funds via Arsenal AIC Parent LLC since Aug 2023)",
+   "lat": 44.9528,
+   "lon": -74.883,
+   "evidence": "Same filer (Arconic Corporation), same POI (Haverstock\u2013Adirondack 345 kV HA-1), same county and same 233 MW as queue #1728; 'Arsenal' = Apollo's Arsenal AIC Parent LLC that acquired Arconic in 2023 (SEC DEFM14A). Arconic holds one St. Lawrence County property \u2014 Massena Operations, 45 County Route 42, inside the Alcoa/Arconic Massena West complex (arconic.com; EPA RCRA NYD002232304; EPA ECHO 44.950425,-74.893685; OSM Arconic polygon centroid 44.9528,-74.8830). The 250/500/1000 suffixes (233/233/467 MW per datacenter.fyi) read as alternative sizings/phases on the same Arconic Massena land rather than separate campuses; interconnection.fyi shows all three as 2025 St. Lawrence County proposals with NYPA as grid operator. The registry has no Massena / St. Lawrence County data-centre asset, so 'none'. Same physical campus as #1728.",
+   "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1790982/000114036123030186/ny20009102x2_defm14a.htm",
+    "https://www.arconic.com/extrusions-locations",
+    "https://ordspub.epa.gov/ords/cimc/f?p=CIMC%3ARCRA%3A%3A%3A%3A%3AP14_RCRA_HANDLER_ID%3ANYD002232304",
+    "https://echodata.epa.gov/echo/dfr_rest_services.get_dfr?p_id=NYD002232304&output=JSON",
+    "https://nominatim.openstreetmap.org/search?q=Arconic+Massena+NY&format=json&addressdetails=1",
+    "https://www.nny360.com/news/interest-reported-in-use-of-two-alcoa-sites/article_2356552b-7fad-577e-94f1-21efa9dc289a.html",
+    "https://www.datacenter.fyi/power-market/nyiso",
+    "https://www.interconnection.fyi/data-center/state/NY",
+    "https://www.interconnection.fyi/data-center/project/arsenal-data-site-500-53b7f294",
+    "https://www.nypa.gov/power/transmission/transmission-projects/smart-path-connect"
+   ]
+  },
+  {
+   "queue": "1213",
+   "project": "St Lawrence Data and Agricultural Center",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "ZeroC / Petawatt Massena data center site, 417 County Route 42, Massena NY (Tax Map 10.001-1-7.21 and 10.001-1-31.12)",
+   "operator": "ZeroC Data Centers, LLC (majority-owned by Petawatt Holdings, Inc.)",
+   "lat": 44.9571,
+   "lon": -74.8459,
+   "evidence": "NYS Tax Parcels Public layer returns two St. Lawrence County parcels owned by 'Zeroc Data Centers, LLC': 10.001-1-7.21 at 417 County Route 42 (67.76 ac, centroid 44.9564,-74.8490) and 10.001-1-31.12 on County Route 42 (66.99 ac, centroid 44.9578,-74.8428), Town of Massena; coordinates given are the midpoint. Massena Town Planning Board minutes of Feb 20 2025 list 'ZeroC Data Centers LLC & Petawatt Holdings, Inc.' at 417 County Route #42 (Tax Map 10.001-1-7.21, zoned Industrial), approving a ~$30M substation for a '200 Megawatt site', with Petawatt's representative stating the deed is in ZeroC's name and 'Petawatt is the majority share holder of ZeroC Data Center' and that the substation is needed to hold their NYISO queue position. The Five 9s Digital broker deck markets the same ~140-acre greenfield Massena parcel as a '200 MW load study with NYISO completed' site interconnecting to the existing 115 kV Dennison Substation; OSM/Overpass places National Grid's 'Dennison Station' (115 kV) at 44.9547,-74.8620, immediately west of the parcels. ZeroC's own site says it 'executed PSA with Qualified EPC' for 140 acres in Massena (Oct 31 2025); nny360 reports Petawatt clearing land on County Route 42 for the data-center substation. dcmap.us lists the queue entry under 'Petawatt Holdings / ZeroC Data Centers'. Registry has no Massena or St. Lawrence County asset (nearest: Old Main/Clarkson Potsdam ~40 km, NYGC Chateaugay ~60 km), so this is a real campus the registry lacks.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1213",
+    "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061",
+    "https://assets.ctfassets.net/o03ihmgd94o7/6g8J7vaxbb3PWHw54vwwQ3/56d4ff7d846acee474e1e41f0ddfd704/200_MW_HydroPowered_Data_Center_Site_NY.pdf",
+    "https://gisservices.its.ny.gov/arcgis/rest/services/NYS_Tax_Parcels_Public/MapServer/1/query?where=COUNTY_NAME%3D%27StLawrence%27%20AND%20(PRIMARY_OWNER%20LIKE%20%27ZEROC%25%27%20OR%20PRIMARY_OWNER%20LIKE%20%27Zeroc%25%27%20OR%20PRIMARY_OWNER%20LIKE%20%27PETAWATT%25%27%20OR%20PRIMARY_OWNER%20LIKE%20%27Petawatt%25%27)&outFields=PRINT_KEY,PARCEL_ADDR,PRIMARY_OWNER,CALC_ACRES,MUNI_NAME,PROP_CLASS&returnGeometry=true&outSR=4326&f=json",
+    "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B%28node%5B%22power%22%3D%22substation%22%5D%2844.90%2C-74.95%2C45.00%2C-74.75%29%3Bway%5B%22power%22%3D%22substation%22%5D%2844.90%2C-74.95%2C45.00%2C-74.75%29%3B%29%3Bout%20center%3B",
+    "https://www.zeroc.ai/",
+    "https://www.nny360.com/communitynews/business/land-clearing-underway-for-new-massena-data-center-substation/article_1dae11cf-5643-59a4-a182-f96a425cb9a2.html",
+    "https://dcmap.us/states/new-york/"
+   ]
+  },
+  {
+   "queue": "1717",
+   "project": "Proposed Datacenters at 450 Broadway, Buchanan, NY, 10511",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "Indian Point Energy Center (Holtec HI-CLOUD anchor site), 450 Broadway, Buchanan NY - training-building property at the southern end of the campus",
+   "operator": "Holtec International / Holtec Decommissioning International (HDI)",
+   "lat": 41.261,
+   "lon": -73.953,
+   "evidence": "450 Broadway, Buchanan is the Indian Point Energy Center; Holtec's HI-CLOUD announcement names the Indian Point campus as the anchor site with an initial 200 MW target, and the NYISO entry (#1717, 200 MW, Buchanan 138 kV, ConEd) matches. Search-snippet text from the Peekskill Herald and Highlands Current (both sites returned HTTP 403 on fetch) says the Oct 2024 NYISO request was to test power for a data center 'at the current Indian Point Energy Center training building property', and that the training center is at 'the southern end of the site' (soil sampling around it found Cs-137). NYS Tax Parcels Public layer (Buchanan, Broadway) shows the campus as parcels of record 'Entergy Nuclear Indian Pt' (Holtec owner since 2021): 43.10-2-1 (171.7 ac, 450 Broadway, plant, ~41.269,-73.950), 43.10-2-2 (62.9 ac), and at the southern end 43.10-2-3 (25.2 ac, office-building class 464, centroid ~41.261,-73.953) and 43.14-2-1.1 (15.5 ac, ~41.260,-73.950); the coordinates given are the southern office/training parcel, with the reactor site itself at 41.2697,-73.9522 (Wikipedia). Con Edison owns adjacent Broadway substation parcels (43.11-2-31, 50.8 ac). Registry has no Buchanan/Cortlandt/Peekskill asset; nearest entries (Hawthorne, Chappaqua, Orangeburg) are 20+ km away, so this is a real campus the registry lacks. Status per Holtec: no formal proposal yet, needs a partner and Village of Buchanan approval.",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1717",
+    "https://holtecinternational.com/hh-40-16/",
+    "https://en.wikipedia.org/wiki/Indian_Point_Energy_Center",
+    "https://gisservices.its.ny.gov/arcgis/rest/services/NYS_Tax_Parcels_Public/MapServer/1/query?where=COUNTY_NAME%3D%27Westchester%27%20AND%20MUNI_NAME%20LIKE%20%27%25Buchanan%25%27%20AND%20PARCEL_ADDR%20LIKE%20%27%25Broadway%25%27&outFields=PRINT_KEY,PARCEL_ADDR,PRIMARY_OWNER,CALC_ACRES,MUNI_NAME,PROP_CLASS&returnGeometry=true&outSR=4326&f=json",
+    "https://nominatim.openstreetmap.org/search?q=450+Broadway,+Buchanan,+NY+10511&format=json&addressdetails=1",
+    "https://highlandscurrent.org/2025/05/16/holtec-investigating-contaminated-soil-at-indian-point/",
+    "https://peekskillherald.com/21026/environment/holtec-tells-decommissioning-board-it-wants-to-bring-data-center-to-indian-point/",
+    "https://www.interconnection.fyi/data-center/project/proposed-datacenters-at-450-broadway-buchanan-ny-1-295a028c"
+   ]
+  },
+  {
+   "queue": "1747",
+   "project": "Globe Digital Holdings - 1",
+   "asset_id": "new",
+   "confidence": "medium",
+   "campus_name": "Globe Digital Holdings (Globe DH LLC) Niagara Falls North End sites - flagship 3801 Highland Ave (former Globe Metallurgical plant); sister sites 2201 College Ave and 5950 Packard Rd",
+   "operator": "Globe DH LLC (Globe Digital Holdings), Niagara Falls NY - same 3801 Highland Ave property acquired July 2024 by 9 Lives Digital Group via Highland Ave. NY 3801 LLC",
+   "lat": 43.1235,
+   "lon": -79.0429,
+   "evidence": "globedh.com (copyright 'GLOBE DH LLC', Niagara Falls NY) publishes a portfolio map titled 'NF 4 Locations' marking three data-center sites four miles apart: '3801 Highland', '2201 College' and '5950 Packard' (plus a fourth Witmer Rd farm parcel); the site aerial for 3801 Highland shows the former Globe Metallurgical block bounded by Highland Ave, College Ave, Massachusetts Ave and Hyde Park Blvd. The Niagara Gazette (via Yahoo) reports 'three locations for Globe Digital Holdings on Packard Road and Highland Avenue' among five proposed Niagara Falls data centers; interconnection.fyi shows 'Globe Digital Holdings - 1' (#1747, 200 MW, Beck Packard 76 230 kV, National Grid, queued Oct 17 2025) plus a second entry 'GLOBE DH 2' (Niagara County, 100-250 MW); cleanview aggregates Globe DH LLC at 600 MW in Niagara. Lineage of the Highland Ave site: Globe Metallurgical/Ferroglobe (closed 2018) -> Jerome P. Williams (2021, $1.5M) -> 9 Lives Digital Group (July 16 2024, ~$3M, 22 acres, existing 100 MW substation; DCD via search snippet names the purchasing entity 'Highland Ave. NY 3801 LLC'), now shown as Globe DH's '3801 Highland' holding. Geocodes: 3801 Highland Ave 43.1235,-79.0429; 2201 College Ave 43.1200,-79.0381; 5950 Packard Rd 43.1030,-78.9960 (0.8 km from OSM 'Packard Substation' 230/115 kV at 43.0988,-79.0075). Caveat: no document read states which of the three parcels is queue entry '-1'; coordinates given are the flagship Highland Ave site, and the Packard Rd site beside the 230 kV terminus is the main alternative. Not a registry match: Blockfusion (site-d8eef9a76c) geocodes to 5380 Frontier Ave at 43.0828,-79.0033, 4-5 km SE, and US Bitcoin (site-ab723343bb, 43.0822,-79.0308) is a separate Buffalo Ave-area campus; the other 'Blockfusion' entry (site-f7e64e172f, 43.0748,-78.9448) is 8 km away. Claimed Globe DH Herkimer project in one search summary was not corroborated (the Herkimer 500 MW Remington filing is Turin Management).",
+   "sources": [
+    "https://www.interconnection.fyi/project/nyiso-1747",
+    "https://www.interconnection.fyi/data-center/state/NY",
+    "https://globedh.com/portfolio",
+    "https://img1.wsimg.com/isteam/ip/ee5f3a04-4580-4df1-b942-321045c8f006/NF%204%20Locations.png",
+    "https://img1.wsimg.com/isteam/ip/ee5f3a04-4580-4df1-b942-321045c8f006/Prop1%20Pic.jpg",
+    "https://www.yahoo.com/news/politics/articles/state-senator-bringing-data-center-121600893.html",
+    "https://www.wnypapers.com/news/article/current/2024/08/01/160607/9-lives-digital-group-acquires-globe-metallurgy-property-in-niagara-falls-for-ai-data-center-logistics-hub",
+    "https://www.yahoo.com/news/falls-firm-fronted-convicted-money-111700629.html",
+    "https://niagaraexpress.town.news/g/niagara-falls-ny/n/269022/globe-metallurgical-changes-hands",
+    "https://cleanview.co/data-centers/new-york",
+    "https://www.datacenterdynamics.com/en/news/9ldg-plans-ai-data-center-at-niagara-falls/",
+    "https://nominatim.openstreetmap.org/search?q=3801+Highland+Avenue,+Niagara+Falls,+NY&format=json",
+    "https://nominatim.openstreetmap.org/search?q=2201+College+Avenue,+Niagara+Falls,+NY&format=json",
+    "https://nominatim.openstreetmap.org/search?q=5950+Packard+Road,+Niagara+Falls,+NY&format=json",
+    "https://nominatim.openstreetmap.org/search?q=5380+Frontier+Avenue,+Niagara+Falls,+NY&format=json&addressdetails=1",
+    "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B%28node%5B%22power%22%3D%22substation%22%5D%5B%22name%22~%22Packard%22%5D%2843.05%2C-79.08%2C43.16%2C-78.95%29%3Bway%5B%22power%22%3D%22substation%22%5D%5B%22name%22~%22Packard%22%5D%2843.05%2C-79.08%2C43.16%2C-78.95%29%3B%29%3Bout%20center%3B"
+   ]
+  },
+  {
+   "queue": "1748",
+   "project": "GLOBE DH 2",
+   "asset_id": "new",
+   "confidence": "medium",
+   "campus_name": "Globe Digital Holdings North End campus (Highland Ave / College Ave, Packard Rd, Witmer Rd parcels), Niagara Falls NY",
+   "operator": "GLOBE DH LLC (Globe Digital Holdings); probable Santarosa Holdings / Buffalo Fuel Corp family SPV",
+   "lat": 43.1236,
+   "lon": -79.0429,
+   "evidence": "GLOBE DH LLC = Globe Digital Holdings: globedh.com is copyrighted 'GLOBE DH LLC', contact 'Niagara Falls, NY, USA', and its Portfolio page lists four Niagara Falls parcels \u2014 College Ave, Packard Rd, Highland Ave (featured), Witmer Rd \u2014 with a map 'showing three locations with a 4-mile route'. Niagara Gazette (21 Aug 2026) lists 'three locations for Globe Digital Holdings on Packard Road and Highland Avenue' among five proposed Niagara Falls data centers, separately from NFR downtown, Whattum (Portage Rd) and the existing U.S. Bitcoin/Blockfusion sites. datacenter.fyi/interconnection.fyi carry 'Globe Digital Holdings - 1' and 'GLOBE DH 2', each 200 MW, Niagara County, National Grid, 2025 application, developer GLOBE DH LLC (3 x 200 MW = the 600 MW dcmap/cleanview figure). Both POIs (Beck-Packard 76, Niagara-Packard 77) end at Packard 230/115 kV substation (OSM way 147381638, 43.0988,-79.0075). Lineage (circumstantial): Globe Ventures LLC formed 27 Oct 2021 at 4870 Packard Rd c/o G. Aaron Santarosa; 4870 Packard Rd is Santarosa Holdings/Buffalo Fuel Corp HQ (5.2 ac I-2, geocoded 43.0979,-79.0043, ~300 m from Packard substation); Santarosa Holdings also holds 1500 College Ave (43.1209,-79.0416, at Highland & College; 2018 storage fire) and 3501 Hyde Park Blvd (43.1209,-79.0322) near Witmer Rd (43.1280,-79.0284) \u2014 matching the portfolio streets. The adjacent 22-ac ex-Globe Metallurgical site at 3807 Highland Ave (43.1236,-79.0429; 100 MW substation) was bought July 2024 by 9 Lives Digital Group via Highland Ave NY 3801 LLC (Bagley/Hajati) and may be the 'Highland Ave' parcel or its neighbour; no record ties 9LDG to Globe DH LLC. Which of the three parcels carries DH 2 vs DH 3 is not public; coordinate given is the Highland/College corner cluster, Packard Rd parcel at 43.0979,-79.0043. No registry asset matches: nearest are Blockfusion (5380 Frontier Ave, 43.0829,-79.0034, 1.7 km S of the Packard parcel, 4.6 km from Highland) and US Bitcoin (Buffalo Ave, 43.0822,-79.0308) \u2014 different operators on the river corridor; site-f7e64e172f (43.0748,-78.9448) is 8 km E.",
+   "sources": [
+    "https://globedh.com/portfolio",
+    "https://globedh.com/contact",
+    "https://globedh.com/",
+    "https://www.niagara-gazette.com/news/local_news/state-senator-bringing-data-center-tour-to-niagara-falls/article_8a15646c-4d0b-4838-95f3-3c3c74420ea6.html",
+    "https://www.datacenter.fyi/company/globe-dh",
+    "https://www.datacenter.fyi/facility/globe-dh-2-ny-eacb0a3b",
+    "https://www.interconnection.fyi/data-center/project/globe-dh-2-20abe348",
+    "https://www.interconnection.fyi/data-center/state/NY",
+    "https://dcmap.us/states/new-york/",
+    "https://cleanview.co/data-centers/new-york/2249/globe-digital-holdings-data-center",
+    "https://www.bizprofile.net/ny/niagara-falls/globe-ventures-llc",
+    "https://marketplace.lockportjournal.com/lockport-ny/public-notices/notice-of-formation-of-globe-v/AC1E0369163f416EECrdwH19AB0E",
+    "https://www.niagara-gazette.com/news/local_news/santarosa-holdings-puts-falls-on-notice-for-lawsuit/article_042797cc-0cce-11e9-a751-af653c4035a4.html",
+    "https://www.niagaracountybusiness.com/file-library/category/Santarosa_holdings_inc",
+    "https://niagaraexpress.town.news/g/niagara-falls-ny/n/271212/more-publicity-globe-rebirth",
+    "https://www.niagara-gazette.com/news/local_news/falls-firm-fronted-by-convicted-money-launderer-eyeing-north-end-data-center/article_80fca10c-4f5d-11ef-89b1-777f94833d22.html",
+    "https://niagaraexpress.town.news/g/niagara-falls-ny/n/290380/mystery-surrounds-north-end-bit-coin-mine",
+    "https://niagarafallsreporter.com/the-1-5-billion-project-the-niagara-falls-mayor-doesnt-want-residents-to-know-about/",
+    "https://overpass-api.de/api/interpreter?data=[out:json];nwr[\"power\"=\"substation\"][\"name\"~\"Packard\",i](43.05,-79.10,43.20,-78.90);out center;",
+    "https://nominatim.openstreetmap.org/search?q=3807+Highland+Ave,+Niagara+Falls,+NY&format=json&limit=3",
+    "https://nominatim.openstreetmap.org/search?q=4870+Packard+Road,+Niagara+Falls,+NY&format=json&limit=2",
+    "https://nominatim.openstreetmap.org/search?q=1501+College+Ave,+Niagara+Falls,+NY&format=json&limit=2",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.0829&lon=-79.0034&format=json",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.0822&lon=-79.0308&format=json"
+   ]
+  },
+  {
+   "queue": "1749",
+   "project": "Globe DH 3",
+   "asset_id": "new",
+   "confidence": "medium",
+   "campus_name": "Globe Digital Holdings North End campus (Highland Ave / College Ave, Packard Rd, Witmer Rd parcels), Niagara Falls NY",
+   "operator": "GLOBE DH LLC (Globe Digital Holdings); probable Santarosa Holdings / Buffalo Fuel Corp family SPV",
+   "lat": 43.1236,
+   "lon": -79.0429,
+   "evidence": "Same developer and same three-parcel program as queue 1748 (Globe DH 1/2/3 = the 'three locations for Globe Digital Holdings on Packard Road and Highland Avenue' reported by the Niagara Gazette, 21 Aug 2026, and the 4-parcel Niagara Falls portfolio on globedh.com: College Ave, Packard Rd, Highland Ave, Witmer Rd). POI Niagara-Packard 77 230 kV terminates at Packard substation (43.0988,-79.0075), 300 m from the Santarosa/Globe Ventures LLC parcel at 4870 Packard Rd (43.0979,-79.0043). Globe DH 3 is the newest row (only DH 1 and DH 2 appear on datacenter.fyi/interconnection.fyi as of reading) and no public source assigns it to a specific parcel; coordinate given is the Highland/College corner cluster (3807 Highland Ave ex-Globe Metallurgical / 1500 College Ave Santarosa yard), with the Packard Rd parcel at 43.0979,-79.0043 and Witmer Rd at ~43.128,-79.028 as the alternatives. No registry asset is this campus: Blockfusion (5380 Frontier Ave, 43.0829,-79.0034) and US Bitcoin (Buffalo Ave, 43.0822,-79.0308) are different operators 1.7-4.6 km south and are listed by the Gazette as existing sites distinct from the Globe proposals.",
+   "sources": [
+    "https://globedh.com/portfolio",
+    "https://globedh.com/contact",
+    "https://www.niagara-gazette.com/news/local_news/state-senator-bringing-data-center-tour-to-niagara-falls/article_8a15646c-4d0b-4838-95f3-3c3c74420ea6.html",
+    "https://www.datacenter.fyi/company/globe-dh",
+    "https://www.interconnection.fyi/data-center/state/NY",
+    "https://dcmap.us/states/new-york/",
+    "https://www.bizprofile.net/ny/niagara-falls/globe-ventures-llc",
+    "https://marketplace.lockportjournal.com/lockport-ny/public-notices/notice-of-formation-of-globe-v/AC1E0369163f416EECrdwH19AB0E",
+    "https://www.niagara-gazette.com/news/local_news/santarosa-holdings-puts-falls-on-notice-for-lawsuit/article_042797cc-0cce-11e9-a751-af653c4035a4.html",
+    "https://www.niagaracountybusiness.com/file-library/category/Santarosa_holdings_inc",
+    "https://niagaraexpress.town.news/g/niagara-falls-ny/n/271212/more-publicity-globe-rebirth",
+    "https://overpass-api.de/api/interpreter?data=[out:json];nwr[\"power\"=\"substation\"][\"name\"~\"Packard\",i](43.05,-79.10,43.20,-78.90);out center;",
+    "https://nominatim.openstreetmap.org/search?q=3807+Highland+Ave,+Niagara+Falls,+NY&format=json&limit=3",
+    "https://nominatim.openstreetmap.org/search?q=4870+Packard+Road,+Niagara+Falls,+NY&format=json&limit=2",
+    "https://nominatim.openstreetmap.org/search?q=Witmer+Road,+Niagara+Falls,+NY&format=json&limit=2",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.0829&lon=-79.0034&format=json",
+    "https://nominatim.openstreetmap.org/reverse?lat=43.0822&lon=-79.0308&format=json"
+   ]
+  },
+  {
+   "queue": "1754",
+   "project": "Kenwood Tech Center",
+   "asset_id": "new",
+   "confidence": "high",
+   "campus_name": "Kenwood Commons / Kenwood Tech Center (former Kenwood convent - Doane Stuart School campus), Albany NY",
+   "operator": "EKG Group LLC / Guild Ventures (Michael-Henry Elghanian-Krayem)",
+   "lat": 42.628,
+   "lon": -73.771,
+   "evidence": "EKG Group LLC (the NYISO filer) is Michael-Henry Elghanian-Krayem's family office; ekggroup.us lists 'Kenwood Commons, Albany, New York \u2014 76 acres, largest contiguous undeveloped parcel in the City of Albany, 345 kV transmission on-site' as its US project (its own rounded coordinate 42.65N 73.76W). The same person is director of Guild Ventures/Guild Investments, which took title to the 76-acre former Kenwood convent / Doane Stuart School campus (799 South Pearl St, atop the hill off Southern Blvd/US-9W; main building destroyed by fire 23 Mar 2023) in 2023 (CBS6). Times Union (via Yahoo) and CBS6: EKG Group LLC filed 'Kenwood Tech Center' with NYISO on 11 Nov 2025 for up to 180 MW, described as a theoretical full-build ceiling for the mixed-use campus; the tech-center footprint is ~5 acres of the 76, target operations 2028; interconnection.fyi/datacenter.fyi list it as 180 MW, Albany County, National Grid, proposed. POI Albany-Bethlehem 115 kV Line #18 fits the site on Albany's southern edge at the Bethlehem town line. Coordinates: 799 S Pearl St geocodes 42.6286,-73.7669; OSM 'Kenwood Road' campus driveways centre 42.628,-73.770 to -73.776; hamlet of Kenwood 42.6237,-73.7732 \u2014 campus centroid ~42.628,-73.771. No registry asset within 2.5 km; nearest is IBM Building / INOC (site-9f9c3695f6, 42.6494,-73.7527, downtown colocation, different operator). Real campus the registry lacks.",
+   "sources": [
+    "https://www.ekggroup.us/",
+    "https://www.yahoo.com/news/us/articles/data-center-planned-former-kenwood-214202581.html",
+    "https://cbs6albany.com/news/local/kenwood-commons-owner-asks-for-180mw-as-part-of-propertys-pitch-now-includes-data-center-doane-stuart-school-guild-datacenter-mixeduse-hyperscale-colocation-technology-sustainability-cooling-grid-redevelopment-nanotech-infrastructure-emissions",
+    "https://cbs6albany.com/news/local/tech-center-retail-housing-and-more-owner-lays-out-vision-for-kenwood-commons",
+    "https://www.interconnection.fyi/data-center/project/kenwood-tech-center-efd2b19b",
+    "https://www.datacenter.fyi/facility/kenwood-tech-center-ny-f93cd2f1",
+    "https://en.wikipedia.org/wiki/Doane_Stuart_School",
+    "https://nominatim.openstreetmap.org/search?q=799+South+Pearl+Street,+Albany,+NY&format=json&limit=3",
+    "https://overpass-api.de/api/interpreter?data=[out:json];nwr[\"name\"~\"Doane|Kenwood|Sacred Heart\",i](42.615,-73.79,42.64,-73.755);out center;",
+    "https://nominatim.openstreetmap.org/search?q=Kenwood,+Albany,+New+York&format=json&limit=5"
+   ]
+  },
+  {
+   "queue": "1721",
+   "project": "Brookhaven Logistics Center",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "Brookhaven Digital Infrastructure Facility (Wildflower / WF Industrial XII), Yaphank",
+   "operator": "Wildflower Ltd. (via affiliate WF Industrial XII LLC)",
+   "lat": 40.8315,
+   "lon": -72.9395,
+   "evidence": "WF Industrial XII LLC is the Wildflower Ltd. affiliate that owns the ~71.45-acre parcel ~100 ft west of Sills Road on the north side of the LIE North Service Road, Yaphank (SCTM 0200-662.00-02.00-005.016), IDA-approved in 2023 as a 549,942 sf warehouse/logistics project. Wildflower now markets it as the Brookhaven Digital Infrastructure Facility, 1001 Expressway Drive N, Yaphank NY 11980 (72 ac, 550,000 sf), a ~$1bn data center reported to draw 'as much as 176.6 megawatts' from the LIPA grid - identical to the NYISO MW figure - with POI on the 138 kV Holbrook-Sills Rd line adjacent to the site. Town of Brookhaven imposed an 18-month moratorium (to Jan 2028) and the state EO 62 pause applies. Coordinates derived from the IDA site description bracketed by the OSM Exit 66 (Sills Rd) ramp nodes at 40.8305,-72.9293 and 40.8277,-72.9445 (site centroid just west of Sills Rd, north of the LIE). Caution: a different entity, 'Brookhaven Logistics Center, LLC' (228.58 ac, 7 warehouses, Horseblock Rd west of Yaphank Ave; DEC ENB 2026-03-11), is a separate site and not this load. Registry has no Yaphank/Medford asset; nearest entry (Cable & Wireless Shirley, site-5c452e4add) is ~5 km east and unrelated.",
+   "sources": [
+    "https://www.longislandpress.com/2026/07/15/moratorium-data-centers-state/",
+    "https://brookhavenida.org/blog/notice-of-public-hearing-wf-industrial-xii",
+    "https://www.wildflowerltd.com/digital-infrastructure-items/brookhaven-digital-infrastructure-facility",
+    "https://dec.ny.gov/news/environmental-notice-bulletin/2026-03-11/seqr/town-of-brookhaven-brookhaven-logistics-center-llc-at-yaphank",
+    "https://overpass.kumi.systems/api/interpreter?data=[out:json];node[\"highway\"=\"motorway_junction\"][\"ref\"=\"66\"](40.80,-73.00,40.85,-72.90);out;"
+   ]
+  },
+  {
+   "queue": "1733",
+   "project": "Cayuga Data",
+   "asset_id": "none",
+   "confidence": "high",
+   "campus_name": "Cayuga (Milliken Station) power plant site / TeraWulf Cayuga, Lansing",
+   "operator": "Cayuga Operating Company LLC (site owner); TeraWulf Inc. (ground lessee/developer)",
+   "lat": 42.6025,
+   "lon": -76.636,
+   "evidence": "Cayuga Operating Company LLC is the owning entity of the retired Cayuga coal station (originally Milliken Station, 1955; retired Oct 2019) at 228 Cayuga Drive, Lansing, Tompkins County, on the east shore of Cayuga Lake - the only site the company holds. The NYISO POI 'Milliken 115kV Substation' is the plant's own switchyard (GEM/8-K: existing substation on property with 115 kV and 34.5 kV lines). In Aug 2025 TeraWulf executed an 80-year ground lease on ~183 acres of the site for up to 400 MW of data-center capacity (138 MW targeted 2H 2026), with a 67 MW solar and 800 MWh BESS on adjacent parcels; the 162 MW NYISO request is the same campus regardless of whether it is booked under the owner or the lessee. Coordinates per Global Energy Monitor (42.602544, -76.635978). Registry has no Lansing asset; its TeraWulf-related entries (Anthropic Lake Mariner / Core42 Lake Mariner, 43.3587,-78.6041) are the Somerset campus ~190 km away, and Greenidge (42.6794,-76.9486) is a different plant on Seneca Lake.",
+   "sources": [
+    "https://www.gem.wiki/Cayuga_power_station_(New_York)",
+    "https://www.sec.gov/Archives/edgar/data/1083301/000110465925078086/tm2523008d1_ex99-1.htm",
+    "https://www.ithaca.com/news/tompkins_county/data-center-developer-secures-long-term-lease-of-cayuga-power-plant/article_af47439f-e785-4519-9018-6ad0a9de5048.html",
+    "https://nominatim.openstreetmap.org/search?q=228+Cayuga+Drive,+Lansing,+NY+14882&format=json&limit=3"
+   ]
+  },
+  {
+   "queue": "1761",
+   "project": "NYISO Load Interconnection Process - Data Center Inquiry",
+   "asset_id": "none",
+   "confidence": "low",
+   "campus_name": "Unidentified - Horseheads, Chemung County (NYSEG Broad Street 34.5 kV POI)",
+   "operator": "Unknown (filed by an individual, Uri Taly)",
+   "evidence": "No physical campus could be established. The filer name is a person, not an SPV: UK Companies House lists Uri Taly as director of DNTS-ENG Survey GIS & Engineering Ltd (no. 10523537, London), and his LinkedIn describes a development/construction project manager; the project title is literally an 'inquiry'. Exhaustive searches of local press (WENY, WETM/MyTwinTiers, Star-Gazette), Town of Horseheads planning minutes (May 6, 2026 - no data-center item), Chemung County IDA/STEG material, and PSC/NYISO trackers found no named Horseheads data-center site, developer, address or acreage. The Village of Horseheads adopted a one-year data-center moratorium on July 2, 2026 without citing a specific proposal. The 150 MW at a 34.5 kV POI (NYSEG Broad Street, Line 93) is consistent with a placeholder request rather than an engineered campus. Registry holds no asset in Chemung County or the Horseheads/Elmira area, so no match is possible either way; coordinates intentionally omitted because no site was established.",
+   "sources": [
+    "https://www.weny.com/news/village-of-horseheads-passes-data-center-moratorium/article_06f1c1b9-ba93-4c5d-a75b-ebc5cbee895c.html",
+    "https://find-and-update.company-information.service.gov.uk/officers/AZgJS4u6l3WwNLVdWtV2UjkIbWw/appointments",
+    "https://www.townofhorseheads.gov/AgendaCenter/ViewFile/Minutes/_05062026-305",
+    "https://myemail.constantcontact.com/January-2024.html?soid=1136461472172&aid=QldaJ-tQAi0",
+    "https://interconnectionqueue.org/iso/nyiso",
+    "https://hudsonvalleypost.com/ai-data-centers-new-york/"
+   ]
+  }
+ ],
+ "verdicts": {
+  "0979": {
+   "queue": "0979",
+   "upheld": true,
+   "reason": "Live NYISO queue (Load Projects sheet, fetched 2026-09-09): 0979 'North Country Data Center', 435 MW, end-use DAT-CM (data center/crypto-mining), St. Lawrence Co., Zone D, POI 'Reynolds 115kV', NYPA, status 12, backfeed 07-2026. The Dec-2021 snapshot's full wrapped row reads 'Load Increase at North Country Data Center 185 (Former Reynolds Substation) to 435MW' \u2014 the queue itself names the former Reynolds plant. NCCS's Feb-2024 letter (letterhead 194 County Road 45, Massena; text extracted via pdftotext) states NCCS is 'a wholly owned subsidiary of North Country Data Center Corp.', operates 'at a large plant formerly operated by Alcoa Corp. in Massena', uses ~160 MW, and 'NYISO has granted NCDC approval to increase its load up to 435 MW'. NY DOS 5318609 (NCDC) lists county St. Lawrence. nny360 (May 2026) confirms NYDIG/Stone Ridge at the former Alcoa East site, 635 MW proposed. Geolocation verified: Nominatim resolves the address inside the OSM 'Alcoa - St-Lawrence - Massena, Smelter' polygon (44.9816,-74.7511, zip 13683, adjacent to Akwesasne), ~10.7 km east of the village (Alcoa Park -74.887), matching EPA's 'approximately eight miles east of the village' for the Reynolds Superfund site \u2014 so the coordinate is the eastern Reynolds/Alcoa East plant, not the operating Alcoa West smelter. Caveat only: the county deck (Oct 2025) showed the queue at 176 MW (last updated 7/31/2023); the live queue is back at 435 MW; identity unaffected. No registry asset within ~25 km (Malone, Chateaugay, Potsdam are different operators). 'new' is correct."
+  },
+  "0580": {
+   "queue": "0580",
+   "upheld": true,
+   "reason": "Live NYISO queue: 0580 GCEDC 'WNY STAMP', 300 MW, end-use DAT (data center), Genesee Co., Zone B, POI 'Kintigh/Niagara - New Rochester 345kV', NYPA, status 12, backfeed 11-2026 (Dec-2021 snapshot confirmed at 500 MW, same POI). GCEDC STAMP page: 600 MW approved, 4x-redundant 345 kV, on-site 600 MW substation with 115 kV distribution, energized 2026. Stream's own page names the 'Genesee County Data Center Campus' at STAMP, 'connects directly to the 345kV Bulk Power System', selected by GCEDC. GCEDC 3/10/2025 approval ($6.3B, 900k sq ft, 59 acres, Town of Alabama), WXXI (250 MW load, 600 MW substation), BTPM 9/18/2025 (SEQR retracted for expansion), Daily News 12/15/2025 (Project Double Reed, 2.2M sq ft, three buildings, ~90 acres incl. former Plug Power parcel) all verified. GCEDC news Jan-Mar 2026 confirms the project is still proceeding at STAMP (revised $19.46B application, hearing 3/19/2026, rescheduled after AV failure; no cancellation). Stamp Drive centroid 43.0859,-78.3975 confirmed by both Nominatim and Overpass; OSM unnamed substation at 43.0636,-78.3917 inside the park. No Genesee County asset in the registry; Lake Mariner/H5 Lockport/Blockfusion are 30+ km and unrelated. Caveat: the queue holder is the IDA-owned park substation, which any STAMP tenant (e.g. Edwards Vacuum) could draw on, though NYISO classifies the end-use as data center and Stream is the only data-center tenant. 'new' is correct."
+  },
+  "1484": {
+   "queue": "1484",
+   "upheld": true,
+   "reason": "Live NYISO queue: 1484 GCEDC '580 STAMP load increase', 300 MW, end-use DAT, Genesee Co., Zone B, POI '115 kv STAMP substation', NM-NG, status 12, backfeed 11-2026 \u2014 same date as #0580. The project name references #0580 directly, and the NYISO Withdrawn sheet shows a superseded GCEDC 'WNY STAMP' #1461 (IR 11/8/2022, same Kintigh/Niagara-New Rochester 345kV POI) withdrawn 12/31/2022 and replaced by #1484 (IR 12/2/2022), confirming it is the second 300 MW block of the same STAMP substation rather than a separate site. 300 + 300 = the 600 MW ceiling GCEDC's STAMP page cites for its single on-site substation (345 kV supply, 115 kV distribution). Same physical campus, same coordinates (Stamp Drive, Town of Alabama), same Stream end user. Registry has no Genesee County asset. Correctly flagged as the same 'new' campus record as #0580 \u2014 do not create a second entry."
+  },
+  "1726": {
+   "queue": "1726",
+   "upheld": true,
+   "reason": "Upheld. NYISO's own queue spreadsheet (Load Projects sheet, downloaded from nyiso.com) lists 1726 as Developer 'Riverview Innovation & Technology Campus, Inc.', project 'Data & Technology Campus', IR 2025-01-31, 300 MW peak load, End-Use DAT, Erie County, Zone A, POI 'Huntley - Packard 230kV line 78', CTO NM-NG, status 5, SIS bundle 25-2, proposed backfeed 01-2027 - the developer name IS the campus entity, so the match is by name, not inference. WKBW independently ties a 300 MW, 500,000 sq ft, ~$2B AI data center with a $50M substation to the 140-ac former Tonawanda Coke site on River Road, Town of Tonawanda, under NYISO review; Baxtel gives 3875/3800 River Rd with owners Jon Williams and John Yensan. PropertyShark returns parcel 64.80-1-10 (102.42 ac) at exactly 42.98297,-78.92641; Nominatim's 'Tonawanda Coke' industrial polygon centers at 42.98227,-78.92617 (~80 m from the claimed point) and places Huntley Generating Station at 3500 River Rd, 42.9705,-78.932 (~1.5 km SSW), consistent with the Huntley-Packard POI. No registry asset is within ~9 km (Frontier Science Amherst, Buffalo colos, Blockfusion/US Bitcoin Niagara Falls are all different sites); 'new' is correct. Not verified but not load-bearing: the claim's 'SEQRA review paused mid-2026' detail did not appear in the WKBW text I fetched."
+  },
+  "1731": {
+   "queue": "1731",
+   "upheld": true,
+   "reason": "Upheld. NYISO's queue spreadsheet lists 1731 as Developer 'ZeroC Data Centers, LLC', 'New York State Artificial Intelligence Data Center', IR 2025-03-14, 300 MW, End-Use DAT-AI, St. Lawrence County, Zone E, POI 'Haverstock-Adirondack 345kV transmission line HA-2', CTO NYPA, ATO National Grid, status 5, proposed backfeed 10-2026; it also lists 1719 as the same developer/project name, IR 2024-09-18, 300 MW, POI 'Dennison 115kV substation', NM-NG, status 0 (withdrawn per interconnection.fyi). The Massena Planning Board minutes of 2025-02-20 (PDF text extracted) record Site Plan Review #2 for 'ZeroC Data Centers LLC & Petawatt Holdings, Inc.' at '417 County Route #42 (Tax Map #10.001-1-7.21)', Zoned I-Industrial, for a ~$30M substation; the Petawatt rep stated the deed was transferred to ZeroC Data Center, Petawatt is majority shareholder, the substation must be built now or 'their position in the NYISO queue will be lost', it is 'currently a 200 Megawatt site', ~900,000 sq ft, MED territory; approved 4-0. nny360 (2025-01-12) confirms Petawatt clearing a 14-acre industrial site on County Route 42 for a 240x240 ft substation; Compass confirms 417 CR 42 is APN 10.001-1-7.21, 67.8 ac, sold 2024-11-21 for $250k; zeroc.ai lists 'Massena, New York' as a 140-acre campus with a 2025-10-31 EPC PSA. NYPA's Smart Path Connect page confirms Haverstock substation is in Massena. Census geocode of 417 CR 42 = 44.94912,-74.86268 and Nominatim reverse = 'CR 42, Town of Massena'. Overpass/OSM shows National Grid 'Dennison Station' (115 kV) 0.62 km from that point (matching the 1719 POI) and 345 kV lines within 0.8 km (the Moses-Adirondack/Smart Path corridor that Haverstock sits on), so both the withdrawn and active POIs are physically adjacent to this parcel. No registry asset is within 30 km; 'new' is correct."
+  },
+  "1736": {
+   "queue": "1736",
+   "upheld": true,
+   "reason": "Upheld. NYISO's queue spreadsheet lists 1736 as Developer 'Ranalli SuperDC LLC', project 'Ranalli SuperDC', IR 2025-05-07, 270 MW peak load, End-Use DAT, Onondaga County, Zone C, POI 'Clay to Pannell ckts PC-1 and PC-2', CTO NYPA, ATO 'NM-NG, NYSEG/RGE', status 5, SIS bundle 25-3, proposed backfeed 05-2028. Eagle News (2026-04-20) and CNYCentral (2026-04-15/16) both identify the owner as Ranalli Super DC, LLC, the site as the ~124-ac vacant industrial parcel at Hencle Boulevard and Oswego Road, Town of Lysander, applied to NYISO in May 2025 for a 300 MW data center, adjacent to 345 kV transmission lines, with a 1,500-1,600-signature petition and a town-board vote to draft a moratorium; PropertyShark shows the 2200 Hencle Blvd listing as 123.5 ac vacant land at $60,000,000. Nominatim geocodes 2200 Hencle Blvd to 43.18487,-76.35120 (Town of Lysander, Onondaga County) and reverse-geocodes the claimed point to Hencle Boulevard. Overpass/OSM geometry shows the 'Pannell - Clay' 345 kV double-circuit line passing 90-140 m from the claimed coordinate (plus National Grid 115 kV lines 13/9 at 70 m and 'Elbridge - Oswego' 345 kV at 1.7 km), which directly corroborates the queue's Clay-Pannell PC-1/PC-2 POI at this parcel. The 300 MW (marketing) vs 270 MW (queue) difference is a filing detail, not a different site. Nearest registry entries (Micron f052 in Clay ~16 km E, Lightboard/Northland Syracuse ~21 km, SU Green DC ~24 km) are unrelated; 'new' is correct."
+  },
+  "849": {
+   "queue": "849",
+   "upheld": true,
+   "reason": "Confirmed against the official NYISO Interconnection Queue workbook (Load Projects sheet): 849 | Somerset Operating Company, LLC | Somerset Load | 2019-05-21 | 250 MW | Niagara | Zone A | Kintigh 345kV | NYSEG | status 14, SIS+FS complete, marked I/S (in service). The Dec 2021 NYISO PDF row matches verbatim. Somerset Operating Company LLC is the Kintigh/Somerset coal-plant owner (Wikipedia lists the plant 'also known as Somerset Operating Co. LLC' at 43.35806,-78.60389, essentially the registry coordinate 43.3587,-78.6041) and the ground-lease landlord to TeraWulf (Oct 10 2024 release: 157 acres, 35+45 yr, up to 750 MW). Govtech confirms Beowulf's Somerset Operating Co. subsidiary Lake Mariner Data LLC applied to build on Lake Road east of the plant needing up to 250 MW. No competing site: the workbook shows no other active load at Kintigh 345kV (WNY STAMP is a Genesee County site on the Kintigh-Rochester line; a 2010 Verizon 75 MW request is status 0). The in-service status matches Lake Mariner's energized first 250 MW. Note: site-b034c54b77 and site-d561c8dc4c are the same campus at identical coordinates; TeraWulf's filings place Anthropic only at Justified (Hawesville KY), never at Lake Mariner, whereas Core42 is confirmed at Lake Mariner in the FY2025 10-K, so the Core42 row is the better-labeled duplicate, but the physical match is correct either way."
+  },
+  "1670": {
+   "queue": "1670",
+   "upheld": true,
+   "reason": "Confirmed against the official NYISO queue workbook: 1670 | Lake Mariner Data LLC | Lake Mariner Data II | 2024-01-23 | 250 MW | DAT-AI load | Niagara | Zone A | Kintigh 345kV Substation | NYSEG | status 6, SIS complete. interconnection.fyi matches. Lake Mariner Data LLC is a 100%-owned Delaware subsidiary of TeraWulf Inc. (Exhibit 21.1 in both the FY2023 and FY2025 10-Ks). Lake Mariner is TeraWulf's only Niagara County site (7725 Lake Rd, Barker; GEM 43.35973,-78.60527; Kintigh plant 43.35806,-78.60389) on the former Somerset/Kintigh plant with its dual 345 kV lines; TeraWulf's Cayuga/Lake Hawkeye site files separately as queue 1733 in Tompkins County at Milliken 115kV. NPM confirms NYISO authorized an additional 250 MW bringing Lake Mariner's approved total to 500 MW, i.e. this second tranche. No other candidate in the registry sits at Kintigh. Same duplicate-row caveat as 849: site-d561c8dc4c (Core42 Lake Mariner) is the identical campus and carries a tenant actually documented at Lake Mariner."
+  },
+  "1732": {
+   "queue": "1732",
+   "upheld": true,
+   "reason": "Confirmed against the official NYISO queue workbook: 1732 | TeraWulf Brookings LLC | Wulf Compute Data Center II | 2025-03-29 | 250 MW | DAT-AI load | Niagara | Zone A | Kintigh 345kV sub-station | NYSEG (ATO: NYPA, NM-NG) | status 5, proposed in-service 06-2026. The corporate chain is verified by TeraWulf's March 16 2026 8-K, which describes WULF Compute LLC as a 'wholly-owned indirect subsidiary' and 'TeraWulf Brookings LLC ... the direct parent company of the Issuer' (Ex. 21.1 lists both as 100% Delaware subsidiaries). Skeptic check on the 'II' suffix: no 'Wulf Compute Data Center' (I) exists anywhere in the workbook (active, cluster, withdrawn or in-service sheets), so the name cannot point to a different campus; TeraWulf's only other NY project is queue 1733 'Cayuga Data' (Tompkins County, Milliken 115kV). FY2025 10-K: Lake Mariner ~500 MW near term 'with potential expansion to approximately 750 MW, subject to additional approvals from the NYISO'; Q2 2026 results: still 'pursuing 250 MW of incremental power capacity, subject to applicable interconnection approval' at Lake Mariner, consistent with 1732 being the pending third tranche. Buffalo News/Yahoo reporting on Wulf Compute's Somerset expansion on the 410-acre former plant parcel with 750 MW allocated from NYSEG/NYPA corroborates the same campus. Same duplicate-row caveat: site-d561c8dc4c is the identical campus and better labeled (Anthropic's TeraWulf lease is at Justified, KY, not Lake Mariner)."
+  },
+  "1213": {
+   "queue": "1213",
+   "upheld": true,
+   "reason": "Verified end to end. interconnection.fyi #1213 lists developer 'ZeroC Data Centers, LLC', 200 MW load, POI 'Dennison 115kV substation', National Grid, St Lawrence County. The cited Massena Planning Board minutes PDF (read in full via pdftotext; the fetch summarizer had misread it as a Fleury subdivision notice) contains Site Plan Review #2 exactly as claimed: 'ZeroC Data Centers LLC & Petawatt Holdings, Inc.', '417 County Route #42 (Tax Map #10.001-1-7.21)', zoned Industrial, ~$30M substation, 'this is currently a 200 Megawatt site', deed in ZeroC's name, 'Petawatt is the majority share holder of ZeroC Data Center', and the substation needed so 'their position in the NYISO queue will [not] be lost'. Independent NYS Tax Parcels query returns exactly two St. Lawrence parcels owned by 'Zeroc Data Centers, LLC': 10.001-1-7.21 (417 County Route 42, 67.8 ac, ~44.957,-74.849) and 10.001-1-31.12 (County Route 42, 67.0 ac, ~44.958,-74.844), together ~135 ac, matching ZeroC's own Oct 31 2025 press release for a '140 acres' greenfield campus in Massena with NYPA St. Lawrence-FDR hydro. The Five 9s deck (read in full) markets the same ~140-acre Massena greenfield with a pre-approved 200 MW substation, '200 MW load study with NYISO completed', and '200 MW load connected to existing 115 kV Dennison Substation'; its 'Route 43/Horton Rd' description is the same neighborhood (Horton Rd geocodes 44.962,-74.852, ~0.5 km from the parcels; the Arconic '120 Dennison Rd' parcel 10.001-1-34 sits at 44.953,-74.863 beside the claimed Dennison Station point). nny360 confirms Petawatt clearing land on County Route 42 for a data-center substation; dcmap.us lists the queue entry under 'Petawatt Holdings / ZeroC Data Centers'. Overpass could not be reached, so the Dennison Station coordinate is corroborated only by the deck map and parcel adjacency, which is not load-bearing. Registry has no St. Lawrence County asset; nearest (Old Main/Clarkson, NYGC Chateaugay) are 40-60 km away, so 'new' is correct."
+  },
+  "1717": {
+   "queue": "1717",
+   "upheld": true,
+   "reason": "Verified. interconnection.fyi #1717 lists developer 'Holtec Decommissioning International (HDI)', 200 MW load, POI 'Buchanan 138kV Substation', Con Edison, Westchester, address 450 Broadway, Buchanan 10511. Holtec's HI-CLOUD page names Indian Point (Buchanan) as the anchor with 'an initial target capacity of 200 MW'. Independent NYS Tax Parcels query confirms 450 Broadway is the Indian Point campus: six 'Entergy Nuclear Indian Pt' parcels including 43.10-2-1 (171.7 ac, 450 Broadway, ~41.272,-73.951), 43.10-2-2 (62.9 ac, 450 Broadway), and at the southern end 43.10-2-3 (25.2 ac, class 464 office, centroid 41.2614,-73.9533) and 43.14-2-1.1 (15.5 ac, 41.2603,-73.9500), with Con Edison's Broadway substation parcels (43.11-2-31, 50.7 ac) adjacent, exactly as claimed. The two articles that 403'd for the claimant opened with a browser UA: Peekskill Herald (Dec 11 2024) says Holtec submitted a NYISO request 'for 200 megawatts of power' to assess 'a potential data center at the current Indian Point Energy Center training building property', with Holtec's Spagnuolo stating 'Currently we have no offer'; Highlands Current (May 16 2025) says soil sampling for the data-center study was 'around a training center on the southern end of the site', where Cs-137 was found. Wikipedia gives the plant at 41.26972,-73.95222. The only inference not directly documented is that the training building sits on parcel 43.10-2-3 specifically rather than 43.14-2-1.1 next door; either way the point lies within the southern ~400 m of the same campus. Registry has no Buchanan/Cortlandt/Peekskill asset (nearest Hawthorne ~25 km), so 'new' is correct."
+  },
+  "1747": {
+   "queue": "1747",
+   "upheld": true,
+   "reason": "Upheld as a campus identification, with the claim's own caveat intact. interconnection.fyi #1747 lists developer 'GLOBE DH LLC', 200 MW load, POI 'Beck Packard 76 230kV', National Grid, Niagara County, queued Oct 17 2025, plus a sibling 'GLOBE DH 2' entry; cleanview aggregates Globe DH LLC at 600 MW in Niagara. globedh.com (copyright 'GLOBE DH LLC') portfolio lists four Niagara Falls locations (Highland Ave, College Ave, Packard Rd, Witmer Rd); I downloaded and viewed the cited 'NF 4 Locations' map, which labels red-boxed sites '3801 Highland', '2201 College' and '5950 Packard' with a '4 miles' span, and the 'Prop1' aerial is the former Globe Metallurgical block bounded by Highland Ave, College Ave, Massachusetts Ave and Hyde Park Blvd, as claimed. The Niagara Gazette (via Yahoo) independently reports 'three locations for Globe Digital Holdings on Packard Road and Highland Avenue'. Nominatim reproduces the geocodes (3801 Highland 43.1235,-79.0429; 2201 College 43.1200,-79.0381; 5950 Packard 43.1030,-78.9960) and places 'Blockfusion Niagra Falls' at 5380 Frontier Ave, 43.0828,-79.0033, matching registry site-d8eef9a76c and 2-5 km from the Globe sites; US Bitcoin (site-ab723343bb, 43.0822,-79.0308) is on the south side of the city 4+ km away, and site-f7e64e172f is 8 km east. No registry asset is a Globe DH site, so 'new' is correct. Site lineage corroborated: wnypapers (opened with browser UA) confirms 9 Lives Digital Group/President Michael Bagley acquired the former Globe Metallurgy property Aug 2024, and niagaraexpress gives the sale as 3807 Highland Ave from Jerome P. Williams for $3M; however no document ties 9LDG/Bagley to Globe DH LLC, and Niagara County is not in the NYS Tax Parcels Public layer (count = 0), so current parcel ownership by Globe DH could not be confirmed. Residual uncertainty is only which of the three sites carries the '-1' entry; the 230 kV Beck-Packard POI makes the 5950 Packard Rd site a live alternative to the Highland Ave coordinates given, so treat the point as accurate to within ~5 km inside Niagara Falls' north end."
+  },
+  "1748": {
+   "queue": "1748",
+   "upheld": true,
+   "reason": "Upheld as a new Niagara Falls North End asset. NYISO Interconnection Queue xlsx (07-31-2026, Load Projects sheet) row 1748 = developer 'GLOBE DH LLC', project 'GLOBE DH 2', 200 MW load (DAT-AI), county field literally 'NIAGARA FALLS', POI 'Beck Packard 76 230kV', National Grid, IR 2025-10-17, backfeed 06-2027; sibling rows 1747 (Globe Digital Holdings - 1, same POI) and 1749 confirm a 3 x 200 MW program. globedh.com is 'GLOBE DH LLC', contact 'Niagara Falls, NY, USA', and its portfolio page lists exactly four Niagara Falls parcels: College Ave, Packard Rd, Highland Ave, Witmer Rd. The paywalled Niagara Gazette article (21 Aug 2026, Robert Creenan) is republished in full on govtech.com and does contain the claimed sentence: 'Five reportedly proposed data centers would be in Niagara Falls, which include NFR's proposed center in the downtown area, Whattum Management's center on Portage Road, and three locations for Globe Digital Holdings on Packard Road and Highland Avenue' - with U.S. Bitcoin and Blockfusion listed separately as existing centers. Packard Substation (OSM way 147381638, 230/115 kV) centroid 43.0988,-79.0075; 4870 Packard Rd (Globe Ventures LLC, NY DOS ID 6313903, formed 2021-10-27, c/o G. Aaron Santarosa) geocodes 43.0979,-79.0043, ~300 m from the POI substation. Registry Niagara Falls assets are different operators/sites: Blockfusion 5380 Frontier Ave (43.0828,-79.0033, 1.7 km S of the Packard parcel), US Bitcoin Buffalo Ave (43.0822,-79.0308), site-f7e64e172f (43.0748,-78.9448, reverse-geocodes to Frontier Ave/Love Canal, 5.5 km SE) - none is Globe DH, so asset_id 'new' is correct. Caveats that keep this at medium confidence: (1) NY DOS has no entity named 'GLOBE DH' (API validated against known entities), so the 'probable Santarosa' lineage is only circumstantial; (2) the pinned coordinate 43.1236,-79.0429 is 3807 Highland Ave, bought June/July 2024 by Highland Ave NY 3801 LLC (NY DOS ID 7342709, Niagara; 9 Lives Digital Group / Bagley) - no source ties that parcel to Globe DH LLC, and Santarosa's 1500 College Ave (43.1221,-79.0470) or the Packard Rd parcel beside the POI substation (43.0979,-79.0043) are equally plausible pins; which parcel carries DH 2 is not public. Coordinate should be treated as a cluster centroid, not a parcel."
+  },
+  "1749": {
+   "queue": "1749",
+   "upheld": true,
+   "reason": "Upheld as the same new Globe DH LLC Niagara Falls campus. NYISO queue xlsx (07-31-2026) row 1749 = 'GLOBE DH LLC', 'Globe DH 3', 200 MW load (DAT-AI), county field 'niagara falls', POI 'Niagara Packard 77 230kV', ATO NYPA, National Grid, IR 2025-10-17 (same day as 1747/1748), backfeed 10-2026. Both Beck-Packard 76 and Niagara-Packard 77 terminate at Packard Substation (OSM way 147381638, 43.0988,-79.0075, 230/115 kV), consistent with Globe DH's Packard Rd parcel (globedh.com portfolio: College Ave, Packard Rd, Highland Ave, Witmer Rd; 4870 Packard Rd geocodes 43.0979,-79.0043). Gazette 21 Aug 2026 (verified via govtech.com full-text republication) names 'three locations for Globe Digital Holdings on Packard Road and Highland Avenue' as proposed sites distinct from the existing U.S. Bitcoin and Blockfusion centers, which are the only Niagara Falls operators in the registry (site-d8eef9a76c 43.0828,-79.0033; site-ab723343bb 43.0822,-79.0308; site-f7e64e172f 43.0748,-78.9448) - 1.7-5.5 km away and different companies. No registry asset matches; 'new' is correct. Same caveats as 1748: no NY DOS record for 'GLOBE DH' (Santarosa lineage unproven); the pinned 43.1236,-79.0429 is the 9 Lives Digital-owned 3807 Highland Ave parcel (Highland Ave NY 3801 LLC, DOS ID 7342709) with no documented Globe DH link; no public source assigns DH 3 to a specific parcel. Note infrasure.ai shows DH 3 as 100 MW in one snippet, but the NYISO queue itself says 200 MW."
+  },
+  "1754": {
+   "queue": "1754",
+   "upheld": true,
+   "reason": "Upheld, high confidence. NYISO queue xlsx (07-31-2026) row 1754 = developer 'EKG Group LLC', project 'Kenwood Tech Center', 180 MW load (DAT), Albany County, Zone F, POI 'Albany-Bethlehem 115 kV Line #18', National Grid, IR 2025-11-11, backfeed 12-2028. ekggroup.us (family office led by Michael-Henry Elghanian-Krayem) lists 'Kenwood Commons, Albany, New York' at '42.65N 73.76W', '76 ac', '345 kV On site', 'largest contiguous undeveloped parcel in the City of Albany'. Times Union (via Yahoo, 21 May 2026): EKG Group LLC filed 'Kenwood Tech Center' with NYISO in Nov 2025 for 180 MW at the former Kenwood Convent/Doane Stuart site owned by Guild Ventures, 76 acres, tech center ~5 acres, main building destroyed by fire 23 Mar 2023, operations 2028. CBS6 (31 May 2024) names Michael-Henry Krayem as director of Guild Investments which took title Nov 2023; CBS6 (18 Aug 2026) says 'EKG Group and Guild Ventures are the developers owning Kenwood Commons', 76 acres on the hill off Southern Boulevard; Hoodline (30 Jun 2026) and servercountry.org corroborate the queue name, 180 MW, South End Albany location and rezoning request. Geography: 799 S Pearl St geocodes 42.6286,-73.7669; OSM Kenwood Road campus service ways center 42.628, -73.767 to -73.776; Kenwood hamlet node 42.6237,-73.7732 - the claim's 42.628,-73.771 lies on the campus. Nearest registry asset is IBM Building/INOC (site-9f9c3695f6, 42.6494,-73.7527, downtown colocation, different operator) ~2.8 km away; INOC 4 Tower Pl, Lumen Albany 4 and Turnkey Latham are farther. No registry asset is this campus; 'new' is correct."
+  }
+ }
+}

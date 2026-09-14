@@ -1,0 +1,394 @@
+region,osm_type,osm_id,name,operator,ref,building,telecom,addr_street,addr_city,addr_country,levels,website,lon,lat
+US-VA,node,5225685660,Lumos Networks,,,,data_center,,,,,,-79.142706,37.415688
+US-VA,node,7985753364,8100 Boone Boulevard,Digital Realty,,,data_center,Boone Boulevard,,,,,-77.225882,38.913724
+US-VA,node,9092482804,Amazon Web Services IAD69,Amazon Web Services,IAD69,,data_center,,,,,,-77.4147,39.025485
+US-VA,node,9669639033,Lumen McLean,Lumen Technologies,,,data_center,Old Meadow Road,McLean,,,,-77.211571,38.920854
+US-VA,node,13154826378,NTT Ashburn VA7 Data Center,NTT,VA7,,data_center,Gigabit Plaza,Ashburn,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va7-data-center,-77.471954,39.016014
+US-VA,node,13154826379,NTT VA11 Data Center,NTT,VA11,,data_center,Grove Hill Boulevard,Gainesville,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va11-data-center,-77.609964,38.799973
+US-VA,node,13685576464,RIC1 DC1,Quality Technology Services,,,data_center,,,,,,-77.247476,37.489234
+US-VA,node,13685576465,RIC1 DC2,Quality Technology Services,,,data_center,,,,,,-77.24621,37.488616
+US-VA,node,13685576466,RIC1 DC3,Quality Technology Services,,,data_center,,,,,,-77.244826,37.487858
+US-VA,node,13891340203,Vantage VA16,,,,data_center,Pacific Boulevard,Sterling,,,,-77.440637,38.998508
+US-VA,node,14045039387,CloudHQ LC10,CloudHQ,LC10,,data_center,,,,,,-77.472678,39.00392
+US-VA,node,14045039388,CloudHQ LC9,CloudHQ,LC9,,data_center,,,,,,-77.470436,39.003503
+US-VA,node,14045039389,CloudHQ LC8,CloudHQ,LC8,,data_center,,,,,,-77.468333,39.00206
+US-VA,node,14045039390,CloudHQ LC14,CloudHQ,LC14,,data_center,,,,,,-77.475951,39.006121
+US-VA,node,14045039391,CloudHQ LC13,CloudHQ,LC13,,data_center,,,,,,-77.476723,39.004995
+US-VA,node,14045039392,CloudHQ LC1,CloudHQ,LC1,,data_center,,,,,,-77.478515,39.005445
+US-VA,node,14045039393,CloudHQ LC11,CloudHQ,LC11,,data_center,,,,,,-77.477699,39.006588
+US-VA,node,14045039394,CloudHQ LC5,CloudHQ,LC5,,data_center,,,,,,-77.476734,39.009805
+US-VA,node,14045039395,Cologix ASH2,Cologix,,data_center,data_center,Beaumeade Circle,Ashburn,,,https://cologix.com/data-centers/ashburn/ash2,-77.457953,39.019496
+US-VA,node,14045092726,Sabey Data Centers Ashburn - Building A,Sabey Data Centers,,data_center,data_center,Red Rum Drive,Ashburn,,,https://sabeydatacenters.com/locations/ashburn-data-center,-77.476938,39.013795
+US-VA,node,14045092727,NTT Ashburn VA8 Data Center,NTT,VA8,,data_center,Gigabit Plaza,Ashburn,,,,-77.475672,39.018788
+US-VA,node,14152612201,EdgeCore Ashburn AS02,,,,data_center,Moran Road,Sterling,,,https://edgecore.com/locations/ashburn-data-center,-77.444001,38.994315
+US-VA,node,14156477686,Equinix Ashburn DC18,Equinix,DC18,,data_center,Performance Circle,Ashburn,,,,-77.454281,39.025458
+US-VA,way,45583050,,,,data_center,,,,,,,-77.510582,38.803434
+US-VA,way,45776978,Amazon IAD11,Amazon Web Services,Amazon IAD11,data_center,data_center,Mason King Court,Manassas,,,,-77.54111,38.790495
+US-VA,way,45776979,Amazon IAD24,Amazon Web Services,IAD24,yes,data_center,Mason King Court,Manassas,,,,-77.54001,38.790346
+US-VA,way,45776988,Amazon IAD7,Amazon Web Services,Amazon IAD-7,data_center,data_center,Mason King Court,Manassas,,,,-77.538266,38.791199
+US-VA,way,46831933,VA 4,Digital Realty,,data_center,data_center,Linton Hall Road,Bristow,US,,,-77.594905,38.778061
+US-VA,way,48242814,Amazon IAD10,Amazon Web Services,IAD10,data_center,data_center,W Severn Way,Sterling,,,,-77.432973,39.021675
+US-VA,way,48242816,Amazon IAD32,Amazon Web Services,IAD32,data_center,data_center,Squire Court,Sterling,,,,-77.434794,39.021569
+US-VA,way,52094269,Centersquare IAD1-B,Centersquare,IAD1-B,data_center,data_center,Nokes Boulevard,Sterling,,,,-77.415209,39.023868
+US-VA,way,52094270,Centersquare IAD1-A,Centersquare,IAD1-A,data_center,data_center,Nokes Boulevard,Sterling,,,,-77.413212,39.023298
+US-VA,way,52094294,Centersquare IAD1-C,Centersquare,IAD1-C,data_center,data_center,Ridgetop Circle,Sterling,,,,-77.412204,39.024754
+US-VA,way,59294476,STACK NVA01A - Northern Virginia,Stack Infrastructure,NVA01A,data_center,data_center,,,,,https://www.stackinfra.com/locations/northern-virginia/?data_center=nva01a,-77.44174,39.004693
+US-VA,way,79158387,VA3,Digital Realty,VA3,data_center,data_center,Business Center Drive,Reston,,5,,-77.327307,38.948494
+US-VA,way,79159494,IAD1,Evocative,IAD1,yes,data_center,Michael Faraday Court,Reston,,,https://evocative.com/data-centers/reston-va-data-center-iad1/,-77.329414,38.948812
+US-VA,way,79298926,CoreSite Reston Campus VA1,CoreSite,,office,data_center,Sunrise Valley Drive,Reston,US,,,-77.36455,38.950606
+US-VA,way,79818498,CoreSite Reston VA3,CoreSite,,yes,data_center,Sunrise Valley Drive,Reston,,,https://www.coresite.com/data-center/va3-reston-va,-77.37243,38.948334
+US-VA,way,156468497,,,,data_center,,Boone Boulevard,,,5,,-77.225834,38.913702
+US-VA,way,221897579,Equinix DC97,Equinix,,yes,data_center,Springpark Place,,,,,-77.377418,38.961573
+US-VA,way,222672860,Amazon IAD-55,Amazon Web Services,IAD55,data_center,data_center,John Marshall Highway,Haymarket,,,,-77.64868,38.815021
+US-VA,way,224100721,COPT Data Center,,,data_center,data_center,Hornbaker Road,Manassas,,,,-77.531826,38.74731
+US-VA,way,225745958,OVH US East Vint Hill,,,commercial,data_center,Watson Court,,,,,-77.674465,38.74742
+US-VA,way,234722029,Equinix Ashburn DC2,Equinix,DC2,data_center,data_center,Filigree Court,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc2,-77.459069,39.016389
+US-VA,way,234722720,H5 Data Centers Ashburn,H5 Data Centers,Ashburn,data_center,data_center,Beaumeade Circle,Ashburn,,,https://h5datacenters.com/ashburn-data-center.html,-77.451719,39.013678
+US-VA,way,239147373,Lumen McLean,Lumen Technologies,,commercial,data_center,Old Meadow Road,McLean,,2,,-77.211619,38.920021
+US-VA,way,239147724,DataBank McLean IAD2,DataBank,IAD2,data_center,data_center,Old Meadow Lane,McLean,,2,https://www.databank.com/data-centers/northern-virginia/mclean/,-77.213585,38.919905
+US-VA,way,251716311,,,,commercial,data_center,Lafayette Center Drive,,,,,-77.468972,38.905901
+US-VA,way,251716328,Digital Realty,Digital Realty,,data_center,data_center,Lafayette Center Drive,,,,,-77.472592,38.910116
+US-VA,way,257581364,Flexential - Richmond,Flexential,,yes,data_center,Park Central Drive,Richmond,,,,-77.438695,37.64689
+US-VA,way,258343744,Amazon IAD-9,Amazon Web Services,IAD-9,data_center,data_center,Westfax Drive,Chantilly,,,,-77.453444,38.899724
+US-VA,way,258343748,Amazon IAD22,Amazon Web Services,IAD22,yes,data_center,,,,,,-77.455103,38.897905
+US-VA,way,258343749,Amazon IAD-1,Amazon Web Services,IAD-1,data_center,data_center,Westfax Drive,Chantilly,,,,-77.454082,38.897864
+US-VA,way,258519934,,,,data_center,data_center,Lafayette Center Drive,,,,,-77.472266,38.909237
+US-VA,way,258519959,,,,data_center,data_center,Lafayette Center Drive,,,,,-77.473454,38.909796
+US-VA,way,258520532,,,,commercial,data_center,Lafayette Center Drive,,,,,-77.475218,38.908136
+US-VA,way,260996040,,,,data_center,,,,,,,-77.196272,38.750815
+US-VA,way,262058094,Menlo Digital MD-DC1,,,yes,data_center,Mclearen Road,,,,,-77.424073,38.927119
+US-VA,way,273895868,Centersquare IAD3,Centersquare,IAD3,yes,data_center,Wilder Court,Dulles,,,,-77.444379,38.980929
+US-VA,way,273896089,Centersquare IAD2-A,Centersquare,IAD2-A,data_center,data_center,International Drive,Sterling,,,,-77.42381,38.98442
+US-VA,way,273896096,CyrusOne NVA4,CyrusOne,CyrusOne NVA4,data_center,data_center,International Drive,Sterling,,,https://www.cyrusone.com/data-centers/north-america/sterling-virginia-nva4,-77.42567,38.984866
+US-VA,way,273896102,Centersquare IAD2-B,Centersquare,IAD2-B,data_center,data_center,International Drive,Sterling,,,,-77.424085,38.983614
+US-VA,way,298126010,Digital Realty ACC4,Digital Realty,ACC4,data_center,data_center,Hastings Drive,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/acc4,-77.462471,39.017859
+US-VA,way,298127059,Equinix Ashburn DC1,Equinix,DC1,data_center,data_center,Filigree Court,Ashburn,US,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc1,-77.460328,39.015558
+US-VA,way,298127361,Equinix Ashburn DC5,Equinix,DC5,data_center,data_center,Filigree Court,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc5,-77.461222,39.015965
+US-VA,way,298127420,Equinix Ashburn DC11,Equinix,DC11,data_center,data_center,Filigree Court,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc11,-77.4588,39.014891
+US-VA,way,298242260,Equinix Ashburn DC3,Equinix,DC3,data_center,data_center,Chilum Place,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc3,-77.461092,39.022358
+US-VA,way,298242335,Digital Realty ACC3,Digital Realty,ACC3,data_center,data_center,Hastings Drive,Ashburn,,,,-77.459803,39.01988
+US-VA,way,299927846,Amazon IAD76,Amazon Web Services,IAD76,data_center,data_center,Randolph Drive,Sterling,,,,-77.450509,38.993794
+US-VA,way,299929061,Amazon IAD12,Amazon Web Services,Amazon IAD12,data_center,data_center,Dulles Summit Court,Sterling,,,,-77.447671,38.988724
+US-VA,way,300162674,Digital Realty ACC5,Digital Realty,ACC5,data_center,data_center,Hastings Drive,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/acc5,-77.463103,39.020158
+US-VA,way,300162675,Digital Realty ACC6,Digital Realty,ACC6,data_center,data_center,Chilum Place,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/acc6,-77.463551,39.021026
+US-VA,way,300162689,Level 3 Ashburn,Lumen Technologies,,yes,data_center,Guilford Drive,Ashburn,,,,-77.457609,39.022182
+US-VA,way,300163074,Centersquare IAD4-B,Centersquare,IAD4-B,data_center,data_center,Beaumeade Circle,Ashburn,,,,-77.453595,39.022168
+US-VA,way,300163083,NTT Ashburn VA1 Data Center,NTT,VA1,data_center,data_center,Guilford Drive,Ashburn,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va-1-data-center,-77.454891,39.022744
+US-VA,way,300969250,Equinix DC13,Equinix,DC13,data_center,data_center,Uunet Way,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc13,-77.475405,39.012562
+US-VA,way,300969614,Digital Realty Northern Virginia IAD14,Digital Realty,IAD14,data_center,data_center,Devin Shafron Drive,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad14,-77.487093,39.003336
+US-VA,way,300969615,Amazon Web Services Building C,Amazon Web Services,,data_center,data_center,Devin Shafron Drive,,,,,-77.485449,39.002752
+US-VA,way,300969616,Digital Realty Northern Virginia IAD12,Digital Realty,IAD12,data_center,data_center,Devin Shafron Drive,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad12,-77.483347,39.002023
+US-VA,way,300969617,Digital Realty Building A,Digital Realty,,data_center,data_center,Devin Shafron Drive,,,,,-77.481957,39.002741
+US-VA,way,300969619,Digital Realty Northern Virginia IAD24,Digital Realty,IAD24,data_center,data_center,Devin Shafron Drive,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad24,-77.484415,39.004319
+US-VA,way,300970759,Databank Ashburn IAD1,DataBank,IAD1,data_center,data_center,Red Rum Drive,Ashburn,,,,-77.482156,39.015488
+US-VA,way,300970761,DataBank Ashburn IAD4,DataBank,IAD4,data_center,data_center,Red Rum Drive,Ashburn,,,,-77.483348,39.015487
+US-VA,way,368724474,Equinix DC7,Equinix,DC7,yes,data_center,Quantum Drive,,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc7,-77.220557,38.909139
+US-VA,way,368724479,Element Critical VA1,,,office,data_center,Quantum Drive,,,,,-77.219744,38.908367
+US-VA,way,380282154,VISA Data Center,,,data_center,data_center,Russell Branch Parkway,Ashburn,,,,-77.445397,39.048766
+US-VA,way,429040021,,Bank of America,,industrial,data_center,White Oak Creek Drive,,,,,-77.237487,37.494395
+US-VA,way,435324552,"CyrusOne NVA1, NVA2 & NVA3",CyrusOne,NVA1;NVA2;NVA3,data_center,data_center,Ridgetop Circle,Sterling,,,https://www.cyrusone.com/data-centers/north-america/sterling-va-nva1-nva3,-77.41447,39.025902
+US-VA,way,435817145,CyrusOne NVA5,CyrusOne,NVA5,data_center,data_center,Pacific Boulevard,Sterling,,,https://www.cyrusone.com/data-centers/north-america/virginia/nva5-sterling,-77.4341,39.024356
+US-VA,way,439365340,Virginia Information Technologies Agency,,,public,data_center,Meadowville Lane,,,,https://www.vita.virginia.gov/,-77.331806,37.360703
+US-VA,way,450078003,Equinix CU2,Equinix,,,data_center,Technology Drive,Culpeper,US,,https://www.equinix.com/,-77.978132,38.454844
+US-VA,way,460050155,Equinix Ashburn DC10,Equinix,DC10,data_center,data_center,Beaumeade Circle,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc10,-77.451489,39.021005
+US-VA,way,460053028,Amazon Web Services Datacenter Complex,Amazon Web Services,,,data_center,,,,,,-77.451631,39.026331
+US-VA,way,460053030,Amazon Web Services,Amazon Web Services,,,data_center,,,,,,-77.458838,39.028807
+US-VA,way,460056017,Amazon IAD-61,Amazon Web Services,Amazon IAD-61,data_center,data_center,,,,,,-77.491987,38.915805
+US-VA,way,460056018,,,,,data_center,,,,,,-77.442257,38.986515
+US-VA,way,460056019,Amazon IAD51,Amazon Web Services,Amazon IAD51,data_center,data_center,,,,,,-77.436511,38.991412
+US-VA,way,460056020,Amazon IAD56,Amazon Web Services,Amazon IAD56,data_center,data_center,,,,,,-77.437059,38.99057
+US-VA,way,460056023,Amazon IAD16,Amazon Web Services,Amazon IAD16,data_center,data_center,Dulles Summit Court,Sterling,,,,-77.44884,38.990686
+US-VA,way,460056024,Amazon IAD15,Amazon Web Services,Amazon IAD15,data_center,data_center,Dulles Summit Court,Sterling,,,,-77.448564,38.991708
+US-VA,way,460059465,Amazon IAD14,Amazon Web Services,IAD14,data_center,data_center,Brewers Spring Road,Manassas,,,,-77.548229,38.789885
+US-VA,way,460060340,Amazon IAD59,Amazon Web Services,IAD59,data_center,data_center,Doane Drive,Manassas,,,,-77.548467,38.792187
+US-VA,way,460060341,Amazon IAD52,Amazon Web Services,IAD52,data_center,data_center,Brewers Spring Road,Manassas,,,,-77.548386,38.791119
+US-VA,way,460175664,QTS Ashburn-Moran,Quality Technology Services,,data_center,data_center,Moran Road,,,,,-77.448201,38.994221
+US-VA,way,460175666,Centersquare IAD4-A,Centersquare,IAD4-A,data_center,data_center,Beaumeade Circle,Ashburn,,,,-77.452798,39.021782
+US-VA,way,460175672,AWS Building E,Amazon Web Services,,data_center,data_center,Devin Shafron Drive,Ashburn,,,,-77.485612,39.005052
+US-VA,way,463571875,Amazon IAD78,Amazon Web Services,IAD78,data_center,data_center,Interconnection Plaza,Ashburn,,,,-77.44952,39.026368
+US-VA,way,463571876,Amazon IAD79,Amazon Web Services,IAD79,data_center,data_center,Interconnection Plaza,Ashburn,,,,-77.45087,39.026357
+US-VA,way,465062052,Amazon IAD87,Amazon Web Services,IAD87,data_center,data_center,,,,,,-77.441172,38.991808
+US-VA,way,465062053,Amazon IAD88,Amazon Web Services,IAD88,data_center,data_center,,,,,,-77.441868,38.990968
+US-VA,way,490997243,Amazon IAD73,Amazon Web Services,IAD73,data_center,data_center,Wellington Road,Manassas,,,,-77.559099,38.777979
+US-VA,way,490997244,Amazon IAD74,Amazon Web Services,IAD74,data_center,data_center,Wellington Road,Manassas,,,,-77.557891,38.777437
+US-VA,way,544596573,Amazon IAD63,Amazon Web Services,IAD63,yes,data_center,,,,,,-77.493251,38.916885
+US-VA,way,545396372,Amazon IAD62,Amazon Web Services,IAD62,data_center,data_center,,,,,,-77.519875,38.949322
+US-VA,way,550355261,Digital Fortress: Richmond,Digital Fortress,,industrial,data_center,Meadowville Technology Parkway,,,,,-77.327038,37.360061
+US-VA,way,556599693,Amazon IAD71,Amazon Web Services,IAD71,data_center,data_center,Smith Switch Road,Ashburn,,,,-77.4575,39.027906
+US-VA,way,556599694,Amazon IAD50,Amazon Web Services,IAD50,data_center,data_center,Smith Switch Road,Ashburn,,,,-77.459655,39.029562
+US-VA,way,556599695,Amazon IAD60,Amazon Web Services,IAD60,data_center,data_center,Smith Switch Road,Ashburn,,,,-77.458246,39.028774
+US-VA,way,596690174,Amazon IAD80,Amazon Web Services,IAD80,data_center,data_center,Interconnection Plaza,Ashburn,,,,-77.452829,39.027109
+US-VA,way,596690175,Equinix Ashburn DC12,Equinix,DC12,data_center,data_center,Performance Circle,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc12,-77.449787,39.023016
+US-VA,way,597970806,Digital Realty Northern Virginia IAD36,Digital Realty,IAD36,data_center,data_center,Digital Loudoun Plaza,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad36,-77.479375,39.001549
+US-VA,way,597970809,Digital Realty Northern Virginia IAD35,Digital Realty,IAD35,data_center,data_center,Digital Loudoun Plaza,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad35,-77.480578,39.000533
+US-VA,way,597970811,Digital Realty Northern Virginia IAD37,Digital Realty,IAD37,data_center,data_center,Digital Loudoun Plaza,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad37,-77.478015,39.000032
+US-VA,way,597970813,Digital Realty Northern Virginia IAD38,Digital Realty,IAD38,data_center,data_center,Digital Loudoun Plaza,Ashburn,,,,-77.477201,39.001084
+US-VA,way,610977485,NTT Ashburn VA2 Data Center,NTT,VA2,data_center,data_center,Guilford Drive,Ashburn,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va-2-data-center,-77.45764,39.025013
+US-VA,way,649319778,Digital Realty ACC7,Digital Realty,ACC7,data_center,data_center,Gresham Court,Ashburn,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/acc7,-77.465675,39.017472
+US-VA,way,649365751,NTT Ashburn VA3 Data Center,NTT,VA3,data_center,data_center,Gigabit Plaza,Ashburn,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va-3-data-center,-77.470372,39.017225
+US-VA,way,649365764,Digital Realty ACC9,Digital Realty,ACC9,data_center,data_center,Sir Timothy Drive,,,,,-77.467373,39.015433
+US-VA,way,667573133,Amazon Web Services,Amazon Web Services,IAD85,data_center,data_center,,,,,,-77.541725,38.779381
+US-VA,way,693381106,Amazon IAD68,Amazon Web Services,IAD68,data_center,data_center,,,,,,-77.520952,38.948687
+US-VA,way,693381107,Amazon IAD81,Amazon Web Services,IAD81,data_center,data_center,,,,,,-77.52183,38.948388
+US-VA,way,693385812,Google,Google,ARA1,data_center,data_center,,,,,,-77.52433,38.943205
+US-VA,way,693390022,Amazon IAD120,Amazon Web Services,IAD120,data_center,data_center,,,,,,-77.498058,38.957917
+US-VA,way,693390023,Amazon IAD121,Amazon Web Services,IAD121,data_center,data_center,,,,,,-77.497784,38.956777
+US-VA,way,696978351,,,,data_center,,,,,,,-77.471561,39.012027
+US-VA,way,696985482,,,,,data_center,,,,,,-77.449856,38.99954
+US-VA,way,696992451,,,,,data_center,,,,,,-77.548417,38.790814
+US-VA,way,697020849,Amazon IAD58,Amazon Web Services,IAD58,data_center,data_center,,,,,,-77.441886,38.9863
+US-VA,way,697020850,Amazon IAD57,Amazon Web Services,IAD57,data_center,data_center,,,,,,-77.442633,38.986993
+US-VA,way,697021948,Amazon IAD64,Amazon Web Services,IAD64,data_center,data_center,John Marshall Highway,Haymarket,,,,-77.652919,38.815132
+US-VA,way,697021949,,Amazon,,,data_center,,,,,,-77.65254,38.815974
+US-VA,way,701923200,QTS Ashburn 1,Quality Technology Services,DC1,data_center,data_center,Broderick Drive,Sterling,,,https://q.com/data-centers/ashburn-1/,-77.450111,38.999528
+US-VA,way,701923202,Digital Realty Northern Virginia IAD73,Digital Realty,IAD73,data_center,data_center,Round Table Plaza,Ashburn,,,,-77.466407,39.006619
+US-VA,way,701923203,Digital Realty Northern Virginia IAD39,Digital Realty,IAD39,data_center,data_center,Round Table Plaza,Ashburn,,,,-77.467631,39.007614
+US-VA,way,701923204,Digital Realty ACC10,Digital Realty,ACC10,data_center,data_center,Sir Timothy Drive,,,,,-77.465604,39.012656
+US-VA,way,701924664,Sentinel Ashburn Nexus Data Center,GI Partners,,data_center,data_center,Cloud Plaza,Sterling,,,,-77.439808,39.000647
+US-VA,way,701924665,Vantage VA11,Vantage Data Centers,VA11,data_center,data_center,Vantage Data Plaza,Sterling,,,,-77.437688,39.002379
+US-VA,way,701924667,Amazon IAD90,Amazon Web Services,IAD90,data_center,data_center,Pathfinder Plaza,Sterling,,,,-77.411652,38.988603
+US-VA,way,701924668,Amazon IAD91,Amazon Web Services,IAD91,data_center,data_center,Pathfinder Plaza,Sterling,,,,-77.411119,38.987847
+US-VA,way,701924669,Amazon IAD92,Amazon Web Services,IAD92,data_center,data_center,Pathfinder Plaza,Sterling,,,,-77.410475,38.986943
+US-VA,way,701929066,Amazon IAD144,Amazon Web Services,IAD144,data_center,data_center,International Drive,Sterling,,,,-77.427429,38.981635
+US-VA,way,701930919,CyrusOne NVA8,CyrusOne,NVA8,data_center,data_center,Maries Road,Sterling,,,https://www.cyrusone.com/data-centers/north-america/sterling-virginia-nva8,-77.413244,39.021179
+US-VA,way,701930920,Amazon IAD98,Amazon Web Services,IAD98,data_center,data_center,West Severn Way,,,,,-77.433886,39.020225
+US-VA,way,701930921,Amazon IAD99,Amazon Web Services,IAD99,data_center,data_center,West Severn Way,,,,,-77.43403,39.019169
+US-VA,way,701930929,Amazon IAD114,Amazon Web Services,IAD114,data_center,data_center,Loudoun County Parkway,Ashburn,,,,-77.450699,39.035494
+US-VA,way,701930930,Amazon IAD115,Amazon Web Services,IAD115,data_center,data_center,Loudoun County Parkway,Ashburn,,,,-77.449795,39.036294
+US-VA,way,701931819,Amazon IAD65,Amazon Web Services,IAD65,yes,data_center,,,,,,-77.494366,38.917011
+US-VA,way,701931820,Amazon IAD150,Amazon Web Services,IAD150,data_center,data_center,,,,,,-77.477249,38.916073
+US-VA,way,706726088,Stonewall Creek Business Park,Google,,,data_center,Red Triangle Lane,Leesburg,,,,-77.539438,39.051467
+US-VA,way,708916484,Sabey Data Centers Ashburn - Building C,Sabey Data Centers,,data_center,data_center,Red Rum Drive,Ashburn,,,https://sabeydatacenters.com/locations/ashburn-data-center,-77.47827,39.015422
+US-VA,way,710070925,Google Data Center,Google,,data_center,data_center,,,,2,,-77.539573,39.052633
+US-VA,way,714622339,Google Data Center,Google,,,data_center,,,,,,-77.526164,38.943321
+US-VA,way,744491691,Amazon IAD145,Amazon Web Services,IAD145,data_center,data_center,International Drive,Sterling,,,,-77.42463,38.982552
+US-VA,way,744496741,Amazon Web Services IAD117,Amazon Web Services,IAD117,data_center,data_center,Maries Road,Sterling,,,,-77.419095,39.023698
+US-VA,way,744496750,Amazon Web Services IAD116,Amazon Web Services,IAD116,data_center,data_center,Maries Road,Sterling,,,,-77.420439,39.024346
+US-VA,way,762116506,Meta Henrico Data Center,Meta,,industrial,data_center,,,,,,-77.23733,37.483913
+US-VA,way,793087858,Digital Realty IAD41 (Building P),Digital Realty,IAD41,data_center,data_center,Round Table Plaza,Ashburn,,,,-77.458236,39.008806
+US-VA,way,793087859,Amazon IAD118,Amazon Web Services,IAD118,data_center,data_center,Charles View Drive,Sterling,,,,-77.438836,39.018509
+US-VA,way,793622740,Aligned Ashburn IAD-01,Aligned,IAD-01,data_center,data_center,Uunet Drive,Ashburn,,,,-77.470556,39.013608
+US-VA,way,793888408,Equinix Ashburn DC15,Equinix,DC15,data_center,data_center,Performance Circle,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc15,-77.450256,39.0225
+US-VA,way,793888427,Sabey Data Centers Ashburn - Building B,Sabey Data Centers,,data_center,data_center,Red Rum Drive,Ashburn,,,https://sabeydatacenters.com/locations/ashburn-data-center,-77.479987,39.0145
+US-VA,way,793888429,NTT Ashburn VA5 Data Center,NTT,VA5,data_center,data_center,Megawatt Drive,Ashburn,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va-5-data-center,-77.472611,39.018303
+US-VA,way,793888430,NTT Ashburn VA4 Data Center,NTT,VA4,data_center,data_center,Megawatt Drive,Ashburn,,,https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas/ashburn-va-4-data-center,-77.472592,39.019868
+US-VA,way,794147654,CloudHQ LC1,CloudHQ,LC1,data_center,data_center,Loudoun County Parkway,Ashburn,,,,-77.462671,39.010247
+US-VA,way,794147655,CloudHQ LC2,CloudHQ,LC2,data_center,data_center,Waxpool Road,Ashburn,,,,-77.462459,39.011755
+US-VA,way,794147657,Amazon IAD146,Amazon Web Services,IAD146,data_center,data_center,,,,,,-77.435597,38.996721
+US-VA,way,796933516,Equinix Ashburn DC21,Equinix,DC21,data_center,data_center,Beaumeade Circle,Ashburn,,3,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc21,-77.45451,39.011805
+US-VA,way,817338831,Amazon IAD140,Amazon Web Services,IAD140,data_center,data_center,Platform Plaza,Sterling,,,,-77.41755,38.981455
+US-VA,way,817338832,Amazon IAD141,Amazon Web Services,IAD141,data_center,data_center,Platform Plaza,Sterling,,,,-77.416786,38.982388
+US-VA,way,828135845,Amazon IAD84,Amazon Web Services,IAD84,data_center,data_center,John Marshall Highway,Haymarket,,,,-77.652499,38.816103
+US-VA,way,840582927,Middletown Data Center,,,,data_center,Valley Pike,Middletown,,,https://www.middletowndatacenter.com/,-78.290942,39.017678
+US-VA,way,844374689,,,,data_center,data_center,,,,,,-77.540023,39.050601
+US-VA,way,852039781,Amazon IAD119,Amazon Web Services,IAD119,data_center,data_center,Charles View Drive,Sterling,,,,-77.439389,39.016931
+US-VA,way,876120402,DBT Data - Harrisonburg Center,,,,data_center,,,,,,-78.856725,38.462603
+US-VA,way,882977350,CloudHQ MCC1,CloudHQ,MCC1,data_center,data_center,,,,,https://cloudhq.com/location/mcc-campus/,-77.49994,38.717062
+US-VA,way,886028872,Amazon IAD129,Amazon Web Services,IAD129,data_center,data_center,Charles View Drive,Sterling,,,,-77.438382,39.01608
+US-VA,way,886330269,Microsoft,Microsoft,,data_center,data_center,Compass Creek Parkway,Leesburg,,,,-77.564129,39.074787
+US-VA,way,897226569,Microsoft Data Center,Microsoft,,,data_center,,,,,,-77.559445,38.949518
+US-VA,way,897226573,Arcola Tech Park,,,,data_center,,,,,,-77.555626,38.949268
+US-VA,way,897226574,Amazon IAD125,Amazon Web Services,IAD125,data_center,data_center,,,,,,-77.560545,38.948089
+US-VA,way,897226575,Amazon IAD124,Amazon Web Services,IAD124,data_center,data_center,,,,,,-77.560452,38.949895
+US-VA,way,909455922,42310 THUNDERBALL DR,True North Data Solutions,,data_center,data_center,Thunderball Drive,Leesburg,,1,,-77.539711,39.044103
+US-VA,way,930849744,Amazon IAD163,Amazon Web Services,IAD163,data_center,data_center,Atlantic Boulevard,Dulles,,,,-77.429702,39.032305
+US-VA,way,954433119,Amazon IAD175,Amazon Web Services,IAD175,data_center,data_center,International Drive,Sterling,,,,-77.425476,38.979868
+US-VA,way,958662382,Amazon IAD147,Amazon Web Services,IAD147,data_center,data_center,,,,,,-77.43536,38.99501
+US-VA,way,983627455,CyrusOne NVA7,CyrusOne,NVA7,data_center,data_center,Pacific Boulevard,Sterling,,,https://www.cyrusone.com/data-centers/north-america/virginia/nva7-sterling,-77.434019,39.026315
+US-VA,way,984953813,Amazon IAD174,Amazon Web Services,IAD174,data_center,data_center,Atlantic Boulevard,Dulles,,,,-77.427478,39.028914
+US-VA,way,984953814,Amazon IAD164,Amazon Web Services,IAD164,data_center,data_center,Atlantic Boulevard,Dulles,,,,-77.428945,39.030471
+US-VA,way,985207884,Vantage VA12,Vantage Data Centers,VA12,data_center,data_center,Vantage Data Plaza,Sterling,,,,-77.438057,39.001791
+US-VA,way,986829280,Microsoft,Microsoft,,data_center,data_center,Compass Creek Parkway,Leesburg,,,,-77.563035,39.075508
+US-VA,way,989735623,Amazon IAD152,Amazon Web Services,IAD152,data_center,data_center,,,,,,-77.479733,38.916572
+US-VA,way,989735624,Amazon IAD151,Amazon Web Services,IAD151,data_center,data_center,,,,,,-77.478696,38.916147
+US-VA,way,990537813,Amazon IAD83,Amazon Web Services,IAD83,data_center,data_center,,,,,,-77.523099,38.947949
+US-VA,way,990537821,Amazon Web Services,Amazon Web Services,IAD93,yes,data_center,Main Marconi Lane,,,,,-77.522188,38.946539
+US-VA,way,990537857,Amazon IAD122,Amazon Web Services,IAD122,data_center,data_center,,,,,,-77.497186,38.955871
+US-VA,way,990537858,CyrusOne Sterling IX,CyrusOne,,data_center,data_center,,,,,,-77.50573,38.958329
+US-VA,way,996723585,Iron Mountain VA-2,Iron Mountain,VA-2,data_center,data_center,,,,,https://www.ironmountain.com/resources/solution-guides/d/data-centers-northern-virginia-va-2,-77.545996,38.777237
+US-VA,way,996723586,Iron Mountain VA-1,Iron Mountain,VA-1,data_center,data_center,,,,,https://www.ironmountain.com/resources/solution-guides/d/data-centers-northern-virginia-va-1,-77.547101,38.777963
+US-VA,way,996723587,Amazon Web Services,Amazon Web Services,IAD96,data_center,data_center,,,,,,-77.539884,38.780151
+US-VA,way,996723588,Amazon Web Services,Amazon Web Services,IAD95,data_center,data_center,,,,,,-77.539427,38.778451
+US-VA,way,996723589,Amazon Web Services,Amazon Web Services,IAD75,data_center,data_center,,,,,,-77.542896,38.779342
+US-VA,way,996899486,Amazon IAD102,Amazon Web Services,IAD102,data_center,data_center,,,,,,-77.504896,38.735973
+US-VA,way,996899487,Amazon IAD101,Amazon Web Services,IAD101,data_center,data_center,,,,,,-77.505701,38.735438
+US-VA,way,996899488,Amazon IAD100,Amazon Web Services,IAD100,data_center,data_center,,,,,,-77.506642,38.734598
+US-VA,way,996899489,CloudHQ MCC2,CloudHQ,MCC2,data_center,data_center,,,,,https://cloudhq.com/location/mcc-campus/,-77.498971,38.723192
+US-VA,way,1000784035,Amazon Web Services,Amazon Web Services,,data_center,data_center,Hornbaker Road,Manassas,,2,,-77.533375,38.743052
+US-VA,way,1003348567,QTS Ashburn-Shellhorn DC1,Quality Technology Services,,data_center,data_center,,,,,,-77.475471,38.998078
+US-VA,way,1015995259,Amazon IAD601,Amazon Web Services,IAD601,yes,data_center,,,,,,-77.557116,38.778859
+US-VA,way,1020877488,Amazon Web Services,Amazon Web Services,IAD162,data_center,data_center,,,,,,-77.471294,38.99585
+US-VA,way,1020877489,Amazon Web Services,Amazon Web Services,IAD161,data_center,data_center,,,,,,-77.47326,38.996604
+US-VA,way,1020953454,Digital Loudoun Plaza,,,,data_center,,,,,,-77.485127,39.004843
+US-VA,way,1020953461,Digital Loudoun Plaza,,,,data_center,,,,,,-77.482362,39.001629
+US-VA,way,1022757170,,,,,data_center,,,,,,-77.425911,38.984837
+US-VA,way,1025002889,Digital Realty IAD42 (Building R),Digital Realty,IAD42,data_center,data_center,Broderick Drive,Sterling,,,,-77.449464,39.005689
+US-VA,way,1030970564,Meta Henrico Data Center,Meta,,industrial,data_center,,,,,,-77.233711,37.481953
+US-VA,way,1037871048,Amazon IAD601,Amazon Web Services,IAD601,yes,data_center,,,,,,-77.437776,39.01526
+US-VA,way,1059030596,Amazon Web Services,Amazon Web Services,,data_center,data_center,Hornbaker Road,Manassas,,,,-77.533332,38.744286
+US-VA,way,1059036248,,,,data_center,data_center,Hornbaker Road,Manassas,,2,,-77.537549,38.745991
+US-VA,way,1059037050,COPT Innovation Park Data Center,Amazon Web Services,IAD132,data_center,data_center,Thomasson Barn Road,Manassas,,2,,-77.530625,38.743886
+US-VA,way,1059037051,COPT Data Center Bldg 2,Amazon Web Services,IAD133,data_center,data_center,,,,2,,-77.529196,38.744055
+US-VA,way,1064211366,QTS Ashburn Lockridge,Quality Technology Services,ASH2,,data_center,,,,,https://q.com/data-centers/ashburn-2/,-77.456244,38.99593
+US-VA,way,1074588578,,,,yes,data_center,,,,,,-78.373985,36.679905
+US-VA,way,1074588579,,,,yes,data_center,,,,,,-78.374165,36.679279
+US-VA,way,1074588580,,,,yes,data_center,,,,,,-78.374691,36.677864
+US-VA,way,1074588582,,,,yes,data_center,,,,,,-78.377007,36.677471
+US-VA,way,1074588583,,,,yes,data_center,,,,,,-78.376849,36.678007
+US-VA,way,1074588584,,,,yes,data_center,,,,,,-78.376687,36.678538
+US-VA,way,1074588585,,,,yes,data_center,,,,,,-78.376494,36.679179
+US-VA,way,1074588586,,,,yes,data_center,,,,,,-78.376329,36.679714
+US-VA,way,1074591450,,,,yes,data_center,,,,,,-78.376868,36.682922
+US-VA,way,1074591451,,,,yes,data_center,,,,,,-78.375751,36.683001
+US-VA,way,1074591452,,,,yes,data_center,,,,,,-78.377219,36.686061
+US-VA,way,1074591453,,,,yes,data_center,,,,,,-78.376105,36.686145
+US-VA,way,1074591454,,,,yes,data_center,,,,,,-78.377593,36.689498
+US-VA,way,1074591455,,,,yes,data_center,,,,,,-78.376485,36.689576
+US-VA,way,1074595308,,,,yes,data_center,,,,,,-78.376771,36.692492
+US-VA,way,1074595309,,,,yes,data_center,,,,,,-78.377968,36.692458
+US-VA,way,1074595310,,,,yes,data_center,,,,,,-78.376358,36.694934
+US-VA,way,1088203906,Amazon IAD-169,Amazon Web Services,IAD-169,data_center,data_center,Beaumeade Circle,Ashburn,,,,-77.452006,39.016745
+US-VA,way,1088203907,Amazon IAD-179,Amazon Web Services,IAD-179,data_center,data_center,Beaumeade Circle,Ashburn,,,,-77.45314,39.015885
+US-VA,way,1088241977,Aligned IAD-02,Aligned,,data_center,data_center,Uunet Drive,Ashburn,,,,-77.475159,39.010417
+US-VA,way,1088241982,,,,data_center,data_center,,,,,,-77.473094,39.013048
+US-VA,way,1090837713,QTS Manassas DC5,Quality Technology Services,,data_center,data_center,,,,,,-77.517388,38.754768
+US-VA,way,1106454555,Amazon IAD143,Amazon Web Services,IAD143,data_center,data_center,Optics Plaza,Sterling,,,,-77.417492,38.979563
+US-VA,way,1123249721,Equinix Ashburn DC16,Equinix,DC16,data_center,data_center,Performance Circle,Ashburn,,4,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc16,-77.452287,39.024235
+US-VA,way,1124864831,Microsoft IAD11,Microsoft,,data_center,data_center,,,,,,-77.555911,38.948258
+US-VA,way,1128589933,,,,data_center,data_center,Inclusion Lane SE,Leesburg,,,,-77.560771,39.069649
+US-VA,way,1128589934,,,,data_center,data_center,Inclusion Lane SE,Leesburg,,,,-77.559433,39.069656
+US-VA,way,1132541700,Meta Henrico Data Center,Meta,,industrial,data_center,,,,,,-77.226482,37.477856
+US-VA,way,1134104431,CoreSite Reston Campus VA2,CoreSite,,office,data_center,,,,,,-77.363999,38.951455
+US-VA,way,1134911640,AWS IAD105,Amazon Web Services,IAD105,data_center,data_center,,,,,,-77.51948,38.7476
+US-VA,way,1134911641,AWS IAD104,Amazon Web Services,IAD104,data_center,data_center,,,,,,-77.5207,38.74837
+US-VA,way,1134911642,QTS Manassas DC1,Quality Technology Services,,data_center,data_center,,,,,,-77.513108,38.752543
+US-VA,way,1161094246,Amazon IAD142,Amazon Web Services,IAD142,yes,data_center,Optics Plaza,Sterling,,,,-77.419905,38.979147
+US-VA,way,1161730862,,,,,data_center,,,,,,-77.497841,38.957253
+US-VA,way,1173770902,Google: Arcola 2,Google,ARA2,commercial,data_center,,,,,,-77.527451,38.941812
+US-VA,way,1177893426,Amazon IAD603,Amazon Web Services,IAD603,yes,data_center,Platform Plaza,,,,,-77.419369,38.981547
+US-VA,way,1181391920,Amazon IAD86,Amazon Web Services,IAD86,yes,data_center,,,,,,-77.495674,38.917256
+US-VA,way,1181391921,Amazon IAD130,Amazon Web Services,IAD130,data_center,data_center,,,,,,-77.519302,38.760361
+US-VA,way,1181391922,Amazon IAD131,Amazon Web Services,IAD131,data_center,data_center,,,,,,-77.518221,38.761105
+US-VA,way,1188680247,QTS Ashburn-Shellhorn DC2,Quality Technology Services,,data_center,data_center,,,,,,-77.474326,38.99871
+US-VA,way,1188680253,QTS Ashburn Lockridge,Quality Technology Services,,data_center,data_center,Quality Tech Lane,Sterling,,,,-77.455264,38.995307
+US-VA,way,1188680254,QTS Ashburn Lockridge,Quality Technology Services,,data_center,data_center,Quality Tech Lane,Sterling,,,,-77.456819,38.995181
+US-VA,way,1188680255,Amazon IAD192,Amazon Web Services,IAD192,data_center,data_center,Pacific Boulevard,Sterling,,,,-77.434802,38.98956
+US-VA,way,1188691867,NTT Ashburn VA6 Data Center,NTT,VA6,data_center,data_center,Gigabit Plaza,Ashburn,,,,-77.473338,39.017043
+US-VA,way,1188691868,NTT Ashburn VA9 Data Center,NTT,VA9,data_center,data_center,Gigabit Plaza,Ashburn,,,,-77.475509,39.020189
+US-VA,way,1188691869,DataBank Ashburn IAD3,DataBank,IAD3,data_center,data_center,Red Rum Drive,Ashburn,,,,-77.481819,39.017904
+US-VA,way,1188715508,CyrusOne NVA14,PowerHouse,ABX-1,data_center,data_center,Beaumeade Circle,Ashburn,,,https://www.powerhousedata.com/data-center/powerhouse-abx-1,-77.450457,39.019599
+US-VA,way,1188715510,Cologix ASH1,Cologix,,data_center,data_center,Beaumeade Circle,Ashburn,,,https://cologix.com/data-centers/ashburn/ash1/,-77.459516,39.017926
+US-VA,way,1221862807,AWS IAD106,Amazon Web Services,IAD106,yes,data_center,,,,,,-77.518524,38.746979
+US-VA,way,1222134968,Amazon Web Services,Amazon Web Services,IAD609,yes,data_center,,,,,,-77.523594,38.949149
+US-VA,way,1227539675,Equinix DC14,Equinix,DC14,,data_center,Infantry Ridge Road,Manassas,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc14,-77.510546,38.803379
+US-VA,way,1227612684,Amazon IAD103,Amazon Web Services,IAD103,yes,data_center,,,,,,-77.504088,38.736985
+US-VA,way,1227614670,CloudHQ MCC3,CloudHQ,MCC3,yes,data_center,,,,,https://cloudhq.com/location/mcc-campus/,-77.49512,38.715017
+US-VA,way,1227777116,Vantage VA13,Vantage Data Centers,VA13,yes,data_center,Vantage Data Plaza,Sterling,,,,-77.440175,39.003213
+US-VA,way,1252196797,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.452469,38.904344
+US-VA,way,1252196798,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.45475,38.904837
+US-VA,way,1252196799,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.490551,38.915903
+US-VA,way,1252196800,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.490974,38.914991
+US-VA,way,1252196815,Google,Google,,data_center,data_center,,,,,,-77.582514,38.776145
+US-VA,way,1252196825,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.517223,38.746153
+US-VA,way,1252196826,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.485801,38.921305
+US-VA,way,1253282099,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.471078,38.995088
+US-VA,way,1269259655,,,,industrial,data_center,Godwin Drive,,,,,-77.503977,38.740385
+US-VA,way,1276518679,Amazon IAD214,Amazon Web Services,IAD214,data_center,data_center,Pacific Boulevard,Sterling,,,,-77.435178,38.986532
+US-VA,way,1276518684,Aligned IAD03,Aligned,IAD03,data_center,data_center,,,,,,-77.440778,38.988635
+US-VA,way,1276518687,Digital Realty IAD55,Digital Realty,IAD55,data_center,data_center,Fitness Court,Sterling,,,,-77.433922,38.992193
+US-VA,way,1280340212,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.520238,38.947374
+US-VA,way,1280340213,Amazon IAD608,Amazon Web Services,,yes,data_center,Platform Plaza,,,,,-77.417508,38.983528
+US-VA,way,1280340214,Amazon Web Services,Amazon Web Services,,yes,data_center,John Marshall Highway,Gainesville,,,,-77.622122,38.802884
+US-VA,way,1280340215,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.533101,38.745134
+US-VA,way,1280340216,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.654319,38.814593
+US-VA,way,1280340217,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.652153,38.816971
+US-VA,way,1283698132,Iron Mountain VA-3,Iron Mountain,VA-3,data_center,data_center,,,,,,-77.54515,38.775547
+US-VA,way,1287260553,Google,Google,,data_center,data_center,,,,,,-77.585618,38.774438
+US-VA,way,1287260554,Amazon Web Services,Amazon Web Services,,yes,data_center,John Marshall Highway,Gainesville,,,,-77.621212,38.801862
+US-VA,way,1287260555,Amazon Web Services,Amazon Web Services,,yes,data_center,John Marshall Highway,Gainesville,,,,-77.620476,38.80125
+US-VA,way,1287260556,Iron Mountain VA-4,Iron Mountain,,data_center,data_center,,,,,,-77.54223,38.774415
+US-VA,way,1287260557,Iron Mountain VA-5,Iron Mountain,,data_center,data_center,,,,,,-77.541185,38.773028
+US-VA,way,1287260558,QTS Manassas DC2,Quality Technology Services,,data_center,data_center,,,,,,-77.510882,38.753166
+US-VA,way,1287260559,,,,data_center,data_center,,,,,,-77.516694,38.758931
+US-VA,way,1292897241,42311 THUNDERBALL DR,True North Data Solutions,,data_center,data_center,Thunderball Drive,Leesburg,,1,,-77.53829,39.04252
+US-VA,way,1292897242,42255 THUNDERBALL DR,True North Data Solutions,,data_center,data_center,Thunderball Drive,Leesburg,,1,,-77.539212,39.041653
+US-VA,way,1292897243,42254 THUNDERBALL DR,True North Data Solutions,,data_center,data_center,Thunderball Drive,Leesburg,,1,,-77.54084,39.043496
+US-VA,way,1301654223,,,,data_center,data_center,,,,,,-77.558984,38.948035
+US-VA,way,1301654224,,,,data_center,data_center,,,,,,-77.558868,38.950082
+US-VA,way,1304357577,Iron Mountain VA-6,Iron Mountain,,data_center,data_center,Sudley Manor Drive,Manassas,,,,-77.538648,38.768143
+US-VA,way,1307454847,,,,yes,data_center,,,,,,-78.37391,36.675694
+US-VA,way,1309123033,Equinix Ashburn DC6,Equinix,DC6,data_center,data_center,Filigree Court,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc4,-77.459534,39.015197
+US-VA,way,1309123034,Equinix Ashburn DC4,Equinix,DC4,data_center,data_center,Filigree Court,Ashburn,,,https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc4,-77.461954,39.01644
+US-VA,way,1317733642,Digital Realty Northern Virginia IAD44,Digital Realty,IAD44,yes,data_center,Efficiency Drive,Sterling,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad44,-77.491398,38.960854
+US-VA,way,1317915930,Centersquare Ashburn IAD4 Data Center,Centersquare,IAD4,,data_center,,,,,https://centersquaredc.com/data-centers/northern-virginia#ashburn-iad4,-77.4532,39.021997
+US-VA,way,1319637945,,,,data_center,,,,,,,-77.549551,38.949841
+US-VA,way,1333205263,,,,data_center,data_center,Inclusion Lane SE,Leesburg,,,,-77.558569,39.066015
+US-VA,way,1343764880,Amazon IAD-165,Amazon Web Services,IAD-165,data_center,data_center,EDS Drive,Herndon,,,,-77.427872,38.922767
+US-VA,way,1343764881,Amazon IAD-166,Amazon Web Services,IAD-166,data_center,data_center,EDS Drive,Herndon,,,,-77.426543,38.921124
+US-VA,way,1343764882,Amazon IAD-167,Amazon Web Services,IAD-167,data_center,data_center,EDS Drive,Herndon,,,,-77.426304,38.92271
+US-VA,way,1344901567,,,,yes,data_center,,,,,,-77.460796,39.000448
+US-VA,way,1344901568,,,,yes,data_center,,,,,,-77.460787,38.999132
+US-VA,way,1344901569,Digital Realty IAD43 (Building S),Digital Realty,IAD43,data_center,data_center,Prentice Drive,Sterling,,,,-77.452703,39.001826
+US-VA,way,1344901575,Vantage VA2,Vantage Data Centers,VA2,data_center,data_center,Glenn Drive,Sterling,,,https://vantage-dc.com/data-center-locations/north-america/ashburn-ii-virginia/,-77.430231,38.997949
+US-VA,way,1380114462,,,,yes,data_center,,,,,,-77.82628,38.737208
+US-VA,way,1380114463,,,,yes,data_center,,,,,,-77.825868,38.738215
+US-VA,way,1381994242,CloudHQ LC4,CloudHQ,LC4,yes,data_center,Loudoun County Parkway,Ashburn,,,,-77.471888,39.002347
+US-VA,way,1387391200,True North Data Centers,True North Data Solutions,,,data_center,Sycolin Road,,,,,-77.537262,39.043613
+US-VA,way,1387391201,TikTok Data Center,True North Data Solutions,,data_center,data_center,Thunderball Drive,Leesburg,,1,,-77.537958,39.044254
+US-VA,way,1426663252,Amazon IAD-168,Amazon Web Services,IAD-168,data_center,data_center,EDS Drive,Herndon,,,,-77.424977,38.92314
+US-VA,way,1426663253,Amazon IAD-500,Amazon Web Services,IAD-500,data_center,data_center,Redskin Drive,Herndon,,,,-77.42468,38.936464
+US-VA,way,1443187163,CloudHQ LC3,CloudHQ,LC3,yes,data_center,Waxpool Road,Ashburn,,,,-77.460425,39.011212
+US-VA,way,1443922527,,,,data_center,data_center,,,,,,-77.547334,39.055977
+US-VA,way,1443922528,,,,data_center,data_center,,,,,,-77.546734,39.057797
+US-VA,way,1443922535,,,,data_center,data_center,,,,,,-77.565121,39.082189
+US-VA,way,1447029365,Microsoft Data Center 2,Microsoft,2,yes,data_center,,,,,,-77.583348,38.799972
+US-VA,way,1449347339,PowerHouse CTP-02,PowerHouse,,industrial,data_center,,,,,,-77.325687,37.360586
+US-VA,way,1460776170,,,,data_center,data_center,,,,,,-77.544785,39.055263
+US-VA,way,1460776171,,,,data_center,data_center,,,,,,-77.545995,39.054097
+US-VA,way,1460776174,,,,data_center,data_center,,,,,,-77.534801,39.051037
+US-VA,way,1464257783,Google,Google,,data_center,data_center,,,,,,-77.586335,38.779305
+US-VA,way,1464257784,QTS Manassas DC1,Quality Technology Services,,data_center,data_center,,,,,,-77.51246,38.752545
+US-VA,way,1482076328,,,,yes,data_center,,,,,,-77.556168,38.777131
+US-VA,way,1482076330,Amazon IAD230,Amazon Web Services,Amazon IAD230,data_center,data_center,Dulles Summit Court,Sterling,,,,-77.449742,38.989461
+US-VA,way,1493516619,DC6,Quality Technology Services,,industrial,data_center,Portugee Rd,Sandston,,,,-77.250182,37.485289
+US-VA,way,1493516620,DC5,Quality Technology Services,,industrial,data_center,Portugee Rd,Sandston,,,,-77.249109,37.484779
+US-VA,way,1493516621,DC4,Quality Technology Services,,industrial,data_center,Portugee Rd,Sandston,,,,-77.247815,37.483918
+US-VA,way,1493516623,RIC2 DC1,,,industrial,data_center,Technology Boulevard,Sandston,,,,-77.240062,37.488174
+US-VA,way,1493516624,RIC2 DC2,,,industrial,data_center,Technology Boulevard,Sandston,,,,-77.240983,37.487092
+US-VA,way,1493516625,RIC2 DC3,,,industrial,data_center,Technology Boulevard,Sandston,,,,-77.241891,37.486065
+US-VA,way,1493516626,RIC2 DC5,,,industrial,data_center,Technology Boulevard,Sandston,,,,-77.242984,37.484848
+US-VA,way,1493516628,RIC2 DC6,,,construction,data_center,Technology Boulevard,Sandston,,,,-77.243764,37.483901
+US-VA,way,1493516629,RIC3 DC1,Quality Technology Services,,construction,data_center,Portugee Road,Sandston,,,,-77.251622,37.480504
+US-VA,way,1493516630,RIC3 DC2,Quality Technology Services,,construction,data_center,Portugee Road,Sandston,,,,-77.25221,37.479727
+US-VA,way,1493516631,RIC3 DC3,Quality Technology Services,,construction,data_center,Portugee Road,Sandston,,,,-77.252996,37.47851
+US-VA,way,1493516632,RIC3 DC5,Quality Technology Services,,construction,data_center,Portugee Road,Sandston,,,,-77.249693,37.477015
+US-VA,way,1493516633,RIC3 DC4,Quality Technology Services,,construction,data_center,Portugee Road,Sandston,,,,-77.248977,37.477917
+US-VA,way,1509985717,,,,residential,data_center,,,,,,-77.539252,38.76138
+US-VA,way,1510517637,,,,yes,data_center,,,,,,-77.539965,38.775174
+US-VA,way,1510517638,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.581973,38.789376
+US-VA,way,1510517639,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.579686,38.789456
+US-VA,way,1510517640,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.497342,38.746667
+US-VA,way,1510517641,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.494786,38.747641
+US-VA,way,1510517642,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.49301,38.749547
+US-VA,way,1518717349,Digital Realty Northern Virginia IAD40,Digital Realty,IAD40,data_center,data_center,Round Table Plaza,Ashburn,,,,-77.468305,39.00627
+US-VA,way,1518761569,Vantage VA14,Vantage Data Centers,VA14,yes,data_center,Vantage Data Plaza,Sterling,,,,-77.439385,39.002889
+US-VA,way,1521913706,,,,data_center,data_center,Redskin Drive,Herndon,,,,-77.426712,38.935591
+US-VA,way,1521913707,,,,data_center,data_center,Redskin Drive,Herndon,,,,-77.425806,38.937292
+US-VA,way,1522636324,Equinix Ashburn DC22,Equinix,DC22,data_center,data_center,Beaumeade Circle,Ashburn,,,,-77.453772,39.013391
+US-VA,way,1534356804,,,,construction,data_center,,,,,,-77.446428,39.005242
+US-VA,way,1534356805,,,,construction,data_center,,,,,,-77.448579,39.003486
+US-VA,way,1536981894,Amazon Web Services,Amazon Web Services,,yes,data_center,,,,,,-77.186173,38.741982
+US-VA,way,1543296494,Digital Realty Northern Virginia IAD44,Digital Realty,,yes,data_center,Efficiency Drive,Sterling,,,https://www.digitalrealty.com/data-centers/americas/northern-virginia/iad44,-77.490011,38.962625
+US-VA,way,1543931282,Digital Realty ACC2,Digital Realty,ACC2,data_center,data_center,Chilum Place,Ashburn,,,,-77.459265,39.02157
+US-VA,way,1543931283,Equinix Ashburn DC17,Equinix,DC17,data_center,data_center,Performance Circle,Ashburn,,4,,-77.453419,39.024891
+US-VA,way,1544103415,,,,data_center,data_center,,,,,,-77.53574,38.957386
+US-VA,way,1544103416,,,,data_center,data_center,,,,,,-77.533192,38.956635
+US-VA,way,1544104138,,,,data_center,data_center,,,,,,-77.502614,38.958846
+US-VA,way,1544360246,,,,data_center,data_center,,,,,,-77.459739,38.995994
+US-VA,way,1544360247,,,,data_center,data_center,,,,,,-77.445984,38.995073
+US-VA,way,1544360248,Vantage VA15,,,data_center,data_center,Pacific Boulevard,Sterling,,,,-77.441838,38.999336
+US-VA,way,1544360249,QTS Ashburn 2,Quality Technology Services,DC2,data_center,data_center,Randolph Drive,Sterling,,,,-77.448997,38.99816
+US-VA,way,1544360250,,,,construction,data_center,,,,,,-77.446773,39.003593
+US-VA,way,1555352690,EdgeCore Ashburn AS01,,,data_center,data_center,Maries Road,Sterling,,,https://edgecore.com/locations/ashburn-data-center,-77.414703,39.021789
+US-VA,way,1555352691,Amazon Web Services IAD128,Amazon Web Services,IAD128,data_center,data_center,Maries Road,Sterling,,,,-77.416713,39.022964
+US-VA,relation,19787207,Microsoft Data Center 1,Microsoft,1,yes,data_center,University Boulevard,Gainesville,,,,-77.582306,38.80237

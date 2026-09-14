@@ -1,0 +1,114 @@
+{
+ "checked": "2026-09-13",
+ "anchored_points": 119,
+ "anchored_within_tolerance": 117,
+ "anchored_median_error_pct": 0.0429,
+ "contradictions": [
+  {
+   "site": "CoreWeave Denton TX",
+   "date": "2025-12-31",
+   "stated": 64679.13087417888,
+   "from_chips": 40424.456796361796,
+   "error_pct": -37.500000000000014,
+   "anchored": true,
+   "future": false,
+   "chips": {
+    "B200": 16000
+   }
+  }
+ ],
+ "stale_inventory": [
+  {
+   "site": "Meta Prometheus",
+   "date": "2026-01-18",
+   "stated": 410270.2981303689,
+   "from_chips": 91874.68418393127,
+   "error_pct": -77.60630379469077,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "B200": 36364
+   }
+  },
+  {
+   "site": "Meta Prometheus",
+   "date": "2026-03-12",
+   "stated": 410270.2981303689,
+   "from_chips": 91874.68418393127,
+   "error_pct": -77.60630379469077,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "B200": 36364
+   }
+  },
+  {
+   "site": "Google Pryor (North)",
+   "date": "2026-08-24",
+   "stated": 636685.1945426983,
+   "from_chips": 26352.191005558365,
+   "error_pct": -95.86103285714286,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "TPU v5e": 77886,
+    "TPU v5p": 23466
+   }
+  },
+  {
+   "site": "Google New Albany",
+   "date": "2026-08-16",
+   "stated": 550783.2238504295,
+   "from_chips": 329667.15310763015,
+   "error_pct": -40.14575266055046,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "TPU v5e": 251592,
+    "TPU v5p": 67838,
+    "TPU v6e": 267571
+   }
+  },
+  {
+   "site": "Google Mesa",
+   "date": "2026-08-15",
+   "stated": 289540.17180394137,
+   "from_chips": 110266.22637695806,
+   "error_pct": -61.9167780104712,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "TPU v5p": 18447,
+    "TPU v6e": 109631
+   }
+  },
+  {
+   "site": "Colossus 1",
+   "date": "2025-09-17",
+   "stated": 209125.31581606873,
+   "from_chips": 275795.85649317835,
+   "error_pct": 31.880664670817822,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "B200": 30000,
+    "H100": 150000,
+    "H200": 50000
+   }
+  },
+  {
+   "site": "Colossus 1",
+   "date": "2025-10-19",
+   "stated": 209125.31581606873,
+   "from_chips": 275795.85649317835,
+   "error_pct": 31.880664670817822,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "B200": 30000,
+    "H100": 150000,
+    "H200": 50000
+   }
+  }
+ ]
+}

@@ -1130,17 +1130,22 @@ async function handle(req, res) {
     // directory that has never existed, and silently reported nothing for it.
     // The paid ones are marked, because "7 files touched" in a metered cache
     // is a sentence about money.
+    // Two homes: the caches the APP shares (parcel pulls, run logs) sit under
+    // data/raw/ inside dcmap; the pipeline's own caches sit in raw/ beside it
+    // and are only summarised when that pipeline is present on this machine.
     const raw = [];
-    for (const [dir, label, paid] of [
-      ['parcels_regrid_cache', 'Regrid parcel cache', true],
-      ['parcels_precisely_cache', 'Precisely parcel cache', true],
-      ['geocode_cache', 'Precisely geocode cache', true],
-      ['poi_verify_cache', 'Precisely POI cache', true],
-      ['parcels_wfs_cache', 'WFS parcel cache', false],
-      ['plant_fp_cache', 'Plant footprint cache', false],
-      ['runlogs', 'Pipeline run logs', false],
+    for (const [dir, label, paid, home] of [
+      ['parcels_regrid_cache', 'Regrid parcel cache', true, 'app'],
+      ['parcels_precisely_cache', 'Precisely parcel cache', true, 'app'],
+      ['runlogs', 'Pipeline run logs', false, 'app'],
+      ['geocode_cache', 'Precisely geocode cache', true, 'pipeline'],
+      ['poi_verify_cache', 'Precisely POI cache', true, 'pipeline'],
+      ['parcels_wfs_cache', 'WFS parcel cache', false, 'pipeline'],
+      ['plant_fp_cache', 'Plant footprint cache', false, 'pipeline'],
     ]) {
-      const s = dirSummary(path.join(paths.data, 'raw', dir), sinceMs);
+      const base = home === 'app' ? path.join(paths.data, 'raw') : paths.pipelineRaw;
+      if (!base) continue;
+      const s = dirSummary(path.join(base, dir), sinceMs);
       if (s.total && s.recent) {
         raw.push({ label: label + (paid ? ' · metered' : ''),
                    detail: `${s.recent} of ${s.total} files touched`,
@@ -1159,7 +1164,8 @@ async function handle(req, res) {
       days, sinceDay, commits, pending,
       ledgers: ledgerActivity(paths.root, sinceDay), raw,
       running: st.running, history: st.history, blindSpots: BLIND_SPOTS,
-      freshness: stepFreshness(paths.root),
+      freshness: stepFreshness(paths.root, paths.pipelineRaw),
+      pipelineAvailable: !!paths.pipeline,
     }), MIME['.html']);
   }
 
@@ -1182,7 +1188,7 @@ async function handle(req, res) {
         paid: true, about: step.about || '' }), MIME['.json']);
     }
     try {
-      const r = startRun(paths.root, step.key, path.join(paths.data, 'raw', 'runlogs'));
+      const r = startRun(paths.pipeline, step.key, path.join(paths.data, 'raw', 'runlogs'));
       return send(res, 200, JSON.stringify({ id: r.id, key: r.key }), MIME['.json']);
     } catch (e) {
       return send(res, 409, JSON.stringify({ error: e.message }), MIME['.json']);

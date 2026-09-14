@@ -1,0 +1,1 @@
+{"id":"nc75426637","title":"M 4.7 - 85 km W of Petrolia, CA","mag":4.74,"epicentre":[-125.2723,40.45],"contours":[],"exposed":[{"kind":"plant","site_id":"e246","name":"Humboldt Bay","operator":"Pacific Gas & Electric Co.","mmi":2.62,"km":95.5,"fuel":"gas","mw":167}],"kinds":{"plant":1},"mwShaken":167,"bands":[{"mmi":2,"sites":1,"color":"#bfccff","label":"II  weak"}]}

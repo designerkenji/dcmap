@@ -1664,7 +1664,7 @@ traditional,osm,,,Digital Realty,NL,52.285482,4.765618,exact,,,,,,,,,Schiphol-Ri
 traditional,osm,,,,NL,52.281261,4.765058,exact,,,,,,,,,,,269243197,,,,,,,,site-011d7c0d1e
 traditional,osm,Datavault Auckland,,Datavault,NZ,-36.864208,174.76465,exact,,,,,,,,,Auckland,,269385741,,multi,peeringdb net_count=60,60,2099,Data Vault Limited,,site-8607c96d0e
 traditional,osm,Greenhouse Datacenters DC1,,Greenhouse Datacenters,NL,52.001201,4.210704,exact,,,,,,,,,Naaldwijk,,269397789,,multi,peeringdb net_count=12,12,14646,Greenhouse Datacenters B.V.,,site-19ed75253d
-traditional,osm,QTS Atlanta Data Center 1,,Quality Technology Services,US,33.77769,-84.421154,exact,,,,,,,,,Atlanta,,269847438,,multi,peeringdb net_count=22,22,581,"QTS Realty Trust, Inc.",,site-0442d9fc4b
+traditional,osm,QTS Atlanta Data Center 1,,Quality Technology Services,US,33.77769,-84.421154,exact,,,,,,,,,Atlanta,,269847438,,multi,peeringdb net_count=22,22,581,"QTS Realty Trust, Inc.",,site-b10fa3b462
 traditional,osm,IP House London Datacentre,,IP House,GB,51.515406,0.001961,exact,,,,,,,,,London,,270023895,,multi,peeringdb net_count=17,17,8381,IP House Ltd,,site-3a01d49d4f
 traditional,osm,Digital Realty London LON3,,Digital Realty,GB,51.521588,-0.073139,exact,,,,,,,,,London,,270426364,,multi,peeringdb net_count=119,119,46,Digital Realty,,site-cd1a8e32ce
 traditional,osm,Datacom Data Centre,,Datacom Data Centres Ltd,AU,-37.824349,144.961481,exact,,,,,,,,,Melbourne,,270554690,,,,0,692,Datacom Data Centres Ltd,,site-8ecae307fb
@@ -2585,7 +2585,7 @@ traditional,osm,EcoDataCenter,,EcoDataCenter,SE,60.610556,15.60969,exact,,,,,,,,
 traditional,osm,,,SONDA S.A.,CL,-33.358279,-70.69711,exact,,,,,,,,,Quilicura,,726998855,,multi,peeringdb net_count=3,3,10698,SONDA S.A.,,site-61d98a0d87
 traditional,osm,Equinix SY9x,,Equinix,AU,-33.823552,151.034715,exact,,,,,,,,SY9x,,,727001317,,multi,colocation operator,,,,,site-019fca9722
 traditional,osm,NIO Datacenter,,,IN,15.455904,73.801607,exact,,,,,,,,,,,727153088,,,,,,,,site-6a0b63671c
-traditional,osm,QTS Data Center - Hillsboro 1,,Quality Technology Services,US,45.558815,-122.927766,exact,,,,,,,,,Hillsboro,,729192992,,multi,peeringdb net_count=10,10,7872,"QTS Realty Trust, Inc.",,site-d0d76f3568
+traditional,osm,QTS Data Center - Hillsboro 1,,Quality Technology Services,US,45.558815,-122.927766,exact,,,,,,,,,Hillsboro,,729192992,,multi,peeringdb net_count=10,10,7872,"QTS Realty Trust, Inc.",,site-5f66b72680
 traditional,osm,,,,US,40.584372,-74.243381,exact,,,,,,,,,Carteret,,729376485,,,,,,,,site-a756a74a7f
 traditional,osm,CXD Infrastructure Solutions,,DXC UKI,GB,51.278829,0.547206,exact,,,,,,,,,Maidstone,,729539167,,single,peeringdb net_count=1,1,14472,Vinters IT Ltd,,site-254911f256
 traditional,osm,Flexential Salt Lake City - Downtown,,Flexential,US,40.756307,-111.954837,exact,,,,,,,,,Salt Lake City,,729696933,,multi,peeringdb net_count=24,24,2445,Flexential Corp.,,site-a87d9a7be5
@@ -2837,7 +2837,7 @@ traditional,osm,,,,US,39.050601,-77.540023,exact,,,,,,,,,,,844374689,,,,,,,,site
 traditional,osm,Google,,Google,US,32.442139,-97.062465,exact,,,,,,,,,,,844386860,,single,hyperscale self-build,,,,,site-652efb4bd7
 traditional,osm,Google,,Google,US,32.443564,-97.06331,exact,,,,,,,,,,,844386861,,single,hyperscale self-build,,,,,site-652efb4bd7
 traditional,osm,Google,,Google,US,36.62459,-87.261292,exact,,,,,,,,SPC2A,,,844389014,,single,hyperscale self-build,,,,,site-94bb6d92f4
-ai,osm+epoch,Google NBY-1,Google New Albany,Google,US,40.061161,-82.764329,exact,339.0,351692,"TPU v5e, TPU v5p, TPU v6e, TPU v7",Google DeepMind,,12.841998,"1101 Beech Rd SW, New Albany, OH 43054",,,,844391358,yes,single,hyperscale self-build,,,,,site-5accfd19e5
+ai,osm+epoch,Google NBY-1,Google New Albany,Google,US,40.061161,-82.764329,exact,453.0,616472,"TPU v5e, TPU v5p, TPU v6e, TPU v7",Google DeepMind,,17.160546,"1101 Beech Rd SW, New Albany, OH 43054",,,,844391358,yes,single,hyperscale self-build,,,,,site-5accfd19e5
 traditional,osm,Meta Sarpy Data center,,Meta,US,41.123529,-96.1442,exact,,,,,,,,,,,844394339,,single,hyperscale self-build,,,,,site-a910dbfa02
 traditional,osm,Meta Sarpy Data center,,Meta,US,41.120551,-96.144532,exact,,,,,,,,,,,844394340,,single,hyperscale self-build,,,,,site-a910dbfa02
 traditional,osm,Google,,Google,US,41.134992,-96.146711,exact,,,,,,,,,,,844394357,,single,hyperscale self-build,,,,,site-0ec783e6e0
@@ -2945,7 +2945,7 @@ traditional,osm,SC1 Sunshine Coast Data Centre,,NextDC,AU,-26.659702,153.09285,e
 traditional,osm,Felix Datacenter,,Nautile,NC,-22.269431,166.461007,exact,,,,,,,,FLX,Nouméa,,909192653,,,,0,11902,MLS (Micro Logic Systems),,site-4a7131de7e
 traditional,osm,42310 THUNDERBALL DR,,True North Data Solutions,US,39.044103,-77.539711,exact,,,,,,,,,Leesburg,,909455922,,,,,,,,site-8a2c5be43a
 traditional,osm,Trung tâm dữ liệu FPT Fornix,,FPT,VN,21.027149,105.78937,exact,,,,,,,,,Hanoi,,909698744,,multi,peeringdb net_count=6,6,14943,FPT Telecom,,site-3be84a4c85
-traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558799,-122.929774,exact,,,,,,,,,Hillsboro,,909742340,,,,,,,,site-d0d76f3568
+ai,osm+epoch,QTS Data Center - Hillsboro 2,Meta-QTS Hillsboro 2,Meta,US,45.558799,-122.929774,exact,180.0,123839,H100,Meta,"Portland General Electric, Avangrid",6.818759999999999,"4755 NE Huffman St, Hillsboro, OR 97124",,Hillsboro,,909742340,yes,single,hyperscale self-build,,,,,site-662301b883
 traditional,osm,,,DigiPlex,DK,55.66804,12.622162,exact,,,,,,,,,Copenhagen,,912393044,,single,peeringdb net_count=1,1,8656,Vaultica Data Centers - NORDICS,,site-9bd9b53b1f
 traditional,osm,,,ФИНКИ,MK,42.004205,21.409337,exact,,,,,,,,,Skopje,,913494019,,multi,peeringdb net_count=2,2,5574,"Faculty of Computer Science and Engineering, Ss. Cyril and Methodius University in Skopje",,site-0e5a9cb731
 traditional,osm,Wallonie Data Center (WDC),,WDC,BE,50.580624,5.261737,exact,,,,,,,,,Villers-le-Bouillet,,913668923,,multi,peeringdb net_count=4,4,8609,Etix Everywhere,,site-f2c1b8d8a3
@@ -2955,9 +2955,9 @@ traditional,osm,Amazon Web Services,,Amazon Web Services,US,45.83754,-119.693129
 traditional,osm,Amazon Web Services,,Amazon Web Services,US,45.846655,-119.605645,exact,,,,,,,,PDX64,Boardman,,914616810,,single,hyperscale self-build,,,,,site-851e4cc193
 traditional,osm,,,,US,39.729559,-104.712783,exact,,,,,,,,,Aurora,,916046040,,,,,,,,site-6b26b2f908
 traditional,osm,,,,US,43.044944,-78.749203,exact,,,,,,,,,Getzville,,916148870,,,,,,,,site-6008f8f0c3
-traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558784,-122.931814,exact,,,,,,,,,Hillsboro,,918871786,,,,,,,,site-d0d76f3568
-traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558807,-122.935154,exact,,,,,,,,,Hillsboro,,918871787,,,,,,,,site-d0d76f3568
-traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558796,-122.933002,exact,,,,,,,,,Hillsboro,,918871788,,,,,,,,site-d0d76f3568
+traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558784,-122.931814,exact,,,,,,,,,Hillsboro,,918871786,,,,,,,,site-5f66b72680
+traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558807,-122.935154,exact,,,,,,,,,Hillsboro,,918871787,,,,,,,,site-5f66b72680
+traditional,osm,QTS Data Center - Hillsboro 2,,Quality Technology Services,US,45.558796,-122.933002,exact,,,,,,,,,Hillsboro,,918871788,,,,,,,,site-5f66b72680
 traditional,osm,Flexential Portland - Hillsboro 3,,Flexential,US,45.55948,-122.938201,exact,,,,,,,,,Hillsboro,,918873142,,multi,colocation operator,1,13390,Flexential Corp.,,site-7c2aa4d65b
 traditional,osm,Data Center,,Lepida,IT,44.657846,10.933201,exact,,,,,,,,,,,919169883,,,,,,,,site-412fac5eb4
 traditional,osm,,,,US,42.675665,-87.918406,exact,,,,,,,,,,,919948160,,,,,,,,site-284b5d6a1a
@@ -3118,7 +3118,7 @@ traditional,osm,中国移动（广西）数据中心,,,CN,22.716319,108.390518,e
 traditional,osm,,,NTT Global Data Centers EMEA GmbH,DE,52.438451,13.374489,exact,,,,,,,,BER2,Berlin,,1006228571,,multi,peeringdb net_count=11,11,12266,NTT DATA's Global Data Centers division,,site-43d7f8673d
 traditional,osm,,,Bell Canada,CA,45.530188,-73.606836,exact,,,,,,,,,,,1006315992,,,,,,,,site-31b9246ae2
 traditional,osm,MTN Ghana Tetteh Quarshie Switch Center,,,GH,5.625825,-0.181396,exact,,,,,,,,,,,1006396912,,,,,,,,site-eb8b4697f0
-traditional,osm,QTS Atlanta Data Center 2,,Quality Technology Services,US,33.777601,-84.419446,exact,,,,,,,,,Atlanta,,1007825570,,,,,,,,site-0442d9fc4b
+ai,osm+epoch,QTS Atlanta Data Center 2,xAI QTS Atlanta,SpaceXAI,US,33.777601,-84.419446,exact,17.32971,11470,"H100, A100",SpaceXAI,,0.6564840742199999,"1025 Jefferson Street NW, Atlanta, GA 30318",,Atlanta,,1007825570,yes,single,hyperscale self-build,,,,,site-500623e783
 traditional,osm,,,,RU,55.885947,37.510123,exact,,,,,,,,,,,1009239760,,,,,,,,site-cb3eb8a75b
 traditional,osm,华南国家计量测试中心,,,CN,23.199926,113.546518,exact,,,,,,,,,,,1009365291,,,,,,,,site-a5a91fd8c1
 traditional,osm,,,,CN,34.062493,118.284264,exact,,,,,,,,,,,1009615405,,,,,,,,site-27b4577519
@@ -3268,7 +3268,7 @@ traditional,osm,Google,,Google,US,41.17553,-95.801106,exact,,,,,,,,,,,1073720217
 traditional,osm,Google,,Google,US,41.175537,-95.799964,exact,,,,,,,,,,,1073720218,,single,hyperscale self-build,,,,,site-2faa2b9cf5
 traditional,osm,Google,,Google,US,41.17264,-95.80403,exact,,,,,,,,,,,1073720219,,single,hyperscale self-build,,,,,site-2faa2b9cf5
 traditional,osm,Google,,Google,US,41.172646,-95.802528,exact,,,,,,,,,,,1073720220,,single,hyperscale self-build,,,,,site-2faa2b9cf5
-ai,osm+epoch,Google,Google Council Bluffs (East),Google,US,41.172556,-95.801127,exact,237.0,335017,"TPU v5e, TPU v6e, TPU v5p",Google DeepMind,,8.978034,"10410 Bunge Ave, Council Bluffs, IA 51503",,,,1073720221,yes,single,hyperscale self-build,,,,,site-2faa2b9cf5
+ai,osm+epoch,Google,Google Council Bluffs (East),Google,US,41.172556,-95.801127,exact,237.0,289034,"TPU v5e, TPU v6e, TPU v5p, TPU v7",Google DeepMind,,8.978034,"10410 Bunge Ave, Council Bluffs, IA 51503",,,,1073720221,yes,single,hyperscale self-build,,,,,site-2faa2b9cf5
 traditional,osm,GTN Data Center,,Graha Teknologi Nusantara,ID,-6.34602,107.167084,exact,,,,,,,,,Bekasi,,1074062763,,multi,peeringdb net_count=2,2,12343,EdgeConneX Inc.,,site-5f9b80aec2
 traditional,osm,,,,US,36.679905,-78.373985,exact,,,,,,,,,,,1074588578,,,,,,,,site-ecbf02a727
 traditional,osm,,,,US,36.679279,-78.374165,exact,,,,,,,,,,,1074588579,,,,,,,,site-ecbf02a727
@@ -3918,7 +3918,7 @@ traditional,osm,Centro de Entrenamiento Tecnológico,,UNMSM - Huawei,PE,-12.0529
 traditional,osm,,,,US,39.066015,-77.558569,exact,,,,,,,,,Leesburg,,1333205263,,,,,,,,site-b256c590ed
 traditional,osm,Nautilus Cryptomine,,,US,41.082625,-76.151419,exact,,,,,,,,,,,1334234454,,,,,,,,site-f117cdbe6f
 traditional,osm,Nautilus Cryptomine,,,US,41.083339,-76.151446,exact,,,,,,,,,,,1334234455,,,,,,,,site-f117cdbe6f
-traditional,osm,Amazon AWS PHL,,Amazon Web Services,US,41.083991,-76.143375,exact,,,,,,,,,Berwick,,1334234458,,single,hyperscale self-build,,,,,site-9831895491
+ai,osm+epoch,Amazon AWS PHL,AWS Berwick,Amazon,US,41.083991,-76.143375,exact,108.0,81354,Trainium2,Anthropic,,4.091256,"1125 Electron Ave, Berwick, PA 18603",,Berwick,,1334234458,yes,single,hyperscale self-build,,,,,site-9831895491
 traditional,osm,中国联通宁波分公司总部,,,CN,29.877256,121.632269,exact,,,,,,,,,,,1336852426,,,,,,,,site-5c4fb230ec
 traditional,osm,:IW Connect,,,MK,41.026922,21.304064,exact,,,,,,,,,,,1337209613,,,,,,,,site-1a06e63a4c
 traditional,osm,,,Google,FI,60.534231,27.121832,exact,,,,,,,,LPP,Hamina,,1339135383,,single,hyperscale self-build,,,,,site-af5cc4c832
@@ -4034,7 +4034,7 @@ traditional,osm,Databank LGA3,,Databank,US,41.039951,-73.989572,exact,,,,,,,,,Or
 traditional,osm,CoreSite NY3,,CoreSite,US,40.784904,-74.065357,exact,,,,,,,,NY3,Secaucus,,1383916144,,multi,colocation operator,,,,,site-0f9a072416
 traditional,osm,Odata,,ODATA S.A.,BR,-22.901735,-47.193905,exact,,,,,,,,,Hortolândia,,1385101584,,,,0,15093,ODATA S.A.,,site-84dd11acee
 traditional,osm,DC STO1,,,CL,-33.531195,-70.710386,exact,,,,,,,,,,,1385788091,,,,,,,,site-fca16152df
-traditional,osm,Amazon Web Services,,Amazon Web Services,US,40.102426,-82.750141,exact,,,,,,,,,,,1386016627,,single,hyperscale self-build,,,,,site-e6a03a8086
+ai,osm+epoch,Amazon Web Services,AWS New Albany,Amazon,US,40.102426,-82.750141,exact,213.0,201111,"Trainium2, H100, H200, B200",,,8.068866,13360 Miller Rd NW,,,,1386016627,yes,single,hyperscale self-build,,,,,site-e6a03a8086
 traditional,osm,Amazon Web Services,,Amazon Web Services,US,40.101955,-82.751912,exact,,,,,,,,,,,1386016628,,single,hyperscale self-build,,,,,site-e6a03a8086
 traditional,osm,Amazon Web Services,,Amazon Web Services,US,40.094226,-82.732111,exact,,,,,,,,,,,1386016629,,single,hyperscale self-build,,,,,site-ef0291212a
 traditional,osm,Amazon Web Services,,Amazon Web Services,US,40.094397,-82.729279,exact,,,,,,,,,,,1386016630,,single,hyperscale self-build,,,,,site-ef0291212a
@@ -4652,30 +4652,33 @@ traditional,osm,BNP Paribas (Hello Bank!),,,FR,48.836688,2.802556,exact,,,,,,,,,
 traditional,osm,Microsoft Data Center 1,,Microsoft,US,38.80237,-77.582306,exact,,,,,,,,1,Gainesville,,19787207,,single,hyperscale self-build,,,,,site-57b9cbf66c
 traditional,osm,IONIC Digital Cedarvale,,IONIC Digital,US,31.513447,-103.44854,exact,,,,,,,,,,,21073054,,,,,,,,site-98602f1e8d
 traditional,osm,ICE02 Campus,,atNorth,IS,63.963626,-22.538532,exact,,,,,,,,,,,21121767,,,,,,,,site-ff6959c488
+ai,epoch,Google Mesa,Google Mesa,Google,US,,,,183.0,343102,TPU v6e,,,6.932405999999999,,,,,,,single,hyperscale self-build,,,,,site-nogeo-ec39c5bd
 ai,epoch,DayOne Nusajaya,DayOne Nusajaya,,MY,,,,240.0,281670,"H100, B300",,,9.09168,,,,,,,,,,,,,site-nogeo-5df56ed8
+ai,epoch,Google Kansas City East,Google Kansas City East,Google,US,,,,105.0,244567,,,,3.9776099999999994,,,,,,,single,hyperscale self-build,,,,,site-nogeo-d8f4a8db
 ai,epoch,Amazon Madison Mega Site,Amazon Madison Mega Site,Amazon,US,,,,284.0,214348,Trainium2,Anthropic,,10.758488,"Amazon Data Services Inc, Madison Mega Site Nissan Parkway and Highway 22 Canton, Mississippi Madison County",,,,,,single,hyperscale self-build,,,,,site-nogeo-17c9d7d4
 ai,epoch,Google Storey County,Google Storey County,Google,US,,,,161.0,153612,"TPU v5e, TPU v6e",Google DeepMind,,6.0990020000000005,,,,,,,single,hyperscale self-build,,,,,site-nogeo-85ba6134
-ai,epoch,Google Mesa,Google Mesa,Google,US,,,,90.0,125821,TPU v6e,,,3.4093799999999996,,,,,,,single,hyperscale self-build,,,,,site-nogeo-ec39c5bd
 ai,epoch,Oracle Batam,Oracle Batam,Oracle,ID,,,,72.0,84386,"B200, B300",,,2.7275039999999997,,,,,,,single,hyperscale self-build,,,,,site-nogeo-c39134aa
 ai,epoch,Google Papillion,Google Papillion,Google,US,,,,237.0,80343,"TPU v4, TPU v5e, TPU v6e, TPU v5p",Google DeepMind,,8.978034,"14651-15249 Gold Coast Rd 68138 Papillion Nebraska, USA",,,,,,single,hyperscale self-build,,,,,site-nogeo-93aa46f3
+ai,epoch,Southgate Melbourne,Southgate Melbourne,Firmus,AU,,,,41.0,46488,B300,,,1.553162,,,,,,,,,,,,,site-nogeo-b4ffc8fb
 ai,epoch,Alibaba Zhangbei,Alibaba Zhangbei,Alibaba,CN,,,,169.0,31884,H20,Alibaba,,6.402058,"Alibaba Zhangbei Yun Calculation Data Center, Zhangbei County, Zhangjiakou, Hebei, China, 076471",,,,,,single,hyperscale self-build,,,,,site-nogeo-b235fb0f
-ai,epoch,Google Kansas City East,Google Kansas City East,Google,US,,,,,,,,,,,,,,,,single,hyperscale self-build,,,,,site-nogeo-d8f4a8db
+ai,epoch,Anthropic Barber Lake,Anthropic Barber Lake,Cipher Mining,US,,,,,,,Anthropic,,,,,,,,,,,,,,,site-nogeo-e8f5c171
+ai,epoch,Microsoft Narvik Norway,Microsoft Narvik Norway,Nscale,NO,,,,,,,Microsoft,,,,,,,,,,,,,,,site-nogeo-a6c3382d
 ai,epoch,OpenAI Stargate Michigan,OpenAI Stargate Michigan,Oracle,US,,,,,,,OpenAI,,,,,,,,,single,hyperscale self-build,,,,,site-nogeo-046d7935
 ai,epoch,OpenAI Stargate Milam,OpenAI Stargate Milam,Softbank,US,,,,,,,OpenAI,,,,,,,,,,,,,,,site-nogeo-354564b2
 ai,epoch,OpenAI Stargate New Mexico,OpenAI Stargate New Mexico,Oracle,US,,,,,,,OpenAI,Bloom Energy,,,,,,,,single,hyperscale self-build,,,,,site-nogeo-520a1a67
 ai,epoch,OpenAI Stargate Shackelford,OpenAI Stargate Shackelford,Oracle,US,,,,,,,OpenAI,,,"175 Private Road 1604, Abilene, TX 79601, Shackelford County",,,,,,single,hyperscale self-build,,,,,site-nogeo-33695089
 ai,epoch,OpenAI Stargate Wisconsin,OpenAI Stargate Wisconsin,Oracle,US,,,,,,,OpenAI,,,,,,,,,single,hyperscale self-build,,,,,site-nogeo-588c5506
-ai,epoch,Southgate Melbourne,Southgate Melbourne,Firmus,AU,,,,,,,,,,,,,,,,,,,,,,site-nogeo-b4ffc8fb
 ai,epoch,Microsoft Fairwater Atlanta,Microsoft Fairwater Atlanta,Microsoft,US,33.445223,-84.524826,exact,636.0,768768,B200,"OpenAI, Microsoft",Georgia Power,24.092952,"1435 Hwy 54 W, Fayetteville, GA 30214",,,,,,multi,epoch users=2,,,,,site-9364e38e2c
-ai,epoch,Meta Prometheus,Meta Prometheus,Meta,US,40.081175,-82.808786,town,631.0,763011,B200,Meta,"Williams, American Electric Power",23.903541999999998,"1 Community Cir, New Albany, OH 43054",,,,,,single,hyperscale self-build,,,,,site-dcc79b6b34
+ai,epoch,Google Pryor (North),Google Pryor (North),Google,US,36.241172,-95.330047,exact,368.0,763011,"TPU v5p, TPU v5e",Google DeepMind,,13.940576,"4581 Webb St, Pryor, OK 74361",,,,,,single,hyperscale self-build,,,,,site-a8a83c22fe
 ai,epoch,Anthropic-Amazon New Carlisle,Anthropic-Amazon New Carlisle,Amazon,US,41.705687,-86.509823,town,910.0,685912,Trainium2,Anthropic,,34.47262,"55001 Larrison Blvd, New Carlisle, IN 46552",,,,,,single,hyperscale self-build,,,,,site-7850ecd7a4
+ai,epoch,Meta Prometheus,Meta Prometheus,Meta,US,40.081175,-82.808786,town,562.0,679568,B200,Meta,"Williams, American Electric Power",21.289684,"1 Community Cir, New Albany, OH 43054",,,,,,single,hyperscale self-build,,,,,site-dcc79b6b34
 ai,epoch,OpenAI Stargate Abilene,OpenAI Stargate Abilene,Oracle,US,32.494232,-99.800907,exact,421.0,509348,"B200, B300",OpenAI,American Electric Power,15.948322,"5502 Spinks Rd, Abilene, TX 79601",,,,,,single,hyperscale self-build,,,,,site-b0ab799581
 ai,epoch,Microsoft Fairwater Wisconsin,Microsoft Fairwater Wisconsin,Microsoft,US,42.67487,-87.894888,exact,369.0,445679,B200,"OpenAI, Microsoft",WE Energies,13.978458,"4800 90th St, Mount Pleasant, WI 53403",,,,,,multi,epoch users=2,,,,,site-24883805b4
 ai,epoch,Google Lincoln,Google Lincoln,Google,US,40.907472,-96.645783,exact,141.0,287518,,,,5.341361999999999,"5475 Cloud Ct, Lincoln, NE 68514",,,,,,single,hyperscale self-build,,,,,site-d2d6ce0920
-ai,epoch,Google Bristow,Google Bristow,Google,US,38.731164,-77.548024,town,279.0,283675,"TPU v5e, TPU v5p, TPU v6e, TPU v7",Google DeepMind,,10.569078000000001,"13001 Rollins Ford Road, Bristow, VA 20136",,,,,,single,hyperscale self-build,,,,,site-0107c2bef8
 ai,epoch,Colossus 1,Colossus 1,SpaceXAI,US,35.073554,-90.087308,exact,340.0,275795,"H100, H200, B200",Anthropic,MLGW,12.87988,"3231 Riverport Rd, Memphis, TN 38109",,,,,,single,hyperscale self-build,,,,,site-8f472304c0
 ai,epoch,Google Omaha,Google Omaha,Google,US,41.335681,-96.052363,exact,237.0,267812,"TPU v5e, TPU v5p, TPU v6e",Google DeepMind,,8.978034,"11110 State St, Omaha, NE 68142",,,,,,single,hyperscale self-build,,,,,site-ef3905a031
 ai,epoch,CoreWeave Denton TX,CoreWeave Denton TX,CoreWeave,US,33.219273,-97.174783,exact,262.0,252652,B200,OpenAI,,9.925084,"8171 Jim Christal Rd, Denton, TX 76207",,,,,,,,,,,,site-560b0d10da
+ai,epoch,Google Bristow,Google Bristow,Google,US,38.731164,-77.548024,town,238.0,239318,"TPU v5e, TPU v5p, TPU v6e, TPU v7",Google DeepMind,,9.015915999999999,"13001 Rollins Ford Road, Bristow, VA 20136",,,,,,single,hyperscale self-build,,,,,site-0107c2bef8
 ai,epoch,Meta Rosemount,Meta Rosemount,Meta,US,44.739187,-93.12611,town,178.0,215765,B200,Meta,,6.742996,"1772-2396 145th St, Rosemount, MN 55068, USA",,,,,,single,hyperscale self-build,,,,,site-346a899cb9
 ai,epoch,Meta Jeffersonville,Meta Jeffersonville,Meta,US,38.279131,-85.739009,exact,178.0,203132,B300,Meta,,6.742996,"500 8th St, Jeffersonville, IN 47130, USA",,,,,,single,hyperscale self-build,,,,,site-f54144f9e9
 ai,epoch,QTS Richmond 2,QTS Richmond 2,,US,37.523479,-77.315812,town,180.0,182920,,,Dominion Energy,6.818759999999999,"6030–6070 Technology Blvd, Sandston, VA 23150",,,,,,,,,,,,site-90a29a12e9
@@ -4684,34 +4687,38 @@ ai,epoch,Meta Montgomery,Meta Montgomery,Meta,US,32.377711,-86.309078,town,153.0
 ai,epoch,Meta Kuna,Meta Kuna,Meta,US,43.459207,-116.421111,exact,152.0,173319,B300,Meta,Idaho Power Company,5.758064,"601 Kuna Mora Rd, Kuna ID 83634",,,,,,single,hyperscale self-build,,,,,site-6acacdd9ab
 ai,epoch,Meta Temple,Meta Temple,Meta,US,31.126016,-97.36,exact,152.0,173247,B300,Meta,,5.758064,"2310 Eberhardt Rd, Temple, TX 76504",,,,,,single,hyperscale self-build,,,,,site-7d72682aeb
 ai,epoch,Meta Cheyenne,Meta Cheyenne,Meta,US,41.139981,-104.820246,exact,152.0,172814,B300,Meta,,5.758064,"Cheyenne, WY 82007, USA",,,,,,single,hyperscale self-build,,,,,site-3fe7b1462d
+ai,epoch,Meta Huntsville,Meta Huntsville,Meta,US,34.898144,-86.73357,town,146.0,166760,B300,Meta,"Tennessee Valley Authority, NextEra Energy Resources, First Solar",5.530772,"5400 Prosperity Dr NW, Toney, AL",,,,,,single,hyperscale self-build,,,,,site-30af2a5d2d
 ai,epoch,Meta Aiken,Meta Aiken,Meta,US,33.741656,-81.842339,town,142.0,161697,B300,Meta,,5.379244,"7601 State Hwy 105, Trenton, SC 29847, USA",,,,,,single,hyperscale self-build,,,,,site-45982e1dde
 ai,epoch,Coreweave Helios,Coreweave Helios,CoreWeave,US,33.76286,-100.8168,town,132.0,159551,B200,OpenAI,,5.000424000000001,"984 County Road 112, Afton, TX 79220",,,,,,,,,,,,site-302f6e12ab
 ai,epoch,Google Arcola,Google Arcola,Google,US,39.001745,-77.403335,town,77.0,157150,,,,2.9169140000000002,"42575 Arcola Blvd, Sterling, VA 20166",,,,,,single,hyperscale self-build,,,,,site-3b46b2cb88
 ai,epoch,Microsoft Project Osmium,Microsoft Project Osmium,Microsoft,US,41.483323,-93.762444,town,190.0,155634,"A100, H100, B200",OpenAI,,7.19758,"5855 SW Kerry St, Cumming, IA 50061",,,,,,single,hyperscale self-build,,,,,site-3df2f5dcf5
 ai,epoch,Meta Eagle Mountain,Meta Eagle Mountain,Meta,US,40.309349,-112.011983,town,133.0,151354,B300,Meta,Williams,5.038306,"1275 N Community Cir, Eagle Mountain, UT 84005",,,,,,single,hyperscale self-build,,,,,site-aac5283810
-ai,epoch,Fluidstack Lake Mariner,Fluidstack Lake Mariner,Fluidstack,US,43.358655,-78.604128,exact,100.0,130368,"B200, TPU v7","Anthropic, G42",,3.7882,"7725 Lake Rd, Barker, NY 14012",,,,,,multi,colocation operator,,,,,site-8095a31913
-ai,epoch,Huawei Horinger,Huawei Horinger,Huawei,CN,40.295248,111.904498,town,241.8,123799,Ascend 910C,,,9.159867600000002,"Huawei, Horinger, China",,,,,,,,,,,,site-4bf90e3a62
 ai,epoch,VNET Bayin Ulanqab,VNET Bayin Ulanqab,VNET,CN,41.624153,112.632501,exact,221.0,122789,Ascend 910C,ByteDance,,8.371922,"Bayin, Ulanqab, China",,,,,,,,,,,,site-b570e7273e
+ai,epoch,Huawei Horinger,Huawei Horinger,Huawei,CN,40.295248,111.904498,town,241.8,117230,Ascend 910C,,,9.159867600000002,"Huawei, Horinger, China",,,,,,,,,,,,site-4bf90e3a62
 ai,epoch,Meta Gallatin,Meta Gallatin,Meta,US,36.388303,-86.44759,town,87.0,99545,B300,Meta,,3.2957339999999995,"1 Meta Lp, Gallatin, TN 37066",,,,,,single,hyperscale self-build,,,,,site-e322c461ed
 ai,epoch,CoreWeave Ellendale ND,CoreWeave Ellendale ND,CoreWeave,US,46.010258,-98.568691,exact,68.0,93481,B200,OpenAI,,2.5759760000000003,"9685 87th Ave SE, Ellendale, ND 58436",,,,,,,,,,,,site-180c28ad02
+ai,epoch,Meta Sarpy,Meta Sarpy,Meta,US,41.08184,-96.131094,town,80.0,91965,B300,Meta,,3.03056,"14436-14998 Fairview Rd, Springfield, NE 68059, USA",,,,,,single,hyperscale self-build,,,,,site-ca31378e47
 ai,epoch,CoreWeave Chester VA,CoreWeave Chester VA,CoreWeave,US,37.348948,-77.438379,town,82.0,88428,"H100, B200",OpenAI,,3.106324,"1401 Meadowville Technology Parkway, Chester, VA",,,,,,,,,,,,site-f1eb145e02
 ai,epoch,CoreWeave Marble NC,CoreWeave Marble NC,CoreWeave,US,35.184988,-83.914123,exact,65.0,78827,B200,OpenAI,,2.46233,"155 Palmer Ln, Marble, NC 28905",,,,,,,,,,,,site-e0b6cee7ee
+ai,epoch,Core42 Lake Mariner,Core42 Lake Mariner,Core42,US,43.358655,-78.604128,exact,58.0,71753,B200,G42,,2.197156,"7725 Lake Rd, Barker, NY 14012",,,,,,,,,,,,site-d561c8dc4c
 ai,epoch,Microsoft SAT40,Microsoft SAT40,Microsoft,US,29.4246,-98.495141,town,75.0,64679,"H100, B300",,,2.84115,"15000 Lambda Drive, San Antonio, TX 78245",,,,,,single,hyperscale self-build,,,,,site-2b9f2f5717
 ai,epoch,STACK Infrastructure NVA02,STACK Infrastructure NVA02,,US,38.745806,-77.537725,exact,85.0,61141,H100,,,3.21997,"9590 Hornbaker Rd, Manassas, VA 20109",,,NOVEC (co-op),,,,,,,,,site-4b4808434b
+ai,epoch,Anthropic Lake Mariner,Anthropic Lake Mariner,AI XPV Platform,US,43.358655,-78.604128,exact,42.0,58564,TPU v7,Anthropic,,1.5910440000000001,"7725 Lake Rd, Barker, NY 14012",,,,,,,,,,,,site-b034c54b77
+ai,epoch,Microsoft-Nebius New Jersey,Microsoft-Nebius New Jersey,Nebius,US,39.428199,-75.018409,exact,50.0,56846,B300,Microsoft,,1.8941,"3963 S Lincoln Ave, Vineland, New Jersey",,,,,,,,,,,,site-eaefc40982
+ai,epoch,CoreWeave Norway,CoreWeave Norway,CoreWeave,NO,58.257573,7.89205,exact,42.0,50773,B200,OpenAI,,1.5910440000000001,"Stølevegen 39, 4715 Øvrebø, Norway",,Øvrebø,,,,multi,peeringdb net_count=7,7,5520,Bulk Infrastructure AS,,site-b6dc6bf893
 ai,epoch,Stream Phoenix,Stream Phoenix,,US,33.419491,-112.359988,exact,64.0,46134,H100,,,2.424448,2950 S. Litchfield Road,,,,,,,,,,,,site-4d4c9918d7
 ai,epoch,CoreWeave Dalton 1 & 2,CoreWeave Dalton 1 & 2,CoreWeave,US,34.713443,-84.952151,exact,28.0,32238,B300,OpenAI,,1.060696,"2205 Industrial South Rd, Dalton, GA, 30721",,,,,,,,,,,,site-884d6b0029
 ai,epoch,Start Campus Sines Data Campus,Start Campus Sines Data Campus,Nscale,PT,37.956549,-8.868964,town,33.0,31834,B300,Microsoft,,1.2501060000000002,"Start Campus - Sustainable Data Center Services, Sines, Portugal",,,,,,,,,,,,site-abc2d521ff
-ai,epoch,Google Pryor (North),Google Pryor (North),Google,US,36.241172,-95.330047,exact,53.0,26275,"TPU v5p, TPU v5e",Google DeepMind,,2.007746,"4581 Webb St, Pryor, OK 74361",,,,,,single,hyperscale self-build,,,,,site-a8a83c22fe
 ai,epoch,CoreWeave Muskogee OK,CoreWeave Muskogee OK,CoreWeave,US,35.696785,-95.495165,exact,,,,OpenAI,,,"1525 W 43rd St S, Muskogee, OK 74401, USA",,,,,,,,,,,,site-37c730e006
 ai,epoch,Crusoe Abilene Expansion,Crusoe Abilene Expansion,Microsoft,US,32.494232,-99.800907,exact,,,,Microsoft,,,"5502 Spinks Rd, Abilene, TX 79601",,,,,,single,hyperscale self-build,,,,,site-e88f958d24
 ai,epoch,Goodnight,Goodnight,Google,US,35.10811,-101.362741,town,,,,Google DeepMind,Serena,,"10001 Lima Rd, Claude, TX 79019",,,,,,single,hyperscale self-build,,,,,site-142f87682c
 ai,epoch,Google Cedar Rapids,Google Cedar Rapids,Google,US,41.922176,-91.715667,exact,,,,Google DeepMind,,,"5800 EDGEWOOD RD SW CEDAR RAPIDS, IA 52404",,,,,,single,hyperscale self-build,,,,,site-57b27affa4
 ai,epoch,Google Fort Wayne,Google Fort Wayne,Google,US,41.030929,-85.053626,exact,,,,Google DeepMind,,,"6015 Adams Center Road, Fort Wayne, IN 46806",,,,,,single,hyperscale self-build,,,,,site-42a1b86a6e
 ai,epoch,Meta Hyperion,Meta Hyperion,Meta,US,32.467642,-91.626788,exact,,,,Meta,Entergy,,"Holly Ridge, LA 71269",,,,,,single,hyperscale self-build,,,,,site-22272a15bc
-ai,epoch,Meta Sarpy,Meta Sarpy,Meta,US,41.08184,-96.131094,town,,,,Meta,,,"14436-14998 Fairview Rd, Springfield, NE 68059, USA",,,,,,single,hyperscale self-build,,,,,site-ca31378e47
 ai,epoch,OpenAI Stargate Lordstown,OpenAI Stargate Lordstown,Softbank,US,41.236795,-80.819042,town,,,,OpenAI,,,"2300 Hallock Young Rd, Warren, OH 44481",,,,,,,,,,,,site-428eb8956f
 ai,epoch,OpenAI Stargate UAE,OpenAI Stargate UAE,G42,AE,24.479292,52.313949,town,,,,OpenAI,,,"Nexus L&T Project Office, Al Bihouth, Al Dhafrah, Abu Dhabi, United Arab Emirates",,,,,,,,,,,,site-01078bea30
 ai,epoch,QTS Cedar Rapids,QTS Cedar Rapids,,US,41.90562,-91.750987,exact,,,,,Alliant Energy,,"6200 76th Ave SW, Fairfax, IA 52228",,,,,,,,,,,,site-ecf2b9f202
+ai,epoch,QTS Eagle Mountain,QTS Eagle Mountain,,US,40.268886,-112.034294,exact,,,,Meta,,,"652 E Hyperscale Way, Eagle Mountain, UT 84013",,,,,,,,,,,,site-271c0a5d3e
 traditional,manual,,,,US,47.234367,-119.853505,town,,,,,,,"1515 Port Industrial Way, Quincy, WA, USA",,,,,,,,,,,,site-65de06c201
 ai,manual,OpenAI Project Camellia,,OpenAI,US,32.251000,-81.236000,exact,3210,,,,,,"Savannah Gateway Industrial Hub, Rincon, GA, USA",,,,,,single,hyperscale self-build,,,,,site-0adf271aee
 ai,manual,Google Project Tembo,,Google,US,41.033000,-104.755000,exact,2700,,,,,,"Switchgrass Industrial Park, Cheyenne, WY, USA",,,,,,single,hyperscale self-build,,,,,site-c1f1dfb23f
@@ -4719,6 +4726,19 @@ ai,manual,Meta El Paso (BlackRock JV),,Meta,US,31.848000,-106.430000,exact,1000,
 ai,manual,Meta Sturgeon County,,Meta,CA,53.800000,-113.450000,exact,1000,,,,,,"Sturgeon County, Alberta, Canada",,,,,,single,hyperscale self-build,,,,,site-d096aed88e
 ai,manual,Justified Data Campus,,TeraWulf,US,37.899000,-86.754000,exact,401,,,,,,"Hawesville, KY, USA",,,,,,,,,,,,site-f3e3864878
 ai,manual,Crusoe Childress (with Lancium),,Crusoe,US,34.426500,-100.204000,exact,1000,,,,,,"Childress, TX, USA",,,,,,,,,,,,site-c323f6fbc0
+ai,manual,Treetop East Fishkill Data Center,,Treetop Companies,US,41.522500,-73.812300,exact,,,,,,,"Donovan Drive, Lime Kiln Corporate Park",NYISO #1738,Hopewell Junction,,,,,,,,,,site-b66aebf3a0
+ai,manual,Arconic Massena Data Center,,Arconic (Apollo Global Management),US,44.952400,-74.887500,exact,,,,,,,45 County Route 42,NYISO #1728/#1729/#1730,Massena,,,,,,,,,,site-4f55e97e99
+ai,manual,NCCS Massena,,North Country Colocation Services (NYDIG),US,44.981600,-74.751200,exact,,,,,,,182-194 County Road 45,NYISO #0979,Massena,,,,,,,,,,site-ce1dbeb705
+ai,manual,WNY STAMP Data Center,,Stream US Data Centers (GCEDC STAMP),US,43.085900,-78.397500,exact,,,,,,,"STAMP, Route 77",NYISO #0580/#1484,Alabama,,,,,,,,,,site-dcb5e135f7
+ai,manual,Riverview Innovation & Technology Campus,,Riverview Innovation & Technology Campus Inc.,US,42.983000,-78.926400,exact,,,,,,,River Road (former Tonawanda Coke site),NYISO #1726,Tonawanda,,,,,,,,,,site-d5381827c7
+ai,manual,ZeroC Massena Data Center,,ZeroC Data Centers (Petawatt Holdings),US,44.949100,-74.862700,exact,,,,,,,417 County Route 42,NYISO #1731/#1213,Massena,,,,,,,,,,site-eb4a572344
+ai,manual,Ranalli SuperDC,,Ranalli Super DC LLC,US,43.184900,-76.351200,exact,,,,,,,Hencle Blvd & Oswego Rd,NYISO #1736,Lysander,,,,,,,,,,site-dfc74ea9b2
+ai,manual,Pontoon Bridge Road Data Center,,American Data Center Partners LLC,US,44.959000,-74.911000,exact,,,,,,,466 Pontoon Bridge Road,NYISO #1745,Massena,,,,,,,,,,site-cb6283f416
+ai,manual,Holtec HI-CLOUD Indian Point,,Holtec International,US,41.261000,-73.953000,exact,,,,,,,450 Broadway,NYISO #1717,Buchanan,,,,,,,,,,site-9f5976f614
+ai,manual,Globe Digital Holdings Niagara Falls,,Globe DH LLC,US,43.123500,-79.042900,exact,,,,,,,3801 Highland Ave / 2201 College Ave / 5950 Packard Rd,NYISO #1747/#1748/#1749,Niagara Falls,,,,,,,,,,site-f24da2b13a
+ai,manual,Kenwood Tech Center,,EKG Group / Guild Ventures,US,42.628000,-73.771000,exact,,,,,,,"former Kenwood convent, Doane Stuart Rd",NYISO #1754,Albany,,,,,,,,,,site-9c0312d00c
+ai,manual,Brookhaven Digital Infrastructure Facility,,Wildflower Ltd.,US,40.831500,-72.939500,exact,,,,,,,Wildflower industrial park,NYISO #1721,Brookhaven,,,,,,,,,,site-960ffbbfd9
+ai,manual,TeraWulf Cayuga (Lake Hawkeye),,TeraWulf,US,42.602500,-76.636000,exact,,,,,,,"Milliken Station, Cayuga Operating Company site",NYISO #1733,Lansing,,,,,,,,,,site-733bb89680
 traditional,peeringdb,Digital Realty NYC (111 8th Ave),,Digital Realty,US,40.741469,-74.003387,exact,,,,,,,111 8th Ave,,New York,,,,multi,peeringdb net_count=130,130,16,Digital Realty,,site-3880540cb7
 traditional,peeringdb,The Mission Street Center,,UnitedLayer LLC,US,37.780351,-122.408954,exact,,,,,,,1019 Mission Street,,San Francisco,,,,,,0,24,UnitedLayer LLC,no_interconnection,site-290b2102b6
 traditional,peeringdb,SVTIX San Jose,,SVTIX San Jose,US,37.333765,-121.904828,exact,,,,,,,250 Stockton St,,San Jose,,,,multi,peeringdb net_count=3,3,33,SVTIX San Jose,,site-34004a3784
@@ -6061,7 +6081,6 @@ traditional,peeringdb,DATAPLANET datacenter,,DATAPLANET Ltd,RU,55.978854,37.2583
 traditional,peeringdb,INOC Albany (4 Tower Pl),,"INOC, LLC",US,42.686106,-73.84255,exact,,,,,,,4 Tower Place,,Albany,,,,single,peeringdb net_count=1,1,5501,"INOC, LLC",,site-f8a1a20a2d
 traditional,peeringdb,KAZ-GOV-IX,,JSC State Technical Service STS Qaz-Gov-IX,KZ,51.146691,71.475634,exact,,,,,,,1/1 Zhanaidar Zhirentaev Street,,Astana,,,,multi,peeringdb net_count=2,2,5509,JSC State Technical Service STS Qaz-Gov-IX,,site-0a63ce7859
 traditional,peeringdb,dotsi - Lisbon DC01,,"Dotsi, Unipessoal Lda.",PT,38.7477,-9.09797,exact,,,,,,,Rua 3 da Matinha,,Lisbon,,,,multi,peeringdb net_count=2,2,5519,"Dotsi, Unipessoal Lda.",,site-9f9187fac3
-traditional,peeringdb,Bulk Norway Data Center Campus - N01,,Bulk Infrastructure AS,NO,58.257573,7.889861,exact,,,,,,,Stølevegen 39,,Øvrebø,,,,multi,peeringdb net_count=7,7,5520,Bulk Infrastructure AS,,site-be0feb019f
 traditional,peeringdb,OzarksGo Fayetteville,,"OzarksGo, LLC",US,36.077952,-94.212464,exact,,,,,,,3641 Wedington Drive,,Fayetteville,,,,multi,peeringdb net_count=9,9,5522,"OzarksGo, LLC",,site-be8d0031b5
 traditional,peeringdb,Mundivox do Brasil,,Mundivox do Brasil Ltda,BR,-22.905545,-43.178268,exact,,,,,,,"Rua Sete de Setembro, 111",,Rio de Janeiro,,,,single,peeringdb net_count=1,1,5533,Mundivox do Brasil Ltda,,site-82a0bfaa21
 traditional,peeringdb,Fastcom DC Facility - 1,,Remki Communications Private Limited,IN,16.535323,80.593028,exact,,,,,,,Plot No. 86&88,,Guntur,,,,multi,peeringdb net_count=2,2,5546,Remki Communications Private Limited,,site-224e2f9538

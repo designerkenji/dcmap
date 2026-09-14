@@ -1,0 +1,530 @@
+[
+ {
+  "site_id": "site-142f87682c",
+  "plant_id": "e59246",
+  "plant_name": "Goodnight 1 Wind Farm",
+  "structure": "netmeter",
+  "note": "First SB6 co-location test case: PUCT Dockets 58881 and 59220 approved 525.5 MW of Crusoe AI load net-metered behind the 265.5 MW Goodnight 1 wind interconnection (full-campus curtailment within 30 minutes in ERCOT emergencies). The same campus - Crusoe's Project Llano, sold to Google - also holds a January 2026 TCEQ permit for a 933 MW on-site plant of ten simple-cycle gas turbines, which has no EIA/GEM record yet.",
+  "url": "https://www.tftc.io/puct-docket-59220-crusoe-ensign-goodnight-wind-ai-campus-sb6-curtailment"
+ },
+ {
+  "site_id": "site-22272a15bc",
+  "plant_id": "e68214",
+  "plant_name": "Franklin Farms CCGTs",
+  "structure": "ppa",
+  "note": "Entergy Louisiana won LPSC approval in August 2025 to build Franklin Farms 1 & 2 and Waterford 5 (~2.26 GW, online 2028-29) expressly to serve Meta's ~$27B Hyperion campus; in March 2026 Meta agreed to fund ten gas plants (5.2 GW) plus 2.5 GW of solar.",
+  "url": "https://www.entergy.com/news/entergy-louisiana-power-meta-s-data-center-in-richland-parish"
+ },
+ {
+  "site_id": "site-nogeo-33695089",
+  "plant_id": "",
+  "plant_name": "VoltaGrid off-grid gas microgrid (~700 MW prime)",
+  "structure": "btm",
+  "note": "Vantage's $25B, 1.4 GW Frontier mega-campus (Stargate expansion, first delivery H2 2026) will run off-grid on a VoltaGrid behind-the-meter gas microgrid of roughly 210 generators, ~700 MW initially.",
+  "url": "https://vantage-dc.com/news/vantage-data-centers-unveils-plans-for-frontier-a-25b-mega-campus-in-texas-to-meet-unprecedented-ai-demand/"
+ },
+ {
+  "site_id": "site-b0ab799581",
+  "plant_id": "",
+  "plant_name": "On-site gas turbines (~360 MW, GE Vernova and Solar Turbines)",
+  "structure": "btm",
+  "note": "The first Stargate site - Crusoe's 1.2 GW, eight-building campus on Lancium's Clean Campus in Abilene - pairs grid power with ~360 MW of on-site gas turbines disclosed in permit filings.",
+  "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/openai-follows-elon-musks-lead-gas-turbines-to-be-deployed-at-its-first-stargate-site-for-additional-power"
+ },
+ {
+  "site_id": "site-f117cdbe6f",
+  "plant_id": "e6103",
+  "plant_name": "Susquehanna Steam Electric Station",
+  "structure": "btm",
+  "note": "~200 MW bitcoin-mining data centre (permitted to 300 MW) direct-connected behind Susquehanna's meter, mining since February 2023; Talen became sole owner in October 2024 by buying TeraWulf's 25% JV stake (~$92M). A distinct counterparty from the AWS front-of-meter PPA at the same plant.",
+  "url": "https://www.datacenterdynamics.com/en/news/talen-energy-to-build-300mw-nuclear-powered-cryptomining-facility-and-data-center-in-us/"
+ },
+ {
+  "site_id": "site-9831895491",
+  "plant_id": "e6103",
+  "plant_name": "Susquehanna Steam Electric Station",
+  "structure": "ppa",
+  "note": "After FERC rejected expanding the original behind-the-meter arrangement (November 2024), Talen and Amazon restructured in June 2025 into a 17-year, ~$18B front-of-meter PPA ramping to 1,920 MW of Susquehanna nuclear output for AWS's Pennsylvania data centres by 2032.",
+  "url": "https://ir.talenenergy.com/news-releases/news-release-details/talen-energy-expands-nuclear-energy-relationship-amazon"
+ },
+ {
+  "site_id": "site-c255b91cdb",
+  "plant_id": "",
+  "plant_name": "On-site gas turbine fleet (Colossus 1: 15 permitted units, ~247 MW; Colossus 2: up to ~495 MW via affiliate MZX Tech)",
+  "structure": "btm",
+  "note": "xAI powers its Memphis campuses behind the meter with its own gas turbines: Shelby County permitted 15 units (~247 MW) for Colossus 1 in July 2025 after xAI ran up to 35 unpermitted; Colossus 2 leans on affiliate MZX Tech's Southaven turbine plant, subject of Clean Air Act litigation.",
+  "url": "https://www.cnbc.com/2025/07/03/musks-xai-gets-permit-for-turbines-to-power-supercomputer-in-memphis.html"
+ },
+ {
+  "site_id": "site-57b27affa4",
+  "plant_id": "e1060",
+  "plant_name": "Duane Arnold Energy Center",
+  "structure": "ppa",
+  "note": "Under a 25-year PPA announced October 2025, Google will buy the output of NextEra's Duane Arnold nuclear plant - shut since 2020, slated for a ~$1.6B restart by Q1 2029 - for its Iowa data-centre footprint.",
+  "url": "https://newsroom.nexteraenergy.com/NextEra-Energy-and-Google-Announce-New-Collaboration-to-Accelerate-Nuclear-Energy-Deployment-in-the-U-S?l=12"
+ },
+ {
+  "site_id": "site-94bb6d92f4",
+  "plant_id": "",
+  "plant_name": "Hermes 2 (Kairos Power SMR, up to 50 MW)",
+  "structure": "ppa",
+  "note": "In the first US utility PPA for a Gen IV reactor, TVA will buy up to 50 MW from Kairos Power's Hermes 2 SMR in Oak Ridge from ~2030, with Google receiving the clean-energy attributes for its Montgomery County TN and Jackson County AL data centres.",
+  "url": "https://blog.google/outreach-initiatives/sustainability/google-first-advanced-nuclear-reactor-project-with-kairos-power-and-tennessee-valley-authority/"
+ },
+ {
+  "site_id": "site-01078bea30",
+  "plant_id": "gL100000500011",
+  "plant_name": "Barakah Nuclear Energy Plant",
+  "structure": "announced",
+  "note": "The 5 GW Stargate UAE campus (first 200 MW cluster due September 2026, ~$30B reported) is described by project partners as a tri-fuel architecture drawing dedicated power from the 5.6 GW Barakah nuclear plant plus Al Dhafra solar and gas backup; plant-level contract structure is not formally disclosed.",
+  "url": "https://www.vastdata.com/blog/how-stargate-uae-will-redefine-datacenter-power"
+ },
+ {
+  "site_id": "site-03488ab0cb",
+  "plant_id": "gL100000400328",
+  "plant_name": "Huntstown Power Station",
+  "structure": "announced",
+  "note": "Energia's approved ~\u20ac87M data-centre campus sits directly alongside its own 742 MW gas-fired Huntstown Power Station in north Dublin, developed by the plant's owner with renewable supply contracted from Energia wind and solar farms.",
+  "url": "https://baxtel.com/data-center/energia-huntstown-dublin"
+ },
+ {
+  "site_id": "",
+  "plant_id": "e69799",
+  "plant_name": "Fermi HyperGrid on-site generation (first 6 GW gas w/ preliminary TCEQ approval,",
+  "structure": "btm",
+  "note": "Fermi America's 11 GW private 'HyperGrid' powers its Project Matador AI campus behind the fence, with TCEQ granting preliminary approval in November 2025 for the first 6 GW of gas generation, first ~1 GW targeted for late 2026, and four AP1000 reactors plus SMRs planned for the 2030s.",
+  "url": "https://www.prnewswire.com/news-releases/fermi-america-and-the-state-of-texas-announce-preliminary-approval-for-first-6-gw-of-one-of-the-worlds-largest-clean-natural-gas-facilities-on-project-matadors-11-gw-private-hypergrid-campus-302603582.html",
+  "dc": {
+   "name": "Fermi HyperGrid (Project Matador)",
+   "lat": 35.32,
+   "lon": -101.56,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e3122",
+  "plant_name": "Homer City Energy Campus gas plant (seven GE Vernova 7HA.02 hydrogen-enabled tur",
+  "structure": "btm",
+  "note": "Homer City Redevelopment and Kiewit are converting Pennsylvania's retired largest coal plant into a 3,200-acre AI data-center campus powered behind the meter by seven GE Vernova 7HA.02 turbines totaling 4.5 GW \u2014 a $10B+ first-phase investment with EQT as exclusive gas supplier, first steel erected in April 2026 and first power targeted for 2027.",
+  "url": "https://www.gevernova.com/news/press-releases/homer-city-redevelopment-kiewit-announce-country-largest-natural-gas-powered-data-center-support-ai-hpc-demand",
+  "dc": {
+   "name": "Homer City Energy Campus",
+   "lat": 40.513,
+   "lon": -79.197,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100001080380",
+  "plant_name": "Wonder Valley off-grid natural gas and geothermal power complex (7.5 GW planned)",
+  "structure": "btm",
+  "note": "O'Leary Ventures and the MD of Greenview plan an off-grid AI data-centre park whose on-site natural gas and geothermal generation would supply 7.5 GW behind the meter, with a 1.4 GW first phase and lifetime investment stated at over US$70 billion.",
+  "url": "https://www.prnewswire.com/news-releases/kevin-oleary-in-cooperation-with-the-municipal-district-of-greenview-to-develop-the-worlds-largest-ai-data-centre-industrial-park-wonder-valley-in-the-greenview-industrial-gateway-gig-near-grande-prairie-in-north-west-albe-302326230.html",
+  "dc": {
+   "name": "Wonder Valley AI Data Centre Industrial Park",
+   "lat": 55.05,
+   "lon": -118.4,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000100165",
+  "plant_name": "Keephills generating station (gas-fired)",
+  "structure": "announced",
+  "note": "TransAlta's February 2026 MOU with CPP Investments and Brookfield frames a behind-the-fence data-centre campus at its Keephills gas plant site, with an initial long-term PPA of roughly 230 MW and phased evaluation up to 1 GW, TransAlta acting as exclusive site and power provider.",
+  "url": "https://transalta.com/newsroom/transalta-enters-memorandum-of-understanding-for-data-centre-development-at-keephills-site-with-potential-to-scale-up-to-1-gw",
+  "dc": {
+   "name": "Keephills data centre development",
+   "lat": 53.47,
+   "lon": -114.46,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000103754",
+  "plant_name": "Drax Power Station (biomass, former coal units)",
+  "structure": "announced",
+  "note": "In its December 2025 trading update Drax outlined a 100 MW data centre on the grounds of Drax Power Station near Selby \u2014 reusing coal-era land, cooling and electrical infrastructure with Drax providing land, power infrastructure and electricity \u2014 potentially operational by 2027, with no planning application yet submitted.",
+  "url": "https://datacentrereview.com/2025/12/drax-outlines-100mw-data-centre-plan-at-selby-power-station/",
+  "dc": {
+   "name": "Drax Selby data centre",
+   "lat": 53.74,
+   "lon": -1.0,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000405196",
+  "plant_name": "JERA Yokohama Thermal Power Station (approx. 3 GW LNG combined-cycle/CHP)",
+  "structure": "announced",
+  "note": "JERA and the City of Yokohama signed an October 2025 MOU to develop a data centre on the grounds of JERA's Yokohama thermal power station, supplied with low-carbon and decarbonised electricity from the site under a 'watt-bit' power-plus-telecom integration concept.",
+  "url": "https://www.jera.co.jp/en/news/information/20251003_2283",
+  "dc": {
+   "name": "JERA Yokohama data centre project",
+   "lat": 35.48,
+   "lon": 139.68,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e55226",
+  "plant_name": "Freestone Energy Center (gas combined-cycle, Calpine fleet)",
+  "structure": "announced",
+  "note": "Announced Feb 2026: Calpine/Constellation signed a 380 MW 'Powered Land' agreement to connect and serve a new CyrusOne data center adjacent to the plant, plus an exclusive agreement for a further 380 MW Phase 2 (up to 760 MW total). Deal pairs generation, land, grid connectivity and site infrastructure; Constellation says power continues to flow to the regional grid, so co-located but not fully islanded. With\u2026 Campus adjacent to the plant; marker placed at the plant.",
+  "url": "https://www.constellationenergy.com/news/2026/02/constellation-and-cyrusone-announce-agreement-to-support-new-data-center-facility-at-freestone-energy-center-in-texas.html",
+  "dc": {
+   "name": "CyrusOne Freestone campus",
+   "lat": 31.8907,
+   "lon": -96.1131,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e55172",
+  "plant_name": "Thad Hill Energy Center (formerly Bosque Energy Center, gas-fired, Calpine fleet",
+  "structure": "btm",
+  "note": "Announced Jul 30, 2025 (190 MW) and expanded with Phase 2 (+210 MW) in H2 2025 to 400 MW total under Calpine's inaugural 'Powered Land' platform: power, grid connection and Calpine land for the $1.2B DFW10 campus, billed as the first US data center co-located with an existing power source; retains ERCOT grid connectivity and emergency-response capability. Calpine says its ~9 GW ERCOT fleet can back up to 400 MW\u2026 Campus adjacent to the plant; marker placed at the plant.",
+  "url": "https://www.calpine.com/calpine-and-cyrusone-announce-thad-hill-energy-center-powered-land-to-support-hyperscale-data-center-development-in-texas/",
+  "dc": {
+   "name": "CyrusOne DFW10 campus",
+   "lat": 31.8594,
+   "lon": -97.3586,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e6145",
+  "plant_name": "Comanche Peak Nuclear Power Plant (2.4 GW)",
+  "structure": "ppa",
+  "note": "20-yr PPA for 1,200 MW signed Sept 29, 2025 (customer undisclosed in 8-K); Vistra confirmed Amazon as counterparty on its Feb 26, 2026 earnings call. Amazon is building a ~$5B, ~435-acre campus (up to 18 buildings) directly adjacent to the plant, with an Amazon/Vistra co-location application pending before ERCOT/PUCT; delivery starts Q4 2027, full 1,200 MW by 2032; PPA extendable +20 yrs. DC coordinates\u2026 Campus adjacent to the plant; marker placed at the plant.",
+  "url": "https://www.utilitydive.com/news/vistra-texas-data-center-pause-comanche-amazon-earnings/827434/",
+  "dc": {
+   "name": "AWS Project Spectrum campus",
+   "lat": 32.2984,
+   "lon": -97.7855,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e3148",
+  "plant_name": "Martins Creek SES / Lower Mount Bethel Energy Center",
+  "structure": "announced",
+  "note": "Talen JV Slate Belt Holdings bought 754 acres from River Pointe in early 2026 and filed township plans for up to 23 data-center buildings (201,500 sq ft each) with a 480 MW on-site substation, adjacent to Talen's ~1.7 GW Martins Creek and ~600 MW Lower Mount Bethel gas plants; no customer named yet and supply structure undisclosed. DC coordinates approximate. Talen's other land plays have no counterparty: the\u2026 Campus adjacent to the plant; marker placed at the plant.",
+  "url": "https://www.bicmagazine.com/departments/AI-Infrastructure/talen-looks-to-develop-23-building-data-center-campus-in-pennsylvania/",
+  "dc": {
+   "name": "Slate Belt Holdings campus (River Pointe)",
+   "lat": 40.7978,
+   "lon": -75.1054,
+   "approx": true
+  }
+ },
+ {
+  "fab_id": "f082",
+  "plant_id": "gL100001048350",
+  "plant_name": "Yongin Semiconductor Cluster LNG cogeneration / district energy plant (1.05 GW C",
+  "structure": "btm",
+  "note": "First public-private district-energy project for a chip complex: a 1.05-GW LNG CHP built inside the cluster to supply heat and power to SK hynix fabs 1-4 (all heat demand for the four fabs). Final government approval Aug 2024; ground broken May 2026; completion ~2030; ~3.3 trillion KRW (~$2.4bn) investment. SK hynix expects >150bn KRW/yr production-cost savings. Recorded btm as an in-complex dedicated plant\u2026",
+  "url": "https://view.asiae.co.kr/en/article/2024080809173299569"
+ },
+ {
+  "fab_id": "f026",
+  "plant_id": "e64974",
+  "plant_name": "Daybreak Solar (189 MW, Wasco County, OR)",
+  "structure": "ppa",
+  "note": "Intel signed a 15-year agreement under Portland General Electric's Green Future Impact program that enabled Avangrid to build Daybreak Solar; PGE names Daybreak (and Bakeoven) as the GFI projects 'serving Intel', covering a significant share of Intel's Hillsboro advanced-technology-development and manufacturing load. Commercial operation reached Feb 2026 (269 MW combined with Bakeoven).",
+  "url": "https://www.pv-tech.org/avangrid-commissions-269mw-solar-pv-in-oregon/"
+ },
+ {
+  "fab_id": "f023",
+  "plant_id": "e62899",
+  "plant_name": "East Line Solar (100 MW)",
+  "structure": "ppa",
+  "note": "15-year SRP-Intel arrangement announced Dec 2018: SRP contracted the 100 MW East Line Solar plant built by sPower specifically for Intel; supplies roughly half of the Ocotillo campus's peak-hour requirements (home of Fab 42). Delivering since 2021-22 per SRP.",
+  "url": "https://media.srpnet.com/east-line-solar-plant-now-delivering-utility-scale-clean-energy-from-salt-river-project-to-intel/"
+ },
+ {
+  "fab_id": "f055",
+  "plant_id": "e2693",
+  "plant_name": "Niagara Power Project and St. Lawrence-FDR hydroelectric plants (via ReCharge NY",
+  "structure": "ppa",
+  "note": "NYPA board (Mar 26, 2024) approved a 15 MW ReCharge NY low-cost power allocation for Fab 8 \u2014 the RNY pool is half-sourced (455 MW) from NYPA's Niagara and St. Lawrence-FDR hydro plants \u2014 plus 90 MW of market-procured High Load Factor power, tied to GF's $11.6B Fab 8 expansion including a new 358,000 sq ft fab.",
+  "url": "https://nypa.gov/news/press-releases/2024/20240326-awards"
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000900994",
+  "plant_name": "Greater Changhua 2b & 4 offshore wind farms",
+  "structure": "ppa",
+  "note": "World's largest corporate renewable PPA at signing (8 Jul 2020): 20-year fixed-price CPPA for 100% of the 920 MW output plus T-RECs, priced above the 2018 auction FiT. No single fab - corporate-wide offtake. FID Mar 2023; first power to grid 23 Jul 2025 (billed as the world's first offshore wind farm built exclusively for one company); full commercial operation expected Q3 2026. Ownership restructuring: Orsted\u2026",
+  "url": "https://orsted.tw/en/news/2020/07/orsted-tsmc-cppa",
+  "dc": {
+   "name": "TSMC (corporate-wide)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000900883",
+  "plant_name": "Hai Long 2B & Hai Long 3 offshore wind farms",
+  "structure": "ppa",
+  "note": "20-year CPPA signed 2022 covering 100% of Hai Long 2B (224 MW) and Hai Long 3 (504 MW), ~744 MW combined per Northland's release; tenor commences at full commercial operations (first power achieved 2025, full ops expected 2027). No single fab - corporate-wide TSMC offtake. This was Taiwan's largest fab offshore-wind CPPA after the Orsted deal. In April 2026 TSMC additionally signed a 30-year CPPA for Hai Long 2A, extending the offtake.",
+  "url": "https://www.northlandpower.com/en/news/press-release/northland-power-signs-longterm-corporate-power-purchase-agreement-for-hai-long-offshore-wind-project.aspx",
+  "dc": {
+   "name": "TSMC (corporate-wide)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000916938",
+  "plant_name": "Fengmiao I offshore wind farm",
+  "structure": "ppa",
+  "note": "CPPA announced 18 Dec 2024: UMC buys >30 billion kWh over at least 30 years from CIP's 495 MW Fengmiao I (33 x 15 MW Vestas turbines; financial close Mar 2025; completion end-2027) - the largest renewable transaction in UMC's history, toward 50% renewables by 2030. UMC is the anchor among six corporate offtakers taking the farm's entire capacity. No single fab named - corporate-wide offtake.",
+  "url": "https://www.umc.com/en/News/press_release/Content/esg/20241218",
+  "dc": {
+   "name": "UMC (corporate-wide)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000916283",
+  "plant_name": "He Dreiht offshore wind farm (960 MW; Bosch tranche 50 MW / ~200 GWh/yr)",
+  "structure": "ppa",
+  "note": "Corporate-wide 15-year PPA signed Mar 2023, running from 2026 \u2014 no single fab named, but the plant is; Bosch's German plants (its Dresden 300mm and Reutlingen fabs are its largest power users) draw on the 50 MW He Dreiht tranche. Record plant-side with Bosch as buyer.",
+  "url": "https://www.enbw.com/press/enbw-concludes-ppa-with-bosch-for-50mw-offshore-wind-energy.html",
+  "dc": {
+   "name": "Robert Bosch (corporate-wide, incl. Dresden fab)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e8011",
+  "plant_name": "Crane Clean Energy Center (Three Mile Island Unit 1 restart, 835 MW nuclear)",
+  "structure": "ppa",
+  "note": "Microsoft's 20-year, 835 MW PPA signed September 2024 underwrites Constellation's ~$1.6B restart of Three Mile Island Unit 1 (retired 2019) as the Crane Clean Energy Center, targeted for 2027-2028, matching Microsoft's data-center load across PJM with carbon-free power.",
+  "url": "https://www.constellationenergy.com/news/2024/Constellation-to-Launch-Crane-Clean-Energy-Center-Restoring-Jobs-and-Carbon-Free-Power-to-The-Grid.html",
+  "dc": {
+   "name": "Microsoft (PJM-region data centres)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e204",
+  "plant_name": "Clinton Clean Energy Center (nuclear, 1,121 MW plus 30 MW uprate)",
+  "structure": "ppa",
+  "note": "Meta's 20-year, 1,121 MW PPA announced June 2025 keeps Constellation's Clinton nuclear plant operating past the 2027 expiry of Illinois' zero-emission credit, funds relicensing and a 30 MW uprate from June 2027, and supports Meta's regional AI operations rather than one named campus.",
+  "url": "https://www.constellationenergy.com/news/2025/constellation-meta-sign-20-year-deal-for-clean-reliable-nuclear-energy-in-illinois.html",
+  "dc": {
+   "name": "Meta (regional AI data centres)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e3175",
+  "plant_name": "Holtwood and Safe Harbor hydroelectric plants (670 MW contracted, first tranche ",
+  "structure": "ppa",
+  "note": "In July 2025 Google signed 20-year PPAs worth over $3B for 670 MW from Brookfield's Holtwood and Safe Harbor hydro plants \u2014 the first tranche of a hydro framework agreement scalable to 3,000 MW \u2014 to supply its $25B mid-Atlantic/PJM data-center expansion.",
+  "url": "https://bam.brookfield.com/press-releases/brookfield-and-google-sign-hydro-framework-agreement-deliver-3000-mw-homegrown",
+  "dc": {
+   "name": "Google (mid-Atlantic / PJM data centres)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e64132",
+  "plant_name": "Oak Hill Solar (200 MW, retired Oak Hill lignite mine site)",
+  "structure": "ppa",
+  "note": "CAVEAT - weaker fit: 200 MW solar PPA with Amazon announced with Vistra's Q3 2024 results and framed as data-center-demand-driven; facility built on the reclaimed Oak Hill lignite mine and reached COD per Vistra's Q3 2025 results. No specific AWS campus named - corporate renewable procurement, distinct from the separate Amazon-Comanche Peak nuclear arrangement.",
+  "url": "https://investor.vistracorp.com/2025-11-06-Vistra-Reports-Third-Quarter-2025-Results,-Narrows-2025-Guidance,-and-Initiates-2026-Guidance",
+  "dc": {
+   "name": "Amazon/AWS (corporate renewable portfolio)",
+   "corp": true
+  }
+ },
+ {
+  "site_id": "site-6de79747d8",
+  "plant_id": "e67914",
+  "plant_name": "Delta Blues Advanced Power Station",
+  "structure": "announced",
+  "note": "Entergy Mississippi is building the $1.2bn, 754 MW hydrogen-capable CCGT Delta Blues Advanced Power Station (online summer 2028, docket 2024-UA-144) as the anchor of a $2-3bn gas+solar buildout dedicated to AWS's two Madison County campuses (>$10bn committed Jan 2024; 2026 local reporting details an additional ~$11bn expansion). A second Entergy plant follows at end-2028. Regulated special-contract service, not a\u2026",
+  "url": "https://mississippitoday.org/2024/01/25/amazon-data-center-mississippi-entergy/"
+ },
+ {
+  "site_id": "site-560b0d10da",
+  "plant_id": "e61643",
+  "plant_name": "Denton Energy Center (gas peaker)",
+  "structure": "announced",
+  "note": "Municipal pairing the trade press ties together: Core Scientific's campus at 8171 Jim Christal Rd sits adjacent to the city-owned Denton Energy Center and Jim Christal substation, served under a Denton Municipal Electric power purchase agreement the city council voted to modify as the site pivots from bitcoin to AI with a planned ~$6bn expansion (Nov 2024); CoreWeave's $9bn acquisition of Core Scientific closed\u2026",
+  "url": "https://dentonrc.com/news/denton/denton-data-center-is-shifting-focus-to-ai-planning-to-grow-and-use-more-power/article_567f9da6-a766-11ef-b426-f30ec039dfa7.html"
+ },
+ {
+  "site_id": "site-8989256a21",
+  "plant_id": "e59812",
+  "plant_name": "Wolf Hollow II Generating Station (1,115 MW CCGT)",
+  "structure": "btm",
+  "note": "MARA acquired the 300 MW facility operating behind the meter at the Wolf Hollow II gas plant in early 2024 (part of its ~$179m purchase of two Texas BTM sites from Generate Capital) and has since converted most of it to immersion cooling. A contested permit would add eight peaker turbines (~352 MW) at the site; neighbors have sued over noise and the plant expansion faced TCEQ hearings through 2025.",
+  "url": "https://baxtel.com/data-center/marathon-digital-granbury-tx"
+ },
+ {
+  "site_id": "site-nogeo-85ba6134",
+  "plant_id": "",
+  "plant_name": "Corsac Station Enhanced Geothermal Project (115 MW)",
+  "structure": "ppa",
+  "note": "NV Energy buys the output of Fervo's 115-MW Corsac Station EGS and resells it to Google at a set rate under the first-of-its-kind Clean Transition Tariff, with Google credited for the plant's energy and capacity on bills for its Storey County data centers. Filed June 2024; PUCN approved the CTT and supply agreement in May 2025. Fervo has said it may double or triple Corsac Station and target 1 GW+ at the site,\u2026",
+  "url": "https://www.utilitydive.com/news/google-fervo-nv-energy-nevada-puc-clean-energy-tariff/719472/"
+ },
+ {
+  "site_id": "",
+  "plant_id": "e6073",
+  "plant_name": "Plant Victor J. Daniel Unit 2 (coal, life-extended; gas conversion planned 2029)",
+  "structure": "announced",
+  "note": "To serve Compass's $10bn, eight-building Meridian hyperscale campus (announced Jan 2025, ~500 MW), Mississippi Power told the PSC it must delay retirement of Plant Daniel coal Unit 2 into the mid-2030s (previously closing 2027/2028); the PSC unanimously approved the special contract in Feb 2025. As of Feb 2026 the utility plans to convert Unit 2 to gas in 2029.",
+  "url": "https://mississippitoday.org/2025/02/14/state-ms-power-extend-life-of-coal-unit-to-energize-data-centers/",
+  "dc": {
+   "name": "Compass Datacenters Meridian campus (8 buildings, ~320-500 MW)",
+   "lat": 32.36,
+   "lon": -88.7,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e69989",
+  "plant_name": "Cypress Solar (600 MW solar + 350 MW battery storage)",
+  "structure": "ppa",
+  "note": "Entergy Arkansas will power Google's $4bn West Memphis data center under a special rate contract (filed with the Arkansas PSC Sept 2025, approved Dec 5, 2025) in which Google funds construction of the utility-built 600 MW Cypress Solar plus 350 MW BESS near Pine Bluff \u2014 reported as the first time a Google investment directly funds utility plant construction. Google covers full energy costs; Entergy projects\u2026",
+  "url": "https://www.datacenterdynamics.com/en/news/entergy-arkansas-to-power-planned-google-data-center-in-west-memphis/",
+  "dc": {
+   "name": "Google West Memphis data center",
+   "lat": 35.15,
+   "lon": -90.18,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e68504",
+  "plant_name": "Sandow Lakes Energy 1,200 MW gas plant",
+  "structure": "announced",
+  "note": "Sandow Lakes Energy is permitting a $1.2bn, 1,200 MW gas plant at the former Alcoa Sandow property whose output goes almost entirely to private on-site customers over private wires (only 80 MW to ERCOT, temporarily). Permitting documents and reporting identify the master-planned complex's tenants as the customers: Riot's 700 MW seven-building Rockdale campus (plus the 125 MW ex-Rhodium mine it acquired) and\u2026",
+  "url": "https://www.texastribune.org/2025/06/05/texas-data-centers-gas-power-plants-ai/",
+  "dc": {
+   "name": "Riot Platforms Rockdale (Whinstone) campus, plus Bitmain and ex-Rhodiu",
+   "lat": 30.56,
+   "lon": -97.06,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "gL100000103752",
+  "plant_name": "Holtec SMR-300 units at the former Cottam coal-fired power station site (develop",
+  "structure": "announced",
+  "note": "Sept 2025 MOU between Holtec International, EDF UK and Tritax for Europe's first SMR-powered data center: of the 900-acre Cottam site, ~150 acres for data centers and ~100 acres for SMR-300s, planned on-site co-location (behind-the-meter intent, commercial structure TBD). The named UK SMR + named campus pairing sought in the sweep.",
+  "url": "https://www.datacenterdynamics.com/en/news/uk-and-us-firms-outline-plans-for-advanced-nuclear-development-and-smr-powered-data-centers/",
+  "dc": {
+   "name": "Tritax Cottam data center campus (~1 GW, planned on former Cottam powe",
+   "lat": 53.304,
+   "lon": -0.781,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e68204",
+  "plant_name": "Meitner Energy Center (>1 GW wind + solar + battery storage with on-site gas fir",
+  "structure": "btm",
+  "note": "Construction launched 4 June 2026 - the first built project from the Google/Intersect/TPG Rise Climate co-location partnership, and a separate Panhandle complex from the already-recorded Goodnight/Crusoe campus in Armstrong County. Generation and load are built as one integrated complex rather than netted through an existing grid-facing resource. Corroborated inside the PUCT record: ERCOT's transmission study in\u2026",
+  "url": "https://www.powermag.com/google-launches-1-gw-plus-co-located-data-center-and-generation-complex-in-texas-panhandle/",
+  "dc": {
+   "name": "Meitner Energy Center data center campus (Google)",
+   "lat": 35.6,
+   "lon": -100.85,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e60901",
+  "plant_name": "Willow Springs Wind Farm (ERCOT resource code SALVATION), 250 MW wind",
+  "structure": "netmeter",
+  "note": "NEW SB6 net-metering case: PUCT Docket/Control No. 59943, joint application filed 1 July 2026, still pending as of late August 2026 (ERCOT, AEP Texas and Electric Transmission Texas all entered appearances July-Aug 2026). This is the fourth net-metering application under PURA 39.169 and the largest load-to-generator mismatch yet: 669 MW of load netted behind a 250 MW wind resource, versus 525 MW behind 265 MW at\u2026",
+  "url": "https://interchange.puc.texas.gov/Documents/59943_1_1661634.PDF",
+  "dc": {
+   "name": "Haskell DC (669 MW data center, LLI-2251) - Haskell DC Owner LLC",
+   "lat": 33.22,
+   "lon": -99.72,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e64075",
+  "plant_name": "Taygete II / West Texas Solar Project II (204 MWac solar)",
+  "structure": "netmeter",
+  "note": "NEW SB6 net-metering case: PUCT Docket/Control No. 59115, joint application filed 12 December 2025 - chronologically the second PURA 39.169 application after Goodnight, and still pending (ERCOT filed its notice of commencement of study 5 June 2026; ERCOT issued an RFI to AEP Texas in May 2026). 180 MW load netted behind an existing 204 MWac solar resource, sharing the existing EPS meter at the Taygete II POI. AEP\u2026",
+  "url": "https://interchange.puc.texas.gov/Documents/59115_1_1566173.PDF",
+  "dc": {
+   "name": "Silver Basin Load (180 MW data center, LLI-1198)",
+   "lat": 31.25,
+   "lon": -103.08,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e59734",
+  "plant_name": "Briscoe Wind Farm (150 MW)",
+  "structure": "btm",
+  "note": "Vertical integration rather than a contract: Soluna bought the host wind farm outright in April 2026, then closed on 397 acres directly across from the Briscoe Wind Farm substation on 24 August 2026 for Dorothy 3, a campus of up to 300 MW with direct behind-the-meter access to generation it owns. The earlier Dorothy 1/2 phases (including a 48 MW expansion) already sit behind the same 150 MW wind meter and\u2026",
+  "url": "https://www.stocktitan.net/news/SLNH/soluna-closes-purchase-of-397-acres-for-project-dorothy-1qepnpcqibay.html",
+  "dc": {
+   "name": "Project Dorothy / Dorothy 3 (up to 300 MW AI campus)",
+   "lat": 34.44,
+   "lon": -101.25,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e63739",
+  "plant_name": "Las Majadas Wind Project (273 MW, operating since 2021)",
+  "structure": "btm",
+  "note": "Behind-the-meter PPA for up to 166 MW off the 273 MW Las Majadas wind project - a named generator paired with a named campus AND a named end customer (Galaxy Digital, 48 MW in Kati 1A; Soluna's own operations take 35 MW in Kati 1B). Groundbreaking 18 September 2025; Kati 1 energized February 2026 with full phase 1 completion targeted late 2026; Kati 2 is a further 83 MW expandable past 300 MW for AI/HPC. Spring\u2026",
+  "url": "https://constructionreviewonline.com/news/soluna-scales-up-kati-1-data-center-project-in-texas-leveraging-co-located-wind-farms-energy/",
+  "dc": {
+   "name": "Project Kati (166 MW campus; Kati 1 anchor customer Galaxy Digital at ",
+   "lat": 26.42,
+   "lon": -97.75,
+   "approx": true
+  }
+ },
+ {
+  "site_id": "",
+  "plant_id": "e56905",
+  "plant_name": "Great Plains Wind (114 MW nameplate, 240 MW interconnection capacity)",
+  "structure": "btm",
+  "note": "Earliest of the ERCOT own-the-generator pairings in this set: announced 3 December 2024, closed February 2025. MARA bought the wind farm outright and is building a behind-the-meter data center powered entirely by the site's 114 MW, running retired ASICs at zero marginal energy cost on output that would otherwise be curtailed; the 240 MW interconnection leaves headroom for expansion. Purchase price not disclosed.\u2026",
+  "url": "https://ir.mara.com/news-events/press-releases/detail/1383/mara-acquires-wind-farm",
+  "dc": {
+   "name": "MARA Hansford County behind-the-meter data center",
+   "lat": 36.28,
+   "lon": -101.38,
+   "approx": true
+  }
+ }
+]

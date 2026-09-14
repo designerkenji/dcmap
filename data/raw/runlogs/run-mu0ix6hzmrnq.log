@@ -1,0 +1,20 @@
+Epoch H100-equivalents vs its own chip counts  (today = 2026-09-13)
+
+  anchored, past  (chips restated on that date)         119 points · within 1%: 117 ( 98%) · median 0.04%
+  all past dates                                        212 points · within 1%: 203 ( 96%) · median 0.04%
+  future dates  (projections - not a failure)            67 points · within 1%:  41 ( 61%) · median 0.09%
+
+CONTRADICTIONS - chips were restated on this very date, and still disagree by >15%:
+
+  CoreWeave Denton TX                2025-12-31  stated      64,679 vs chips      40,424    -37.5%
+     B200 16,000
+
+STALE INVENTORY - the headline moved on but the chip table did not:
+
+  Google Pryor (North)               2026-08-24  stated     636,685 vs chips      26,352    -95.9%
+  Meta Prometheus                    2026-01-18  stated     410,270 vs chips      91,875    -77.6%
+  Meta Prometheus                    2026-03-12  stated     410,270 vs chips      91,875    -77.6%
+  Google Mesa                        2026-08-15  stated     289,540 vs chips     110,266    -61.9%
+  Google New Albany                  2026-08-16  stated     550,783 vs chips     329,667    -40.1%
+  Colossus 1                         2025-09-17  stated     209,125 vs chips     275,796    +31.9%
+  Colossus 1                         2025-10-19  stated     209,125 vs chips     275,796    +31.9%

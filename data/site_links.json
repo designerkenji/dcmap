@@ -83,12 +83,6 @@
   "url": "https://www.equinix.com/data-centers/americas-colocation/canada-colocation/toronto-data-centers/tr5/",
   "via": "code"
  },
- "site-0442d9fc4b": {
-  "name": "Atlanta 1",
-  "operator": "qts",
-  "url": "https://q.com/data-centers/atlanta-1/",
-  "via": "ordinal"
- },
  "site-045795c9b8": {
   "name": "FRA4",
   "operator": "digital realty",
@@ -1265,6 +1259,12 @@
   "url": "https://www.equinix.com/data-centers/americas-colocation/mexico-colocation/monterrey-data-centers/mo1/",
   "via": "code"
  },
+ "site-5f66b72680": {
+  "name": "Hillsboro 1",
+  "operator": "qts",
+  "url": "https://q.com/data-centers/hillsboro-1/",
+  "via": "ordinal"
+ },
  "site-6068f1511e": {
   "name": "Liverpool Data Center & Colocation Services",
   "operator": "nlighten",
@@ -2261,6 +2261,12 @@
   "url": "https://www.digitalrealty.com/data-centers/asia-pacific/seoul/icn10/",
   "via": "code"
  },
+ "site-b10fa3b462": {
+  "name": "Atlanta 1",
+  "operator": "qts",
+  "url": "https://q.com/data-centers/atlanta-1/",
+  "via": "ordinal"
+ },
  "site-b32405ecd6": {
   "name": "Shakopee MSP1 Data Center",
   "operator": "centersquare",
@@ -2698,12 +2704,6 @@
   "operator": "cologix",
   "url": "https://cologix.com/data-centers/vancouver/van2/",
   "via": "code"
- },
- "site-d0d76f3568": {
-  "name": "Hillsboro 1",
-  "operator": "qts",
-  "url": "https://q.com/data-centers/hillsboro-1/",
-  "via": "ordinal"
  },
  "site-d0e6552199": {
   "name": "PA13x",

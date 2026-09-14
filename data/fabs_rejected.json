@@ -1,0 +1,710 @@
+[
+ {
+  "company": "TDK – Tronics",
+  "plant": "Addison, Texas MEMS fab",
+  "reason": "Closed. Tronics' own notice (https://www.tronics.tdk.com/restructuring-of-us-operations/, 28 March 2023) states 'Tronics Mems Inc. in Addison, Texas will be closing in 2023 and does not start any new project', with production consolidated onto the French fab near Grenoble. No operating fab to map.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Silanna (formerly Sapphicon Semiconductor)",
+  "plant": "Sydney, New South Wales",
+  "reason": "Closed. The Homebush Bay silicon-on-sapphire fab was shut in August 2021 and equipment moved to Brisbane; Silanna's own contact page (https://www.silanna.com/contact/) lists no Sydney site at all, its only Australian address being 759 MacArthur Avenue Central, Pinkenba, Brisbane. I could not source a Sydney coordinate for an existing plant, so no record.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Silanna (formerly Sapphicon Semiconductor) (formerly Peregrine Semiconductor) (formerly Integrated Device Technology)",
+  "plant": "Sydney, New South Wales",
+  "reason": "Duplicate of the previous entry — the same Homebush Bay fab listed again under its chain of former owners — and equally closed since August 2021.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "Mitsumi Electric",
+  "plant": "Semiconductor Works #3, Atsugi Operation Base",
+  "reason": "Not a wafer fab. MinebeaMitsumi's own factory page for the Atsugi site (https://www.minebeamitsumi.com/corp/company/factories/japan/1200036_6279.html) describes it as semiconductor development and design plus manufacturing support for overseas factories, and the group's semiconductor product page (https://product.minebeamitsumi.com/product/category/ics/strength/index.html) says its domestic bases are development/design with manufacturing done overseas. No front-end line I could source at Atsugi.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Mitsumi Electric",
+  "plant": "Atsugi Operation Base (second listing)",
+  "reason": "Duplicate of the Atsugi entry above, and skipped for the same reason — the operator's own site describes Atsugi as a development/design and manufacturing-support base, not a wafer fab.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "SK Hynix",
+  "plant": "Chongqing",
+  "reason": "Back-end site, not a front-end wafer fab. Every source I found, including SK hynix statements quoted in the Korean business press, describes Chongqing (opened 2013) as a packaging and test plant for DRAM and NAND that does not manufacture wafers.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "SK Hynix",
+  "plant": "Chongqing (second listing)",
+  "reason": "Duplicate of the Chongqing entry above, and the same back-end packaging-and-test site rather than a wafer fab.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "LG Innotek",
+  "plant": "Paju",
+  "reason": "Not a front-end wafer fab. LG Innotek's own Substrate & Material product pages (https://www.lginnotek.com/product/ss/01/list.do?locale=en) list package substrates (FC-BGA, FC-CSP, RF-SiP), tape substrates (COF, COB) and display photomasks — packaging substrates and mask materials, with no wafer fabrication described.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "NXP Semiconductors – Jilin Semiconductor",
+  "plant": "(no plant designation given)",
+  "reason": "Could not place the plant. The only operator source I found is NXP's 2010 SEC Form F-1/A, which lists \"Jilin, China\" as a 60%-owned joint venture with Jilin Sino-Microelectronics Co. Ltd. (Jilin NXP Semiconductors Ltd.) running 5-inch bipolar wafers at >4 micron. NXP's current worldwide-locations pages list no site in Jilin, and Nexperia — which took over NXP's Standard Products business — lists no Jilin site either. No current operator page, filing or permit gives the plant's street address, so I had no way to locate the actual fab building. Its 5-inch wafer size is also outside the 100/150/200/300 mm set. Sources checked: https://www.sec.gov/Archives/edgar/data/0001413447/000119312510160220/df1a.htm , https://www.nexperia.com/about/worldwide-locations",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Skyworks Solutions",
+  "plant": "Singapore, Bedok South Road",
+  "reason": "Not a front-end wafer fab. Skyworks' FY2025 Form 10-K describes its Singapore facility as \"packaging, assembly and test\" for filters (the \"Singapore Filter Manufacturing Facility\", 429,500 sq ft, leased), and names its wafer processing sites separately as Newbury Park CA, Woburn MA and Osaka Japan. Per the brief, packaging/assembly/test sites are out of scope. Source: https://www.sec.gov/Archives/edgar/data/4127/000000412725000085/swks-20251003.htm",
+  "bucket": "back-end"
+ },
+ {
+  "company": "AMS-Osram (formerly Osram Opto Semiconductors)",
+  "plant": "Penang, Malaysia",
+  "reason": "Could not confirm a front-end wafer fab. ams-OSRAM's own locations listing shows only one Penang entry — OSRAM Opto Semiconductors (M) Sdn. Bhd., Bayan Lepas Free Industrial Zone Phase I, 11900 Penang — and categorises it as a sales office; the site is otherwise described in trade press as an LED assembly and packaging base. No operator source establishes a wafer fab there, and the company's Malaysian 8-inch LED fab was at Kulim in Kedah, not Penang, so I could not justify a fab record or a coordinate. Sources checked: https://ams-osram.com/about-us/locations-distribution/sales-offices-branches , https://ams-osram.com/about-us/locations-distribution",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Epistar",
+  "plant": "Fab F1, Longtan Science Park",
+  "reason": "Could not confirm the site exists under this operator. EPISTAR was renamed Ennostar Corporation on 1 October 2025, and Ennostar's own contact page lists its Taiwan operating sites as Hsinchu Science Park A1, N2, N3, N5 and N8; Zhunan N6 and N7; Central Taiwan Science Park H1; and Tainan Science Park S1 and S3 — there is no Longtan site. OSM shows the Longtan park polygon (way/272519557, 竹科龍潭園區) but no Epistar object inside it, and I found no operator page, filing or permit for a Longtan fab. Rather than guess a coordinate inside the park, I skipped it. Sources checked: https://www.ennostar.com/en/contact , https://chip.ennostar.com/",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "(Thailand)",
+  "reason": "The ROHM group's Thai site is ROHM Integrated Systems (Thailand) Co., Ltd. at 101/94, 102 Navanakorn Industrial Zone, Moo 20, Phaholyothin Rd, Khlong Nueng, Khlong Luang, Pathumthani 12120 (from ROHM's own ISO14001 scope document). Two problems: ROHM's registered activity for that site is 'Manufacture of Transistors and Diodes' with no statement that it runs a front-end wafer line, and I could not obtain any verifiable coordinate for the plant — Nominatim returned nothing for the company or the estate, Overpass returned no ROHM-named object in the Navanakorn bounding box, and the company's own site (rohmthai.co.th / rohmthai.com) would not resolve. Rather than pin a guess inside a large industrial estate, skipped.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Fuji Electric",
+  "plant": "Hokuriku",
+  "reason": "Back-end site, not a wafer fab. The Hokuriku Factory at 500 Ejiri, Namerikawa, Toyama belongs to Fuji Electric Power Semiconductor Co., Ltd., whose own site states its domestic factories (Hokuriku, Iiyama, Omachi) carry out power-semiconductor package assembly (パワー半導体のパッケージ組立). Fuji Electric's front-end wafer sites are Matsumoto, Yamanashi and Tsugaru.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Fujitsu",
+  "plant": "Kawasaki",
+  "reason": "No current front-end wafer production. Fujitsu divested its semiconductor fabs years ago, and the Kawasaki site (35.5838/139.6398, OSM way 58777347) was renamed Fujitsu Technology Park in April 2024 and consolidated as an R&D and corporate campus, including a quantum-computer building under construction. R&D/HQ campus, not a production fab.",
+  "bucket": "other"
+ },
+ {
+  "company": "Kioxia",
+  "plant": "Oita Operations",
+  "reason": "Listed under a former owner and misattributed. Kioxia has no Oita site — its fabs are Yokkaichi (Mie) and Kitakami (Iwate). The 300 mm line at Toshiba's former Oita Operations was transferred to Sony in 2016 together with roughly 1,100 staff and is run by Sony's semiconductor manufacturing arm as a CMOS image sensor fab, so any record for that site belongs under Sony, not Kioxia.",
+  "bucket": "other"
+ },
+ {
+  "company": "Pure Wafer",
+  "plant": "Prescott, Arizona",
+  "reason": "Not a front-end wafer fab. Pure Wafer's Prescott site is a silicon wafer reclaim, polishing and cleaning service operation — it processes customers' used wafers rather than fabricating devices, so it has no wafer size/node/capacity in the sense this layer needs. Skipped rather than guess.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Texas Instruments",
+  "plant": "Miho, Ibaraki (MIHO)",
+  "reason": "Real 200 mm front-end fab and TI still lists it as an active wafer fab, and I confirmed the official address from TI's own IATF 16949 certificate ('Texas Instruments Japan Limited MIHO, 2350 Kihara, Mihomura, Inashiki, Ibaraki, 300-0496'). But I could not obtain a fab-building coordinate from any independent primary source: the plant is not mapped in OpenStreetMap (I pulled three OSM bbox extracts covering Miho village and found no TI object and no matching industrial landuse), the GSI government geocoder and Japan Post postcode data resolve only to the 木原 district centroid, and its large-user postcode 300-0496 is not in any geocoding database I could query. Rather than place a district-centroid point, skipped.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Tsinghua Unigroup",
+  "plant": "Nanjing",
+  "reason": "Announced project that was abandoned. The Nanjing memory (3D NAND/DRAM) fab never entered construction and Tsinghua Unigroup dropped the Nanjing and Chengdu memory fab plans during its debt restructuring. There is no built plant to locate and I found no primary permit or operator document giving a site coordinate, so there is nothing verifiable to map.",
+  "bucket": "other"
+ },
+ {
+  "company": "MESA+ Institute",
+  "plant": "NANOLAB, Enschede",
+  "reason": "R&D line, not a production fab. The MESA+ NanoLab is the University of Twente's open-access academic cleanroom for research and prototyping; it has no production wafer size, node, or wafers-per-month figure and does not belong in a commercial fab layer.",
+  "bucket": "other"
+ },
+ {
+  "company": "Micron",
+  "plant": "Xi'an",
+  "reason": "Back-end site, not a wafer fab. Micron's Xi'an facility is an assembly, packaging and test operation (Micron's China front-end capacity is nil), so it is out of scope for a wafer-fab layer.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Costa Rican Ministry of Innovation, Science, Technology and Telecommunications",
+  "plant": "Centro de Exelencia, Distrito Tecnologico T24",
+  "reason": "Not a wafer fab. T24 is San Jose's urban innovation district (offices, R&D tenants, TEC campus) along Transversal 24, and the MICITT 'Centro de Excelencia' associated with it is a semiconductor/AI/5G workforce-training programme run with INA, not a fabrication plant. No operator, fab building, wafer size or process could be sourced, so there is nothing to geolocate.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "GAETEC",
+  "plant": "GaAs",
+  "reason": "Real GaAs/GaN MMIC foundry (a production unit of SITAR, Govt. of India), but I could not establish a defensible coordinate for the fab building. GAETEC's own site publishes only a postal locality — 'Vignyana Kancha Post, Hyderabad-500069' — with no street address; there is no GAETEC object in OpenStreetMap anywhere in the Hyderabad bounding box, and Nominatim returns nothing for 'GAETEC', 'Vignyan Kancha' or 'Research Centre Imarat'. Rather than pin it to a defence-campus road segment, I skipped it.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Qorvo (formerly RF Micro Devices)",
+  "plant": "Greensboro, North Carolina",
+  "reason": "No longer a Qorvo wafer fab. Qorvo's FY2026 10-K (fiscal year ended 28 March 2026) states that in the fourth quarter of fiscal 2026 it 'completed the sale of our North Carolina fabrication facility' and is running only a short-term supply agreement with the buyer; the properties table now lists just Hillsboro, Richardson and Nuremberg. The remaining Greensboro campus at 7628 Thorndike Road is described as executive offices plus packaging, design, R&D and support — not front-end wafer fabrication.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Apple (formerly Maxim) (formerly Samsung)",
+  "plant": "X3",
+  "reason": "Closed R&D fab / building purchase, not an operating fab. The North San Jose site was Maxim Integrated's 200 mm R&D line, marketed for sale as surplus and bought by Apple in 2015; no source shows Apple running wafer fabrication there. Nothing on Apple's side publishes a fab designation, process, capacity or status for the site.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "Building No.1",
+  "reason": "Not a distinct fab. LAPIS's own corporate history page lists 'Building No.1-4', the 'VLSI Laboratory' buildings, an 'Administration/Technology Center' and a cafeteria as numbered buildings of Oki Electric's original semiconductor works (Building No.4 completed 1969 for printed-circuit-board production). These are building-level entries on one legacy site, not separately identifiable wafer fabs, and no address, coordinate or process can be sourced for any of them individually.",
+  "bucket": "other"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "Building No.2",
+  "reason": "Same as Building No.1 — a numbered building of Oki Electric's legacy semiconductor works as listed on LAPIS's own history page, not a separately identifiable wafer fab with a sourceable location.",
+  "bucket": "other"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "Building No.3",
+  "reason": "Same as Building No.1 — a numbered building on the legacy Oki Electric semiconductor site per LAPIS's own history page; no independent address or coordinate exists for it.",
+  "bucket": "other"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "Building No.4",
+  "reason": "LAPIS's own history page dates 'Building No.4 completed' to 1969 with printed-circuit-board production — a building on the legacy Oki Electric works, not a wafer fab.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "Chichibu Plant",
+  "reason": "Long closed. LAPIS's own history page records 'Operations begun at Chichibu plant' in 1975 producing 4 Kb DRAM; it appears nowhere in LAPIS's current site list (which names only the Miyazaki and Miyagi plants) nor in ROHM's October 2025 manufacturing-reorganisation filing, which lists Miyazaki, Miyazaki No.2 and Miyagi as the group's front-end sites. No current address or coordinate is sourceable.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "VLSI Laboratory No. 1",
+  "reason": "An R&D laboratory building (completed 1977 per LAPIS's own history page), not a production wafer fab, and not a separately locatable site.",
+  "bucket": "other"
+ },
+ {
+  "company": "Rohm (Lapis Semiconductor)",
+  "plant": "VLSI Laboratory No. 2",
+  "reason": "An R&D laboratory building (completed 1983 per LAPIS's own history page), not a production wafer fab, and not a separately locatable site.",
+  "bucket": "other"
+ },
+ {
+  "company": "JS Foundry K.K. (formerly ON Semiconductor) (formerly Sanyo)",
+  "plant": "Niigata",
+  "reason": "Closed. JS Foundry filed for bankruptcy on 14 July 2025 and dismissed its ~500 staff the same day; Ojiya City's own mayoral statement (https://www.city.ojiya.niigata.jp/site/mayor/mayormessage0714.html) confirms the bankruptcy and the loss of the city's largest employer, and the company website (jpnsf.com) is dead. Production at the Ojiya 200 mm plant is halted under a bankruptcy trustee with no confirmed transfer, so none of the allowed status values (operating / construction / announced) applies.",
+  "bucket": "closed"
+ },
+ {
+  "company": "LA Semiconductor (formerly ON Semiconductor) (formerly AMI Semiconductor)",
+  "plant": "Pocatello",
+  "reason": "Cannot be honestly given an operating status. The site is well located — US EPA GHGRP facility 1008930 'LA Semiconductor, 2300 Buckskin Rd, Pocatello' at 42.866748 / -112.414601, matching the address on lasemiconductor.com/contact-us — but LA Semiconductor filed a WARN notice on 9 Feb 2026 to wind the fab down, and laid off ~342 of its staff in waves on 10 April and 1 May 2026 while a court-supervised sale ran under seal. Whether a buyer took over the 200 mm-capable, 0.18–1.5 µm fab is not public as of Aug 2026, so it fits none of operating / construction / announced. If the parent wants it mapped anyway, the coordinate above is solid (EPA facility record + operator's own address; GHGRP reported ~38,430 t CO2e in 2023).",
+  "bucket": "other"
+ },
+ {
+  "company": "Diodes Incorporated (formerly BCD Semi)",
+  "plant": "(unnamed, China)",
+  "reason": "Real and operating, but the fab building could not be geolocated. It is SFAB2 — 'BCD (Shanghai) Micro-electronics Limited, No. 1600, Zixing Road, Minhang District, Shanghai 200241', scope 'Manufacture of Semiconductor Wafer', per the DNV ISO 14001 certificate Diodes publishes (https://www.diodes.com/assets/MediaList-Attachments/SFAB2-ISO14001.pdf, valid Jan 2026–Jan 2029); BCD's own SEC 20-F describes a 6-inch fab and land set aside at this Zizhu Science Park address. OSM/Nominatim/Photon have no house numbers on 紫星路 and no named plant polygon, so Zixing Road No. 1600 can only be narrowed to a ~1.5 km stretch of road. Rather than invent a point I skipped it.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Lite-On Optoelectronics",
+  "plant": "(unnamed, Tianjin)",
+  "reason": "Not a front-end wafer fab. Lite-On's optoelectronics arm runs LED / IR-emitter / photocoupler packaging and assembly at its China sites; no wafer fabrication is claimed for Tianjin in any operator source I could fetch. Packaging/assembly sites are out of scope per the brief.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Lite-On Optoelectronics",
+  "plant": "(unnamed, Bangkok)",
+  "reason": "Not a front-end wafer fab. Lite-On Electronics (Thailand) in the Bangkok/Pathum Thani area is an optoelectronic component assembly plant (LED and IR device packaging), not a wafer fab.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Lite-On Optoelectronics",
+  "plant": "(unnamed, Jiangsu)",
+  "reason": "Not a front-end wafer fab. The Jiangsu site is LITE-ON OPTO Technology (Changzhou), an optoelectronic device packaging plant in the Wujin Hi-Tech zone, not a wafer fab.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Lite-On Semiconductor (now Diodes)",
+  "plant": "Lite-On Semi (Wuxi)",
+  "reason": "Real 100 mm wafer fab, but the building could not be geolocated. The DNV ISO 14001 site certificate Diodes publishes (https://www.diodes.com/assets/Certifications/Wuxi1-ISO14001-Certificate.pdf) gives 'Lite-On Semiconductor (Wuxi) Co., Ltd., No. 45, Zhujiang Road, New District, Wuxi City, Jiangsu' with scope 'Manufacture of CIS (Contact Image Sensor), and Manufacture of 4\" Wafer'. Neither OSM, Nominatim nor Photon resolves house numbers on 珠江路 in Wuxi's New District, and no named plant polygon exists, so I could not place the fab building.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Lite-On Semiconductor (now Diodes)",
+  "plant": "Wuxi WMEC Plant",
+  "reason": "Could not source an address at all. The entity is 'Lite-On Microelectronics (Wuxi) Co., Ltd.', confirmed as a Diodes subsidiary in the FY2025 10-K Exhibit 21, and Diodes' 10-K does list wafer fabrication in Wuxi — but I found no operator document, certificate or filing giving this plant's street address, so neither its coordinate nor its front-end status could be established.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Lite-On Semiconductor (now Diodes)",
+  "plant": "Shanghai (SSEC) Plant",
+  "reason": "Real wafer fab, but the building could not be geolocated. SSEC is 'Shanghai Seefull Electronic Co., Ltd., No. 6, Zhenye Road, Dongjing Industrial Area, Songjiang, Shanghai 201619' per the DNV certificates Diodes publishes (ISO 45001 and IATF 16949), with scope explicitly including 'Wafer FAB' and 'Manufacture of 4\" Wafer'. OSM has 振业路 in Dongjing only as an untagged road way (395867170) with no house numbers and no named industrial polygon, so No. 6 could not be resolved to a building; I declined to place a road-centroid point.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Epistar",
+  "plant": "Fab N1",
+  "reason": "Not a front-end wafer fab, and not locatable to a single building. Epistar's own BSI-verified ISO 14064-1 statement gives the N1 Factory address as ground-floor units only — '1st Fl., No. 48, No. 50, No. 52, No. 54, Park Ave II' (園區二路48/50/52/54號1F) — i.e. leased ground floors of four units in a multi-tenant standard factory building in the Baoshan part of Hsinchu Science Park, spread across four street numbers with no single plant footprint. The same statement reports N1's 2024 direct (process) emissions as 0.3304 t CO2e and imported-electricity emissions as 1,101.5182 t CO2e, which at the stated 0.474 kgCO2/kWh grid factor is only about 2,300 MWh/yr (~0.3 MW average) — roughly one to two per cent of the electricity of Epistar's actual chip fabs (N2, N8, S1) and with essentially no process-gas use. That is a support, probe or test line, not a wafer fab. Source used: https://www.ennostar.com/uploads/files/shares/Downloads/Certification/ES(A1,N1,N2,N3,N5,N6,N8,N9,H1,S1,S3)-ISO%2014064-1.pdf",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Sensera",
+  "plant": "uDev-1",
+  "reason": "Woburn MEMS fab assets were sold off in 2022 (reported as sold to Abiomed R&D); I could not confirm from any primary source that a Sensera-operated front-end line still exists at 15 Presidential Way, so no operating record and no coordinate.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Orbit Semiconductor",
+  "plant": "",
+  "reason": "Candidate row carries no location at all, and the company is a defunct 1990s US foundry absorbed by later owners. Nothing to geolocate without inventing a site.",
+  "bucket": "other"
+ },
+ {
+  "company": "Entrepix",
+  "plant": "",
+  "reason": "Not a wafer fab. Its own site (now branded 'Entrepix - An Amtech Company') describes CMP process services, field service and refurbished/remanufactured CMP equipment — a process-services shop, not a front-end fab.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Technologies and Devices International",
+  "plant": "",
+  "reason": "HVPE/GaN R&D house (located in Silver Spring, Maryland, not Florida as the row states) that was absorbed by Oxford Instruments; no independently operating front-end wafer fab could be confirmed, and the row's location is wrong, so any coordinate would be a guess.",
+  "bucket": "other"
+ },
+ {
+  "company": "Soraa Inc",
+  "plant": "",
+  "reason": "Candidate row gives only 'California', no city. Soraa's LED assets were sold to Ecosense in 2020 and I found no primary source confirming an operating Soraa wafer fab, so there is no site I can place.",
+  "bucket": "other"
+ },
+ {
+  "company": "Soraa Laser Diode",
+  "plant": "",
+  "reason": "No location in the candidate row; the business was renamed and later fully acquired (Kyocera SLD Laser). Same site would be a different operator, and I could not verify a front-end line from a primary source.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Mirrorcle Technologies",
+  "plant": "",
+  "reason": "No own front-end fab. Mirrorcle's own About page states its MEMS mirror processes were transferred to an external high-volume wafer foundry and that it uses wafer-fab facilities located away from its headquarters; the Richmond site is design lab plus MEMS assembly and test.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Unitec do Brasil",
+  "plant": "",
+  "reason": "Announced in 2012 and never entered production; the shell (20,000 m2 build, 5,000 m2 cleanroom) has sat idle. No street address or mappable building could be found in OSM or in any filing, so no coordinate can be justified.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Unitec Blue",
+  "plant": "",
+  "reason": "Chascomús plant is closed (staff dismissed, operations wound down), and its production was card/RFID assembly and personalisation rather than a confirmed front-end wafer line.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Everlight",
+  "plant": "Yuan-Li Plant",
+  "reason": "LED packaging and assembly site, not a front-end wafer fab — Everlight's own About page describes in-house manufacture and packing of LED components with no epitaxy/wafer fabrication.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Everlight",
+  "plant": "Pan-Yu Plant",
+  "reason": "LED packaging/assembly plant (and the row gives only 'China' for location). Not a front-end wafer fab per Everlight's own About page.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Everlight",
+  "plant": "Tu-Cheng Plant",
+  "reason": "Everlight's own About page lists Tu-Cheng as a quality testing laboratory, not a wafer fab.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Optotech",
+  "plant": "",
+  "reason": "Could not confirm from any primary source that a fab still operates under Optotech as an entity (the LED chip business was absorbed by a larger Taiwanese LED group), and I had no remaining search budget to locate the plant, so no coordinate.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Arima Optoelectronics",
+  "plant": "",
+  "reason": "LED epitaxy/chip maker whose Hsinchu-area plant is at Hukou (No.119, Guangfu N. Rd), per the company's own site — but the plant does not appear in OSM, geocoding the address failed, and the company's operating status is doubtful after its 2022 negative-net-worth/delisting warning. No coordinate I could justify.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "IXYS",
+  "plant": "",
+  "reason": "Not an operating wafer fab. IXYS's own FY2017 10-K (SEC) names its four fabrication sites as Lampertheim (DE), Beverly MA, Chippenham (UK) and Fremont CA — so the 'California' entry is the Fremont GaAs RF line (Microwave Technology Inc, 4268 Solar Way); Santa Clara only did epitaxy deposition. MwT was bought out of Littelfuse in 2019 and went fabless at that point, and IXYS itself ceased to exist as an operator after Littelfuse's 2018 acquisition. EPA FRS shows the two remaining IXYS California addresses with no air, water or hazardous-waste programme records, consistent with no front-end fab.",
+  "bucket": "other"
+ },
+ {
+  "company": "Wolfspeed (formerly Cree Inc.)",
+  "plant": "Durham",
+  "reason": "Closed plant. Wolfspeed shut its 150 mm silicon carbide device fab on the 4600 Silicon Drive campus at the end of November 2025, moving device production to the 200 mm Mohawk Valley fab; the remaining Durham activity is SiC crystal growth/substrate work, not wafer fabrication. The EPA GHGRP record for the site (facility 1005759, 4600 Silicon Dr, 35.899298 / -78.840802) exists but the status enum here has no 'closed' value, so no record was returned.",
+  "bucket": "closed"
+ },
+ {
+  "company": "SMART Modular Technologies",
+  "plant": "",
+  "reason": "Back-end site, not a front-end wafer fab. The Atibaia plant imports finished wafers, dices and packages DRAM/flash die, and assembles memory modules, SSDs and batteries — assembly, packaging and test only.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Infineon Technologies",
+  "plant": "Cegled",
+  "reason": "Back-end site, not a wafer fab. Infineon's Cegléd plant assembles and tests high-power semiconductor modules (framed power modules, disc thyristors and diodes, automotive inverter modules). The site is real and locatable (OSM way 237116961, landuse=industrial 'Infineon Technologies', Ipari park, Cegléd, 47.1896 / 19.8022) but performs no wafer fabrication.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "D-Wave Systems",
+  "plant": "Superconducting Foundry",
+  "reason": "No such D-Wave-owned fab, and no location given in the worklist. D-Wave's superconducting processors are fabricated by SkyWater Technology at SkyWater's 200 mm foundry in Bloomington, Minnesota; D-Wave's own sites (Burnaby BC, New Haven CT, Boca Raton FL) are design and operations hubs. Listing it would duplicate the SkyWater fab under a customer's name.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "SUNY Poly CNSE",
+  "plant": "NanoFab 300 North",
+  "reason": "R&D line, and listed under a former operator. The Albany NanoTech Complex cleanrooms are development/pilot lines (now the NSTC EUV Accelerator), operated by NY CREATES rather than SUNY Poly CNSE, and are not production fabs.",
+  "bucket": "other"
+ },
+ {
+  "company": "SUNY Poly CNSE",
+  "plant": "NanoFab 200",
+  "reason": "R&D line, and listed under a former operator — same Albany NanoTech Complex as NanoFab 300 North; a 200 mm development cleanroom, not a production fab.",
+  "bucket": "other"
+ },
+ {
+  "company": "SUNY Poly CNSE",
+  "plant": "NanoFab Central",
+  "reason": "R&D line, and listed under a former operator — an Albany NanoTech Complex development cleanroom, not a production fab.",
+  "bucket": "other"
+ },
+ {
+  "company": "Skorpios Technologies (formerly Novati) (formerly ATDF) (formerly SEMATECH)",
+  "plant": "",
+  "reason": "Closed plant. Skorpios ceased operations at 2706 Montopolis Drive, Austin after lease negotiations with the University of Texas failed, phasing out production in March–April 2023 and restarting manufacturing at a new fab in Temecula, California by 31 May 2023. EPA FRS still lists the Austin address but with only a biennial-report record and no active permits.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Optek Technology",
+  "plant": "",
+  "reason": "No location given in the worklist and no front-end fab confirmed. Optek is a TT Electronics optoelectronics business in Carrollton, Texas with volume manufacturing in Mexico; I found no primary source establishing an operating wafer fab, and with no location field I had no anchor to geolocate a plant. Rather than guess a coordinate, skipped.",
+  "bucket": "other"
+ },
+ {
+  "company": "II-VI (formerly Oclaro) (formerly Bookham) (formerly NORTHERN TELECOM SEMICONDUCTOR NORTHERN TELECOM EUROPE) (formerly JDS Uniphase) (formerly Uniphase)",
+  "plant": "",
+  "reason": "No location given, and the chain of former owners (Nortel → Bookham → Oclaro → II-VI/Coherent, plus Uniphase/JDSU) spans several different sites in the UK and California that were variously closed, sold or consolidated. Without a location field I could not determine which site is meant, and picking one would have meant inventing a coordinate.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Innovative Ion Implant",
+  "plant": "Peynier, France",
+  "reason": "No company of this name exists in the French national business registry — https://recherche-entreprises.api.gouv.fr/search?q=Innovative%20Ion%20Implant returns zero results, as does a Peynier-scoped search. The only semiconductor company registered at Peynier is ION BEAM SERVICES (SIREN 342673134, ZI Peynier-Rousset, rue Gaston Imbert), an ion-implantation equipment and implant-service business, and I found no independent source linking it to the name \"Innovative Ion Implant\". Ion implantation as a service is a process step, not a front-end wafer fab, so I would not have included it anyway without evidence of a wafer line.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Innovative Ion Implant",
+  "plant": "Bathgate, Scotland",
+  "reason": "No such company at UK Companies House — https://find-and-update.company-information.service.gov.uk/search?q=Innovative+Ion+Implant returns no exact match and nothing at Bathgate (nearest hits are unrelated dental-implant companies and ION IMPLANT SOLUTIONS LIMITED, SC264515, registered at a house in Giffnock, Glasgow). No plant could be located, so no coordinate.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "nanoPHAB",
+  "plant": "Eindhoven",
+  "reason": "Not its own wafer fab. The operator states it \"operates within the state-of-the-art NanoLab@TU/e\" — the shared Eindhoven University of Technology cleanroom at De Groene Loper 3 — offering 2-inch to 4-inch R&D nanophotonics fabrication services (InP, GaAs, SiN). That is a university-hosted prototyping line, not a production fab with its own building or capacity. Source: https://nanophab.com/",
+  "bucket": "other"
+ },
+ {
+  "company": "Pragmatic Semiconductor",
+  "plant": "FlexLogic 003",
+  "reason": "Duplicate of an existing site. Pragmatic publishes exactly two production locations — Sedgefield (Explorer 1, NETPark) and Pragmatic Park (Meadowfield, Durham), both returned as separate records above (https://www.pragmaticsemi.com/contact/). No operator source names \"FlexLogIC 001/002/003\" as distinct fabs; the foundry page says Pragmatic Park merely \"has capacity to host up to nine fabrication lines\". A third record would repeat a coordinate already returned.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "INEX Microtechnology",
+  "plant": "Newcastle upon Tyne",
+  "reason": "University-hosted R&D facility, and the fab entity is gone. Companies House shows the original INEX MICROTECHNOLOGY (company 08698036, at Herschel Annex, Kings Road, Newcastle University, NE1 7RU) was dissolved on 27 February 2018; the surviving INEX MICROTECHNOLOGY LIMITED (08268426) is registered at a house in Eighton Banks, Gateshead — an office/residential address, not a plant. No fab building could be located independently (Nominatim returns nothing for the name). Source: https://find-and-update.company-information.service.gov.uk/search/companies?q=INEX+Microtechnology",
+  "bucket": "other"
+ },
+ {
+  "company": "Photonix",
+  "plant": "Glasgow",
+  "reason": "Company is dissolved. The only Scottish match at Companies House is PHOTONIX LIMITED (SC186345), \"Dissolved on 23 August 2013\", registered at Fountainbridge, Edinburgh — not Glasgow, and no operating fab. Source: https://find-and-update.company-information.service.gov.uk/search/companies?q=Photonix",
+  "bucket": "other"
+ },
+ {
+  "company": "VSP Mikron",
+  "plant": "WaferFab, Voronezh",
+  "reason": "Could not confirm the operating entity at the site. OpenStreetMap does have the Voronezh semiconductor plant (relation 3654314, \"Воронежский Завод Полупроводниковых Приборов\", 51.6774/39.2547, with industrial buildings at Leninsky prospekt 119A), but nothing I could fetch ties the entity ВЗПП-Микрон / VSP Mikron to that site: the operator's site https://vzpp-mikron.ru/ returned HTTP 503 and the Russian company registry (rusprofile) returned HTTP 404. Rather than attach an operator name I cannot source to a plant polygon, I left it out.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "NM-Tech",
+  "plant": "Zelenograd",
+  "reason": "Could not locate the fab building. There is no OSM object under this name (Nominatim returns nothing for \"НМ-Тех\" or \"Ангстрем-Т\" in Zelenograd — only furniture shops in St Petersburg), and a search of Georgievsky prospekt 5 returns only a commercial/office block and its shops, which I cannot claim is the fab. No operator website was reachable. No coordinate could be justified.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Angstrem",
+  "plant": "Liniya 150 (second line at the same site)",
+  "reason": "Same site as the Angstrem record already returned. OSM has one named Angstrem complex in Zelenograd (relation 2458962, Georgievsky prospekt 2 str. 4) and no independent source I could fetch distinguishes the 100 mm and 150 mm lines as separate buildings — the operator's site angstrem.ru could not be fetched (TLS certificate could not be verified). A second record would duplicate the coordinate, and I will not infer wafer diameters from the line names.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "Kodenshi AUK Group",
+  "plant": "Silicon FAB Line",
+  "reason": "AUK Corp's own site confirms an Iksan site at 전북 익산시 약촌로8길 62-8 with unit-FAB / silicon-epitaxial / wafer-test services, but no fab-building coordinate could be sourced: OSM has no AUK or Kodenshi object in Iksan, and neither Nominatim nor Photon carries house numbers on 약촌로8길, so only a ~400 m street segment inside the Iksan 1st Industrial Complex is locatable. Not guessing a point. (The group's registered address, Lotte World Tower 66F in Seoul, is an office, not the plant.)",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Kodenshi AUK Group",
+  "plant": "Compound FAB Line",
+  "reason": "Same coordinate problem as the silicon line, plus the compound-semiconductor arm (AUE Corp, aue.co.kr) refused connection on both HTTP and HTTPS, so neither its site nor its distinction from the AUK silicon line could be established from a primary source.",
+  "bucket": "other"
+ },
+ {
+  "company": "Kyocera",
+  "plant": "",
+  "reason": "Candidate carries no plant name and no location, so no specific site can be identified or geolocated.",
+  "bucket": "other"
+ },
+ {
+  "company": "Seiko Instruments",
+  "plant": "Shanghai",
+  "reason": "Not a wafer fab. The successor operator ABLIC Inc. lists Shanghai only among its overseas sales offices; its two manufacturing units are Takatsuka (front end) and Akita (back end).",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Seiko Instruments",
+  "plant": "Akita",
+  "reason": "Not a front-end wafer fab. ABLIC's production page states the Akita Unit (58-2 Aza-Torii, Omagari-Nishine, Daisen-shi, Akita) does 'Back-end process manufacturing centered on packaging'.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Epson",
+  "plant": "S wing",
+  "reason": "Same site as the T wing entry, which is recorded as the Sakata Plant (Tohoku Epson). No independent source distinguishes the T and S wings or gives per-wing specifications, so returning it as a second fab would duplicate one plant.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "Olympus Corporation",
+  "plant": "Nagano",
+  "reason": "Not a semiconductor fab. Olympus's own domestic locations page lists its Nagano-prefecture sites as Tatsuno (R&D and technical support, 長野県上伊那郡辰野町伊那富6789) and Ina (administration and medical-endoscope repair); no wafer fabrication anywhere in the listing.",
+  "bucket": "other"
+ },
+ {
+  "company": "Olympus",
+  "plant": "",
+  "reason": "Candidate gives no plant name and only 'Japan' as location; Olympus's domestic locations page shows no wafer fabrication site anywhere in Japan.",
+  "bucket": "other"
+ },
+ {
+  "company": "Nichia",
+  "plant": "YOKOHAMA TECHNOLOGY CENTER",
+  "reason": "R&D site, not a fab. Nichia's own production/development/sales structure page lists the Yokohama Research Institute (YRC) under research and development; all of Nichia's factories (Anan, Shinno, Tatsumi, Tokushima, Naruto) are in Tokushima Prefecture.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Nichia",
+  "plant": "SUWA TECHNOLOGY CENTER",
+  "reason": "R&D site, not a fab. Nichia lists the Suwa Technology Center (STEC) under research and development on the same page; its manufacturing is all in Tokushima.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Taiyo Yuden",
+  "plant": "",
+  "reason": "Nagano site: Taiyo Yuden's own global network page lists no site in Nagano Prefecture at all — its domestic plants are Haruna, Nakanojo, Tamamura and Yawatabara (all Gunma) plus the Takasaki R&D Center. Nothing to locate.",
+  "bucket": "other"
+ },
+ {
+  "company": "Taiyo Yuden",
+  "plant": "",
+  "reason": "Ome site: per Taiyo Yuden's own network page this is TAIYO YUDEN Mobile Technology Co., Ltd. (6-16-3 Shinmachi, Ome-shi, Tokyo), a module manufacturing and development operation, not a front-end wafer fab.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "Silex Microsystems",
+  "plant": "",
+  "reason": "Genuine MEMS foundry and the operator's address is confirmed from its own contact page (Bruttovägen 1, SE-175 26 Järfälla), but no fab coordinate could be sourced. OSM has no Silex object anywhere in Sweden (checked via Nominatim country-filtered search and Photon) and no house numbers on Bruttovägen, Overpass was unreachable from this environment, and no permit document with coordinates was obtainable. Not guessing a point on the street.",
+  "bucket": "other"
+ },
+ {
+  "company": "United Monolithic Semiconductors",
+  "plant": "",
+  "reason": "Could not source the Ulm site. The operator's website (www.ums-gaas.com) is unreachable — its TLS certificate is issued for an unrelated shared host — and the bare domain does not resolve. OSM carries only UMS's French site at Villebon-sur-Yvette, nothing in Ulm; the Wilhelm-Runge-Straße 11 address block in Ulm geocodes to office buildings of the science-city campus, which I could not confirm as the GaAs fab.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Sanan IC",
+  "plant": "Quanzhou Fab",
+  "reason": "Could not locate the fab building. Sanan's own contact page gives the site as \"No. 2 Core Industry, Lianshan Industry Area, Gushan Village, Shijing Town, Nanan City, Quanzhou\" — that resolves only to Gushan village (OSM node 11195501748, inside the Shijing town boundary relation 12113618), not to a plant. Overpass returned no Sanan-named object anywhere in Fujian except the Xiamen plant (way 151311482), and no identifiable industrial parcel within 3 km of the village. Rather than place a coordinate on a village centroid, skipped.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Hua Hong Semiconductor (HLMC)",
+  "plant": "HH Fab5",
+  "reason": "No defensible coordinate. This is Shanghai Huali Microelectronics' 12-inch Zhangjiang fab, not a Hua Hong Grace fab, and HHGrace's own site lists only Fab1/2/3/7/9. hlmc.com.cn is now a parked domain for sale, so there is no operator page. Overpass found no 华力 / Huali / HLMC object anywhere in Shanghai and no industrial landuse along 高斯路 (Gaosi Road); the only address I saw (高斯路497号) came from a third-party recruiting site, which is not a source I would geolocate from.",
+  "bucket": "other"
+ },
+ {
+  "company": "Hua Hong Semiconductor (HLMC)",
+  "plant": "HH Fab6",
+  "reason": "Same problem as Fab5, worse. Operator would be Shanghai Huali Integrated Circuit Manufacturing Co. in Kangqiao; no operator website reachable, no OSM object for the company anywhere in Shanghai, and Nominatim does not even know the 良腾路 street cited by third-party business directories. No coordinate I could justify.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "HuaLei Optoelectronic",
+  "plant": "",
+  "reason": "Could not verify anything. The worklist gives no city at all (location is just \"China\"), and every general web search route available to me was exhausted or blocked — the WebSearch budget ran out, Brave returned HTTP 429 repeatedly, DuckDuckGo served a CAPTCHA (which I will not solve), and Bing returned unrelated results. No operator domain resolved. Nothing sourced, so nothing returned.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Sino King Technology[19]",
+  "plant": "",
+  "reason": "Not a fab. The Hefei DRAM venture led by the former Elpida CEO was never built — reporting I fetched states the effort to start a memory company in China was suspended, and there is no operating facility under this name.",
+  "bucket": "not-a-fab"
+ },
+ {
+  "company": "APT Electronics",
+  "plant": "",
+  "reason": "Not a front-end wafer fab. APT Electronics Co., Ltd. describes itself on its own site as building from \"semiconductor packaging and optical systems to end applications\" — LED devices, modules and lighting/display systems at No. 33 South Huanshi Avenue, Nansha District, Guangzhou. That is packaging and module assembly, not wafer fabrication.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Aqualite",
+  "plant": "",
+  "reason": "Could not identify the company or confirm a wafer fab in Guangzhou. No operator domain resolved (aqualite.cn and aqualite-china.com both failed to connect), Overpass found no matching site in the Guangzhou area, and all remaining search engines were rate-limited, CAPTCHA-gated or returning junk. Unverifiable.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Aqualite",
+  "plant": "",
+  "reason": "Same as the Guangzhou entry — no operator source, no OSM object in the Wuhan area, and no usable search route left. Could not confirm this is a wafer fab, let alone locate it.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "SensFab",
+  "plant": "",
+  "reason": "Skipped as a former name / not a current wafer fab. The ACRA-registered entity behind UEN 200004200M is live but now named AAC Global Sourcing Services, formerly SensFab, at 22 Tampines Industrial Crescent #03-01 — a unit in a multi-tenant industrial building, with a wholesale trade activity code alongside the manufacturing one. No SensFab website exists. I could not confirm an operating MEMS wafer fab there.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "MIMOS",
+  "plant": "",
+  "reason": "R&D line, not a production fab. MIMOS Berhad is Malaysia's state-owned R&D centre under MOSTI; its own site describes the facility as a \"Wafer Fabrication and Prototyping\" lab running 200 mm wafers at small-to-medium volume for prototyping. The OSM object at Technology Park Malaysia (way 201431648) is tagged office=research. Per the brief's instruction to skip R&D lines.",
+  "bucket": "other"
+ },
+ {
+  "company": "Pyongyang Semiconductor Factory",
+  "plant": "111 Factory",
+  "reason": "No independent primary source exists that I can fetch. There is no operator website, no filing, no permit document, and no OSM object I could tie to this plant. Any coordinate would be a guess, so skipped.",
+  "bucket": "other"
+ },
+ {
+  "company": "Crocus Nano Electronics",
+  "plant": "",
+  "reason": "Could not locate the plant. Both plausible company domains (crocusnano.ru, cnetech.ru) fail to resolve from here; a full OSM bbox sweep of Zelenograd and of the Alabushevo special economic zone returned no Crocus object of any kind, and no independent document giving the plant's street address could be fetched. Skipped rather than guess a coordinate.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "NIIIS",
+  "plant": "",
+  "reason": "R&D institute, not a front-end wafer fab. niiis.nnov.ru presents the Sedakov Research Institute of Measuring Systems (a Rosatom institute) with sections for research, procurement and disclosure but no wafer-fabrication production, and its published postal address is a PO box (603952, Нижний Новгород, Бокс № 486), which cannot anchor a plant coordinate.",
+  "bucket": "closed"
+ },
+ {
+  "company": "Syntez Microelectronics",
+  "plant": "",
+  "reason": "No independent source obtainable. No company domain resolved (sintezmk.ru, sintez-mk.ru), no OSM object, and no government or press document could be fetched to confirm that a fab exists in Voronezh, let alone where. Skipped rather than invent a coordinate.",
+  "bucket": "other"
+ },
+ {
+  "company": "Russian Space Systems",
+  "plant": "",
+  "reason": "russianspacesystems.ru returns HTTP 403 from this environment, and nothing else fetched shows front-end wafer fabrication at this site — RSS is a spacecraft-instrumentation and radio-electronics house. The bare 'Moscow' location in the worklist would in any case resolve to its corporate headquarters, exactly the failure mode the brief warns about.",
+  "bucket": "other"
+ },
+ {
+  "company": "OKB-Planeta",
+  "plant": "Svetlana-Rost",
+  "reason": "Could not verify a fab or locate one. okbplaneta.ru serves only a cookie-setting redirect stub, with no content retrievable with or without the cookie. The single OSM object is node 9867813018, an office=company node at Bolshaya Moskovskaya 13A in the Veliky Novgorod city centre — an office, not a plant. The worklist row also attaches Svetlana-Rost's plant name to OKB-Planeta, which looks like a source-table error.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "HT Micron (Hana Micron)",
+  "plant": "São Leopoldo",
+  "reason": "Back-end site, not a front-end wafer fab. HT Micron's own site describes a semiconductor packaging operation (memory and SiP/iMCP IoT modules such as HTLRBL32L and HTNB32L) at Avenida Unisinos 1550, São Leopoldo — assembly, packaging and test, with no wafer front end.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Honeywell Aerospace Technologies",
+  "plant": "",
+  "reason": "Could not confirm a wafer fab. EPA records do confirm a Honeywell facility at 15001 NE 36th St, Redmond WA (TRI id 98073SNDST15001, parent Honeywell International Inc, last TRI reporting year 2008, FRS registry id 110000827614), but nothing fetchable shows front-end wafer fabrication there, and OSM now places those buildings ('Honeywell Building 1/3/4') inside the Microsoft West Campus. Honeywell's own site could not be searched because this session's web-search budget was already exhausted. Not enough to assert a fab.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "Applied Optoelectronics",
+  "plant": "FAB2",
+  "reason": "Same site as the FAB1 record. AOI's FY2025 Form 10-K states it manufactures its laser chips 'only within our Sugar Land facility' and lists a single Sugar Land property line (139,450 sq ft); the risk factors likewise refer to one 'wafer fabrication facility in Sugar Land, Texas'. No independent source distinguishes a separate FAB2 building, so it is folded into the Sugar Land record rather than double-counted. (A second Sugar Land property, 1111 Gillingham Lane, was leased in September 2025 for 'manufacturing and related operations', but the filing does not describe it as wafer fabrication.)",
+  "bucket": "other"
+ },
+ {
+  "company": "Creative Sensor Inc.",
+  "plant": "NanChang Creative Sensor (Jiangxi)",
+  "reason": "Contact-image-sensor (CIS) module maker, not a front-end wafer fab — the Nanchang site is module assembly. The company's own site (cis.com.tw) is no longer live (the domain now serves unrelated content), so no independent primary source exists for the plant, its address or its coordinates.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Creative Sensor Inc.",
+  "plant": "Wuxi Creative Sensor (Jiangsu)",
+  "reason": "Same as the Nanchang row: contact-image-sensor module assembly rather than wafer fabrication, and no live operator website or other primary source to confirm a plant location.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Creative Sensor Inc.",
+  "plant": "Wuxi Creative Sensor (listed under Taiwan, Taipei City)",
+  "reason": "Duplicate of the Wuxi row — the same plant listed a second time under the company's Taipei office location. Also a CIS module site, not a wafer fab.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "Nanosystem Fabrication Facility",
+  "plant": "Hong Kong",
+  "reason": "University shared research cleanroom (HKUST's Nanosystem Fabrication Facility, Clear Water Bay, plus an 8-inch research line at HKUST Guangzhou), i.e. an R&D line open to academic users, not a production wafer fab. Confirmed at https://nff.hkust.edu.hk/en/home.html and https://funh.hkust-gz.edu.cn/research/crf/.",
+  "bucket": "other"
+ },
+ {
+  "company": "SiSemi",
+  "plant": "(no location given)",
+  "reason": "Duplicate row for the same Shenzhen plant already returned as the SISEMI Baolong wafer fab (深圳深爱半导体, Baolong 7th Rd, Longgang). Only one record kept.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "San'an Optoelectronics",
+  "plant": "Xiamen San'an Optoelectronics Technology Co., Ltd.",
+  "reason": "Real LED epitaxy/chip site, but I could not establish a plant coordinate from any primary source. OSM has no object for San'an anywhere in Xiamen (checked bboxes covering Xiang'an and Tong'an/Hongtang), the only published address is a street range without geocodable house numbers (No.841-899 Min'an Avenue), and no environmental filing with 地理坐标 for this plant was reachable. Skipped rather than place an invented pin.",
+  "bucket": "unlocatable"
+ },
+ {
+  "company": "San'an Optoelectronics",
+  "plant": "Xiamen San'an Optoelectronics Co., Ltd.",
+  "reason": "Second legal entity at the same Xiamen Min'an Avenue LED site as the row above; skipped for the same reason (no sourceable plant coordinate) and because it would duplicate that site.",
+  "bucket": "duplicate"
+ },
+ {
+  "company": "San'an Optoelectronics",
+  "plant": "Wuhu Anrui Optoelectronics Co., Ltd.",
+  "reason": "Not a wafer fab. San'an's own page for Anrui Optoelectronics (No.11 North Fengming Road, Wuhu ETDZ) describes automotive lighting: headlamp, rear-combination and signal-lamp design and assembly, with capacity quoted in lamp sets per year. Source: https://www.sanan-e.com/en/anrui.",
+  "bucket": "back-end"
+ },
+ {
+  "company": "Sanan IC",
+  "plant": "Xiamen Fab",
+  "reason": "Genuine GaAs/GaN RF wafer foundry (厦门市三安集成电路有限公司, founded May 2014), but no plant coordinate could be sourced. Its own site publishes no plant address, and the only addresses in circulation are the registered office in the Torch Plaza office building in Xiamen Torch Hi-tech Zone — exactly the office-versus-plant trap — while OSM has no object for it. Skipped rather than pin an office.",
+  "bucket": "other"
+ }
+]

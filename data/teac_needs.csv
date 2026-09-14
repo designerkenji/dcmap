@@ -1,0 +1,107 @@
+need_number,substations,studied_with,county,requesting_entity,is_data_center,mw_current,mw_history,revised,in_service,first_seen,last_seen,meetings,latest_stage,driver
+DOM-2019-0021,Meadowville | Enon | Shand Creek | Enon Shand Creek | Bermuda Hundred | Chickahominy | Hopewell,DOM-2024-0022 DOM-2024-0023 DOM-2024-0024,,,yes,,,,,20260106,20260707,3,Solution Meeting,Do No Harm Analysis – Meadowville Load Area
+DOM-2021-0006,Lebanon,,,,,,,,,20260508,20260508,2,Solution Meeting Update,
+DOM-2022-0034,Mountain Run,,,,yes,,,,06/01/2024,20250204,20250204,2,Solutions Meeting,Customer Service
+DOM-2022-0062-DNH,Tropical,DOM-2022-0062,,,,,,,,20260707,20260707,2,Solution Meeting,Do No Harm Analysis - Tropical
+DOM-2023-0011,Atlas | Gemini,DOM-2023-0009-DNH,,DEV,yes,,,,04/01/2028,20260804,20260804,2,Update Meeting,Customer Service
+DOM-2023-0023,,,,,,,,,,20260707,20260707,2,Solution Meeting,
+DOM-2024-0004,Slayden Creek,,,DEV,yes,300.0,20260310:300.0,,1/01/2026,20260310,20260310,2,Solution Meeting,Customer Service
+DOM-2024-0009,,,,ODEC,yes,,,,05/31/2025,20250605,20250605,2,Solutions Meeting,Customer Service
+DOM-2024-0023,Meadowville | Sycamore Springs | Hopewell | Carson | Clubhouse,,,,,,,,,20250506,20250506,2,Solution Meeting,Do No Harm Analysis – Meadowville
+DOM-2024-0025,Shawboro Switching | Elizabeth City,,,,,,,,,20250304,20250304,2,Solution Meeting,
+DOM-2024-0036,James Hill Jamestown Drive | James Hill | Poe,,,DEV,yes,,,,12/31/2028,20260203,20260203,2,Solution Meeting,Customer Service
+DOM-2024-0036-DNH,James Hill,DOM-2024-0036,,,,,,,,20260707,20260707,2,Solution Meeting,Do No Harm Analysis – James Hill
+DOM-2024-0051,,DOM-2023-0016,,,yes,,,,,20250605,20260602,6,Solution Meeting,Operational Flexibility and Efficiency
+DOM-2024-0054,,,,,,,,,,20250506,20250506,1,Solutions Meeting,
+DOM-2024-0063-DNH,Vint Hill,DOM-2024-0063,,,,,,,,20250506,20250506,2,Solutions Meeting,Do No Harm Analysis
+DOM-2024-0086,,,,,,,,,,20250204,20250204,2,Solutions Meeting,
+DOM-2024-0087,,,,,,,,,,20250204,20250204,2,Solutions Meeting,
+DOM-2025-0001,Trabue,,,DEV,,,,,,20250304,20250401,3,Solution Meeting,Customer Service
+DOM-2025-0010,Enon,,,DEV,,,,,03/01/2028,20250304,20250401,3,Solution Meeting,Customer Service
+DOM-2025-0011,Hibie St,,,DEV,,,,,12/31/2027,20251104,20251104,1,Need Meeting,Customer Service
+DOM-2025-0017,Hanover,,,,,,,,12/31/2026,20251104,20260106,3,Solution Meeting,Customer Service
+DOM-2025-0020,,,,,yes,,,,,20250506,20250506,1,Need Meeting,Customer Service
+DOM-2025-0026,Providence Forge | Turner,,,,,,,,,20250605,20250708,3,Solution Meeting,
+DOM-2025-0028,,,,,,,,,,20250605,20250605,1,TEAC Meeting,Operational Flexibility and Efficiency
+DOM-2025-0030,Sunset Hill,,,DEV,yes,100.0,20260106:100.0,,"December 31, 2028",20260106,20260707,3,Solution Meeting,Customer Service
+DOM-2025-0052,Dahlgren West,,,,yes,300.0,20251008:300.0,,12/1/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0073,Correctional | Paper Mill | Harmony Village | Lanexa | Owl Trap | Creek,,,,,,,,,20260106,20260106,1,Need Meeting,
+DOM-2025-0086,,,,,,,,,,20260407,20260407,1,Need Meeting,
+DOM-2025-0088,Crystal,,,,,,,,,20260407,20260407,1,Need Meeting,
+DOM-2025-0100,Darbytown,,,,,,,,,20260407,20260908,2,Cancellation Meeting,Operational Flexibility and Efficiency
+DOM-2026-0001,Correctional,,,DEV,,,,,12/31/2028,20260106,20260106,1,Need Meeting,Customer Service
+DOM-2026-0015,Simms,,,,yes,296.0,20260407:296.0,,12/01/2029,20260407,20260407,1,Need Meeting,Customer Service
+DOM-2026-0016,Pleasant View | Greenwich | Liberty | Clifton | Lanexa | Jefferson Street | Valley | Newport News | Valley Newport News,,,,,,,,,20260407,20260908,3,Solution Meeting,
+DOM-2026-0019,Bremo | Fork Union,,,,,,,,,20260508,20260908,3,Solution Meeting,
+DOM-2026-0022,,,,,yes,,,,,20260508,20260602,3,Solution Meeting,Operational Flexibility and Efficiency
+DOM-2026-0036,CIA | Idylwood,,,,,,,,,20260908,20260908,1,Need Meeting,
+DOM-2026-0037,New Road,,,,,,,,,20260908,20260908,1,Need Meeting,Operational Flexibility and Efficiency
+DOM-2023-0055,Carmel Church,DOM-2024-0012,Caroline,ODEC,yes,,,,7/1/2027,20250401,20250401,2,Solution Meeting,Customer Service
+DOM-2024-0012,Ruther Glen,,Caroline,ODEC,yes,,,,7/1/2027,20250401,20250401,2,Solution Meeting,Customer Service
+DOM-2025-0032,Mudd Tavern,,Caroline,,yes,300.0,20251008:300.0,,08/01/2029,20251008,20260203,3,Solutions Meeting,Customer Service
+DOM-2024-0031,Duval | Midlothian | Winterpock,,Chesterfield,DEV,,,,,5/01/2027,20250204,20250204,2,Solution Meeting,Customer Service
+DOM-2024-0044,Trigon,,Chesterfield,DEV,yes,,,,12/1/2030,20250506,20250506,1,Need Meeting,Customer Service
+DOM-2025-0005,Amethyst,,Chesterfield,DEV,yes,300.0,20251104:300.0,,10/1/2031,20251104,20251104,1,Need Meeting,Customer Service
+DOM-2025-0006,Garnet,,Chesterfield,DEV,yes,300.0,20251104:300.0,,10/1/2028,20251104,20251104,1,Need Meeting,Customer Service
+DOM-2025-0007,Topaz,,Chesterfield,DEV,yes,300.0,20251104:300.0,,10/1/2030,20251104,20251104,1,Need Meeting,Customer Service
+DOM-2024-0082,Palomino,,Culpeper,DEV,yes,,,,10/15/2027,20250204,20250204,2,Solutions Meeting,Customer Service
+DOM-2024-0083,Chandler,,Culpeper,DEV,yes,,,,10/15/2027,20250204,20250204,2,Solution Meeting,Customer Service
+DOM-2024-0084,McDevitt,,Culpeper,DEV,yes,,,,01/01/2027,20250204,20250204,2,Solution Meeting,Customer Service
+DOM-2024-0084-DNH,,,Culpeper,,yes,,,,,20250204,20250204,2,Solution Meeting,Do-No-Harm analysis
+DOM-2024-0085,Cirrus,,Culpeper,DEV,yes,,,,07/01/2028,20250204,20250204,2,Solution Meeting,Customer Service
+DOM-2025-0070,Shaw,,Culpeper,REC,yes,300.0,20251008:300.0,,05/01/2028,20251008,20260106,3,Solution Meeting,Customer Service
+DOM-2025-0070-DNH,Shaw,DOM-2025-0070,Culpeper,,,,,,,20260602,20260602,2,Solution Meeting,Do No Harm Analysis
+DOM-2018-0018,Lucky Hill Helm | Helm,,Fauquier,DEV,yes,,,,09/15/2020,20251008,20251008,2,Solutions Meeting,Customer Service
+DOM-2025-0054,West Creek,,Goochland,DEV,,100.0,20251008:100.0,,01/02/2029,20251008,20260106,3,Solution Meeting,Customer Service
+DOM-2024-0058,Flamingo,,Hanover,DEV,yes,,,,01/01/2029,20251008,20260908,4,Cancellation Meeting,Customer Service
+DOM-2024-0067,Harlem,,Hanover,,yes,,,,01/01/2029,20260908,20260908,1,Cancellation Meeting,Customer Service
+DOM-2025-0023,Parham,,Hanover,DEV,,,,,,20250506,20250506,1,Need Meeting,Customer Service
+DOM-2022-0062,Tropical,,Henrico,DEV,yes,,,,,20251008,20251008,2,Solution Meeting,Customer Service
+DOM-2024-0018,Thicket | White Oak | Chickahominy,DOM-2022-0038-DNH DOM-2024-0019 DOM-2024-0020 DOM-2024-0040,Henrico,DEV,yes,,,,,20250107,20250506,4,Solutions Meeting,Customer Service
+DOM-2024-0019,Gray Bark | Saltwood,,Henrico,DEV,yes,,,,7/01/2027,20250107,20250107,2,Solution Meeting,Customer Service
+DOM-2024-0020,Saltwood | Thicket,,Henrico,DEV,yes,,,,7/01/2027,20250107,20250107,2,Solution Meeting,Customer Service
+DOM-2024-0040,Bunker | Thicket | Saltwood,,Henrico,DEV,yes,,,,,20250107,20250107,2,Solution Meeting,Customer Service
+DOM-2024-0049,Stockholm | Thicket,DOM-2022-0038 DOM-2024-0018,Henrico,DEV,yes,300.0,20260508:300.0,,,20260508,20260508,2,Solution Meeting,Customer Service
+DOM-2023-0002,Reed Farm,,Loudoun,NOVEC,,,,,9/30/2026,20250605,20250605,2,Solutions Meeting,Customer Service
+DOM-2023-0031,Auto World,,Loudoun,DEV,yes,,,,06/15/2026,20260407,20260407,2,Solution Meeting,Customer Service
+DOM-2024-0016,Firehouse,,Loudoun,DEV,yes,,,,01/31/2028,20260407,20260407,2,Solutions Meeting,Customer Service
+DOM-2025-0061,Phobos,,Loudoun,NOVEC,yes,300.0,20251008:300.0,,12/01/2029,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0062,Deimos,,Loudoun,NOVEC,yes,240.0,20251008:240.0,,12/01/2029,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0063,Lenticular,,Loudoun,DEV,yes,290.0,20251008:290.0,,12/31/2029,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0064,Fractus,,Loudoun,DEV,yes,244.0,20251008:244.0,,06/19/2029,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0065,Radar,,Loudoun,DEV,yes,168.0,20251008:168.0,,05/30/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0066,Celtic,,Loudoun,NOVEC,yes,117.0,20251008:117.0,,12/30/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0069,Summerhouse,,Loudoun,DEV,,280.0,20251008:280.0,,12/31/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0078,Barrister,,Loudoun,DEV,yes,290.0,20260106:290.0,,"May 31, 2029",20260106,20260106,1,Need Meeting,Customer Service
+DOM-2025-0071,Frances | Southall,,Louisa,REC,yes,176.0,20251008:176.0,,08/01/2027,20251008,20260106,3,Solution Meeting,Customer Service
+DOM-2025-0071-DNH,Southall | North Anna,,Louisa,,,,,,,20260106,20260106,2,Solution Meeting,Do No Harm Analysis
+DOM-2025-0072,Wesbey Drive | Foxbrook Lane | Gordonsville,,Louisa,REC,yes,292.0,20251008:270.0 -> 20260106:292.0,yes,03/01/2029,20251008,20260310,5,Solution Meeting,Customer Service
+DOM-2026-0010,,,Louisa,REC,yes,259.6,20260310:259.6,,12/31/2032,20260310,20260310,1,Need Meeting,Customer Service
+DOM-2024-0052,,DOM-2024-0054,Mecklenburg,,yes,,,,12/01/2028,20250506,20250506,1,Solution Meeting,Customer Service
+DOM-2022-0046,Mint Springs Burrell | Burrell,,Prince William,NOVEC,yes,,,,01/02/2026,20251008,20251008,2,Solutions Meeting,Customer Service
+DOM-2024-0061,Aphrodite,,Prince William,NOVEC,yes,,,,09/30/2027,20251008,20260908,4,Cancellation Meeting,Customer Service
+DOM-2024-0062,Demeter,,Prince William,NOVEC,yes,,,,05/01/2028,20251008,20260908,4,Cancellation Meeting,Customer Service
+DOM-2025-0031,Elm Farm,,Prince William,DEV,yes,69.0,20260106:69.0,,"December 31, 2027",20260106,20260707,3,Solution Meeting,Customer Service
+DOM-2025-0042,Sky Lark,,Prince William,NOVEC,yes,202.0,20251008:202.0,,12/31/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0043,Diamond Hill,,Prince William,NOVEC,yes,300.0,20251008:300.0,,12/01/2031,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0044,Javelin,,Prince William,NOVEC,yes,168.0,20251008:168.0,,12/31/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0045,Antique,,Prince William,,yes,70.0,20251008:70.0,,12/31/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0047,Acadian,,Prince William,,yes,30.0,20251008:30.0,,12/31/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0050,Artemis,,Prince William,NOVEC,yes,300.0,20251008:300.0,,12/30/2031,20251008,20260908,2,Cancellation Meeting,Customer Service
+DOM-2025-0055,Hera,,Prince William,NOVEC,yes,300.0,20251008:300.0,,12/30/2031,20251008,20260908,2,Cancellation Meeting,Customer Service
+DOM-2025-0056,Atlas,,Prince William,DEV,,300.0,20251008:300.0,,12/31/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0057,Nero,,Prince William,NOVEC,yes,300.0,20251008:300.0,,12/30/2030,20251008,20260908,2,Cancellation Meeting,Customer Service
+DOM-2025-0059,Powell Creek,,Prince William,DEV,yes,84.0,20251104:84.0,,12/31/2028,20251104,20251104,1,Need Meeting,Customer Service
+DOM-2025-0068,Caesar,,Prince William,NOVEC,yes,300.0,20251008:300.0,,12/30/2030,20251008,20260908,2,Cancellation Meeting,Customer Service
+DOM-2025-0098,Quantico,,Prince William,DEV,,30.3,20260106:30.3,,12/31/2029,20260106,20260106,1,Need Meeting,Customer Service
+DOM-2026-0025,Mudel,,Prince William,NOVEC,yes,300.0,20260602:300.0,,12/30/2029,20260602,20260602,1,Need Meeting,Customer Service
+DOM-2026-0026,,,Prince William,,yes,,,,,20260707,20260707,1,TEAC Meeting,Operational Flexibility and Efficiency
+DOM-2023-0016,New Post,DOM-2023-0053 DOM-2023-0055 DOM-2024-0012,Spotsylvania,,yes,,,,05/01/2025,20250401,20260602,6,Solution Meeting,Customer Service
+DOM-2023-0053,,DOM-2023-0016,Spotsylvania,ODEC,yes,,,,10/01/2025,20250401,20250401,2,Solutions Meeting,Customer Service
+DOM-2025-0051,Emy | New Post,,Spotsylvania,,yes,212.0,20251104:212.0,,07/05/2027,20251104,20260203,3,Solution Meeting,Customer Service
+DOM-2025-0053,Kettler Crossroads,,Spotsylvania,REC,yes,300.0,20251008:300.0,,12/1/2031,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0083,Cosner,,Spotsylvania,,yes,300.0,20260203:300.0,,12/01/2027,20260203,20260203,2,Solution Meeting,Customer Service
+DOM-2023-0056,Alto,DOM-2024-0008 DOM-2025-0046,Stafford,DEV,yes,,,,07/02/2027,20251008,20251008,2,Solutions Meeting,Customer Service
+DOM-2024-0008,Baritone | Alto,,Stafford,DEV,yes,,,,10/01/2028,20251008,20251008,2,Solutions Meeting,Customer Service
+DOM-2025-0046,,,Stafford,DEV,yes,300.0,20251008:300.0,,6/30/2030,20251008,20251008,1,Need Meeting,Customer Service
+DOM-2025-0049,Surveyors,,Stafford,DEV,yes,300.0,20251008:300.0,,12/31/2031,20251008,20251008,1,Need Meeting,Customer Service

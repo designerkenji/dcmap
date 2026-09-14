@@ -1,0 +1,720 @@
+{
+ "_status": "RESEARCH-GRADE, NOT LEDGER FACTS. Produced 2026-09-06 by web-research agents (8 clusters, one skeptic per cluster re-checking every confident claim; 21/21 checked claims upheld, several with corrections recorded in the verdict reasons). Each finding carries the URLs actually consulted. Nothing here has been applied to power_dependencies or any hand ledger: backup_power and secondary_feed remain 'unknown' on the edges until a person reads a finding, checks its source, and vouches for it.",
+ "clusters": [
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "St. Lawrence Infrastructure 2 (St. Lawrence Infrastructure LLC, 1,935 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No public document describing on-site backup generation for this project was found. The project is early-stage in the NYISO queue (queue #1743, filed 9/2/2025, status 4 = 'SIS Pending', SIS bundle 26-4, proposed initial backfeed 07-2030, end-use DAT-AI) and no town of Massena site plan, SEQR filing, or DEC permit naming St. Lawrence Infrastructure LLC has surfaced. Searched: NYISO interconnection queue workbook; Massena Town Planning Board minutes (massena.us Agenda Center; June 25, 2026 minutes cover only the NYDIG 635 MW project); North Country Now, NNY360, NCPR, WWNY and Watertown Post coverage of Massena data centers; St. Lawrence County planning board materials; NY DPS document search; massenadatacenterwatch.org; trade press (DCD/DCK). Caution for the registry: the diesel-generator counts circulating in Massena press (316 proposed, later cut to 124; NCCS project page now lists 64) belong to the separate NYDIG/North Country Colocation Services 635 MW project at the former Alcoa East/Reynolds site, not to St. Lawrence Infrastructure 2 \u2014 do not cross-attribute.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.northcountrynow.com/stories/mohawks-united-in-safety-and-health-discuss-data-center-concerns-at-meeting-massena,373764",
+       "https://massena.us/AgendaCenter/ViewFile/Minutes/_06252026-1218",
+       "https://www.wwnytv.com/2026/05/27/massena-sees-10-data-center-proposals/",
+       "https://watertownpost.com/massena-faces-massive-data-center-power-requests-in-nyiso-queue/",
+       "https://www.datacenter.fyi/public-record/st-lawrence-infrastructure-1-e1e32973"
+      ]
+     },
+     {
+      "load": "St. Lawrence Infrastructure 2 (St. Lawrence Infrastructure LLC, 1,935 MW)",
+      "field": "secondary_feed",
+      "value": "yes \u2014 dual named circuits, but no second substation: POI is NYPA's 230kV Moses Massena 1 (MMS-1) AND 230kV Moses Massena 2 (MMS-2)",
+      "confidence": "high",
+      "detail": "NYISO's official interconnection queue (Load Projects sheet, queue #1743) lists the Points of Interconnection verbatim as \"NYPA's 230kV Moses Massena 1 (MMS-1) and 230kV Moses Massena 2 (MMS-2)\" \u2014 two separately named 230 kV circuits, so a documented second transmission feed exists at the POI level. However, both circuits emanate from the same NYPA Robert Moses switchyard (they are the Moses\u2013Massena 1 and 2 lines), so this is dual-circuit, single-substation service; no alternate substation is named anywhere in the record. Utility/CTO: NYPA; NYISO Zone D; no Affected Transmission Owner listed.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.nyiso.com/interconnections"
+      ]
+     },
+     {
+      "load": "SDC St. Lawrence (Sabey Data Center Properties, LLC, 120 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No public document describing backup generation for SDC St. Lawrence was found. Sabey's own site (sabeydatacenters.com/locations) does not list a St. Lawrence/Massena campus; no Sabey press release, town planning board record, SEQR/DEC filing, or trade-press article (DCD, DCK, Data Center Frontier, baxtel/aterio) describing the facility's backup plant surfaced. The project has sat in the NYISO queue since 12/20/2021 (queue #1315) and is at status 6 = 'SIS Approved' with a System Impact Study listed as available (SIS documents themselves are not public on nyiso.com), proposed initial backfeed 08-2025, end-use DAT, last updated 7/31/2026 \u2014 but no local construction or site-plan coverage exists in Massena press, which is dominated by the separate NYDIG/NCCS 635 MW project. Searched: NYISO queue workbook; sabeydatacenters.com; businesswire Sabey releases; datacentermap/aterio/baxtel; North Country Now, NNY360, NCPR, WWNY; massena.us planning minutes; St. Lawrence County IDA announcements; NY DPS documents.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://sabeydatacenters.com/locations",
+       "https://www.interconnection.fyi/project/nyiso-1315",
+       "https://www.northcountrynow.com/stories/mohawks-united-in-safety-and-health-discuss-data-center-concerns-at-meeting-massena,373764"
+      ]
+     },
+     {
+      "load": "SDC St. Lawrence (Sabey Data Center Properties, LLC, 120 MW)",
+      "field": "secondary_feed",
+      "value": "yes \u2014 dual named circuits, but no second substation: POI is Moses-Reynolds MRG-1 AND Moses-Reynolds MRG-2 at 115kV",
+      "confidence": "high",
+      "detail": "NYISO's official interconnection queue (Load Projects sheet, queue #1315) lists the Points of Interconnection verbatim as \"Moses-Reynolds MRG-1 and Moses-Reynolds MRG-2 at 115kV\" \u2014 two separately named 115 kV circuits between the Moses switchyard and the Reynolds substation, i.e., a documented second feed at the POI level, but both circuits source from the same Robert Moses switchyard; no alternate substation is named. Utility/CTO: NYPA; NYISO Zone D. The identical POI text also appears in a St. Lawrence County government planning presentation reproducing the queue table, and on interconnection.fyi's record for NYISO #1315.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.stlawco.gov/sites/default/files/Planning/Trainings/LGC%202025%20Planning%20&%20Zoning%20Presentation%20-%20Final.pdf",
+       "https://www.interconnection.fyi/project/nyiso-1315"
+      ]
+     }
+    ],
+    "cluster_note": "Common-mode risk: both loads interconnect via paired circuits that all emanate from NYPA's Robert Moses switchyard in Massena (SLI 2 on the Moses\u2013Massena 230 kV pair MMS-1/MMS-2; Sabey on the Moses\u2013Reynolds 115 kV pair MRG-1/MRG-2). Each has redundancy at the circuit level but total dependence on the single Moses switchyard \u2014 a Moses outage takes down every documented feed to both loads. Scale context: St. Lawrence Infrastructure's two queue entries (860 MW #1742 + 1,935 MW #1743 = 2,795 MW) alone dwarf the ~800 MW Moses-Saunders dam output; county-wide queue requests total ~5 GW, so grid delivery depends on imports/upgrades, not local hydro alone. Regulatory timing risk: NYS lawmakers passed a one-year data-center permitting moratorium (North Country Now, 2026), the Town of Massena held a Sept 16, 2026 hearing on a local data-center moratorium (massenadatacenterwatch.org, citing the town's official notice), and local press reports an NYISO study backlog. Registry hygiene: all diesel-generator figures in Massena press (316 \u2192 124 gensets; 64 on the current NCCS project page) belong to the separate NYDIG/NCCS 635 MW Alcoa East/Reynolds project (NYISO load queue #0979, North Country Data Center, 435 MW, Reynolds 115kV POI) \u2014 not to either load researched here."
+   },
+   "verdicts": [
+    {
+     "load": "St. Lawrence Infrastructure 2 (St. Lawrence Infrastructure LLC, 1,935 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Core claim verified against the live NYISO queue workbook (Load Projects sheet, queue 1743): POI reads verbatim \"NYPA's 230kV Moses Massena 1 (MMS-1) and 230kV Moses Massena 2 (MMS-2)\"; 1,935 MW, St. Lawrence County, Zone D, CTO/Utility NYPA, ATO column blank \u2014 all as claimed, and interconnection.fyi/project/nyiso-1743 shows the same POI text. 'Dual named circuits at the POI' stands. TWO CORRECTIONS to the detail, however. (1) The 'no second substation / dual-circuit, single-substation service' gloss is NOT supported and is contradicted by NYISO's own Moses South stability report (MS-24, OC-approved 7/18/2024, nyiso.com): MMS1/MMS2 are the 230 kV circuits BETWEEN the Moses 230 kV switchyard and the Massena 765/230 kV substation (contingencies are modeled at both @MOSES230 and @MASSENA765 ends, e.g. 'L/O MASSENA-MOSES 765/230 MMS1'), and Massena is a second, independently sourced major substation \u2014 the Massena\u2013Marcy 765 kV line (MSU1) and the 765 kV Chateauguay HVDC interconnection with Hydro-Quebec terminate there. The queue record is silent on which end (or a mid-line tap) serves the load, so 'single-substation service' is an inference the record does not support; the circuit names themselves name a second substation (Massena). (2) The dual-circuit redundancy is weaker than the claim implies in a different way: NYISO contingency NYPA13 models loss of MMS1 & MMS2 together as a single 'DCT' (double-circuit tower) event, i.e. the two named circuits share towers for at least part of the route, so they are not fully independent feeds. Suggested rewrite: 'dual named circuits on a shared double-circuit-tower line between two NYPA substations (Moses 230 kV switchyard and Massena 765/230 kV); queue names no serving substation.'"
+    },
+    {
+     "load": "SDC St. Lawrence (Sabey Data Center Properties, LLC, 120 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified against the live NYISO queue workbook (Load Projects sheet, queue 1315): POI reads verbatim \"Moses-Reynolds MRG-1 and Moses-Reynolds MRG-2 at 115kV\"; Sabey Data Center Properties, LLC, 120 MW, St. Lawrence County, Zone D, CTO/Utility NYPA \u2014 all as claimed. Both secondary citations also check out: the St. Lawrence County 'LGC 2025 Planning & Zoning' PDF (stlawco.gov) reproduces the identical POI text in its queue-table excerpt for #1315, and interconnection.fyi/project/nyiso-1315 shows the same text. So 'documented second feed at the POI level, dual named 115 kV circuits' is supported. One caveat on the topology gloss: unlike #1743's MMS circuits (which appear in NYISO's Moses South stability report), NO public NYISO/NYPA document I could find independently names the MRG-1/MRG-2 endpoints \u2014 'between the Moses switchyard and the Reynolds substation' and 'both circuits source from the same Robert Moses switchyard' are inferences from the circuit names. They are plausible and uncontradicted: a NYPA 'Reynolds 115kV' POI appears elsewhere in the queue, and the Reynolds site is the former Reynolds Metals/Alcoa East smelter (load-only; since 2017 the NCCS/NYDIG data-center campus now seeking a 635 MW expansion), so Moses is the only evident source end. But treat the endpoint/topology sentence as inferred rather than documented, and note it is unknown whether MRG-1/MRG-2 share towers the way NYISO models MMS1/MMS2 (single DCT contingency); if they do, the 'second feed' is not structurally independent."
+    }
+   ]
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "Arsenal Data Site 1000 (Arconic Corporation, 467 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No document found describing on-site backup generation of any kind. Searched: NYISO interconnection queue (queue #1730, 'Load Projects' tab \u2014 no generation data, and no companion Arconic generation/storage entry anywhere in the queue workbook); Massena Town Planning Board agendas/minutes Feb 2025\u2013Aug 2026 (no Arconic/Arsenal site-plan filing yet \u2014 the only data-center application before the board is NYDIG/NCCS at the old Reynolds plant); DEC/ENB search (nothing); trade press (DCD/DCK \u2014 nothing). The only press on the project is NNY360's investigative piece: 'Sheet metal manufacturer Arconic, for one, is looking to use some of its excess space in Massena to build a 933 MW data center' (933 MW = queue positions 1728+1729+1730 at the same POI), with no backup-power detail. Project has not reached the site-plan/SEQR stage where generator counts get documented.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue-07312026.xlsx/ff0e2005-e8d3-e75d-3e81-fa7027a52685?t=1786563693134",
+       "https://www.nny360.com/news/stlawrencecounty/data-centers-descend-on-needy-upstate-ny-towns-is-anyone-looking-out-for-us/article_93198557-09ad-545e-9420-cb9e3036cac3.html",
+       "https://www.interconnection.fyi/project/nyiso-1730",
+       "https://www.datacenter.fyi/public-record/arsenal-data-site-1000-fc028dba",
+       "https://www.massena.us/AgendaCenter/ViewFile/Agenda/_06252026-1218"
+      ]
+     },
+     {
+      "load": "Arsenal Data Site 1000 (Arconic Corporation, 467 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "No second feed documented. The NYISO queue (position 1730, IR 2025-03-07, CTO NYPA, ATO National Grid, SIS bundle 25-2) names a single point of interconnection: 'Haverstock to Adirondak 345kV line HA-1' \u2014 a tap on ONE circuit of the Haverstock\u2013Adirondack corridor, not dual service from two substations (a single-circuit outage takes out a mid-line tap even though the circuit terminates at both substations). Arconic's sibling positions 1728 (233 MW) and 1729 (233 MW) name the identical single POI. No alternate POI or dual-substation service appears in any source found.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue-07312026.xlsx/ff0e2005-e8d3-e75d-3e81-fa7027a52685?t=1786563693134",
+       "https://www.interconnection.fyi/project/nyiso-1730"
+      ]
+     },
+     {
+      "load": "New York State Artificial Intelligence Data Center (ZeroC Data Centers LLC, 300 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No document found describing backup generation for the 300 MW project. Searched: NYISO queue (position 1731 \u2014 no generation data; no ZeroC generation/storage entry in queue); Massena Town Planning Board minutes (Feb 20, 2025 minutes cover ZeroC/Petawatt's approved ~$30M, 200 MW substation site plan at 417 County Route 42 \u2014 Petawatt is 'the majority share holder of ZeroC Data Center', equipment staged in Texas, MED service territory, Short-Form SEQR \u2014 with NO mention of generators); the Five 9s Digital marketing flyer for ZeroC's earlier 200 MW Dennison-substation site (Route 43/Horton Rd) specifies a grid-only design ('one 115/34.5 kV main power transformer, two 115 kV breakers, two 34.5 kV feeder breakers, 70 pad mounted step up transformers') and lists no on-site generation \u2014 but that flyer describes the predecessor Dennison project (queue 1213/1719 family), not necessarily the 300 MW HA-2 facility. No DEC air permit or press item on backup power found.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue-07312026.xlsx/ff0e2005-e8d3-e75d-3e81-fa7027a52685?t=1786563693134",
+       "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061",
+       "https://assets.ctfassets.net/o03ihmgd94o7/6g8J7vaxbb3PWHw54vwwQ3/56d4ff7d846acee474e1e41f0ddfd704/200_MW_HydroPowered_Data_Center_Site_NY.pdf",
+       "https://www.interconnection.fyi/project/nyiso-1719"
+      ]
+     },
+     {
+      "load": "New York State Artificial Intelligence Data Center (ZeroC Data Centers LLC, 300 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "No second feed documented for the active entry. NYISO queue position 1731 (IR 2025-03-14, SIS bundle 25-2) names a single POI: 'Haverstock-Adirondack 345kV transmission line HA-2' \u2014 one circuit. The project's earlier entry 1719 (IR 2024-09-18) at 'Dennison 115kV substation' (National Grid) shows status 0 and is reported withdrawn by interconnection.fyi, so Dennison is a superseded POI, not an alternate feed. ZeroC separately holds active position 1213 ('St Lawrence Data and Agricultural Center', 200 MW, Dennison 115kV, SIS complete) \u2014 a different project, not documented as a second feed to this facility.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue-07312026.xlsx/ff0e2005-e8d3-e75d-3e81-fa7027a52685?t=1786563693134",
+       "https://www.interconnection.fyi/project/nyiso-1719",
+       "https://www.datacenter.fyi/public-record/new-york-state-artificial-intelligence-data-center-70624c82"
+      ]
+     },
+     {
+      "load": "Pontoon Bridge Road Data Center (American Data Center Partners LLC, 250 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "Nothing documented. The developer barely exists on paper: Delaware LLC formed 6/17/25, NY qualification filed 9/15/25, St. Lawrence County office, service address 7804-C Fairview Rd, Charlotte NC (NNY360 legal notice). Its only public traces are NYISO queue position 1745 (IR 2025-10-09, 250 MW, end-use 'DAT', SIS bundle 26-4) and a reported land purchase at 466 Pontoon Bridge Road, Massena (Watertown Post). No site plan has come before the Massena Town Planning Board through the Aug 2026 agenda, no SEQR/DEC filings found, no press on generators. Searched NYISO queue workbook (no companion generation entry), massena.us AgendaCenter 2025-2026, local press (NNY360, North Country Now, NCPR, Watertown Post, WWNY), and trade press.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue-07312026.xlsx/ff0e2005-e8d3-e75d-3e81-fa7027a52685?t=1786563693134",
+       "https://www.nny360.com/classifieds/community/announcements/general/notice-of-qualification-of-american-data-center-partners-llc-authority/ad_a67c2c96-ffb5-52ce-8133-91519dcad31e.html",
+       "https://watertownpost.com/massena-faces-massive-data-center-power-requests-in-nyiso-queue/",
+       "https://www.datacenter.fyi/public-record/pontoon-bridge-road-data-center-7e516ffa"
+      ]
+     },
+     {
+      "load": "Pontoon Bridge Road Data Center (American Data Center Partners LLC, 250 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "Ambiguous. NYISO queue position 1745's POI reads 'Haverstock-Adirondack 345kV transmission lines' \u2014 plural, unlike Arsenal's 'line HA-1' and ZeroC's 'line HA-2'. Read literally this could mean taps on both HA-1 and HA-2 circuits, which would give circuit-level redundancy; but both circuits run in the same corridor between the same two substations (Haverstock, Massena and Adirondack, Croghan), so even the generous reading is not independent dual-substation service. No filing or press item found that states the intended feed arrangement explicitly.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue-07312026.xlsx/ff0e2005-e8d3-e75d-3e81-fa7027a52685?t=1786563693134"
+      ]
+     }
+    ],
+    "cluster_note": "Correction to the cluster premise: these loads do not 'name both substations' as dual points of interconnection \u2014 each names a tap on the Haverstock\u2013Adirondack 345kV corridor itself (Arsenal on circuit HA-1, ZeroC on HA-2, Pontoon Bridge on 'lines'). Haverstock (Fregoe Rd, Massena; 345/230kV, double-breaker double-bus) and Adirondack (Croghan, Lewis Co.) are brand-new NYPA digital substations built under Smart Path Connect / Northern NY Priority Transmission Project (NYISO queue 1125, in service; ribbon-cut at Haverstock June 25, 2026 \u2014 the corridor is the rebuilt Moses\u2013Adirondack line). Risk implications: (1) all three loads share one transmission corridor \u2014 correlated exposure, and a mid-line tap has no service under a single-circuit outage; (2) the corridor is crowded: Arconic actually holds three queue positions at the same HA-1 POI (1728/1729/1730 = 933 MW total, matching NNY360's report that Arconic wants a 933 MW data center in excess space at its Massena plant), plus Alcoa East 200 MW (1724, Haverstock\u2013Willis HW1&HW2), North Country Data Center 200 MW (1751, at Haverstock), and Air Products' 110 MW hydrogen load (1446, HA line 1); (3) none of the three loads has filed a site plan or SEQR, so backup-generation kind/scale is genuinely undocumented, not merely unfound \u2014 for calibration, the one Massena project that HAS reached site-plan stage (NCCS/NYDIG's separate 635 MW Alcoa East project) disclosed 316 diesel gensets, later cut to 124, only through that process; (4) NY's Executive Order 62 data-center permitting pause (per Phillips Lytle alert) and NYISO's large-load interconnection reform may move dates. Primary source for all queue facts: NYISO-Interconnection-Queue-07312026.xlsx, 'Load Projects' tab; substation facts: nypa.gov Smart Path Connect page and North Country Now completion coverage (northcountrynow.com story 377174)."
+   },
+   "verdicts": [
+    {
+     "load": "Arsenal Data Site 1000 (Arconic Corporation, 467 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified against the cited NYISO queue workbook itself (downloaded and parsed the 'Load Projects' sheet): row 1730 = Arconic Corporation, 'Arsenal Data Site 1000', IR 2025-03-07, 467 MW, End-Use DAT-AI, POI 'Haverstock to Adirondak 345kV line HA-1', CTO/Utility NYPA, Affected TO National Grid, SIS bundle 25-2 \u2014 every detail in the claim matches, and only one POI is listed. Siblings 1728 and 1729 (233 MW each, Arconic, same IR date) name the identical single POI, as claimed; interconnection.fyi/nyiso-1730/-1728/-1729 corroborate. The single-circuit reading of 'HA-1' is supported by the queue's own naming: ZeroC's 1731 taps 'HA-2', position 1745 references the 'Haverstock-Adirondack 345kV transmission lines' (plural), and 1724 references 'Haverstock - Willis 345kV lines HW1 & HW2', so HA-1 denotes one circuit of a multi-circuit corridor. Independent searches (nny360, NCPR, watertownpost, North Country Now, Massena planning board minutes, Arconic pages) found no alternate POI, dual-substation service, or second feed for the Arsenal site. No Arconic entry other than 1728/1729/1730 exists anywhere in the queue workbook, including the Withdrawn sheet. Claim upheld as stated (an undocumented distribution-level or future second feed cannot be ruled out, consistent with the claim's 'no second feed documented' framing and medium confidence)."
+    },
+    {
+     "load": "New York State Artificial Intelligence Data Center (ZeroC Data Centers LLC, 300 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified against the cited NYISO queue workbook: row 1731 = ZeroC Data Centers, LLC, 'New York State Artificial Intelligence Data Center', IR 2025-03-14, 300 MW, DAT-AI, single POI 'Haverstock-Adirondack 345kV transmission line HA-2', CTO NYPA, ATO National Grid, SIS bundle 25-2 \u2014 exactly as claimed, one POI only. Row 1719 (same project name/developer, IR 2024-09-18, POI 'Dennison 115kV substation', utility NM-NG) shows Project Status 0 in the workbook, and interconnection.fyi/nyiso-1719 lists it as 'Withdrawn' \u2014 supporting the claim that Dennison is a superseded POI, not an alternate feed. Row 1213 = ZeroC, 'St Lawrence Data and Agricultural Center', IR 2021-06-28, 200 MW, Dennison 115kV, status 10, 'SIS' listed under Availability of Studies, proposed initial backfeed 01-2026 \u2014 a distinctly named project (and NYISO zone D vs 1731's zone E); no source ties it to the AI data center site as a second feed. The cited datacenter.fyi page contains only basic info (300 MW, NYPA, proposed, Mar 14 2025) and mentions no feeds at all \u2014 it corroborates but adds nothing; the queue detail rests on the other two sources, which fully support it. Independent searches (interconnection.fyi data-center tracker page, zeroc.ai, local press) found no documentation of dual or redundant feeds. Claim upheld as stated, with the same caveat that absence of documentation is not proof of absence \u2014 matching the claim's medium confidence."
+    }
+   ]
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "Micron Clay megafab (NYISO phases 576 MW + 480 MW)",
+      "field": "backup_power",
+      "value": "diesel",
+      "confidence": "high",
+      "detail": "Documented plan is a large fleet of diesel emergency generators. Times Union (2026): 'Budget bill would exempt Micron from permit for backup diesel power' \u2014 reports Micron plans 118 diesel-powered backup generators for the megafab, and that the Hochul administration inserted state-budget language waiving Article 10 siting review (which applies at 25 MW+ of generation, implying the backup fleet exceeds 25 MW in aggregate) specifically for 'emergency backup generation' at Green CHIPS semiconductor sites; the article also says Micron evaluated natural-gas combustion turbines, dual-fired engines, and fuel cells but settled on diesel as most reliable. (Article is paywalled; the 118-generator figure comes from its search snippet, corroborated consistently across two independent searches, so treat the exact count as medium confidence within an otherwise high-confidence diesel finding.) Primary regulatory corroboration: NYSDEC CLCPA Section 7(2) justification statement (Dec 12, 2025) lists Micron's 'acceptance of operational restrictions on emergency engine use at the facility (78,837 metric tons CO2e per year reduction)' and limits on 'boilers, water bath vaporizers, and stationary emergency engines'; NYSDEC's Air Title V justification (Mar 31, 2026) confirms the final Title V air permit issued 3/31/2026 carries those emergency-engine restrictions as enforceable conditions. A diesel-fired emergency fire pump engine is also permitted. Scale of the load being backed up: regulatory filings cited in trade coverage put full-buildout site demand at 1.8 GW.",
+      "sources": [
+       "https://www.timesunion.com/business/article/budget-bill-exempt-micron-permit-backup-diesel-22278633.php",
+       "https://dec.ny.gov/sites/default/files/2026-02/justificationstatementmicron.pdf",
+       "https://dec.ny.gov/sites/default/files/2026-05/micronairtitlev_justification.pdf",
+       "https://assets.micron.com/adobe/assets/urn:aaid:aem:60a75ad5-0759-47bc-beb6-b3fe5de0114f/renditions/original/as/clcpa-analysis-combined.pdf"
+      ]
+     },
+     {
+      "load": "Micron Clay megafab (NYISO phases 576 MW + 480 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "All documented transmission service originates at one substation. National Grid's PSC Article VII filing (Micron Electric Service Project) and its February 2024 fact sheet describe eight new 345 kV underground service laterals, 0.95-2.07 miles each, running from the expanded Clay Substation to Micron's four fab areas; the Clay Substation is being expanded east and north with additional bays to carry the load. ConstructConnect's coverage of the PSC approval likewise describes 'eight 345-kilovolt underground service laterals' connecting 'an existing Clay, NY, substation to the future semiconductor fabrication areas' and contains no mention of redundant feeds from any second source. So there is circuit-level redundancy (eight laterals for four fabs) but no second substation or alternate point of interconnection appears in the Article VII filings, DPS notices, or press coverage reviewed. Confidence is medium because this is an absence finding: no source affirmatively states 'single feed only', but the entire permitted supply plan runs through the expanded Clay Substation.",
+      "sources": [
+       "https://www.nationalgridus.com/media/construction-projects/pdfs/ny/micron/micron_fact_sheet.pdf",
+       "https://dps.ny.gov/event/micron-transmission-comments-due-regarding-national-grids-proposed-345-kv-underground-service",
+       "https://news.constructconnect.com/100-billion-micron-project-advances-with-critical-power-line-approval-in-new-york"
+      ]
+     },
+     {
+      "load": "Ranalli SuperDC (Ranalli Super DC LLC, Lysander NY; 270 MW per task premise, 300 MW per sources)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No developer or agency documentation of backup generation exists yet. As of the Baldwinsville Messenger / Eagle News report, Ranalli Super DC LLC had filed a NYISO interconnection application (May 2025) but NO formal application with the Lysander planning board, and the town board directed its attorney to draft a data-center moratorium (April 2026). The only generator reference found is in the opposition petition by 'Citizens Against Lysander Data Center', which cites anticipated 'noise associated with cooling systems and large backup diesel generators' \u2014 a residents' expectation, not a filed plan, so it is not reported here as a finding of kind or scale. Searched: Town of Lysander site (found only a 2021 OCIDA public-hearing notice for the same LLC/parcels, which was for a United Auto Supply warehouse, not the data center), Eagle News coverage, cleanview.co project page (capacity data paywalled), datacenter.fyi NYISO tracker, and general web for Ranalli + generators/diesel/planning board. Nothing from the developer on backup power kind or MW.",
+      "sources": [
+       "https://www.eaglenewsonline.com/baldwinsville_messenger/possible-massive-data-center-in-lysander-faces-community-opposition-town-attorney-to-draft-moratorium/article_635b1885-9f97-4747-bdf4-604d468fc641.html",
+       "https://legacy.townoflysander.org/sites/default/files/Ranalli%20Super%20DC%20LLC%20PH%20notice.pdf",
+       "https://cleanview.co/data-centers/new-york/2042/ranalli-lysander-data-center",
+       "https://www.datacenter.fyi/power-market/nyiso"
+      ]
+     },
+     {
+      "load": "Ranalli SuperDC (Ranalli Super DC LLC, Lysander NY; 270 MW per task premise, 300 MW per sources)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "The only documented point of interconnection is a tap of the NYPA Clay-Pannell 345 kV circuits PC-1 and PC-2 (interconnection.fyi's NYISO queue tracking: applied 5/7/2025, 300 MW, NYPA as connecting utility, expected in-service 05-2028). Eagle News corroborates the site is 'adjacent to 345-kV, high-voltage transmission lines'. Tapping both PC-1 and PC-2 gives two circuits, but both belong to the single Clay-Pannell corridor emanating from the Clay 345kV substation \u2014 no second substation or alternate POI is named anywhere. Value 'no' therefore means: dual-circuit tap on one corridor, no dual-substation service documented. Confidence medium because the circuit detail comes from queue-tracking aggregators (interconnection.fyi / datacenter.fyi) summarizing the NYISO queue rather than the raw NYISO queue spreadsheet itself, which was not directly retrievable in this session. Note the MW discrepancy: the task premise says 270 MW; every source found (NYISO application reporting, trackers, local press) says 300 MW \u2014 the 270 MW figure may reflect a later queue revision not visible in these sources.",
+      "sources": [
+       "https://www.interconnection.fyi/data-center/state/NY",
+       "https://www.datacenter.fyi/power-market/nyiso",
+       "https://www.eaglenewsonline.com/baldwinsville_messenger/possible-massive-data-center-in-lysander-faces-community-opposition-town-attorney-to-draft-moratorium/article_635b1885-9f97-4747-bdf4-604d468fc641.html"
+      ]
+     }
+    ],
+    "cluster_note": "Both loads are single-corridor dependents of National Grid's Clay 345kV substation, making it a common-mode failure point for the cluster. Micron's entire permitted supply (eight 345kV underground laterals to four fabs; full-buildout demand cited at 1.8 GW) originates at the expanded Clay Substation; Ranalli SuperDC's documented POI is a tap of the NYPA Clay-Pannell 345kV circuits PC-1/PC-2, which leave that same substation. A Clay substation outage would interrupt grid supply to both loads simultaneously; a Clay-Pannell corridor loss would hit Ranalli and degrade the network around Micron. On backup: Micron has a well-documented diesel emergency fleet (reported 118 gensets, aggregate >25 MW since an Article 10 siting waiver was legislated for it; emergency-engine operational restrictions are enforceable conditions in the Title V air permit issued 3/31/2026), sized for tool-protection ride-through rather than continued operation. Ranalli has no documented backup plan at all \u2014 the project has no town planning application yet and faces a drafted Lysander data-center moratorium, so its resilience posture is unknowable from the public record at this date. Caveats: the Micron 118-generator count is sourced from a paywalled Times Union article via consistent search snippets; the Ranalli MW figure in sources (300 MW) differs from the task premise (270 MW); and Ranalli parcels sit in Lysander on the Clay-Pannell line rather than at the Clay substation fence, so its electrical distance from the Clay bus is nonzero but the corridor dependency stands."
+   },
+   "verdicts": [
+    {
+     "load": "Micron Clay megafab (NYISO phases 576 MW + 480 MW)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Verified and strengthened. NYSDEC CLCPA 7(2) justification (12/12/2025) contains the exact quoted emergency-engine restriction (78,837 mt CO2e/yr) and boilers/water-bath-vaporizers/stationary-emergency-engines limitation; NYSDEC Title V justification confirms final permit issued 3/31/2026 with those measures as enforceable conditions. Micron's own CLCPA analysis (retrieved via curl after its CDN blocked WebFetch) states Micron will install Tier IV diesel fuel-fired emergency generators, lists exactly the claimed alternatives evaluated (natural gas combustion turbines, dual-fired engines, natural-gas/methane fuel cells, plus hydrogen and batteries at NYSDEC request) with diesel chosen as fastest/most reliable, and its load table shows 60 (CUB 1) + 58 (CUB 2) = 118 diesel emergency generators \u2014 upgrading the 118 count from snippet-derived medium confidence to primary-source confirmed. Times Union snippets independently re-corroborated the Article 10 waiver, 25 MW threshold, Green CHIPS scoping, and 1.8 GW full-buildout demand. One minor correction: two diesel emergency fire pump engines are planned (one per 2 fabs), not one."
+    },
+    {
+     "load": "Micron Clay megafab (NYISO phases 576 MW + 480 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified. National Grid's Feb 2024 fact sheet (read directly) describes laterals only between the Clay Substation and the four fabs with Clay Substation expanded for the load; DPS Case 24-T-0120 materials and ConstructConnect confirm eight 345 kV underground laterals (two per fab, 0.95-2.07 mi) and Clay Substation expansion east/north, with no redundant feed or second substation anywhere. New primary corroboration: the raw NYISO queue Load Projects sheet lists both Micron phases \u2014 #1536 White Pine Phase 1 (480 MW) and #1627 Micron Fab 2 (576 MW) \u2014 with POI 'Clay 345 kV Substation' in both cases, so all documented interconnection is at one substation. Minor nit: the eight-lateral and mileage specifics come from the Article VII filing and press, not the one-page fact sheet itself. The absence-finding framing and medium confidence remain appropriate."
+    },
+    {
+     "load": "Ranalli SuperDC (Ranalli Super DC LLC, Lysander NY; 270 MW per task premise, 300 MW per sources)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified and strengthened. The cited aggregator pages are thinner than implied (interconnection.fyi's NY state page shows only '250+ MW / Proposed'; datacenter.fyi shows 300 MW/NYPA; Eagle News confirms 300 MW, May 2025 NYISO application, site adjacent to 345 kV lines). However, I downloaded the raw NYISO interconnection queue spreadsheet \u2014 the primary source the original session could not retrieve \u2014 and Load Projects row #1736 confirms every claimed detail: Ranalli SuperDC LLC, IR 2025-05-07, POI 'Clay to Pannell ckts PC-1 and PC-2', utility NYPA, proposed in-service 05-2028. It also shows peak load 270 MW, vindicating the task premise's figure and confirming the claim's hypothesis that the sources' 300 MW was a pre-revision number. Single documented POI is a tap of the one Clay-Pannell corridor (both circuits); no second substation or alternate POI exists in the queue, so 'no' holds \u2014 confidence could now be raised from medium given the primary-source confirmation."
+    }
+   ]
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "WNY STAMP (Genesee County Economic Development Center, 300 MW, NYISO queue #0580)",
+      "field": "backup_power",
+      "value": "diesel",
+      "confidence": "medium",
+      "detail": "The SEQR development application of record for Stream US Data Centers' 'Project Double Reed' at STAMP (revised Feb 18, 2026, on GCEDC's file library) states: '12 Emergency diesel-powered generators will provide backup power, ensuring uninterrupted operations during utility power outages to support critical IT, networking, and house loads, such as lighting and essential health, safety, and security systems,' and calls 12 generators across 3 buildings 'approximately a 90% reduction in generator count over conventional data center designs.' Stream's own project page conflicts with the filing: it says the design 'no longer requires diesel backup generators,' that backup will be 'either a redundant utility connection to the building or, if required by code, three propane-supported units,' and that up to 12 generators would serve only life-safety/security loads. Either way the documented generator fleet is emergency/life-safety scale, not full-load backup for a ~500 MW campus. Confidence medium because the developer's marketing contradicts its SEQR filing and the project is still in SEQR review; note also the NYISO queue entry (300 MW, GCEDC) predates Stream and covers the park substation, not one tenant.",
+      "sources": [
+       "https://www.gcedc.com/file-library/100319/STREAMUSDataCentersLLC.SEQRDevelopmentApplication.2.18.26.II.ProjectDescription.pdf",
+       "https://www.streamdatacenters.com/project-stamp/"
+      ]
+     },
+     {
+      "load": "WNY STAMP (Genesee County Economic Development Center, 300 MW, NYISO queue #0580)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "No second substation or alternate point of interconnection is documented; all service is through the single on-site STAMP 345/115 kV substation. NYISO queue #0580 lists one POI: 'Kintigh/Niagara - New Rochester 345kV' (Connecting Transmission Owner NYPA); companion entry #1484 ('580 STAMP load increase', 300 MW, National Grid) interconnects at the '115 kv STAMP substation' \u2014 the 115 kV side of the same station, not a second station. The station's engineer of record describes a 500 MVA 345/115 kV greenfield load station with twelve 345 kV breakers in breaker-and-a-half bays and 'sequential re-routing of the CTOs' 345 kV lines through the station', i.e. the NYPA 345 kV corridor is looped through it \u2014 transmission-level redundancy into one substation. GCEDC markets this as connecting 'to a 4x-redundant 345-kV transmission system at an on-site 600 megawatt substation and an on-site 115-kV distribution system' (energized 2026). Stream separately floats 'a redundant utility connection to the building' as a backup option, but that is building-level and its source substation is unspecified. The SEQR filing confirms the utility connection is National Grid with GCEDC's NYISO-approved 300 MW substation expandable to 600 MW.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://robertgagepepc.com/stamp-345-kv",
+       "http://www.gcedc.com/stamp",
+       "https://www.gcedc.com/file-library/100319/STREAMUSDataCentersLLC.SEQRDevelopmentApplication.2.18.26.II.ProjectDescription.pdf",
+       "https://www.streamdatacenters.com/project-stamp/"
+      ]
+     },
+     {
+      "load": "Somerset Load (Somerset Operating Company LLC, 250 MW, NYISO queue #849, in service)",
+      "field": "backup_power",
+      "value": "battery",
+      "confidence": "medium",
+      "detail": "Queue #849 (IR 2019-05-21, POI Kintigh 345kV, NYSEG, status I/S) is the in-service load interconnection for the Lake Mariner campus: TeraWulf's Lake Mariner Data LLC ground-leases the site from Somerset Operating Company LLC, a related party controlled by TeraWulf's CEO (per TeraWulf 10-K disclosures of the 2024 New Ground Lease). For the campus, The Next Platform (May 28, 2026) reports: 'What the entire site doesn't have is diesel generators for backup'; ride-through is provided by Schneider Electric Galaxy VX UPS systems and Galaxy lithium-ion battery systems (Data Center Frontier), with claimed 'Tier 3 equivalence' / N+1 via dual grid feeds. The original bitcoin-mining buildings under this 2019 load have no documented backup generation of any kind. Confidence medium because the no-diesel/battery evidence describes the campus as of 2026 rather than this queue entry specifically, and no planning-board or DEC generator permit for this load was found (searched Somerset planning board coverage and DEC records via web).",
+      "sources": [
+       "https://www.nextplatform.com/compute/2026/05/28/gpus-and-ram-are-in-short-supply-but-the-real-bottleneck-for-ai-is-electricians/5247566",
+       "https://www.datacenterfrontier.com/site-selection/article/55379784/terawulfs-lake-mariner-campus-how-a-retired-coal-plant-became-an-ai-factory-prototype",
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.datacenter.fyi/public-record/533bc010"
+      ]
+     },
+     {
+      "load": "Somerset Load (Somerset Operating Company LLC, 250 MW, NYISO queue #849, in service)",
+      "field": "secondary_feed",
+      "value": "yes",
+      "confidence": "medium",
+      "detail": "Yes at the transmission-line level, but not dual-substation: the site is served by two 345 kV transmission circuits \u2014 Data Center Frontier: 'two 345-kV transmission lines that form part of the backbone of New York's grid'; The Next Platform: 'Lake Mariner benefits from dual 345 kilovolt power feeds coming in from separate grids', giving 'Tier 3 equivalence... N+1 redundancy and multiple power and cooling distribution paths.' Both circuits terminate at the single Kintigh 345 kV switchyard (the former coal plant's), which is the only named POI in queue #849; NYISO queue line names tie Kintigh to Dysinger/Niagara on one side ('Kintigh-Dysinger 345kV', 'Niagara - Kintigh 345kV') and the New Rochester corridor on the other ('Kintigh/Niagara - New Rochester 345kV'). No second substation is named anywhere \u2014 the Kintigh switchyard itself is a single point of failure for both feeds.",
+      "sources": [
+       "https://www.datacenterfrontier.com/site-selection/article/55379784/terawulfs-lake-mariner-campus-how-a-retired-coal-plant-became-an-ai-factory-prototype",
+       "https://www.nextplatform.com/compute/2026/05/28/gpus-and-ram-are-in-short-supply-but-the-real-bottleneck-for-ai-is-electricians/5247566",
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx"
+      ]
+     },
+     {
+      "load": "Lake Mariner Data II (Lake Mariner Data LLC / TeraWulf, 250 MW, NYISO queue #1670)",
+      "field": "backup_power",
+      "value": "battery",
+      "confidence": "high",
+      "detail": "Queue #1670 (IR 2024-01-23, 250 MW DAT-AI, POI 'Kintigh 345kV Substation', NYSEG) covers the HPC/AI expansion buildings (WULF Den, CB-1, CB-2 onward) at Lake Mariner. These are exactly the buildings whose electrical fit-out is documented: Schneider Electric Galaxy VX UPS systems and Galaxy lithium-ion battery systems (Data Center Frontier's site visit piece), and The Next Platform states flatly: 'What the entire site doesn't have is diesel generators for backup' \u2014 the author notes this is unusual for a 'serious datacenter.' Redundancy is designed as dual 345 kV grid feeds plus N+1 UPS/battery ('Tier 3 equivalence') rather than engine generation. No DEC or Somerset planning-board generator permitting for these buildings surfaced in searches. Note for underwriting: batteries/UPS are ride-through only; there is no documented long-duration on-site generation.",
+      "sources": [
+       "https://www.nextplatform.com/compute/2026/05/28/gpus-and-ram-are-in-short-supply-but-the-real-bottleneck-for-ai-is-electricians/5247566",
+       "https://www.datacenterfrontier.com/site-selection/article/55379784/terawulfs-lake-mariner-campus-how-a-retired-coal-plant-became-an-ai-factory-prototype",
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx"
+      ]
+     },
+     {
+      "load": "Lake Mariner Data II (Lake Mariner Data LLC / TeraWulf, 250 MW, NYISO queue #1670)",
+      "field": "secondary_feed",
+      "value": "yes",
+      "confidence": "medium",
+      "detail": "Same physical service as Somerset Load: dual 345 kV transmission circuits into the site ('dual 345 kilovolt power feeds coming in from separate grids' per The Next Platform; 'two 345-kV transmission lines' per Data Center Frontier), but the only named point of interconnection in queue #1670 is the single 'Kintigh 345kV Substation' (NYSEG) \u2014 no second substation or alternate POI is named, so both feeds share one switchyard. A further related entry, TeraWulf Brookings LLC 'Wulf Compute Data Center II' (queue #1732, 250 MW DAT-AI, 2025-03-29), also names the Kintigh 345kV substation, concentrating still more load on the same node.",
+      "sources": [
+       "https://www.nextplatform.com/compute/2026/05/28/gpus-and-ram-are-in-short-supply-but-the-real-bottleneck-for-ai-is-electricians/5247566",
+       "https://www.datacenterfrontier.com/site-selection/article/55379784/terawulfs-lake-mariner-campus-how-a-retired-coal-plant-became-an-ai-factory-prototype",
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx"
+      ]
+     }
+    ],
+    "cluster_note": "The Kintigh 345 kV switchyard (retired 675 MW Somerset/Kintigh coal plant, Barker NY, NYSEG territory, NYISO Zone A) is the common node for this cluster. Per the NYISO interconnection queue: Somerset Load #849 (250 MW, in service), Lake Mariner Data II #1670 (250 MW), and a fourth related entry not in this task's scope, TeraWulf Brookings 'Wulf Compute Data Center II' #1732 (250 MW), all name the Kintigh 345 kV substation as POI; WNY STAMP #0580 (300 MW, plus #1484's 300 MW increase) taps the same 'Kintigh/Niagara - New Rochester 345kV' corridor about 25 miles southeast via its own NYPA/National Grid 345/115 kV station. Common-mode exposure: every load in the cluster hangs off the Niagara/Dysinger-Kintigh-New Rochester 345 kV corridor, and the two campuses that share the Kintigh switchyard have their 'dual feeds' land on that single switchyard. Resilience posture is thin for the load size: the Lake Mariner/Somerset campus has no diesel generation at all (UPS + lithium-ion ride-through only, by design), and STAMP's documented generation is 12 emergency gensets (diesel per the Feb 2026 SEQR filing; Stream's marketing says propane/no-diesel) sized for life-safety, not IT load. A prolonged corridor or switchyard outage therefore drops effectively all cluster load; conversely, all of it is interruptible/curtailment-tolerant by design, which matters for BI wording. One unresolved conflict to flag: Stream's SEQR application (diesel) vs its public 'zero-diesel' claims \u2014 worth re-checking when the SEQR findings statement issues."
+   },
+   "verdicts": [
+    {
+     "load": "WNY STAMP (Genesee County Economic Development Center, 300 MW, NYISO queue #0580)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Verified verbatim in the cited SEQR PDF (extracted text): 'Emergency Backup Power: 12 Emergency diesel-powered generators will provide backup power... to support critical IT, networking, and house loads, such as lighting and essential health, safety, and security systems' and '12 generators across 3 buildings is approximately a 90% reduction in generator count over conventional data center designs.' Stream's project page also verified: 'this project no longer requires diesel backup generators,' backup via 'either a redundant utility connection to the building or, if required by code, three propane-supported units,' with 'a limited number of generators (up to 12) strictly to support essential life safety systems.' Filing also confirms National Grid connection, NYISO-approved 300MW substation expandable to 600MW, ~500MW project need \u2014 and live NYISO queue row 0580 (GCEDC, 300 MW, IR 2016-09-27, predating Stream) matches. One nuance: the SEQR filing itself says the diesels back 'critical IT' loads \u2014 the 'emergency/life-safety scale, not full-load backup' framing is the analyst's (sound) arithmetic inference from the count, plus Stream's marketing page; medium confidence is appropriate given the filing/marketing contradiction."
+    },
+    {
+     "load": "WNY STAMP (Genesee County Economic Development Center, 300 MW, NYISO queue #0580)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "All supporting facts verified. Live NYISO workbook: #0580 POI is 'Kintigh/Niagara - New Rochester 345kV' (NYPA); #1484 'GCEDC / 580 STAMP load increase', 300 MW, POI '115 kv STAMP substation', utility NM-NG (National Grid) \u2014 i.e. the 115kV side of the same station, not a second station. Engineer's page (robertgagepepc.com) verified: '500 MVA 345/115 kV load station,' 'twelve 345 kV breakers arranged in four, hybrid-breaker and a half bays,' 'sequential re-routing of the CTOs' 345 kV lines through the station,' NYPA as Connecting Transmission Owner. GCEDC page verified: '4x-redundant 345-kV transmission system at an on-site 600 megawatt substation and an on-site 115-kV distribution system,' 'energized in 2026.' No second substation or alternate POI documented anywhere. Minor unflagged tension: GCEDC markets a '600 megawatt substation' while the engineer states 500 MVA with 'peak approved load of 450 MW' \u2014 does not change the secondary_feed=no verdict."
+    },
+    {
+     "load": "Somerset Load (Somerset Operating Company LLC, 250 MW, NYISO queue #849, in service)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Queue row verified exactly in the live workbook: 849, Somerset Operating Company LLC, 'Somerset Load', IR 2019-05-21, 250 MW, POI 'Kintigh 345kV', NYSEG, backfeed 'I/S'. Related-party ground lease verified via TeraWulf SEC filings (May 2021 ground lease; October 2024 New Ground Lease, ~157 acres, 35-year term, counterparty 'a related party due to control by a member of Company management' \u2014 press identifies the CEO). Next Platform (Joe Fay, May 28, 2026) quote verified verbatim: 'What the entire site doesn't have is diesel generators for backup.' Data Center Frontier verified: 'Schneider Electric Galaxy VX UPS systems' and 'Schneider Electric Galaxy lithium-ion battery systems.' datacenter.fyi record verified as tracking this interconnection. Independent searches found no generator permit for Lake Mariner; the only TeraWulf diesel-generator reference found (15-minute-runtime backup diesels) concerns the separate Lansing/Cayuga Lake project, not Somerset. Caveat correctly self-flagged in the claim: the battery/UPS evidence is campus-level as of 2026 and the original mining buildings have no documented backup at all, so 'battery' at medium confidence is the honest ceiling for this specific 2019 load."
+    },
+    {
+     "load": "Somerset Load (Somerset Operating Company LLC, 250 MW, NYISO queue #849, in service)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Both press quotes verified verbatim: Data Center Frontier \u2014 'The campus sits adjacent to two 345-kV transmission lines that form part of the backbone of New York's grid'; Next Platform \u2014 'Lake Mariner benefits from dual 345 kilovolt power feeds coming in from separate grids' and 'Tier 3 equivalence... N+1 redundancy and multiple power and cooling distribution paths.' Live NYISO workbook confirms 'Kintigh 345kV' as the sole named POI for #849 and confirms the cited line names exist: 'Niagara - Kintigh 345kV' (In Service sheet), 'Kintigh/Niagara - New Rochester 345kV' (Load Projects), 'Kintigh-Dysinger 345kV' (Withdrawn sheet only). No second substation is named in any source. The 'single point of failure' framing is the analyst's inference from the single POI \u2014 the sources do not state it outright, and Next Platform's 'separate grids' phrasing mildly cuts the other way \u2014 but the claim presents it as inference and the queue evidence supports it; 'yes at line level, not dual-substation' is a fair reading."
+    },
+    {
+     "load": "Lake Mariner Data II (Lake Mariner Data LLC / TeraWulf, 250 MW, NYISO queue #1670)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Queue row verified exactly: 1670, Lake Mariner Data LLC, 'Lake Mariner Data II', IR 2024-01-23, 250 MW, DAT-AI, POI 'Kintigh 345kV Substation', NYSEG. Next Platform quote verified verbatim ('What the entire site doesn't have is diesel generators for backup'), including the $290M Schneider/Motivair spend 'across UPS and batteries.' Data Center Frontier verified for Galaxy VX UPS and Galaxy lithium-ion battery systems. Building names (Wulf Den, CB-1, CB-2 onward) as the HPC expansion verified via TeraWulf press releases and Data Center Dynamics coverage (though DCF's article itself does not name the buildings \u2014 the building-to-queue mapping rests on that other coverage). Independent skeptic searches found no DEC or planning-board generator permitting for Lake Mariner and no contradicting diesel evidence at this site; the sole TeraWulf diesel reference found is their Lansing/Cayuga project. Global Energy Monitor's Lake Mariner page mentions no backup generation either. High confidence is defensible; the ride-through-only underwriting note is accurate."
+    },
+    {
+     "load": "Lake Mariner Data II (Lake Mariner Data LLC / TeraWulf, 250 MW, NYISO queue #1670)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Same verified press quotes as Somerset Load (dual 345 kV feeds per Next Platform; two 345-kV lines per Data Center Frontier). Live NYISO workbook confirms #1670's only named POI is 'Kintigh 345kV Substation' (NYSEG) with no alternate POI, and confirms the companion entry exactly as claimed: #1732, TeraWulf Brookings LLC, 'Wulf Compute Data Center II', IR 2025-03-29, 250 MW, DAT-AI, POI 'Kintigh 345kV sub-station', NYSEG (ATO: NYPA, NM-NG) \u2014 further load concentrated on the same node. No source names a second substation. Verdict of 'yes' at the transmission-line level with a shared single switchyard is supported."
+    }
+   ]
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "1 Gig Data Center East Fishkill NY (Donovan Drive Holdings LLC, 1,000 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No source documents any on-site backup generation (diesel, gas turbine, battery, or behind-the-meter plant), and no document exists yet that would: the project is only a NYISO large-load queue/study request filed July 17, 2025, with no formal application to the Town of East Fishkill ('There is no application before the Town. There has never been an application for a data center' \u2014 Supervisor Nick D'Alessandro, quoted by Data Center Dynamics, June 26, 2026), data centers are not a permissible use under current town zoning, and the town passed a moratorium on data centers through July 1, 2029, so no SEQR/environmental or planning-board filings describing generators exist. Developer Treetop (Reuben Twerksy) declined to discuss the project with the Journal News beyond confirming the NYISO study; the study outline shows phases of 500 MW in 2028 and 500 MW in 2030 but no generation detail was reported. Searched: Journal News/USA TODAY coverage (May 2026), Mid Hudson News (May 2026), The Highlands Current (July 2026), Data Center Dynamics (June 2026), Food & Water Watch, East Fishkill planning-board/SEQR searches, NYISO committee-document searches for a study scope naming the project (the Journal News reports NYISO will not release the study publicly because it contains critical-energy-infrastructure information). A separate NYISO Q1122 'East Fishkill Storage' battery project (Central Hudson as connecting TO) exists at East Fishkill but is an unrelated generation-queue project, not this load's backup plant.",
+      "sources": [
+       "https://bluewaterhealthyliving.com/news/national-news/new-york/proposed-massive-ai-data-center-in-east-fishkill-would-dwarf-any-in-ny/",
+       "https://www.datacenterdynamics.com/en/news/three-year-data-center-moratorium-passed-in-town-of-east-fishkill-new-york-state-blocking-planned-campus/",
+       "https://midhudsonnews.com/2026/05/08/rumors-of-proposed-data-center-are-premature/",
+       "https://highlandscurrent.org/2026/07/03/data-centers-face-backlash/",
+       "https://www.datacenter.fyi/public-record/1-gig-data-center-east-fishkill-ny-ac207c52"
+      ]
+     },
+     {
+      "load": "1 Gig Data Center East Fishkill NY (Donovan Drive Holdings LLC, 1,000 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No source names a second transmission feed, dual-substation service, or alternate point of interconnection. What sources do say points to weak, not redundant, supply: The Highlands Current (July 3, 2026) reports 'the center would connect to ConEd's grid' while the NYISO study 'will also look at its effect on Central Hudson and NYSEG's systems'; Mid Hudson News (May 8, 2026) quotes Supervisor D'Alessandro that 'there is not enough power in the area to handle a data center' and that a facility of this size 'would need a new high-voltage substation built by Consolidated Edison and Central Hudson' requiring 'at least five years of studies and planning' (a separate summary of the same remarks says only ~50 MW is available locally against the 1,000 MW needed). datacenter.fyi lists Con Edison as grid operator and the interconnection application date of July 17, 2025, but no substation/POI. NYISO told the Journal News the reliability study results will not be released publicly (critical-infrastructure sensitivity), so a documented POI or second-feed arrangement is unlikely to surface until a town application or utility filing is made.",
+      "sources": [
+       "https://highlandscurrent.org/2026/07/03/data-centers-face-backlash/",
+       "https://midhudsonnews.com/2026/05/08/rumors-of-proposed-data-center-are-premature/",
+       "https://writing.strisker.com/data-centers-daily-notes-may-26-2026/",
+       "https://www.datacenter.fyi/public-record/1-gig-data-center-east-fishkill-ny-ac207c52",
+       "https://bluewaterhealthyliving.com/news/national-news/new-york/proposed-massive-ai-data-center-in-east-fishkill-would-dwarf-any-in-ny/"
+      ]
+     }
+    ],
+    "cluster_note": "For the East Fishkill / Wood Street 345kV cluster, treat this 1,000 MW load as paper-stage: it exists only as a NYISO large-load queue entry (filed July 17, 2025; phases of 500 MW hoped for 2028 and 2030; second-largest load request in the NYISO queue after a St. Lawrence County data center). No public document names its point of interconnection \u2014 the cluster's East Fishkill/Wood Street 345kV attribution could not be independently confirmed from public sources, and NYISO has said the reliability-impact study will be withheld as critical-energy-infrastructure information. Local capacity is reported as ~50 MW available vs 1,000 MW needed, with a new Con Edison/Central Hudson high-voltage substation cited as prerequisite, and the Town of East Fishkill has a data-center moratorium through July 1, 2029 (state one-year moratorium also passed, pending governor's signature as of July 2026). Do not conflate with NYISO Q1122 'East Fishkill Storage' (a battery generation project, Central Hudson CTO) at the same substation area. Resilience fields for this load should be revisited if/when a town application or SEQR filing appears."
+   },
+   "verdicts": []
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "NY-Route 9W Load Center (NY-Route 9W LLC, 1,000 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No source documents any on-site backup generation, of any kind. The project's only public trace is NYISO interconnection queue position 1757: developer 'NY-Route 9W LLC', project 'NY-Route 9W Load Center', 1,000 MW peak load, IR submitted 2026-01-07, POI 'Leeds 345kV substation', CTO National Grid, Greene County, Zone F. In the current NYISO queue workbook (Load Projects sheet) the entry carries Project Status 0 = Withdrawn as of the 2026-01-31 update \u2014 i.e. the request was withdrawn roughly three weeks after filing, before any Feasibility or System Impact Study ('Availability of Studies' is blank), and even the End-Use column is blank, so NYISO itself never confirmed it as a data centre. Searched: NYISO queue workbook; interconnection.fyi project page nyiso-1757 and Greene County listing; NYSDEC Environmental Notice Bulletin / SEQR notices (no Greene County NY data-center notice exists; the only nearby SEQR items are the unrelated Cementon Redevelopment plan); Town of Catskill and Town/Village of Athens planning board pages (no data-center application surfaced; the only Route 9W energy project before the Catskill Planning Board was the unrelated Eolian/Catskill Grid LLC battery storage proposal at 8006 Route 9W, withdrawn Nov 2025); hudsonvalley360/Daily Gazette, Times Union, Data Center Dynamics, DataCenterKnowledge, ConstructConnect, and general web for 'NY-Route 9W LLC' / 'Route 9W Load Center' \u2014 no developer announcement or press coverage names this project, and the LLC's identity is not resolvable from public web sources.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.interconnection.fyi/project/nyiso-1757",
+       "https://www.interconnection.fyi/projects/state/NY/greene-county"
+      ]
+     },
+     {
+      "load": "NY-Route 9W Load Center (NY-Route 9W LLC, 1,000 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "No second feed or alternate point of interconnection is documented anywhere. The NYISO queue workbook (Load Projects sheet, queue 1757) names exactly one POI \u2014 'Leeds 345kV substation' (CTO National Grid) \u2014 with no alternate POI, no second substation, and no Affected Transmission Owner listed. Because the request was withdrawn (Project Status 0, last updated 2026-01-31) before any SIS/Facilities Study, no study document exists that could have specified dual substation service. Caveat: this 'no' means 'no second feed documented in the only filing that exists', not an engineering determination \u2014 the project as filed never advanced far enough for feed configuration to be studied. interconnection.fyi's project page mirrors the same single-POI record (Leeds 345kV, National Grid, withdrawn).",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.interconnection.fyi/project/nyiso-1757"
+      ]
+     }
+    ],
+    "cluster_note": "Leeds 345kV cluster (Catskill/Athens, Greene County, NYISO Zone F): the NY-Route 9W Load Center request is WITHDRAWN \u2014 IR filed 2026-01-07 and already at Project Status 0 (Withdrawn) in the queue workbook's 2026-01-31 update \u2014 so it may not belong in an active-exposure registry; flag it as a dead queue entry rather than a planned facility. NYISO's End-Use field for it is blank, so even the 'data centre' characterization is unconfirmed by any source; the developer behind NY-Route 9W LLC is unidentified in public records searched. Cluster context from the same workbook: Leeds 345kV has attracted and shed many queue entries \u2014 withdrawn BESS requests include Leeds BESS Project 600 MW (#1473), Athens Energy Storage 300 MW (#1405), KCE NY 35 200 MW (#1550), and Hudson Energy Storage 200 MW (#1622) \u2014 and the operating 1,222 MW Athens Generating gas plant sits nearby in the Town of Athens. Do not conflate this load with the separate Eolian/Catskill Grid LLC battery storage proposal at 8006 Route 9W in Catskill (site-plan application withdrawn Nov 2025 after community opposition; see dailygazette.com hv360 coverage). Sources: https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx ; https://www.interconnection.fyi/project/nyiso-1757 ; https://www.dailygazette.com/hv360/hv360/news/catskill-battery-storage/article_66d28ff6-b0f3-11ef-82a8-2b08ad005c07.html"
+   },
+   "verdicts": [
+    {
+     "load": "NY-Route 9W Load Center (NY-Route 9W LLC, 1,000 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified against the NYISO queue workbook itself (downloaded and parsed): Load Projects sheet, queue 1757, lists exactly one POI ('Leeds 345kV substation'), CTO/Utility National Grid, a blank Affected Transmission Owner column, Project Status 0 (sheet legend: 0=Withdrawn), last updated 2026-01-31, and blank SIS Bundle / Availability of Studies / IA Tender / FS Completion columns \u2014 supporting withdrawal (IR filed 2026-01-07) before any SIS or Facilities Study existed. interconnection.fyi/project/nyiso-1757 mirrors the same single-POI withdrawn record as claimed. Independent web searches found no other documentation of this project at all \u2014 no press or regulatory filing mentioning a second feed or alternate substation (nearby '1,000 MW Leeds' hits are the unrelated West Point HVDC transmission proposal, and a separate 1,000 MW data-center story is in East Fishkill, Dutchess County). The claim's caveat that 'no' means 'no second feed documented' rather than an engineering determination is accurate."
+    }
+   ]
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "New York State AI Data Center (ZeroC, 300 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No document describing on-site backup generation was found. Searched: NYISO queue entries 1719/1731, ZeroC's website (which only records 'ZeroC executed PSA with Qualified EPC' on 10/31/2025 for a 140-acre 'AI-ready data center campus' in Massena), Massena Town Planning Board minutes (the Feb 20, 2025 site-plan review covers only the ZeroC/Petawatt $30M substation at 417 County Route 42, approved on a short-form SEQR with no generation discussed), and local/trade press (North Country Now, NNY360, Watertown Post, DCD). No SEQR filing, DEC permit, or announcement describing generators, turbines, or batteries for this project was located.",
+      "sources": [
+       "https://www.zeroc.ai/",
+       "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061",
+       "https://www.interconnection.fyi/project/nyiso-1719",
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx"
+      ]
+     },
+     {
+      "load": "New York State AI Data Center (ZeroC, 300 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "The current NYISO interconnection queue workbook lists two entries for this project, each with a single named POI and no alternate feed: queue 1719 (IR 9/18/2024) at 'Dennison 115kV substation' (NM-NG), shown with project status 0 and marked Withdrawn on interconnection.fyi; and queue 1731 (IR 3/14/2025, 300 MW, DAT-AI) at 'Haverstock-Adirondack 345kV transmission line HA-2' (NYPA, affected TO National Grid), SIS in progress (status 5, SIS bundle 25-2). The project's POI thus moved from Dennison 115 kV to the new Haverstock 345 kV corridor; no source names a second feed or dual-substation service. 'No' here means no second feed appears in the queue's Points of Interconnection field or any other located document.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.interconnection.fyi/project/nyiso-1719"
+      ]
+     },
+     {
+      "load": "St Lawrence Data and Agricultural Center (ZeroC, 200 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No backup generation is documented. The Feb 20, 2025 Massena Town Planning Board minutes record approval of the ZeroC/Petawatt 'roughly 30 million dollars' substation at 417 County Route 42 (a '200 Megawatt site' in Massena Electric Department territory, ~900,000 sq ft building planned) but discuss no on-site generation. A Five 9s Digital marketing brochure for what appears to be the same site (140 acres, pre-approved 200 MW substation interconnecting to Dennison) describes only grid infrastructure, no backup plant. Searched planning minutes, DEC/SEQR references, developer site, and local press; nothing on generators, turbines, or batteries.",
+      "sources": [
+       "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061",
+       "https://assets.ctfassets.net/o03ihmgd94o7/6g8J7vaxbb3PWHw54vwwQ3/56d4ff7d846acee474e1e41f0ddfd704/200_MW_HydroPowered_Data_Center_Site_NY.pdf",
+       "https://www.interconnection.fyi/project/nyiso-1213"
+      ]
+     },
+     {
+      "load": "St Lawrence Data and Agricultural Center (ZeroC, 200 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "low",
+      "detail": "NYISO queue 1213 (IR 6/28/2021, originally PetaWatt Holdings after withdrawn twin 1201, now ZeroC Data Centers LLC) names a single POI: 'Dennison 115kV substation' (NM-NG); status 10, 'Accepted Cost Allocation IA in Progress'. The Five 9s Digital brochure for the 140-acre/200 MW Dennison site describes a radial single-feed design: '200 MW load connected to existing 115 kV Dennison Substation... one 115/34.5 kV main power transformer, two 115 kV breakers, two 34.5 kV feeder breakers'. Caveat: the brochure predates ZeroC's ownership and the site identification (140 acres, 200 MW, Dennison) is strong but not explicit; also the brochure names National Grid as power provider while the Feb 2025 minutes say the substation 'will be in the MED service territory'. No source names a second feed.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://assets.ctfassets.net/o03ihmgd94o7/6g8J7vaxbb3PWHw54vwwQ3/56d4ff7d846acee474e1e41f0ddfd704/200_MW_HydroPowered_Data_Center_Site_NY.pdf",
+       "https://www.interconnection.fyi/project/nyiso-1213",
+       "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061"
+      ]
+     },
+     {
+      "load": "Massena Load (PetaWatt Holdings, 100 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "Nothing found. NYISO queue 0909 (PetaWatt Holdings, Inc., 'Massena Load', IR 9/18/2019, 100 MW, POI Dennison 115kV substation, NM-NG) shows project status 0 with last-updated 4/30/2021 in the current queue workbook \u2014 the same status code carried by entries known to be withdrawn (e.g. ZeroC 1719, Air Products 1446), so this request appears withdrawn/inactive since 2021. No planning-board filing, SEQR document, or press item describing the facility itself (let alone backup generation) was located; PetaWatt's documented Massena activity since then is the ZeroC substation at 417 County Route 42 (PetaWatt is 'the majority share holder of ZeroC Data Center' per the Feb 2025 minutes).",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.massena.us/AgendaCenter/ViewFile/Minutes/_02202025-1061",
+       "https://www.northcountrynow.com/stories/data-center-substation-planned-in-massena-but-code-may-hinder-development,281473"
+      ]
+     },
+     {
+      "load": "Massena Load (PetaWatt Holdings, 100 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "The queue row names a single POI, 'Dennison 115kV substation' (NM-NG), and no other document about this load was found; given the request appears withdrawn (status 0, last updated 4/30/2021), no feed configuration was ever documented publicly.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx"
+      ]
+     },
+     {
+      "load": "North Country Data Center (435 MW)",
+      "field": "backup_power",
+      "value": "diesel",
+      "confidence": "medium",
+      "detail": "Well documented for the NCCS/NYDIG campus (former Reynolds/Alcoa East smelter, 182 & 194 County Road 45), though the record describes the proposed ~635 MW expansion rather than the existing 435 MW crypto operation. North Country Now (6/6/2026): 115 'backup diesel generators onsite'; NCCS rep Carter McLean: 'We will now only be testing up to six of these backup diesel generators at any one time, each for a one-hour duration, during business hours.' DCD (7/7/2026): backup generators 'cut by around 61 percent, from 316 to 124... only be used for standby power during outages and periodic testing.' NCCS's own project page (nccs.one/massena, read 9/6/2026): 64 emergency generators ('roughly 80% reduction... from 316 to 64'), standby only. Massena Planning Board minutes 6/25/2026 list a consultant review of 'generator type (diesel vs. natural gas), runtime limits, noise, and fuel management and storage' with generators 'for emergency use only, limited to 160 hours/year or 7 days' \u2014 so the count has shifted across revisions (316 -> 124 -> 64) and fuel type is diesel per NCCS's rep and press but still subject to town verification. No fossil generation for primary power; supply is NYPA hydro with closed-loop cooling.",
+      "sources": [
+       "https://www.northcountrynow.com/stories/mohawks-united-in-safety-and-health-discuss-data-center-concerns-at-meeting-massena,373764",
+       "https://www.datacenterdynamics.com/en/news/nydig-looks-to-expand-data-center-at-massena-site-new-york/",
+       "https://www.nccs.one/massena",
+       "https://massena.us/AgendaCenter/ViewFile/Minutes/_06252026-1218",
+       "https://massenadatacenterwatch.org/"
+      ]
+     },
+     {
+      "load": "North Country Data Center (435 MW)",
+      "field": "secondary_feed",
+      "value": "no",
+      "confidence": "medium",
+      "detail": "NYISO queue 0979 (IR 1/22/2020, 435 MW, DAT-CM) names a single POI: 'Reynolds 115kV' (NYPA), status 12 'Under Construction'. No source describes a second feed or dual-substation service for the 435 MW load. Notable for the registry: the same operator has a separate pending request, queue 1751 ('Massena Development LLC Power Allocation', North Country Data Center LLC, IR 10/21/2025, 200 MW, SIS pending) whose POI is 'NYPA - HW1 and HW2 (345kV) Lines - at Haverstock Substation' \u2014 i.e., the campus's expansion power would arrive via a second, distinct interconnection at the new Haverstock 345 kV substation, but this is additional capacity for the ~635 MW build-out, not documented redundancy for the existing 435 MW.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.nccs.one/massena",
+       "https://www.datacenterdynamics.com/en/news/nydig-looks-to-expand-data-center-at-massena-site-new-york/"
+      ]
+     },
+     {
+      "load": "SDC St. Lawrence (Sabey, 120 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "Nothing found. Sabey's own locations page does not list a St. Lawrence/Massena campus (only Seattle, Columbia, Quincy, Umatilla, Manhattan, Austin, Ashburn); no Massena planning-board filing, SEQR/DEC document, or press item describing the facility design or backup generation was located. The project exists publicly only as NYISO queue 1315 (Sabey Data Center Properties, LLC, IR 12/20/2021, 120 MW, DAT, SIS approved 08-2025) and as a 'Proposed, 100-250 MW' record on interconnection.fyi's data-center tracker (grid operator NYPA, application 2021).",
+      "sources": [
+       "https://sabeydatacenters.com/locations",
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx",
+       "https://www.interconnection.fyi/data-center/project/sdc-st-lawrence-87751d1e"
+      ]
+     },
+     {
+      "load": "SDC St. Lawrence (Sabey, 120 MW)",
+      "field": "secondary_feed",
+      "value": "yes",
+      "confidence": "medium",
+      "detail": "The NYISO queue row itself names two circuits as the POI: 'Moses-Reynolds MRG-1 and Moses-Reynolds MRG-2 at 115kV' (NYPA) \u2014 a documented dual-circuit interconnection. Qualification: both circuits are Moses-Reynolds 115 kV lines with the same endpoints (Moses and Reynolds substations), so this is redundancy at the circuit level within one corridor, not service from a second, independent substation; an outage taking out the Moses-Reynolds corridor or either terminal would affect both feeds. No other document describing the feed arrangement was found.",
+      "sources": [
+       "https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx"
+      ]
+     }
+    ],
+    "cluster_note": "Cluster concentration is real and documented in the NYISO queue workbook (nyiso.com, NYISO-Interconnection-Queue.xlsx, Load Projects sheet, retrieved 9/6/2026). Dennison 115 kV (National Grid/NM-NG) is the named POI for the entire ZeroC/PetaWatt family: queue 1213 (200 MW, active, IA in progress), plus withdrawn 0909 (100 MW) and withdrawn 1719 (300 MW) \u2014 so the surviving Dennison exposure is the 200 MW St Lawrence Data & Agricultural Center, whose documented substation design is a single 115/34.5 kV main transformer. Reynolds 115 kV (NYPA) carries the 435 MW North Country Data Center load (status: under construction), and Sabey's 120 MW taps both Moses-Reynolds 115 kV circuits (MRG-1/MRG-2) \u2014 meaning everything on the Reynolds side ultimately hangs off the Moses-Reynolds corridor from the Moses-Saunders dam. The newest requests are migrating to the 345 kV Haverstock substation built under the NYPA/National Grid Northern NY Priority Transmission Project (in service per the queue): ZeroC's refiled 300 MW (queue 1731, Haverstock-Adirondack line HA-2) and NCCS's +200 MW expansion (queue 1751, HW1/HW2 at Haverstock), with a further 1,935 MW request (St. Lawrence Infrastructure 2, queue 1743) on the Moses-Massena 230 kV circuits. Two regulatory overhangs affect the whole cluster: the Town of Massena has a public hearing set for Sept 16, 2026 on a local data-center moratorium (massena.us notice, via massenadatacenterwatch.org), and the town planning board only accepted the NYDIG/NCCS 635 MW application on June 25, 2026 with SEQR lead-agency and consultant review (incl. backup-generator fuel type) still open. Note also NCCS's existing 435 MW operation is a former smelter Superfund-adjacent site with open-air-cooled crypto load being converted to closed-loop AI halls \u2014 the resilience posture described in 2026 documents is the future campus, not necessarily what is on the ground today."
+   },
+   "verdicts": [
+    {
+     "load": "New York State AI Data Center (ZeroC, 300 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Verified against the live NYISO queue workbook (Load Projects sheet). It contains exactly two rows named 'New York State Artificial Intelligence Data Center', both ZeroC Data Centers, LLC: queue 1719 (IR 2024-09-18, 300 MW, POI 'Dennison 115kV substation', NM-NG, status 0 \u2014 workbook legend confirms 0=Withdrawn) and queue 1731 (IR 2025-03-14, 300 MW, DAT-AI, POI 'Haverstock-Adirondack 345kV transmission line HA-2', NYPA, affected TO National Grid, status 5 = 'SRIS/SIS in Progress' per legend, SIS bundle 25-2). interconnection.fyi shows 1719 'Withdrawn' and 1731 'Active In Queue', matching. Each entry names a single POI; the Dennison entry's withdrawal (last update 2025-02-28) just before 1731's IR (2025-03-14) supports the 'POI moved to the Haverstock corridor' reading, and the workbook's NNYPTP in-service row confirms Haverstock 345 kV is the new substation. Skeptical cross-check: Massena Planning Board minutes 2/20/2025 show ZeroC/PetaWatt building a $30M substation at 417 County Route 42, but that serves ZeroC's separate 200 MW site (queue 1213, 'St Lawrence Data and Agricultural Center', Dennison 115kV) \u2014 not a second feed for this project. No document naming a second feed was found."
+    },
+    {
+     "load": "North Country Data Center (435 MW)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "All quotes verified verbatim. North Country Now (posted June 6, 2026; fetched via browser): 'the larger concern is for the 115 backup diesel generators onsite', and NCCS rep Carter McLean: 'We will now only be testing up to six of these backup diesel generators at any one time, each for a one-hour duration, during business hours.' DCD (July 07, 2026): generators 'cut by around 61 percent, from 316 to 124' and 'would only be used for standby power during outages and periodic testing' (DCD says 'backup generators', not diesel). nccs.one/massena: 'reduced the planned number of emergency generators by roughly 80%, from 316 to 64', standby only \u2014 the NCCS page does not state fuel type. Massena Planning Board minutes 6/25/2026 (PDF read in full) list consultant review of 'generator type (diesel vs. natural gas), runtime limits, noise, and fuel management and storage' and 'generators are for emergency use only, limited to 160 hours/year or 7 days' \u2014 exactly as claimed. massenadatacenterwatch.org corroborates the current 64-generator figure and 635 MW scope. The claim's caveats are accurate and material: every located record describes the proposed ~635 MW expansion campus (182 & 194 County Route 45), not the existing 435 MW crypto operation; 'diesel' rests on the NCCS rep's own wording plus press, with fuel type still subject to the town's consultant verification. 'Diesel' at medium confidence is supported, but it is best read as the campus/expansion plan's backup fuel."
+    },
+    {
+     "load": "North Country Data Center (435 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Workbook verified: queue 0979, developer 'North Country Data Center', IR 2020-01-22, 435 MW peak, DAT-CM, single POI 'Reynolds 115kV', NYPA, status 12 = 'Under Construction' per the sheet's own legend. Queue 1751 also verified verbatim: 'North Country Data Center LLC', project 'Massena Development LLC Power Allocation', IR 2025-10-21, 200 MW, DAT, POI 'NYPA - HW1 and HW2 (345kV) Lines - at Haverstock Substation', status 4 = 'SRIS/SIS Pending' (bundle 26-4) \u2014 matching the claim's 'SIS pending'. Independent corroboration of the framing: North Country Now (6/6/2026) reports NCCS 'is requesting an additional 200 MW, to be added to their currently allocated 435 MW', and the 6/25/2026 Planning Board minutes describe an 'approximately 635MW data center campus' (435+200). So the Haverstock interconnection is expansion capacity, not documented redundancy for the existing 435 MW load, exactly as stated. No source describing a second feed for the 435 MW operation was found."
+    },
+    {
+     "load": "SDC St. Lawrence (Sabey, 120 MW)",
+     "field": "secondary_feed",
+     "upheld": true,
+     "reason": "Workbook verified verbatim: queue 1315, 'Sabey Data Center Properties, LLC', project 'SDC St. Lawrence', IR 2021-12-20, 120 MW, DAT, POI 'Moses-Reynolds MRG-1 and Moses-Reynolds MRG-2 at 115kV', NYPA, status 6 = SRIS/SIS Approved. The queue row genuinely names two circuits as the POI, so 'yes' is supported at the level the claim states, and its qualification is correct and important: both circuits are Moses-Reynolds 115 kV lines sharing the same two endpoints, i.e., circuit-level redundancy within one corridor rather than service from a second independent substation \u2014 a corridor or terminal outage would affect both feeds. Independent searching confirms SDC St. Lawrence as a planned ~120 MW Sabey facility in Massena (industry listings) but surfaced no other document describing the feed arrangement, consistent with the claim's statement that the queue row is the only located source."
+    }
+   ]
+  },
+  {
+   "research": {
+    "findings": [
+     {
+      "load": "Data & Technology Campus (Riverview Innovation & Technology Campus, 300 MW)",
+      "field": "backup_power",
+      "value": "none",
+      "confidence": "medium",
+      "detail": "RITC's own project FAQ (riverviewtechcampus.com/future-use) states explicitly: \"There are no emission sources because this facility will not use backup generators that some facilities require.\" This is the developer's public claim in connection with its Site Plan Application and Full Environmental Assessment Form filed with the Town of Tonawanda; it has not yet been tested through SEQR (the developer paused the SEQRA/site-plan process in June 2026 pending NYISO/National Grid study results, and the Planning Board tabled the application after a packed June 3 public hearing). No press coverage (WKBW, WGRZ, BTPM, Spectrum, DCD) contradicts or confirms it; the full ~90MB application (Inventum Engineering, linked from cacwny.org via Google Drive) was not reviewed. Note: a widely repeated \"316 diesel generators\" figure belongs to a separate Massena NY project (Rockefeller Institute blog), NOT this one. Confidence medium: explicit developer statement, but pre-approval and a no-backup-generation design is atypical and could change in later filings.",
+      "sources": [
+       "http://riverviewtechcampus.com/future-use",
+       "https://www.wkbw.com/niagara-county/proposed-2b-ai-data-center-at-former-industrial-site-raises-questions-in-town-of-tonawnada",
+       "https://www.rockinst.org/blog/updates-on-the-cloud-more-moratoriums-on-data-centers/",
+       "https://www.cacwny.org/campaigns/ritc-and-data-centers-in-erie-niagara-counties/",
+       "https://www.btpm.org/local/2026-06-04/residents-pack-meeting-to-oppose-proposed-data-center-at-tonawanda-coke-site",
+       "https://www.datacenterdynamics.com/en/news/former-coke-plant-near-buffalo-eyed-for-300mw-data-center/"
+      ]
+     },
+     {
+      "load": "Data & Technology Campus (Riverview Innovation & Technology Campus, 300 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No source names a second transmission feed or alternate point of interconnection. What IS documented: the developer FAQ says \"The power will come from the transmission lines immediately adjacent to the site. No new power lines will be run other than the line from the towers to the site on property owned by National Grid and RITC\" \u2014 i.e., a single tap of the adjacent National Grid transmission corridor \u2014 and WKBW reports a planned $50 million on-site electrical substation. NYISO system impact study and National Grid clarifications were still pending as of June 2026. Searched: developer FAQ, WKBW/WGRZ/BTPM/Spectrum coverage, DCD, CACWNY campaign page, Town of Tonawanda-related coverage.",
+      "sources": [
+       "http://riverviewtechcampus.com/future-use",
+       "https://www.wkbw.com/niagara-county/proposed-2b-ai-data-center-at-former-industrial-site-raises-questions-in-town-of-tonawnada",
+       "https://www.btpm.org/local/2026-06-03/data-center-project-at-former-tonawanda-coke-site-on-hold",
+       "https://www.datacenterdynamics.com/en/news/former-coke-plant-near-buffalo-eyed-for-300mw-data-center/"
+      ]
+     },
+     {
+      "load": "Niagara Digital Campus (Niagara Falls Redevelopment LLC, 140 MW)",
+      "field": "backup_power",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No accessible source documents backup-generation kind or scale. Searched: NFR's own fact sheet PDF (May 20, 2025 \u2014 describes the PUD petition and HEUL text amendment, no generator detail), Niagara Falls Reporter coverage (including Dennis Elsenbeck's guest view on power infrastructure \u2014 silent on backup), DCD's June 2022 launch article (notes hydro access and reduced mechanical cooling only), Westside Construction Group's 2026 project history, and the official niagaradigitalcampus.com site (now a \"Coming Soon\" placeholder; its /news pages 404). The ~500-page PUD petition includes an Arcadis Canada Noise Feasibility Study, but reported summaries do not say what noise sources (e.g., generators) were modeled. Niagara Gazette article on the filings returned HTTP 429 and could not be read.",
+      "sources": [
+       "https://niagaradigitalcampus.com/wp-content/uploads/2025/05/NFR-Filings-FACT-SHEET-05202025.pdf",
+       "https://niagarafallsreporter.com/guest-view-niagara-digital-campus-will-improve-power-infrastructure-and-help-us-meet-climate-goals/",
+       "https://niagarafallsreporter.com/niagara-falls-project-answers-the-concerns-behind-new-yorks-data-center-moratorium/",
+       "https://www.datacenterdynamics.com/en/news/135mw-data-center-campus-proposed-in-view-of-niagara-falls/",
+       "https://www.buildwcg.com/blog-posts/niagara-digital-campus-data-center-niagara-falls-2026"
+      ]
+     },
+     {
+      "load": "Niagara Digital Campus (Niagara Falls Redevelopment LLC, 140 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No second feed or alternate POI is named anywhere. Documented single-feed facts: under a settlement approved by the Niagara Falls City Council on June 3 (2026), \"NFR will design, construct, and operate the electrical substation that powers the campus at its own expense\" (Niagara Falls Reporter); Elsenbeck's guest view adds \"the Niagara Digital Campus will pay for its own substation and transmission lines\" and that a completed National Grid Engineering Assessment found sufficient capacity for the full 140 MW buildout. Westside Construction Group describes one on-site substation supplying up to 140 MW. All sources describe one new dedicated substation; none mention dual service.",
+      "sources": [
+       "https://niagarafallsreporter.com/niagara-falls-project-answers-the-concerns-behind-new-yorks-data-center-moratorium/",
+       "https://niagarafallsreporter.com/guest-view-niagara-digital-campus-will-improve-power-infrastructure-and-help-us-meet-climate-goals/",
+       "https://www.buildwcg.com/blog-posts/niagara-digital-campus-data-center-niagara-falls-2026"
+      ]
+     },
+     {
+      "load": "Globe Digital Holdings 1 (GLOBE DH LLC, 200 MW)",
+      "field": "backup_power",
+      "value": "onsite_generation",
+      "confidence": "medium",
+      "detail": "Stokes Energy (the project's electrical engineering/interconnection/EPC partner) describes the Globe DH site at 3801 Highland Ave, Niagara Falls (NYISO Queue #1747, 15.9 acres) as a 200 MW data center + BESS: Phase 1 is \"10 MW DC + 12 MWh BESS\" (battery OEM \"Morlus\"), Phase 2 is \"Gas Generation + Scale to 200 MW.\" So the documented plan combines batteries and on-site gas generation, though Stokes frames BESS partly as revenue optimization (arbitrage/frequency regulation), not purely backup. Caveats: single vendor-marketing source; and the mapping of the registry name \"Globe Digital Holdings 1\" to the Highland Ave site is inferred from queue-number order (#1747 of #1747-#1749) \u2014 interconnection.fyi confirms queue entries \"Globe Digital Holdings - 1\" and \"GLOBE DH 2\" exist in Niagara County but shows no addresses. Background: the site is the former Globe Specialty Metals/Globe Metallurgical plant; DCD's Aug 2024 article on predecessor buyer 9LDG (via \"Highland Ave. NY 3801 LLC\") notes the site already \"has a 100MW substation.\"",
+      "sources": [
+       "https://stokesus.com/",
+       "https://www.interconnection.fyi/data-center/state/NY",
+       "https://www.datacenterdynamics.com/en/news/9ldg-plans-ai-data-center-at-niagara-falls/"
+      ]
+     },
+     {
+      "load": "Globe Digital Holdings 1 (GLOBE DH LLC, 200 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No second transmission feed or alternate POI is documented. Stokes Energy cites only \"proximity to a 2 GW switchyard\" (presumably the NYPA Niagara switchyard complex) and \"direct access to NYPA hydro power,\" with NYISO Queue #1747 as the single interconnection request. DCD (Aug 2024, on the predecessor project) notes an existing 100 MW substation on the Highland Ave site, but no dual-substation service is described anywhere.",
+      "sources": [
+       "https://stokesus.com/",
+       "https://www.datacenterdynamics.com/en/news/9ldg-plans-ai-data-center-at-niagara-falls/",
+       "https://www.interconnection.fyi/data-center/state/NY"
+      ]
+     },
+     {
+      "load": "Globe Digital Holdings 2 (GLOBE DH LLC, 200 MW)",
+      "field": "backup_power",
+      "value": "onsite_generation",
+      "confidence": "medium",
+      "detail": "Stokes Energy describes the Globe DH site at 2201 College Ave, Niagara Falls (NYISO Queue #1748, 22 acres) as a 200 MW data center with a \"24-inch Natural Gas Pipeline\" and \"CCHP (up to 40 MW)\" \u2014 i.e., up to 40 MW of on-site combined cooling, heat and power gas generation \u2014 plus Morlus BESS. As with Site 1, Stokes presents BESS/CCHP as revenue-stacked assets (arbitrage, frequency regulation, compute) as much as resilience assets. Caveats: single vendor-marketing source; mapping of \"Globe Digital Holdings 2\" to the College Ave site is inferred from queue-number order (#1748) and is not independently confirmed; note Stokes also lists a THIRD Globe DH site (\"Hoganas Globe 3\", 5950 Packard Rd, Queue #1749, 200 MW, same gas/CCHP spec) not present in this registry.",
+      "sources": [
+       "https://stokesus.com/",
+       "https://www.interconnection.fyi/data-center/state/NY"
+      ]
+     },
+     {
+      "load": "Globe Digital Holdings 2 (GLOBE DH LLC, 200 MW)",
+      "field": "secondary_feed",
+      "value": "unknown",
+      "confidence": "low",
+      "detail": "No second feed or alternate POI documented. Stokes Energy says the College Ave site is \"positioned within the same 2 GW switchyard corridor\" as the Highland Ave site, with NYPA hydro service and a single NYISO interconnection request (Queue #1748). No dual-substation or alternate-feed arrangement is described in any source found.",
+      "sources": [
+       "https://stokesus.com/",
+       "https://www.interconnection.fyi/data-center/state/NY"
+      ]
+     }
+    ],
+    "cluster_note": "Packard / Beck-Packard cluster observations: (1) The two Globe DH loads are part of a three-site, 600 MW single-developer portfolio (NYISO Queues #1747/#1748/#1749 per EPC partner Stokes Energy) sharing one \\\"2 GW switchyard corridor,\\\" one developer, one EPC, one battery OEM (Morlus), and the same NYPA-hydro dependence \u2014 a strong common-mode exposure; the third site (5950 Packard Rd, Queue #1749) is not in this registry but sits literally on Packard Road. (2) RITC/Data & Technology Campus is the outlier: its developer FAQ explicitly commits to NO backup generators, meaning a loss of its single documented transmission tap would be a total load loss; its SEQR/site-plan process is paused (June 2026) pending NYISO/National Grid studies. (3) Niagara Digital Campus is documented as served by ONE new NFR-built-and-operated substation (June 2026 council settlement); no source names a second feed for any load in the cluster. Research caveats: the ~90MB RITC site-plan application (Google Drive via cacwny.org) and NFR's 500-page PUD petition were not reviewed page-by-page (the NDC website now 404s its document pages); the Niagara Gazette rate-limited (HTTP 429); web.archive.org was unreachable from this environment; DCD articles were read via browser because WebFetch is blocked (403). The oft-cited \\\"316 diesel generators\\\" figure is the Massena NY project, not any load in this cluster \u2014 do not let it contaminate the registry."
+   },
+   "verdicts": [
+    {
+     "load": "Data & Technology Campus (Riverview Innovation & Technology Campus, 300 MW)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Verified verbatim on the developer's FAQ (riverviewtechcampus.com/future-use, plain-HTTP only \u2014 the HTTPS cert is misconfigured for *.chasolutions.com): 'There are no emission sources because this facility will not use backup generators that some facilities require.' Same page confirms the Site Plan Application and Full Environmental Assessment Form to the Town of Tonawanda. Supporting details also check out: BTPM (June 3-4, 2026) confirms the developer asked to pause the site-plan review pending NYISO's electric system impact study and that the Planning Board tabled the application after the packed Wednesday-night (June 3) hearing; WGRZ quotes RITC saying it will proceed once NYISO and National Grid approvals arrive. The Rockefeller Institute blog attributes the '316 diesel generators' to the Massena, St. Lawrence County project, not RITC \u2014 exactly as the claim states. Checked WKBW, DCD (which confirms 300MW), BTPM, WGRZ, Spectrum headlines: none mention generators at RITC, so nothing contradicts. cacwny.org does link the full ~90MB application via Google Drive (unreviewed, as disclosed). 'Medium' confidence is appropriate: it is an untested, pre-SEQR developer marketing claim, but it is accurately quoted and accurately caveated."
+    },
+    {
+     "load": "Globe Digital Holdings 1 (GLOBE DH LLC, 200 MW)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Stokes Energy's site (stokesus.com, hidden case-study markup extracted from the live DOM) carries every attributed detail verbatim: 'Niagara Globe 1' at '3801 Highland Avenue spans 15.9 acres of industrial-zoned land owned by partner Globe DH', 'NY ISO Queue #1747', 'Phase 1: 10 MW DC + 12 MWh BESS', 'Phase 2: Gas Generation + Scale to 200 MW', 'Battery OEM Morlus', and the revenue framing 'Morlus BESS arbitrage and frequency regulation, and CCHP gas generation \u2014 targeting 40-60%+ EBITDA margins per vertical'. interconnection.fyi shows 'Globe Digital Holdings - 1' in Niagara County (100-250 MW band) with no address and no queue numbers \u2014 matching the claim's caveat that the address mapping is inferred, though Stokes's own '1 = Highland' naming mildly corroborates it. DCD's Aug 2024 9LDG article confirms the former Globe Specialty Metals/Globe Metallurgical plant, the 'Highland Ave. NY 3801 LLC' vehicle, and 'The site also has a 100MW substation'. Two nitpicks that don't refute: DCD gives the 9LDG parcel as 3807 Highland Ave and 22 acres (vs Stokes's 3801 / 15.9 acres), and the 9LDG-to-Globe-DH ownership succession is asserted only by juxtaposition; also, whether Phase-2 gas generation is 'backup' rather than a revenue/primary asset is interpretive \u2014 but the claim itself discloses both caveats, and 'onsite_generation' at medium confidence is a fair reading of a documented gas-generation plan from a single vendor-marketing source."
+    },
+    {
+     "load": "Globe Digital Holdings 2 (GLOBE DH LLC, 200 MW)",
+     "field": "backup_power",
+     "upheld": true,
+     "reason": "Verified verbatim on stokesus.com: 'College Road Globe 2' at '2201 College Avenue spans 22 acres (10.3 acres fully fenced)', 'NY ISO Queue #1748', 200 MW, spec line '24\\\" Natural Gas Pipeline \u00b7 CCHP (up to 40 MW)', 'Battery OEM Morlus', and the identical revenue-stacked framing ('Morlus BESS arbitrage and frequency regulation, and CCHP gas generation \u2014 targeting 40-60%+ EBITDA margins per vertical'), described as 'Site 2 of 3 in the 600 MW Niagara Falls portfolio'. The claim's note about a third site checks out exactly: 'Hoganas Globe 3 \u00b7 5950 Packard Rd', 'NY ISO Queue #1749', 200 MW, 20 acres, same '24\\\" Natural Gas Pipeline \u00b7 CCHP (up to 40 MW)' spec (its page even mentions 'generator staging areas'). interconnection.fyi confirms a 'GLOBE DH 2' Niagara County entry with no address shown, as caveated; dcmap.us independently lists 'Globe Digital Holdings Data Center \u2014 GLOBE DH LLC \u2014 600 MW planned', consistent with the 3x200 MW portfolio. The single-vendor-source and inferred-address caveats are accurately disclosed; no independent source contradicts. Up-to-40 MW CCHP against a 200 MW load means the on-site generation is partial and revenue-framed rather than a declared full backup plant, but the claim's detail says exactly that, so 'onsite_generation' at medium confidence stands."
+    }
+   ]
+  }
+ ]
+}

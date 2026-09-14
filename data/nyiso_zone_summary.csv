@@ -1,0 +1,12 @@
+zone,zone_name,sites,ai_sites,multi_tenant,ai_mw_current,ai_mw_peak
+A,West,27,0,6,0,0
+B,Genesee,2,0,1,0,0
+C,Central,5,0,2,0,0
+D,North,3,0,0,0,0
+E,Mohawk Valley,3,0,0,0,0
+F,Capital,4,0,2,0,0
+G,Hudson Valley,5,0,2,0,0
+H,Millwood,1,0,0,0,0
+I,Dunwoodie,4,0,1,0,0
+J,New York City,31,0,20,0,0
+K,Long Island,7,0,2,0,0

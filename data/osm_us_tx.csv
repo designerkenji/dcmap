@@ -1,0 +1,221 @@
+region,osm_type,osm_id,name,operator,ref,building,telecom,addr_street,addr_city,addr_country,levels,website,lon,lat
+US-TX,node,6856057098,VIRTBIZ,,,,data_center,Canton Street,Dallas,,,https://www.virtbiz.com/,-96.782815,32.782546
+US-TX,node,9190480200,Stream Data Centers Houston,,,,data_center,Technology Forest Boulevard,The Woodlands,,,https://www.streamdatacenters.com/datacenters/houston-the-woodlands/,-95.486046,30.178137
+US-TX,node,12112238944,Flexential Dallas - Downtown Dallas,Flexential,,,data_center,North Stemmons Freeway,Dallas,,,https://www.flexential.com/data-centers/tx/dallas/downtown-data-center,-96.819371,32.80041
+US-TX,node,13465438761,Rad Web Hosting,,,,data_center,South Akard Street,Dallas,,,,-96.798496,32.778447
+US-TX,node,14101687012,Precision Prints Lufkin Datacenter,,,,data_center,,,,,,-94.721581,31.286166
+US-TX,way,25706343,Cyxtera Dallas-Fort Worth Data Center,Cyxtera,,yes,data_center,Kingsport Road,,,,,-97.041028,32.83271
+US-TX,way,28544618,Equinix Infomart,Equinix,,yes,data_center,North Stemmons Freeway,Dallas,US,6,,-96.819523,32.800954
+US-TX,way,30827429,DataBank,,,commercial,data_center,South Akard Street,Dallas,,,,-96.798436,32.778311
+US-TX,way,102129663,H5 Data Centers San Antonio,H5 Data Centers,,yes,data_center,Taylor Street,San Antonio,,,https://h5datacenters.com/san-antonio-data-center.html,-98.486906,29.429371
+US-TX,way,254742608,,,A,data_center,,,,,,,-98.64058,29.446663
+US-TX,way,254742609,,,B,data_center,,,,,,,-98.641101,29.447889
+US-TX,way,254742610,,,Connector,data_center,,,,,,,-98.640996,29.447202
+US-TX,way,254773884,,,,yes,data_center,Guardians Way,Allen,,,,-96.681542,33.096018
+US-TX,way,254773897,Evoque Allen DA1,Centersquare,DA1,yes,data_center,Guardians Way,Allen,,,,-96.683788,33.095083
+US-TX,way,290703004,CoreSpace Dallas,CoreSpace,,commercial,data_center,John W Carpenter Freeway,Dallas,,,https://corespace.com/data-centers/,-96.873071,32.817551
+US-TX,way,319857331,Lumen San Antonio 2,Lumen Technologies,,yes,data_center,,,,,,-98.506522,29.438279
+US-TX,way,364289073,Microsoft,Microsoft,,data_center,data_center,Wiseman Boulevard,San Antonio,US,,,-98.690685,29.47827
+US-TX,way,364289074,Microsoft San Antonio,Microsoft,,data_center,data_center,Rogers Road,San Antonio,US,,,-98.692534,29.479881
+US-TX,way,364289077,Microsoft,Microsoft,,data_center,data_center,Rogers Road,San Antonio,US,,,-98.69657,29.481054
+US-TX,way,373913881,Cisco Allen,,,industrial,data_center,Chelsea Boulevard,,,,,-96.660992,33.135962
+US-TX,way,379195054,Lumen Austin 3,Lumen Technologies,,yes,data_center,,,,,,-97.723598,30.261396
+US-TX,way,379199519,Alpheus DataCenter,Alpheus,,yes,data_center,East 6th Street,Austin,,1,,-97.722122,30.261052
+US-TX,way,379204279,Digital Realty Austin AUS11,,AUS11,yes,data_center,Metro Center Drive,Austin,,,https://www.digitalrealty.com/data-centers/americas/austin/aus11,-97.695755,30.212156
+US-TX,way,379204643,LightEdge Austin II,,,yes,data_center,Burleson Road,Austin,,,https://www.lightedge.com/austin-data-center/,-97.707046,30.200677
+US-TX,way,379204766,CyrusOne Austin Data Center II,,AUS2,yes,data_center,Metropolis Drive,,,,https://www.cyrusone.com/data-centers/north-america/texas/aus2-austin-texas,-97.697951,30.20592
+US-TX,way,379205427,Data Foundry Austin 1 Data Center,,,yes,data_center,East Ben White Boulevard,,,,https://www.datafoundry.com/data-centers/austin-1,-97.696074,30.215504
+US-TX,way,382785871,LightEdge Austin I,,,yes,data_center,Montopolis Drive,,,,https://www.lightedge.com/austin-data-center/,-97.712668,30.214297
+US-TX,way,383888101,Lumen Austin 1,,,warehouse,data_center,Smith School Road,,,,,-97.712402,30.1965
+US-TX,way,383888914,Data Foundry - Texas 1,,,yes,data_center,Smith School Road,Austin,,,https://www.datafoundry.com/data-centers/data-foundry-01/,-97.713784,30.198907
+US-TX,way,384396017,Element Critical,,,yes,data_center,North Interstate Highway 35 Service Road,,,,,-97.696173,30.342804
+US-TX,way,455171103,CyrusOne Austin Data Center III,,AUS3,yes,data_center,Metropolis Drive,,,,https://www.cyrusone.com/data-centers/north-america/texas/aus3-austin,-97.701132,30.207006
+US-TX,way,465032201,Lumen Dallas - 3180 Irving Blvd.,Lumen Technologies,,commercial,data_center,Irving Boulevard,Dallas,,,,-96.868589,32.806955
+US-TX,way,465032380,Prime DFW01-01,Prime,DFW01-01,commercial,data_center,Round Table Drive,Dallas,,,https://primedatacenters.com/locations/dallas/,-96.878401,32.837958
+US-TX,way,465032484,Lumen Dallas 6,Lumen Technologies,,commercial,data_center,Regal Row,,,,,-96.884379,32.827998
+US-TX,way,465032631,DataBank Dallas Empire Central Data Center,DataBank,,commercial,data_center,Empire Central Place,Dallas,,,https://www.databank.com/data-centers/dallas/1100-empire-central-place/,-96.873553,32.82175
+US-TX,way,465042594,TierPoint Dallas Data Center,TierPoint,,commercial,data_center,Irving Boulevard,Dallas,,,https://www.tierpoint.com/data-centers/texas/dallas/,-96.857389,32.807982
+US-TX,way,471658485,Live Oak Data Center,,,commercial,data_center,Live Oak Street,Dallas,,12,,-96.794636,32.783749
+US-TX,way,483286527,Aligned  DFW-01,Aligned,DFW-01,yes,data_center,Summit Avenue,Plano,,,https://aligneddc.com/dallas-data-centers/,-96.676562,33.009314
+US-TX,way,483307714,Tierpoint Dallas-Allen,,,industrial,data_center,Allen Commerce Parkway,,,,,-96.657329,33.13791
+US-TX,way,487170215,,DXC Technology,,yes,data_center,,,,,,-95.863747,30.0187
+US-TX,way,500820007,Facebook Fort Worth Datacenter,Meta,,commercial,data_center,Like Way,,,1,,-97.259335,32.983783
+US-TX,way,507673418,CITIGROUP TECHNOLOGY INC,,,yes,data_center,,,,,,-97.24529,33.006382
+US-TX,way,507673437,QTS Data Center,Quality Technology Services,,yes,data_center,,,,,,-97.259274,32.988913
+US-TX,way,509611414,Texas Cryptologic Center,National Security Agency,,,data_center,,,,,,-98.640716,29.447379
+US-TX,way,509611423,Lowe's Data Center,Lowe's,,data_center,data_center,,,,,,-98.689504,29.473008
+US-TX,way,509611426,,CHRISTUS Health,,data_center,data_center,,,,,,-98.686191,29.470328
+US-TX,way,509611429,,Frost Bank,,data_center,data_center,,,,,,-98.687667,29.470212
+US-TX,way,509611432,CyrusOne San Antonio I,CyrusOne,,data_center,data_center,Westover Hills Boulevard,San Antonio,,,https://cyrusone.com/data-center-locations/texas/san-antonio-texas/,-98.688087,29.46661
+US-TX,way,509611436,Valero Wiserman,Valero,,industrial,data_center,,,,,,-98.680079,29.474237
+US-TX,way,509611437,Stream San Antonio II,,,data_center,data_center,,,,,,-98.67172,29.472003
+US-TX,way,509611438,CyrusOne San Antonio II,CyrusOne,,data_center,data_center,,,,,https://cyrusone.com/data-center-locations/texas/san-antonio-texas-ii/,-98.673047,29.470888
+US-TX,way,509611439,CyrusOne San Antonio III,CyrusOne,,data_center,data_center,,,,,,-98.672106,29.470057
+US-TX,way,521300038,Microsoft Texas Research Park Campus,Microsoft,,,data_center,,,,,,-98.803786,29.415597
+US-TX,way,526806006,QTS Irving - Dallas Data Center Campus,Quality Technology Services,DAL10,yes,data_center,Longhorn Drive,Irving,,,https://www.qtsdatacenters.com/data-centers/irving,-96.982648,32.897248
+US-TX,way,543316327,,DXC Technology,,yes,data_center,,,,,,-95.563333,29.995198
+US-TX,way,543404966,,DXC Technology,,yes,data_center,,,,,,-95.56404,29.997335
+US-TX,way,548184239,Flexential Dallas - Richardson,Flexential,,commercial,data_center,Waterview Parkway,Richardson,,2,https://www.flexential.com/data-centers/tx/dallas/richardson-data-center,-96.752497,32.994812
+US-TX,way,549418041,Experian McKinney Data Center,,,office,data_center,South Stonebridge Drive,,,,,-96.725505,33.171796
+US-TX,way,557140229,Amazon Web Services,Amazon Web Services,,data_center,data_center,,,,,,-97.070297,32.850483
+US-TX,way,570397131,Thin-nology,,,yes,data_center,Helios Way,Pflugerville,,,,-97.591603,30.421141
+US-TX,way,577628941,Data Foundry - Texas 2,,,yes,data_center,Smith School Road,Austin,,,https://www.datafoundry.com/data-centers/data-foundry-02/,-97.71307,30.199574
+US-TX,way,587103676,,,,yes,data_center,,,,,,-95.5708,29.821575
+US-TX,way,590213770,,,,industrial,data_center,,,,,,-96.655941,33.137823
+US-TX,way,590213771,CyrusOne Allen,CyrusOne,,yes,data_center,,,,,,-96.659952,33.138521
+US-TX,way,597835788,Stream DFW IV,Stream,DFW IV,commercial,data_center,Essex Drive,Richardson,,,https://www.streamdatacenters.com/locations/dallas-data-centers/,-96.661646,33.000144
+US-TX,way,597876719,Rackspace Richardson DFW3,Rackspace,DFW3,data_center,data_center,Integrity Drive,Richardson,US,1,https://www.rackspace.com/resources/rackspace-data-center-dfw3,-96.715855,32.964781
+US-TX,way,597876721,Digital Realty Dallas DFW17,Digital Realty,DFW17,data_center,data_center,Quality Way,Richardson,,,https://www.digitalrealty.com/data-centers/americas/dallas/dfw17,-96.713212,32.96628
+US-TX,way,597876722,Digital Realty Dallas DFW29,Digital Realty,DFW29,data_center,data_center,East Collins Boulevard,Richardson,US,,https://www.digitalrealty.com/data-centers/americas/dallas/dfw29,-96.710529,32.967276
+US-TX,way,597876723,,,,data_center,data_center,Quality Way,Richardson,US,,,-96.711227,32.966244
+US-TX,way,597876724,Digital Realty Dallas DFW28,Digital Realty,DFW28,data_center,data_center,East Collins Boulevard,Richardson,US,,https://www.digitalrealty.com/data-centers/americas/dallas/dfw28,-96.713322,32.967282
+US-TX,way,597876726,Digital Realty Dallas DFW35,Digital Realty,DFW35,data_center,data_center,Security Row,Richardson,US,1,https://www.digitalrealty.com/data-centers/americas/dallas/dfw35,-96.710255,32.96505
+US-TX,way,597876730,Digital Realty Dallas DFW18,Digital Realty,DFW18,data_center,data_center,Integrity Drive,Richardson,,2,https://www.digitalrealty.com/data-centers/americas/dallas/dfw18,-96.712611,32.965258
+US-TX,way,597876798,Digital Realty Dallas DFW16,Digital Realty,DFW16,data_center,data_center,Alma Road,Richardson,US,,https://www.digitalrealty.com/data-centers/americas/dallas/dfw16,-96.715592,32.966043
+US-TX,way,639176155,Microsoft TRP2,Microsoft,,yes,data_center,,,,,,-98.803995,29.411987
+US-TX,way,639176157,Microsoft TRP1,Microsoft,,yes,data_center,,,,,,-98.80273,29.412012
+US-TX,way,650412346,Flexential Dallas - Plano,Flexential,Dallas - Plano,yes,data_center,East Plano Parkway,Plano,,,https://www.flexential.com/data-centers/tx/dallas/plano-data-center,-96.666351,33.007033
+US-TX,way,671637259,NTT,NTT,,yes,data_center,,,,,,-96.656377,32.981037
+US-TX,way,671838900,Rice Data Center,,,commercial,data_center,Main Street,Houston,,,,-95.443312,29.658145
+US-TX,way,673145182,Facebook Fort Worth Datacenter,Meta,,yes,data_center,,,,1,,-97.255045,32.98492
+US-TX,way,713411278,,,,,data_center,,,,,,-97.700662,30.207113
+US-TX,way,713411279,,,,,data_center,,,,,,-97.697941,30.205936
+US-TX,way,714120969,DataBank Plano Data Center,DataBank,DFW3,,data_center,Dominion Parkway,Plano,,,https://www.databank.com/data-centers/dallas/plano-campus/plano-data-center/,-96.815678,33.087247
+US-TX,way,714776107,Skybox Houston One,Skybox,,,data_center,,,,,https://skyboxdatacenters.com/locations/skybox-houston,-95.755339,29.802893
+US-TX,way,744177375,,,,yes,data_center,,,,,,-95.486593,30.177708
+US-TX,way,747985149,,,,yes,data_center,Airport Drive,Wichita Falls,,,,-98.524786,33.953373
+US-TX,way,815057182,Facebook Fort Worth Datacenter,Meta,,yes,data_center,,,,,,-97.255111,32.988316
+US-TX,way,815078625,Charles Schwab Data Center,,,yes,data_center,,,,,,-97.246141,33.004512
+US-TX,way,844386860,Google,Google,,yes,data_center,,,,,,-97.062465,32.442139
+US-TX,way,844386861,Google,Google,,yes,data_center,,,,,,-97.06331,32.443564
+US-TX,way,850965775,Compass Data Center,,,yes,data_center,Houston School Road,Red Oak,,,,-96.804459,32.538767
+US-TX,way,989325195,Verizon Wireless Mew Building,,,yes,data_center,,,,,,-97.156714,32.972041
+US-TX,way,1010260674,,,,data_center,data_center,,,,,,-98.787481,29.419002
+US-TX,way,1010260675,Microsoft TRP3 (SAT46),Microsoft,,yes,data_center,,,,,,-98.806374,29.412977
+US-TX,way,1010260676,Microsoft,Microsoft,,yes,data_center,,,,,,-98.803316,29.415797
+US-TX,way,1010260677,Microsoft,Microsoft,,yes,data_center,,,,,,-98.804515,29.415796
+US-TX,way,1081973944,QTS San Antonio II,Quality Technology Services,,yes,data_center,Potranco Road,San Antonio,,,,-98.653126,29.449157
+US-TX,way,1121592786,CyrusOne San Antonio IV,,,yes,data_center,,,,,,-98.670723,29.47076
+US-TX,way,1177794153,,,,yes,data_center,,,,,,-96.981938,32.894761
+US-TX,way,1221574918,Cortex supercomputer,,,industrial,data_center,,,,,,-97.618939,30.215605
+US-TX,way,1227550179,Novartis,,,yes,data_center,,,,,,-97.319673,32.651201
+US-TX,way,1296723872,GVTC,GVTC,,yes,data_center,,,,,,-98.462648,29.686403
+US-TX,way,1300765126,Stream Data Centers DFWA,Stream Data Centers,DFWA,yes,data_center,Lookout Drive,Garland,,,https://www.streamdatacenters.com/locations/dallas-data-centers/,-96.654263,32.983624
+US-TX,way,1301559332,MARA Data Center,Marathon Digital Holdings,,,data_center,Mitchell Bend Highway,Granbury,,,https://www.maragranbury.com/,-97.731692,32.341341
+US-TX,way,1310628998,,HEB,,yes,data_center,Huebner Road,San Antonio,,,,-98.541304,29.580152
+US-TX,way,1316023545,NTT,NTT,,yes,data_center,,,,,,-96.659465,32.980934
+US-TX,way,1316023546,NTT,NTT,,yes,data_center,,,,,,-96.657943,32.980928
+US-TX,way,1344366214,CyrusOne SAT10 & SAT11,CyrusOne,,,data_center,,,,,,-98.787837,29.418221
+US-TX,way,1344369104,Amazon,,,data_center,data_center,,,,,,-98.638704,29.450677
+US-TX,way,1344369111,,,,data_center,data_center,,,,,,-98.788796,29.418466
+US-TX,way,1344369112,Vantage San Antonio I,Vantage Data Centers,,,data_center,,,,,,-98.789245,29.41614
+US-TX,way,1426525184,Google,Google,,yes,data_center,,,,,,-96.793207,32.539004
+US-TX,way,1426525212,Compass Data Center,,,yes,data_center,,,,,,-96.802207,32.545504
+US-TX,way,1426525213,Compass Data Center,,,yes,data_center,,,,,,-96.802189,32.544192
+US-TX,way,1426525214,Compass Data Center,,,yes,data_center,,,,,,-96.802194,32.542899
+US-TX,way,1426525215,Compass Data Center,,,yes,data_center,,,,,,-96.802207,32.541589
+US-TX,way,1426525216,Compass Data Center,,,yes,data_center,,,,,,-96.80222,32.540276
+US-TX,way,1426525217,Compass Data Center,,,yes,data_center,,,,,,-96.793719,32.542676
+US-TX,way,1426525218,Compass Data Center,,,yes,data_center,,,,,,-96.793719,32.543994
+US-TX,way,1426525219,Compass Data Center,,,yes,data_center,,,,,,-96.793756,32.545299
+US-TX,way,1426525220,Compass Data Center,,,yes,data_center,,,,,,-96.788398,32.543961
+US-TX,way,1426525221,Compass Data Center,,,yes,data_center,,,,,,-96.788382,32.545292
+US-TX,way,1432637060,,,,yes,data_center,,,,,,-98.714404,29.44968
+US-TX,way,1432637061,,,,yes,data_center,,,,,,-98.713908,29.450931
+US-TX,way,1432637062,,,,yes,data_center,,,,,,-98.714064,29.45223
+US-TX,way,1443620406,Alinged Data Center DFW-03,"Aligned Data Centers, LLC",DFW-03,yes,data_center,Britton Road,Mansfield,,,,-97.074855,32.549823
+US-TX,way,1457383500,,,,data_center,,,,,,,-94.796767,31.194176
+US-TX,way,1458626323,Google,Google,,yes,data_center,,,,,,-97.06092,32.440104
+US-TX,way,1460861317,Amazon AWS SAT - 12807 Donop,Amazon Web Services,,yes,data_center,,,,,,-98.391599,29.29301
+US-TX,way,1461896928,Prime DFW01-01,Prime,DFW01-01,commercial,data_center,Round Table Drive,Dallas,,,https://primedatacenters.com/locations/dallas/,-96.879846,32.837814
+US-TX,way,1469988846,,,,industrial,data_center,,,,,,-97.372127,31.131912
+US-TX,way,1469988847,,,,industrial,data_center,,,,,,-97.369022,31.130797
+US-TX,way,1472056705,,,,data_center,data_center,,,,,,-99.777724,32.504191
+US-TX,way,1472056706,,,,data_center,data_center,,,,,,-99.778823,32.504176
+US-TX,way,1472056707,,,,data_center,data_center,,,,,,-99.778185,32.505118
+US-TX,way,1472056708,,,,data_center,data_center,,,,,,-99.777759,32.506054
+US-TX,way,1472056709,,,,data_center,data_center,,,,,,-99.778864,32.506041
+US-TX,way,1472056710,,,,data_center,data_center,,,,,,-99.781139,32.505086
+US-TX,way,1472056711,,,,data_center,data_center,,,,,,-99.78157,32.504152
+US-TX,way,1472056712,,,,data_center,data_center,,,,,,-99.781595,32.506015
+US-TX,way,1472056713,,,,data_center,data_center,,,,,,-99.780496,32.506026
+US-TX,way,1472056714,,,,data_center,data_center,,,,,,-99.780466,32.50416
+US-TX,way,1484435248,,,,industrial,data_center,,,,,,-96.659526,33.140647
+US-TX,way,1486780799,Aligned Data Centers DFW-04,Aligned Data Centers,DFW-04,yes,data_center,North Star Road,Plano,,,https://aligneddc.com/dallas-data-centers/,-96.657092,33.006007
+US-TX,way,1490401523,Argo Data Center,,,,data_center,,,,,,-100.868901,33.777264
+US-TX,way,1493169641,Switch: The Rock,Switch,,yes,data_center,,,,,,-97.672526,30.488019
+US-TX,way,1498670679,,,,yes,data_center,,,,,,-97.298298,31.057523
+US-TX,way,1502710557,Vantage Data Centers TX22,Vantage Data Centers,,yes,data_center,Rogers Road,San Antonio,,,,-98.697701,29.479085
+US-TX,way,1502711381,Microsoft,Microsoft,,yes,data_center,,,,,,-98.698835,29.47022
+US-TX,way,1504463315,MDC,,,yes,data_center,Cedar Oak Drive,El Paso,,,,-106.309926,31.750007
+US-TX,way,1511639842,,,,yes,data_center,,,,,,-103.806272,31.532749
+US-TX,way,1511639843,,,,yes,data_center,,,,,,-103.805229,31.532749
+US-TX,way,1511639844,,,,yes,data_center,,,,,,-103.804192,31.532761
+US-TX,way,1511639845,,,,yes,data_center,,,,,,-103.800415,31.533345
+US-TX,way,1525436762,Digital Realty,Digital Realty,,yes,data_center,Ferris Road,,,,,-96.650158,32.97443
+US-TX,way,1530197817,Digital Realty,Digital Realty,,yes,data_center,,,,,,-96.650123,32.976438
+US-TX,way,1530199676,NTT,NTT,,yes,data_center,,,,,,-96.658379,32.979531
+US-TX,way,1530200859,Aligned  DFW-02,Aligned,DFW-02,yes,data_center,Summit Avenue,Plano,,,https://aligneddc.com/dallas-data-centers/,-96.675135,33.009003
+US-TX,way,1530966366,,,,data_center,data_center,,,,,,-99.776246,32.499988
+US-TX,way,1530966367,,,,data_center,data_center,,,,,,-99.777351,32.499975
+US-TX,way,1530966368,,,,data_center,data_center,,,,,,-99.776672,32.499053
+US-TX,way,1530966369,,,,data_center,data_center,,,,,,-99.77621,32.498125
+US-TX,way,1530966370,,,,data_center,data_center,,,,,,-99.77731,32.49811
+US-TX,way,1530966371,,,,data_center,data_center,,,,,,-99.779311,32.498095
+US-TX,way,1530966372,,,,data_center,data_center,,,,,,-99.780416,32.498086
+US-TX,way,1530966373,,,,data_center,data_center,,,,,,-99.779985,32.499021
+US-TX,way,1530966374,,,,data_center,data_center,,,,,,-99.780441,32.499949
+US-TX,way,1530966375,,,,data_center,data_center,,,,,,-99.779342,32.49996
+US-TX,way,1530966376,,,,data_center,data_center,,,,,,-99.782465,32.499955
+US-TX,way,1530966377,,,,data_center,data_center,,,,,,-99.783569,32.499942
+US-TX,way,1530966378,,,,data_center,data_center,,,,,,-99.782891,32.49902
+US-TX,way,1530966379,,,,data_center,data_center,,,,,,-99.782429,32.498092
+US-TX,way,1530966380,,,,data_center,data_center,,,,,,-99.783528,32.498077
+US-TX,way,1530966381,,,,data_center,data_center,,,,,,-99.785507,32.498049
+US-TX,way,1530966382,,,,data_center,data_center,,,,,,-99.786612,32.498041
+US-TX,way,1530966383,,,,data_center,data_center,,,,,,-99.786181,32.498975
+US-TX,way,1530966384,,,,data_center,data_center,,,,,,-99.786637,32.499904
+US-TX,way,1530966385,,,,data_center,data_center,,,,,,-99.785538,32.499915
+US-TX,way,1530966386,,,,data_center,data_center,,,,,,-99.791168,32.498463
+US-TX,way,1530966387,,,,data_center,data_center,,,,,,-99.792273,32.49845
+US-TX,way,1530966388,,,,data_center,data_center,,,,,,-99.791594,32.497527
+US-TX,way,1530966389,,,,data_center,data_center,,,,,,-99.791132,32.4966
+US-TX,way,1530966390,,,,data_center,data_center,,,,,,-99.792231,32.496585
+US-TX,way,1530966391,,,,data_center,data_center,,,,,,-99.794457,32.496564
+US-TX,way,1530966392,,,,data_center,data_center,,,,,,-99.795562,32.496555
+US-TX,way,1530966393,,,,data_center,data_center,,,,,,-99.795131,32.497489
+US-TX,way,1530966394,,,,data_center,data_center,,,,,,-99.795587,32.498418
+US-TX,way,1530966395,,,,data_center,data_center,,,,,,-99.794488,32.498429
+US-TX,way,1533148730,Vantage TX11,Vantage Data Centers,,yes,data_center,Omicron Drive,San Antonio,,,,-98.790187,29.416857
+US-TX,way,1533148752,,,,yes,data_center,,,,,,-98.786424,29.415797
+US-TX,way,1533349843,Vantage TX12,Vantage Data Centers,,yes,data_center,Omicron Drive,San Antonio,,,,-98.788866,29.415598
+US-TX,way,1533349844,Vantage TX12,Vantage Data Centers,,yes,data_center,Omicron Drive,San Antonio,,,,-98.789751,29.415167
+US-TX,way,1533350872,Microsoft,Microsoft,,yes,data_center,,,,,,-98.802904,29.41896
+US-TX,way,1533392812,Microsoft SAT 80,Microsoft,,yes,data_center,FM1957,San Antonio,,,,-98.876655,29.429191
+US-TX,way,1533392813,Microsoft SAT 81,Microsoft,,yes,data_center,FM1957,San Antonio,,,,-98.876653,29.427998
+US-TX,way,1533392814,Microsoft SAT 82,Microsoft,,yes,data_center,FM1957,San Antonio,,,,-98.876638,29.426654
+US-TX,way,1535715798,Data Foundry,,,yes,data_center,,,,,,-95.424198,29.945128
+US-TX,way,1535752110,Vantage Data Centers TX21,Vantage Data Centers,,yes,data_center,Rogers Road,San Antonio,,,,-98.697525,29.477374
+US-TX,way,1536086683,,,,yes,data_center,,,,,,-103.449123,31.513432
+US-TX,way,1536086684,,,,yes,data_center,,,,,,-103.448667,31.513879
+US-TX,way,1537390734,,,,yes,data_center,,,,,,-98.644087,29.445246
+US-TX,way,1537390735,,,,yes,data_center,,,,,,-98.644251,29.445041
+US-TX,way,1537390736,,,,yes,data_center,,,,,,-98.644404,29.444851
+US-TX,way,1537390737,,,,yes,data_center,,,,,,-98.644556,29.444662
+US-TX,way,1537390738,,,,yes,data_center,,,,,,-98.64471,29.444475
+US-TX,way,1537390739,,,,yes,data_center,,,,,,-98.644861,29.444286
+US-TX,way,1537390740,,,,yes,data_center,,,,,,-98.643546,29.444908
+US-TX,way,1537390741,,,,yes,data_center,,,,,,-98.64371,29.4447
+US-TX,way,1537390742,,,,yes,data_center,,,,,,-98.643863,29.444513
+US-TX,way,1537390743,,,,yes,data_center,,,,,,-98.644015,29.444327
+US-TX,way,1537390744,,,,yes,data_center,,,,,,-98.644168,29.444138
+US-TX,way,1537390745,,,,yes,data_center,,,,,,-98.644318,29.44395
+US-TX,way,1537390746,,,,yes,data_center,,,,,,-98.643813,29.44507
+US-TX,way,1537390747,,,,yes,data_center,,,,,,-98.643979,29.444864
+US-TX,way,1537390748,,,,yes,data_center,,,,,,-98.644131,29.44468
+US-TX,way,1537390749,,,,yes,data_center,,,,,,-98.644282,29.444488
+US-TX,way,1537390750,,,,yes,data_center,,,,,,-98.644434,29.444302
+US-TX,way,1537390751,,,,yes,data_center,,,,,,-98.644585,29.444115
+US-TX,way,1547829413,,,,yes,data_center,,,,,,-103.238549,31.103474
+US-TX,way,1547829414,,,,yes,data_center,,,,,,-103.238376,31.103665
+US-TX,relation,21073054,IONIC Digital Cedarvale,IONIC Digital,,,data_center,,,,,,-103.44854,31.513447

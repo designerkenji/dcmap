@@ -1,0 +1,7 @@
+site_id,field,value,lat,lon,note,edited
+e6076,own,"Talen Montana, LLC (NorthWestern Energy from 2026)",45.8831,-106.614,automated round-trip test - will be reverted,2026-08-29T14:54:18Z
+e6076,own,Talen Montana LLC,45.8831,-106.614,reverting the automated round-trip test,2026-08-29T14:54:37Z
+e6076,lat,45.880743,45.8831,-106.614,moved on the live map onto the building,2026-09-02T02:35:13Z
+e6076,lon,-106.613053,45.8831,-106.614,moved on the live map onto the building,2026-09-02T02:35:13Z
+e6076,lat,45.880132,45.880743,-106.613053,moved on the live map onto the building,2026-09-02T02:49:53Z
+e6076,lon,-106.61346,45.880743,-106.613053,moved on the live map onto the building,2026-09-02T02:49:53Z

@@ -1,0 +1,51 @@
+site_id,field,value,lat,lon,note,edited
+site-31fc319720,name,Meta Kuna,43.463239,-116.270163,identified by hand,2026-08-06T03:53:26Z
+site-31fc319720,operator,Meta,43.463239,-116.270163,identified by hand,2026-08-06T03:53:26Z
+site-31fc319720,city,Kuna,43.463239,-116.270163,identified by hand,2026-08-06T03:53:26Z
+site-31fc319720,status,operational,43.463239,-116.270163,live test,2026-08-06T03:54:44Z
+site-0d3906d987,site_kind,campus,47.238111,-119.885304,,2026-08-06T12:23:04Z
+site-45576e7258,site_kind,building,47.237097,-119.895155,,2026-08-06T12:23:55Z
+site-45576e7258,parent_site_id,site-0d3906d987,47.237097,-119.895155,,2026-08-06T12:29:19Z
+site-e2f29a0c98,linked_plant_id,gL100000406580,3.446868,-76.508399,"round-trip test, will be undone",2026-08-12T11:41:28Z
+site-e2f29a0c98,link_structure,ppa,3.446868,-76.508399,"round-trip test, will be undone",2026-08-12T11:41:28Z
+site-e2f29a0c98,linked_plant_id,,3.446868,-76.508399,undo round-trip test,2026-08-12T11:42:08Z
+site-e2f29a0c98,link_structure,,3.446868,-76.508399,undo round-trip test,2026-08-12T11:42:08Z
+site-dde681f0c6,name,Meta Eagle Mountain Data Center,40.268441,-112.016836,name taken from the IM3 campus footprint,2026-08-16T11:52:41Z
+site-6f0c9e2566,name,Segro Croydon (Morgan Stanley),51.383982,-0.135902,name from the building footprint (fill),2026-08-16T12:03:36Z
+site-c9970da55a,name,CapitalLand - Croyden,51.384557,-0.137405,name from the building footprint (fill),2026-08-16T12:03:36Z
+site-79d2893e8e,name,TTC TELEPORT - DC1,50.081997,14.533493,name from the building footprint (expand),2026-08-16T12:03:36Z
+site-3a378fe5ce,name,京阪奈データセンター,34.741308,135.765406,name from the building footprint (generic),2026-08-16T12:03:36Z
+site-db76aeecd1,name,DC2SCALE Vélizy Latécoère,48.784022,2.208625,name from the building footprint (expand),2026-08-16T12:03:36Z
+site-6af29e4f57,name,BA Boadicea House Data Centre,51.471324,-0.42327,name from the building footprint (fill),2026-08-16T12:03:36Z
+site-f44eddb4ba,name,Virgin Media O2 Slough,51.524947,-0.637809,name from the building footprint (generic),2026-08-16T12:03:36Z
+site-49de046578,name,唐木田テクノロジービル,35.611678,139.402659,name from the building footprint (fill),2026-08-16T12:03:36Z
+site-823663c28e,name,Manasquan Cable Landing Station (Apollo),40.157044,-74.101582,name from the building footprint (expand),2026-08-16T12:03:36Z
+site-ba781b4142,name,Verizon Branchburg NEC Datacenter,40.599552,-74.709874,name from the building footprint (fill),2026-08-16T12:03:36Z
+site-b5cf95c3b0,name,Shelter Modernización,-28.459021,-65.764779,name from the building footprint (expand),2026-08-16T12:03:36Z
+site-02a255fd29,name,NTT Hemel Hempstead 4,51.757208,-0.429281,name from the building footprint (fill),2026-08-16T12:03:36Z
+site-e87c8eadff,name,Ark Data Centres - Longcross Park,51.380536,-0.594635,name from the building footprint (expand),2026-08-16T12:03:36Z
+site-9fa2e36c0c,name,Colt London 4,51.509559,-0.394089,name from the building footprint (expand),2026-08-16T12:03:36Z
+site-142f87682c,lat,35.0170106,35.10811,-101.362741,correct coordinates provided by the user - the geocode was ~10 km off,2026-08-24T16:52:20Z
+site-142f87682c,lon,-101.3159572,35.10811,-101.362741,correct coordinates provided by the user - the geocode was ~10 km off,2026-08-24T16:52:20Z
+site-142f87682c,lat,35.017083,35.0170106,-101.3159572,,2026-08-24T16:55:33Z
+site-142f87682c,lon,-101.309342,35.0170106,-101.3159572,,2026-08-24T16:55:33Z
+site-142f87682c,lat,35.016257,35.017083,-101.309342,,2026-08-24T16:57:00Z
+site-142f87682c,lon,-101.307966,35.017083,-101.309342,,2026-08-24T16:57:00Z
+site-a62a89826b,lat,21.336186,21.335728,-158.086738,"dot sat on the Wet n Wild water park ~430 m east; moved to the AlohaNAP building at the site's own address (91-340 Farrington Hwy, Kapolei) per Google Maps satellite - flagged by the address-vs-dot geocode check",2026-08-27T23:53:53Z
+site-a62a89826b,lon,-158.090649,21.335728,-158.086738,"dot sat on the Wet n Wild water park ~430 m east; moved to the AlohaNAP building at the site's own address (91-340 Farrington Hwy, Kapolei) per Google Maps satellite - flagged by the address-vs-dot geocode check",2026-08-27T23:53:53Z
+site-a62a89826b,lat,21.336755,21.336186,-158.090649,,2026-08-28T02:36:52Z
+site-a62a89826b,lon,-158.090266,21.336186,-158.090649,,2026-08-28T02:36:52Z
+site-a62a89826b,site_kind,campus,21.336755,-158.090266,,2026-08-28T02:37:37Z
+site-a62a89826b,site_kind,point,21.336755,-158.090266,,2026-08-28T02:37:45Z
+site-a62a89826b,site_kind,building,21.336755,-158.090266,,2026-08-28T02:37:46Z
+site-a62a89826b,site_kind,campus,21.336755,-158.090266,,2026-08-28T02:37:48Z
+site-ec3dc94a1d,lat,21.336755,21.334443,-158.08691,"same facility as site-a62a89826b (AlohaNAP, 91-340 Farrington Hwy); dot sat on the water park like its sibling - moved to the building per the same Google Maps satellite check",2026-08-28T03:14:50Z
+site-ec3dc94a1d,lon,-158.090266,21.334443,-158.08691,"same facility as site-a62a89826b (AlohaNAP, 91-340 Farrington Hwy); dot sat on the water park like its sibling - moved to the building per the same Google Maps satellite check",2026-08-28T03:14:50Z
+site-5fc84cd367,lat,21.336755,21.334443,-158.08691,"same facility as site-a62a89826b (AlohaNAP, 91-340 Farrington Hwy); dot sat on the water park like its sibling - moved to the building per the same Google Maps satellite check",2026-08-28T03:14:50Z
+site-5fc84cd367,lon,-158.090266,21.334443,-158.08691,"same facility as site-a62a89826b (AlohaNAP, 91-340 Farrington Hwy); dot sat on the water park like its sibling - moved to the building per the same Google Maps satellite check",2026-08-28T03:14:50Z
+site-a62a89826b,lat,21.336713,21.336755,-158.090266,,2026-08-28T03:24:39Z
+site-a62a89826b,lon,-158.090183,21.336755,-158.090266,,2026-08-28T03:24:39Z
+site-9e0683c00f,address,227 Power Road,45.89347,-106.618344,address field round-trip test,2026-08-29T12:43:27Z
+site-9e0683c00f,address,,45.89347,-106.618344,undo round-trip test,2026-08-29T12:43:28Z
+site-142f87682c,lat,35.019478,35.016257,-101.307966,"Epoch placed this at the Goodnight town centroid, 11 km NW of the campus. Corrected to the building pads at 10001 Lima Rd, Claude TX (Crusoe/Google Goodnight Campus, Project Llano): TDLR TABS2025026470 puts two 484,954 sq ft GN DC1 LLC data centres at this address; full cited dossier in data/review/",2026-09-07T02:02:45Z
+site-142f87682c,lon,-101.305776,35.016257,-101.307966,"Epoch placed this at the Goodnight town centroid, 11 km NW of the campus. Corrected to the building pads at 10001 Lima Rd, Claude TX (Crusoe/Google Goodnight Campus, Project Llano): TDLR TABS2025026470 puts two 484,954 sq ft GN DC1 LLC data centres at this address; full cited dossier in data/review/",2026-09-07T02:02:45Z

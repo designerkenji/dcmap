@@ -1,0 +1,939 @@
+[
+ {
+  "key": "amazon",
+  "displayName": "Amazon Web Services (AWS)",
+  "domain": "amazon.com",
+  "hqCountry": "US",
+  "kind": "hyperscaler",
+  "parent": "Amazon.com, Inc.",
+  "profile": "Amazon Web Services is the cloud computing business of Amazon.com, Inc., based in Seattle. It develops campuses of its own and also takes large wholesale leases from third-party developers. Company figures give 39 Regions and 123 Availability Zones, a zone sometimes covering several separate buildings rather than one, plus more than 750 CloudFront points of presence and 15 regional edge caches.",
+  "logoCandidates": [
+   "https://a0.awsstatic.com/libra-css/images/site/touch-icon-ipad-144-smile.png",
+   "https://aws.amazon.com/favicon.ico",
+   "https://a0.awsstatic.com/libra-css/images/site/fav/favicon.ico"
+  ],
+  "officialLocationList": "https://aws.amazon.com/about-aws/global-infrastructure/",
+  "publishedFacilities": "39 Regions and 123 Availability Zones (plus announced plans for 2 more Regions in Saudi Arabia and Chile, and 7 more AZs), stated on aws.amazon.com/about-aws/global-infrastructure/, fetched 2026-08-02. AWS does not publish a count of individual buildings.",
+  "publishedCountries": "",
+  "sourceUrls": [
+   "https://aws.amazon.com/",
+   "https://aws.amazon.com/about-aws/global-infrastructure/"
+  ],
+  "notes": "The brand's own site is aws.amazon.com; the bare registrable domain is amazon.com as required by the schema. Logo assets are served from a0.awsstatic.com, which is Amazon's own static-asset domain referenced directly from the aws.amazon.com <head>. The 144px apple-touch-icon and both favicon.ico paths were each confirmed HTTP 200 (PNG 3061 B; ICO 1150 B). Note the apple-touch-icon is the Amazon smile mark rather than the AWS cube; aws.amazon.com/favicon.ico is the AWS mark. No country count is published on the global infrastructure page, so publishedCountries is left empty rather than guessed."
+ },
+ {
+  "key": "microsoft",
+  "displayName": "Microsoft",
+  "domain": "microsoft.com",
+  "hqCountry": "US",
+  "kind": "hyperscaler",
+  "parent": "",
+  "profile": "Microsoft Corporation, of Redmond, Washington, runs data centres mainly for Azure and for its own software services. It builds its own capacity and also signs large wholesale leases with third-party developers. Microsoft's Azure infrastructure page claims more than 80 regions and over 500 data centres, more than 275,000 miles of fibre and subsea cable, and upwards of 190 network points of presence.",
+  "logoCandidates": [
+   "https://news.microsoft.com/source/wp-content/uploads/2022/10/cropped-Microsoft_logo.svg_-300x300-1.png",
+   "https://www.microsoft.com/favicon.ico?v2",
+   "https://azure.microsoft.com/favicon.ico"
+  ],
+  "officialLocationList": "https://datacenters.microsoft.com/globe/explore/",
+  "publishedFacilities": "\"80+ Azure regions | 500+ datacenters\" stated on azure.microsoft.com/en-us/explore/global-infrastructure, fetched 2026-08-02.",
+  "publishedCountries": "",
+  "sourceUrls": [
+   "https://www.microsoft.com/en-us/",
+   "https://azure.microsoft.com/en-us/explore/global-infrastructure",
+   "https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/",
+   "https://datacenters.microsoft.com/globe/explore/"
+  ],
+  "notes": "www.microsoft.com serves an edge-blocked shell to non-browser clients, so its <head> yielded no icon tags; the icon reference was recovered from www.microsoft.com/en-us/microsoft-cloud, which declares rel=icon href=/favicon.ico?v2. That URL returns 200 (ICO, 17174 B) while the bare /favicon.ico is intermittently 403 to curl, so the ?v2 form is listed. The first candidate is a 300x300 PNG of the Microsoft square logo declared as apple-touch-icon on news.microsoft.com (Microsoft-owned), confirmed 200 (PNG, 49519 B). datacenters.microsoft.com/globe/explore/ is Microsoft's interactive Azure global infrastructure map; it is JS-rendered so its contents could not be enumerated server-side, but the page and its favicon both return 200. No Azure region-by-country count is published on the geographies page, so publishedCountries is left empty."
+ },
+ {
+  "key": "google",
+  "displayName": "Google",
+  "domain": "google.com",
+  "hqCountry": "US",
+  "kind": "hyperscaler",
+  "parent": "Alphabet Inc.",
+  "profile": "Google LLC, a subsidiary of Alphabet Inc. and headquartered in Mountain View, California, designs and operates its own data centre campuses for search, advertising, YouTube and Google Cloud. Its public locations page counts 30 active sites across 11 countries, with further campuses under construction. Google supplements owned capacity with leased space and separately publishes a larger list of cloud regions.",
+  "logoCandidates": [
+   "https://www.google.com/favicon.ico",
+   "https://www.gstatic.com/marketing-cms/assets/images/33/52/d31eb4894f69969b24d075e0d33c/favicon.png=s180"
+  ],
+  "officialLocationList": "https://www.google.com/about/datacenters/locations/",
+  "publishedFacilities": "\"30 active locations worldwide\" stated on datacenters.google/locations/, fetched 2026-08-02.",
+  "publishedCountries": "11 active countries, stated on datacenters.google/locations/",
+  "sourceUrls": [
+   "https://about.google/",
+   "https://datacenters.google/locations/",
+   "https://www.google.com/about/datacenters/locations/"
+  ],
+  "notes": "about.google declares an apple-touch-icon at the gstatic.com URL listed second (confirmed 200, PNG 14127 B), but its \"=s180\" Google image-resize suffix may not survive a URL-encoding step in a downloader, so the plain www.google.com/favicon.ico (confirmed 200, ICO 5430 B, the multicolour G mark) is listed first. about.google/favicon.ico is a 404 and was excluded. datacenters.google/locations/ and www.google.com/about/datacenters/locations/ serve byte-identical pages (158819 B each); the google.com path is given so the location list stays on the registrable domain."
+ },
+ {
+  "key": "meta",
+  "displayName": "Meta",
+  "domain": "meta.com",
+  "hqCountry": "US",
+  "kind": "hyperscaler",
+  "parent": "",
+  "profile": "Meta Platforms, Inc., headquartered in Menlo Park, California, builds data centres for its own workloads — Facebook, Instagram, WhatsApp and AI training — rather than selling cloud capacity to outside customers. Its public locations index names 31 campuses: 26 in the United States, three in Europe, one in Canada and one in Singapore. Announced work includes a Louisiana site being expanded toward five gigawatts.",
+  "logoCandidates": [
+   "https://datacenters.atmeta.com/wp-content/themes/fb-data-centers/assets/images/favicon.ico",
+   "https://static.xx.fbcdn.net/rsrc.php/y5/r/m4nf26cLQxS.ico"
+  ],
+  "officialLocationList": "https://datacenters.atmeta.com/all-locations/",
+  "publishedFacilities": "31 locations enumerated at datacenters.atmeta.com/all-locations/, fetched 2026-08-02. Meta states no total on the page; 31 is the count of named entries.",
+  "publishedCountries": "Not published as a count. Six countries are implied by the location list: United States, Canada, Denmark, Ireland, Sweden, Singapore.",
+  "sourceUrls": [
+   "https://www.meta.com/",
+   "https://datacenters.atmeta.com/",
+   "https://datacenters.atmeta.com/all-locations/"
+  ],
+  "notes": "Meta's data centre site is datacenters.atmeta.com, not a subpath of meta.com — worth flagging as counter-intuitive. www.meta.com/favicon.ico is unreliable: it returned 200 on one request and HTTP 400 on a later one, so it was excluded. The two listed candidates each returned 200 with identical size (ICO, 5558 B): the first is the icon declared in the datacenters.atmeta.com <head> and sits on a Meta-owned domain; the second is the icon declared in the www.meta.com <head>, served from Meta's fbcdn.net CDN. about.meta.com returned no icon tags to a non-browser client and its /favicon.ico is HTTP 400, so nothing from that host is included. datacenters.atmeta.com/data-centers/ is a 404; /all-locations/ is the working index."
+ },
+ {
+  "key": "equinix",
+  "displayName": "Equinix",
+  "domain": "equinix.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "",
+  "profile": "Equinix is a data centre operator headquartered in Redwood City, California, and traded on Nasdaq under EQIX. It converted to a real estate investment trust in 2015. Its business is carrier-neutral colocation and interconnection: tenants rent cabinet space and buy cross-connects to networks and cloud providers. The company's site reports 281 facilities across 77 markets.",
+  "publishedFacilities": "\"280+ Data centers / Across 77 markets on every continent\" on the equinix.com homepage; \"281 Data Centers\" on https://www.equinix.com/about",
+  "publishedCountries": "77 markets on every continent (homepage); Equinix does not state a plain country count on these pages",
+  "officialLocationList": "https://www.equinix.com/data-centers",
+  "logoCandidates": [
+   "https://www.equinix.com/etc.clientlibs/eqxcorp/clientlibs/clientlibs-resources/resources/favicon-228.png",
+   "https://www.equinix.com/etc.clientlibs/eqxcorp/clientlibs/clientlibs-resources/resources/favicon-192.png",
+   "https://www.equinix.com/etc.clientlibs/eqxcorp/clientlibs/clientlibs-resources/resources/favicon-180.png",
+   "https://www.equinix.com/etc.clientlibs/eqxcorp/clientlibs/clientlibs-resources/resources/favicon-152.png",
+   "https://www.equinix.com/etc.clientlibs/eqxcorp/clientlibs/clientlibs-resources/resources/favicon-128.png"
+  ],
+  "sourceUrls": [
+   "https://www.equinix.com/",
+   "https://www.equinix.com/about",
+   "https://www.equinix.com/data-centers",
+   "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation",
+   "https://www.equinix.com/data-centers/europe-colocation"
+  ],
+  "notes": "All five logo URLs are declared <link rel=\"icon\">/<link rel=\"apple-touch-icon\"> on the homepage and each was fetched with a GET returning a valid square PNG (228x228 955-byte class, 192x192 955 bytes, 180x180 890 bytes, 152x152, 128x128). WARNING: https://www.equinix.com/favicon.ico returns HTTP 404 - do not use it. The og:image (https://www.equinix.com/content/dam/eqxcorp/en_us/images/home/equinix_com_share.png) resolves 200 but is 1600x900, not square, so it is excluded. WebFetch gets HTTP 403 on equinix.com; plain curl with a browser UA returns 200. /data-centers is a regional hub that drills into per-metro colocation pages (e.g. /data-centers/europe-colocation), not a flat per-IBX table."
+ },
+ {
+  "key": "digital realty",
+  "displayName": "Digital Realty",
+  "domain": "digitalrealty.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "",
+  "profile": "Digital Realty Trust is a real estate investment trust listed on the New York Stock Exchange as DLR, headquartered in Austin, Texas, after relocating from San Francisco. It builds and leases data centre capacity at both wholesale and retail scale, and absorbed the European operator Interxion in 2020. Its locations page counts more than 300 facilities across over 55 metros.",
+  "publishedCountries": "Not stated as a country count; the locations page groups 59 named metros into Americas (22), EMEA (27) and Asia Pacific (10)",
+  "publishedFacilities": "\"300+ Data Centers\" and \"55+ Global Metros\" on https://www.digitalrealty.com/data-centers",
+  "officialLocationList": "https://www.digitalrealty.com/data-centers",
+  "logoCandidates": [
+   "https://www.digitalrealty.com/favicon/apple-touch-icon.png",
+   "https://www.digitalrealty.com/favicon/favicon.ico",
+   "https://www.digitalrealty.com/favicon/favicon-32x32.png",
+   "https://www.digitalrealty.com/favicon/favicon1.png"
+  ],
+  "sourceUrls": [
+   "https://www.digitalrealty.com/",
+   "https://www.digitalrealty.com/data-centers",
+   "https://www.digitalrealty.com/about/newsroom/press-releases/122859/digital-realty-announces-relocation-of-global-headquarters-to-austin-tx"
+  ],
+  "notes": "Important quirk: the HTML declares <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"\"> and two <link rel=\"icon\"> tags with EMPTY href attributes, so scraping the declared hrefs yields nothing usable. Only the <link rel=\"shortcut icon\" href=\"/favicon/favicon1.png\"> has a real path. I probed the /favicon/ directory and confirmed by GET: apple-touch-icon.png = 180x180 RGBA PNG (best), favicon.ico = valid 3-icon ICO with 48x48 32bpp, favicon-32x32.png = 32x32 RGBA PNG, favicon1.png = 48x48 8-bit gray+alpha PNG (monochrome, so ranked last despite being the declared one). WARNING: root https://www.digitalrealty.com/favicon.ico returns HTTP 404 - use the /favicon/ prefixed paths. Kind set to colocation because the company sells both retail colocation/interconnection and wholesale suites; its origin and much of its portfolio is wholesale leasing. Also confirmed a third-party figure of ~311 data centres as of 30 Sep 2025, but the company's own page says 300+, which is what I recorded."
+ },
+ {
+  "key": "ntt",
+  "displayName": "NTT Global Data Centers",
+  "domain": "global.ntt",
+  "hqCountry": "JP",
+  "kind": "colocation",
+  "parent": "NTT DATA, Inc. (NTT Corporation)",
+  "profile": "NTT Global Data Centers is the data centre arm of NTT DATA, part of Japan's NTT group. It was assembled from acquired regional operators including e-shelter in Germany, Gyron in the UK, and RagingWire in the United States. It sells colocation and wholesale capacity, and reports more than 160 facilities in over 20 countries and above 2,000 MW of IT load.",
+  "publishedCountries": "\"more than 20 countries and regions\" on the Global Data Centers landing page",
+  "publishedFacilities": "\"we operate over 160 data centers in more than 20 countries and regions\" and \"2,000MW+ critical IT load in over 20 countries\" on https://services.global.ntt/en-us/services-and-products/global-data-centers",
+  "officialLocationList": "https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations",
+  "logoCandidates": [
+   "https://services.global.ntt/-/media/ntt/global/icons/brand/ntt_data_favicon_future_blue_png.png?rev=3d1d10b93dfc44e389ac70824e45db6b",
+   "https://services.global.ntt/-/media/ntt/global/icons/brand/ntt_data_favicon_future_blue_ico.ico?rev=5232a75dc10340d592c0e086c5752742"
+  ],
+  "sourceUrls": [
+   "https://services.global.ntt/en-us/services-and-products/global-data-centers",
+   "https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations",
+   "https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/americas",
+   "https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/emea",
+   "https://services.global.ntt/en-us/services-and-products/global-data-centers/global-locations/asia-pacific"
+  ],
+  "notes": "Domain is counter-intuitive as warned: the site lives on the host services.global.ntt under NTT's brand gTLD .ntt, so the bare registrable domain is global.ntt, NOT ntt.com (which is NTT Docomo Business) and not nttdata.com. Both logo URLs were fetched by GET and confirmed: the PNG is 48x48 8-bit colormap (1244 bytes), the ICO is a valid 48x48 32bpp Windows icon (9662 bytes). The rev= query strings are part of the declared hrefs and must be kept - I did not test whether the URLs work without them. WARNING: https://services.global.ntt/favicon.ico returns HTTP 404. The og:image on the data-centers page resolves but is 820x920, not square, so it is excluded. Note the assets are NTT DATA-branded rather than specific to the Global Data Centers sub-brand. The global-locations page and its three regional children all return HTTP 200 but are JavaScript-rendered, so curl retrieves only chrome/navigation; the facility lists require a real browser. WebFetch fails on that URL with a header-overflow parse error. Brand is also mirrored at https://www.nttdata.com/en-us/services/global-data-centers; I did not use nttdata.com for logos because www.nttdata.com/ returned HTTP 404 to my request. hqCountry JP reflects the parent group; the Americas and EMEA divisions are run out of the US and Germany respectively."
+ },
+ {
+  "key": "cyrusone",
+  "displayName": "CyrusOne",
+  "domain": "cyrusone.com",
+  "hqCountry": "US",
+  "kind": "wholesale",
+  "parent": "KKR and Global Infrastructure Partners (joint owners)",
+  "profile": "CyrusOne is a data centre developer and operator based in Dallas, Texas. It listed on Nasdaq as a real estate investment trust before KKR and Global Infrastructure Partners took it private in March 2022 for about $15 billion. It leases mainly large wholesale halls to cloud and enterprise tenants, and reports over 60 operating facilities across nine countries.",
+  "publishedCountries": "\"9 countries served globally\" on the cyrusone.com homepage",
+  "publishedFacilities": "\"60+ operational data centers\" on the cyrusone.com homepage; the /data-centers index itself links to 46 individual facility pages",
+  "officialLocationList": "https://www.cyrusone.com/data-centers",
+  "logoCandidates": [
+   "https://www.cyrusone.com/favicon.ico",
+   "https://www.cyrusone.com/hubfs/Cyberwave.png"
+  ],
+  "sourceUrls": [
+   "https://www.cyrusone.com/",
+   "https://www.cyrusone.com/data-centers",
+   "https://www.cyrusone.com/data-centers/north-america/somerset-nj",
+   "https://www.global-infra.com/news/kkr-and-gip-complete-acquisition-of-cyrusone/"
+  ],
+  "notes": "cyrusone.com redirects to www.cyrusone.com. The only declared icon is <link rel=\"shortcut icon\" href=\"https://www.cyrusone.com/hubfs/Cyberwave.png\"> (site runs on HubSpot, hence the /hubfs/ path, but it is on the company's own domain). Both candidates were fetched by GET and are byte-identical at 1816 bytes: an 80x80 RGBA PNG. Note that /favicon.ico serves PNG bytes despite the .ico extension - a downloader that trusts the file extension rather than sniffing content could mis-handle it, which is why I can also justify ranking the .png first; I put favicon.ico first only because it is the more stable path. /data-centers is a genuine facility index: I parsed 46 distinct per-site links under /data-centers/{north-america,emea,apac}/... The URL /data-centers/north-america redirects to the anchor /data-centers#north-america, so use the base path. Individual facility pages such as /data-centers/north-america/somerset-nj carry ?hsLang=en query strings in the index markup. Ownership is a 50/50-style joint holding by funds managed by KKR and GIP since 25 March 2022; the company is private and no longer a REIT."
+ },
+ {
+  "key": "gds",
+  "displayName": "GDS Holdings",
+  "domain": "gds-services.com",
+  "hqCountry": "CN",
+  "kind": "colocation",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.gds-services.com/Content/En/images/favicon.ico"
+  ],
+  "officialLocationList": "none found",
+  "publishedFacilities": "Not published on gds-services.com. GDS FY2025 results reporting cites 504,843 sqm of data centre area in service at end-2025 and 670,105 sqm committed/pre-committed — seen only in search-result summaries of the FY2025 results, not fetched directly (investors.gds-services.com timed out on fetch).",
+  "publishedCountries": "Mainland China and Hong Kong",
+  "profile": "GDS Holdings Limited is a Chinese developer and operator of colocation data centres, listed on Nasdaq under GDS and in Hong Kong as 9698. It builds carrier-neutral facilities in and around Beijing, Shanghai, Shenzhen and Hong Kong, serving cloud providers and large internet companies. It reported 668,283 square metres of area in service at the end of 2025, and retains a minority stake in DayOne, its former international arm.",
+  "notes": "Logo: the declared tag is <link rel=\"shortcut icon\" href=\"/Content/En/images/favicon.ico\"> — despite the .ico extension the file is actually a 128x128 PNG (verified with `file`), so it is square and usable. Root https://www.gds-services.com/favicon.ico is a 404, do not use it. The og:image (https://www.gds-services.com/UpLoadFiles/JUpload/2019-08-17/20190817105121079.png) is a real 200 but is 374x124, a horizontal wordmark, so it is omitted as it is not square. Location list: I checked /en/about_4.html (\"DATA CENTERS\"), /en/about_18.html (\"Operations\"), /en/data_center_index.html and en.gds-services.com/data_center_index.html. The first two are 200 but are marketing overviews that name no cities or sites; the latter two do not resolve (404 / DNS failure). GDS publishes no facility finder, so officialLocationList is \"none found\" rather than a guess. Parent left empty: GDS Holdings is itself the listed parent; its international arm DayOne Data Centers was separated out and GDS now holds only a minority equity interest, so DayOne sites should not be attributed to this record.",
+  "sourceUrls": [
+   "https://www.gds-services.com/en/",
+   "https://www.gds-services.com/en/about_4.html",
+   "https://www.gds-services.com/en/about_18.html",
+   "https://investors.gds-services.com/corporate-profile/",
+   "https://www.datacenterdynamics.com/en/news/gds-holdings-hits-16-billion-in-revenue-for-2025/"
+  ]
+ },
+ {
+  "key": "telehouse",
+  "displayName": "Telehouse",
+  "domain": "telehouse.net",
+  "hqCountry": "JP",
+  "kind": "colocation",
+  "parent": "KDDI Corporation",
+  "logoCandidates": [
+   "https://www.telehouse.net/wp-content/uploads/2020/03/cropped-favicon-180x180.png",
+   "https://www.telehouse.net/wp-content/uploads/2020/03/cropped-favicon-192x192.png",
+   "https://www.telehouse.net/wp-content/uploads/2020/03/cropped-favicon-32x32.png"
+  ],
+  "officialLocationList": "https://www.telehouse.com/global-data-centers/",
+  "publishedFacilities": "\"40+ Data centres in more than 20 cities, in more than 10 countries\" — stated on https://www.telehouse.net/about-telehouse/telehouse-data-centre-colocation-services/. The global list at telehouse.com/global-data-centers/ enumerates roughly 23 individual facilities across about 15 cities.",
+  "publishedCountries": "More than 10 countries (Telehouse's own statement)",
+  "profile": "Telehouse is the data centre brand of KDDI, the Japanese telecommunications group, and operates carrier-neutral colocation sites rather than cloud services. Its first facility opened in New York in 1989; the London Docklands campus followed in 1990. Several major internet exchanges, including France-IX, HKIX and JPIX, are hosted in its buildings. Telehouse states it runs more than 40 data centres across over 20 cities in more than 10 countries.",
+  "notes": "There is no single global telehouse.* domain. The brand runs regional sites: telehouse.net is Telehouse Europe (London Docklands), telehouse.com is Telehouse America, telehouse-rechenzentrum.de is the German site. I chose telehouse.net as the primary domain because it carries the proper declared square icons (apple-touch-icon 180x180, plus 192x192 and 32x32 PNGs, all verified 200). telehouse.com is weaker for logos: it declares no icon links, its /apple-touch-icon.png is a 404, its /favicon.ico is only 16x16, and its og:image is a non-square JPG wordmark — so nothing from telehouse.com is listed. Do NOT fall back to https://www.telehouse.net/favicon.ico: it returns 200 but the body is zero bytes. The location list lives on the .com site rather than .net — telehouse.net has no global locations index (/locations/, /global-data-centres/ and /about-telehouse/global-data-centres/ all 404) and covers only the London sites. hqCountry is JP for the KDDI-owned brand as a whole; the telehouse.net entity itself is UK-based.",
+  "sourceUrls": [
+   "https://www.telehouse.net/",
+   "https://www.telehouse.net/about-telehouse/telehouse-data-centre-colocation-services/",
+   "https://www.telehouse.com/",
+   "https://www.telehouse.com/global-data-centers/"
+  ]
+ },
+ {
+  "key": "oracle",
+  "displayName": "Oracle",
+  "domain": "oracle.com",
+  "hqCountry": "US",
+  "kind": "hyperscaler",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.oracle.com/asset/web/favicons/favicon-192.png",
+   "https://www.oracle.com/favicon.ico",
+   "https://www.oracle.com/asset/web/favicons/favicon-32.png"
+  ],
+  "officialLocationList": "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm",
+  "publishedFacilities": "Oracle publishes regions, not individual buildings: 52 commercial (OC1 realm) cloud regions are listed in the table at https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm. Oracle states a region contains one to three availability domains and an availability domain is one or more data centres, so the building count is not derivable from the published figures.",
+  "publishedCountries": "Not confirmed. Oracle's marketing page reportedly cites regions across 28 countries, but www.oracle.com/cloud/public-cloud-regions/ returned 403 to every fetch attempt so I could not read that figure myself.",
+  "profile": "Oracle Corporation, an American enterprise software and database vendor listed on the New York Stock Exchange, runs Oracle Cloud Infrastructure alongside its applications business, building some regions and leasing others. A region holds between one and three availability domains, and a single domain can sit in more than one physically separate building. Oracle's documentation counts 52 commercial OCI regions, with government and dedicated realms listed separately.",
+  "notes": "www.oracle.com returns HTTP 403 to both curl and WebFetch (bot protection), so I could not read its <head> to see the declared icon tags. The three logo URLs were instead confirmed by direct request: favicon-192.png is a genuine 192x192 RGBA PNG, favicon-32.png a 32x32 PNG, and /favicon.ico a multi-size Windows icon (16x16 + 32x32). To rule out a soft-404 I requested https://www.oracle.com/asset/web/favicons/bogus-xyz-999.png as a control and it correctly returned 404 HTML, so these are real assets rather than a permissive catch-all. Two other guesses on the same path, favicon-96.png and apple-touch-icon.png, both 404 — do not use them. For the locations list I used the docs.oracle.com regions table because I actually fetched and read it; www.oracle.com/cloud/public-cloud-regions/ exists (curl returns 200) but is 403 to WebFetch, so I did not verify its contents. HQ city deliberately omitted from the profile: Oracle moved its headquarters to Austin in 2020 and Larry Ellison announced Nashville as the future world headquarters, but the Nashville campus is not expected to be operating until 2030, so naming a single city would be unreliable.",
+  "sourceUrls": [
+   "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm",
+   "https://www.oracle.com/cloud/public-cloud-regions/",
+   "https://www.cnbc.com/2024/04/23/oracle-is-moving-its-world-hq-to-nashville.html"
+  ]
+ },
+ {
+  "key": "apple",
+  "displayName": "Apple",
+  "domain": "apple.com",
+  "hqCountry": "US",
+  "kind": "enterprise",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.apple.com/apple-touch-icon.png",
+   "https://www.apple.com/favicon.ico"
+  ],
+  "officialLocationList": "none found",
+  "publishedFacilities": "",
+  "publishedCountries": "",
+  "profile": "Apple Inc. is an American consumer electronics and services company listed on Nasdaq. Its data centres are enterprise infrastructure, not colocation: they carry iCloud, the App Store, Maps, Siri and Apple Music, and no space is sold to third parties. Owned sites are known in North Carolina, Oregon, Nevada, Arizona, Iowa and Denmark. Apple publishes no facility list and supplements owned capacity with leased colocation.",
+  "notes": "apple.com's homepage HTML (fetched, 200, 257 KB) contains no <link rel=\"icon\"> or <link rel=\"apple-touch-icon\"> tags at all — Apple relies on the conventional root paths. Both were verified by direct request: /apple-touch-icon.png is a real 152x152 PNG and /favicon.ico a real multi-size icon. A control request to https://www.apple.com/bogus-touch-icon-xyz.png returned 404 HTML, confirming these are not catch-all responses. The og:image (https://www.apple.com/ac/structured-data/images/open_graph_logo.png) is a valid 200 but is 1200x630, so it is omitted as not square. Apple publishes no data centre locations index, facility finder or facility count — I checked apple.com/environment materials and newsroom pages and found only prose references to individual sites inside the Environmental Progress Report PDFs, which is not a locations list. The site list in the profile is drawn from Apple's own environmental reporting and newsroom posts naming Maiden NC, Prineville OR, Reno NV, Mesa AZ, Waukee IA and Viborg, Denmark; treat it as indicative, not exhaustive. publishedFacilities and publishedCountries left empty because Apple publishes neither figure.",
+  "sourceUrls": [
+   "https://www.apple.com/",
+   "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2026.pdf",
+   "https://www.apple.com/newsroom/2018/04/apple-now-globally-powered-by-100-percent-renewable-energy/",
+   "https://www.apple.com/newsroom/2020/09/apple-expands-renewable-energy-footprint-in-europe/"
+  ]
+ },
+ {
+  "key": "lumen",
+  "displayName": "Lumen Technologies",
+  "domain": "lumen.com",
+  "hqCountry": "US",
+  "kind": "network",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.lumen.com/etc.clientlibs/ewcmams/clientlibs/clientlib-larry-favicon/resources/favicon.png",
+   "https://www.lumen.com/content/dam/lumen/share/lumen_thumbnail.png"
+  ],
+  "officialLocationList": "https://assets.lumen.com/is/content/Lumen/colocation-location-data-sheet",
+  "publishedFacilities": "\"200+ locations in North America\" and \"120+ cities offering colocation\", stated on https://www.lumen.com/en-us/services/colocation.html",
+  "publishedCountries": "Colocation is published for North America only; corporate boilerplate cites customers in more than 60 countries and approximately 450,000 route fibre miles",
+  "profile": "Lumen Technologies is a US telecommunications carrier listed on the NYSE as LUMN and headquartered in Denver, Colorado; it took the Lumen name in 2020, having traded as CenturyLink. It sold its enterprise colocation business in 2017 and now markets network colocation attached to its fibre routes, citing more than 200 North American locations across over 120 cities.",
+  "sourceUrls": [
+   "https://www.lumen.com/en-us/home.html",
+   "https://www.lumen.com/en-us/services/colocation.html",
+   "https://www.lumen.com/en-us/edge-cloud/data-centers.html",
+   "https://www.lumen.com/en-us/resources/network-maps.html",
+   "https://assets.lumen.com/is/content/Lumen/colocation-location-data-sheet",
+   "https://www.sec.gov/Archives/edgar/data/18926/000001892622000038/lumnq320228-kexhibit991.htm"
+  ],
+  "notes": "Homepage HTML declares only one icon: <link rel=\"icon\" href=\"/etc.clientlibs/.../favicon.png\"> — verified 200, image/png, 32x32. No apple-touch-icon and no web manifest exist; https://www.lumen.com/apple-touch-icon.png returns 404 and https://www.lumen.com/favicon.ico 301-redirects to a favicon.ico.html error page, so neither is listed. The og:image (lumen_thumbnail.png) is verified 200 but is 1200x627, not square — included only as a second-choice fallback. Lumen publishes NO HTML locations index or facility finder; the only self-published location list is the \"Lumen Data Center Locations\" PDF data sheet linked from the colocation page (verified 200, application/pdf, 178 KB), which is what officialLocationList points to. HQ city Denver confirmed from Lumen 8-K press-release datelines on sec.gov, not guessed."
+ },
+ {
+  "key": "cogent",
+  "displayName": "Cogent Communications",
+  "domain": "cogentco.com",
+  "hqCountry": "US",
+  "kind": "network",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.cogentco.com/templates/c2020/favicon.ico",
+   "https://www.cogentco.com/files/images/c2020/cogentco_logo.png"
+  ],
+  "officialLocationList": "https://www.cogentco.com/en/network/cogent-data-centers/169-cdc-locations",
+  "publishedFacilities": "\"87 Internet data centers\" stated on https://www.cogentco.com/en/about-cogent; the company's own location index gives 87 owned and operated across North America (68) and Europe (19), plus 86 Edge Data Centers in North America",
+  "publishedCountries": "\"over 306 major markets\" across six continents (about-cogent); data centres are published for North America and Europe only",
+  "profile": "Cogent Communications is an internet backbone and IP transit provider headquartered in Washington, DC, and listed on NASDAQ as CCOI. Its facility estate grew sharply after the 2023 purchase of Sprint's wireline business from T-Mobile. Cogent owns and operates the sites itself, selling rack space alongside transit, and publishes a count of 87 internet data centres across North America and Europe.",
+  "sourceUrls": [
+   "https://www.cogentco.com/en/",
+   "https://www.cogentco.com/en/about-cogent",
+   "https://www.cogentco.com/en/network/cogent-data-centers",
+   "https://www.cogentco.com/en/network/cogent-data-centers/169-cdc-locations"
+  ],
+  "notes": "Note the domain is cogentco.com, not cogent.com — confirmed by fetching it (https://www.cogentco.com/ resolves to /en/ with HTTP 200). The homepage HTML declares exactly one icon: <link href=\"/templates/c2020/favicon.ico\" rel=\"shortcut icon\"> — verified 200, image/vnd.microsoft.icon, 16x16. There is no apple-touch-icon and no og:image on the homepage; both https://www.cogentco.com/favicon.ico and /apple-touch-icon.png return 301 redirects into the /en/ tree rather than an image, so neither is listed. Second candidate is Cogent's own wordmark PNG referenced by the homepage (verified 200, image/png) but it is 201x66, not square — use only if the .ico is unusable. The locations URL is Cogent's own regional data-centre index."
+ },
+ {
+  "key": "exa infrastructure",
+  "displayName": "EXA Infrastructure",
+  "domain": "exainfra.net",
+  "hqCountry": "GB",
+  "kind": "network",
+  "parent": "I Squared Capital",
+  "logoCandidates": [
+   "https://exainfra.net/favicon.ico",
+   "https://exainfra.net/media/uljnvvm2/exa-infra_logo_bottom_orange_neg_rgb-resize.svg"
+  ],
+  "officialLocationList": "https://exainfra.net/interactive-map/",
+  "publishedFacilities": "\"270+ Edge and network colocation sites\" and \"500+\" optical points of presence, stated on https://exainfra.net/our-network/, alongside 174,500 km of fibre, 300+ cities connected and 6,000+ metro route km; the colocation page states 22 submarine cable landing stations built and operated",
+  "publishedCountries": "37 countries, stated on https://exainfra.net/our-network/",
+  "profile": "EXA Infrastructure is a London-based wholesale fibre and colocation operator owned by the investment firm I Squared Capital, which created it in September 2021 by buying GTT Communications' infrastructure division. Its estate is network-led rather than retail: the company publishes 174,500 km of fibre reaching 37 countries, more than 500 optical points of presence, and over 270 edge and network colocation sites.",
+  "sourceUrls": [
+   "https://exainfra.net/",
+   "https://exainfra.net/our-network/",
+   "https://exainfra.net/services/colocation/",
+   "https://exainfra.net/interactive-map/",
+   "https://exainfra.net/sitemap/",
+   "https://exainfra.net/media-centre/press-releases/exa-infrastructure-sets-sights-on-growth-after-acquisition-creates-europe-s-most-expansive-digital-infrastructure-platform/",
+   "https://www.datacenterdynamics.com/en/news/i-squared-capital-launches-exa-infrastructure-after-closing-gtt-acquisition/"
+  ],
+  "notes": "Domain is exainfra.net, not exa.com or exainfrastructure.com. Note that https://www.exainfra.net/ fails to connect entirely (curl exit 000) — only the apex host https://exainfra.net/ works, so all URLs here are apex-form and should be used as given. The HTML head contains NO <link rel=icon>, no apple-touch-icon and no og:image at all, but /favicon.ico exists and was verified: 200, image/x-icon, 32x32, 4,286 bytes. Second candidate is the on-domain brand SVG referenced by the site (verified 200, image/svg+xml, 8 KB) but it is a horizontal wordmark in negative/white-on-dark form, so it is a poor square substitute. There is no plain-text list of data centres; /interactive-map/ is EXA's own facility finder with \"Filter by POP Type\" and \"Filter POP by Service\" including Colocation, which is the closest thing to an official locations index. The company itself does not publish owner or HQ on its own site — I Squared Capital ownership and London HQ come from the EXA press release and DCD coverage cited above. Related caveat for downstream data: EXA sold seven edge data centres to nLighten (per EXA's own press-release list), so older third-party facility counts may overstate its estate."
+ },
+ {
+  "key": "edgeconnex",
+  "displayName": "EdgeConneX",
+  "domain": "edgeconnex.com",
+  "hqCountry": "US",
+  "kind": "wholesale",
+  "parent": "EQT Infrastructure (EQT AB)",
+  "logoCandidates": [
+   "https://www.edgeconnex.com/wp-content/uploads/2018/11/favicon.png",
+   "https://www.edgeconnex.com/favicon.ico",
+   "https://www.edgeconnex.com/wp-content/uploads/2018/11/edgeconnexLogo.svg"
+  ],
+  "officialLocationList": "https://www.edgeconnex.com/global-map/",
+  "publishedFacilities": "\"over 90 data centers sustainably built and in development\" on https://www.edgeconnex.com/company/about-edgeconnex/; the global map page states \"80+ Data Centers\", \"60+ Unique Markets\", \"4 Continents\", \"20+ Countries\"; deployments described as 40 kW to 500 MW or more",
+  "publishedCountries": "\"20+ Countries\" and \"4 Continents\" on the global map page; the about page names Asia Pacific, Europe, the Middle East, North America and South America",
+  "profile": "EdgeConneX, founded in 2009, develops wholesale and build-to-suit data centres from a head office in Herndon, Virginia, with regional bases in Amsterdam and Singapore. EQT Infrastructure acquired the company in 2020 and still owns it. By its own count it has upward of 90 sites completed or under development, spanning 40 kW to more than 500 MW, and it holds an Indian joint venture, AdaniConneX.",
+  "sourceUrls": [
+   "https://www.edgeconnex.com/",
+   "https://www.edgeconnex.com/company/about-edgeconnex/",
+   "https://www.edgeconnex.com/global-map/",
+   "https://www.edgeconnex.com/americas/",
+   "https://www.edgeconnex.com/emea/"
+  ],
+  "notes": "edgeconnex.com blocks some clients: a Chrome user-agent got HTTP 403, a Safari user-agent over HTTP/1.1 got 200. A cache/fetch job may need a browser-like UA. Logo candidates ranked by verification: (1) the WordPress site icon /wp-content/uploads/2018/11/favicon.png, the file named in the page's <link rel=\"icon\">, verified 200 at 512x512 — IMPORTANT, the server returns it as Content-Type image/webp regardless of the Accept header despite the .png extension, so sniff the bytes rather than trusting the extension; (2) /favicon.ico, verified 200, image/x-icon, but only 16x16; (3) the on-domain brand SVG, verified 200, image/svg+xml, though it is a horizontal wordmark rather than square. Deliberately EXCLUDED: https://www.edgeconnex.com/apple-touch-icon.png returns HTTP 200 with Content-Length 0 — an empty file, which is worse than a 404 because it caches as a valid-looking asset. The og:image (Default-Social-Image.png) is 1024x512, not square, so it is also excluded. /global-map/ is EdgeConneX's own filterable facility map; regional index pages exist at /americas/, /emea/ and /asia-pacific/. Note the two self-published counts disagree (90+ on the about page vs 80+ on the map page)."
+ },
+ {
+  "key": "databank",
+  "displayName": "DataBank",
+  "domain": "databank.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.databank.com/wp-content/uploads/2018/06/cropped-site-icon.png?w=180",
+   "https://www.databank.com/wp-content/uploads/2018/06/cropped-site-icon.png?w=192",
+   "https://www.databank.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.databank.com/data-centers/",
+  "publishedFacilities": "76 — the counter block on https://www.databank.com/data-centers/ reads \"76 Total Data Centers\", alongside 4.98M IT square footage and 1GW critical IT load. The older About page (https://www.databank.com/about-databank/) still says \"65+ data centers\" and \"20 major interconnect hubs\".",
+  "publishedCountries": "United States (markets grouped West / Central / South / East on the locations page) plus one European entry, United Kingdom",
+  "profile": "DataBank is a Dallas-based colocation and interconnection operator serving enterprise and mid-market customers across United States metros, with one European presence in the United Kingdom. Its locations page counts 76 data centres, roughly 5 million square feet and about 1 GW of critical IT load. DigitalBridge assembled the company in 2016; AustralianSuper led a $2 billion equity raise in 2024.",
+  "notes": "Logo candidates taken from the raw HTML head of https://www.databank.com/ (apple-touch-icon and two rel=icon links, all pointing at cropped-site-icon.png with a width query). All three URLs return HTTP 200 image/png; /favicon.ico returns 200 image/x-icon but is only 198 bytes, so it is listed last. The og:image (https://www.databank.com/wp-content/uploads/2023/03/DB-Logo-Horizontal-in-1200x628-Canvas.jpg, 200 image/jpeg) is a 1200x628 horizontal lockup, not square, so it is deliberately omitted. HQ address confirmed on the contact page as 400 South Akard St, Dallas, Texas. Ownership is a consortium rather than a single parent, so the parent field is left empty: DigitalBridge formed the company in 2016 but reduced its stake to roughly 7.8% in a January 2025 secondary sale; other investors reported include AustralianSuper, Swiss Life Asset Managers, EDF Invest and TJC. Note the two published facility counts disagree (76 vs 65+) across DataBank's own pages.",
+  "sourceUrls": [
+   "https://www.databank.com/",
+   "https://www.databank.com/data-centers/",
+   "https://www.databank.com/about-databank/",
+   "https://www.databank.com/contact-us/",
+   "https://www.databank.com/resources/press-releases/databank-announces-2-0-billion-equity-raise-led-by-1-5-billion-investment-from-australiansuper/",
+   "https://www.digitalbridge.com/portfolio/databank"
+  ]
+ },
+ {
+  "key": "flexential",
+  "displayName": "Flexential",
+  "domain": "flexential.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.flexential.com/themes/custom/flexential/apple-touch-icon.png",
+   "https://www.flexential.com/themes/custom/flexential/favicon-32x32.png",
+   "https://www.flexential.com/themes/custom/flexential/favicon.ico",
+   "https://www.flexential.com/themes/custom/themekit/images/logo-blue.png"
+  ],
+  "officialLocationList": "https://www.flexential.com/data-centers",
+  "publishedFacilities": "40+ — the stat row on https://www.flexential.com/data-centers reads \"40+ data centers / 18 US markets / 3M+ sq. ft. footprint / 100+ Gbps network backbone\". The same page lists individual facilities with square footage and MW (e.g. Atlanta - Douglasville 2, 358,000 sq ft, 36 MW).",
+  "publishedCountries": "United States only, 18 markets",
+  "profile": "Flexential is a United States colocation, interconnection and cloud provider based in Charlotte, North Carolina, formed in 2017 when GI Partners combined its Peak 10 and ViaWest holdings; the current name dates from 2018. GI Partners still controls it, with Morgan Stanley Infrastructure Partners investing in 2024. Its site lists more than 40 data centres across 18 US markets.",
+  "notes": "flexential.com sits behind a Cloudflare interstitial: curl and WebFetch both get HTTP 403 on the HTML, including for /data-centers. I read the head tags through a real browser instead, so the icon URLs come from the live DOM. The four logo URLs themselves are NOT blocked and were each verified 200 by curl (apple-touch-icon.png 7,790 bytes 180x180, favicon-32x32.png 1,640 bytes, favicon.ico 15,086 bytes, logo-blue.png 19,639 bytes). Caveat for the downloader: /data-centers returns 403 to non-browser clients even though the page exists and renders (title \"Colocation Data Centers & Data Center Map | Flexential\"). logo-blue.png is the declared og:image/twitter:image and is a horizontal lockup rather than a square icon, so it is ranked last. Parent left empty because GI Partners is a private-equity owner, not a corporate parent; it closed a single-asset continuation vehicle plus a GI Data Infrastructure investment in August 2025 after Morgan Stanley Infrastructure Partners' November 2024 investment.",
+  "sourceUrls": [
+   "https://www.flexential.com/",
+   "https://www.flexential.com/data-centers",
+   "https://www.flexential.com/company",
+   "https://www.flexential.com/resources/press-release/gi-partners-strategic-investment-in-flexential",
+   "https://www.gipartners.com/private-equity/portfolio/peak-10"
+  ]
+ },
+ {
+  "key": "tierpoint",
+  "displayName": "TierPoint",
+  "domain": "tierpoint.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "",
+  "logoCandidates": [
+   "https://www.tierpoint.com/wp-content/uploads/2022/05/cropped-TierPoint_Logo-1-300x300.png",
+   "https://www.tierpoint.com/wp-content/uploads/2022/05/cropped-TierPoint_Logo-1-150x150.png"
+  ],
+  "officialLocationList": "https://www.tierpoint.com/data-centers/",
+  "publishedFacilities": "40 — \"40 world-class data centers across 20 U.S. markets, coast-to-coast\" on https://www.tierpoint.com/about-us/, and \"our 40 world-class data centers are connected coast-to-coast\" on https://www.tierpoint.com/data-centers/, which also enumerates facilities by state (e.g. five in Pennsylvania, three in Texas, four in North Carolina).",
+  "publishedCountries": "United States only, 20 markets",
+  "profile": "TierPoint is a privately held United States provider of colocation, managed IT and cloud services, headquartered in St. Louis, Missouri. It dates from a 2010 Dallas data centre purchase by Cequel III and grew mainly by acquisition. Shareholders include Cequel III, RedBird Capital Partners, Thompson Street Capital Partners, the Stephens Group and Ontario Teachers' Pension Plan. The company lists 40 data centres in 20 US markets.",
+  "notes": "Logo candidates read from the raw HTML head of https://www.tierpoint.com/ (apple-touch-icon 300x300 and rel=icon 150x150). Both verified 200 image/png, 15,963 and 6,236 bytes. IMPORTANT: https://www.tierpoint.com/favicon.ico returns HTTP 200 but with a zero-byte body, so it is deliberately excluded — fetching it would cache an empty file. The og:image (TierPoint-Feature-Image.jpg, 1200x626) is a wide banner, not a square logo, so it is also excluded. HQ confirmed on the About page as 12444 Powerscourt Dr, St. Louis, MO. Parent left empty: TierPoint is owned by an investor consortium, not a single corporate parent; a $320m preferred equity round in 2020 added Argo Infrastructure Partners, Wafra and Macquarie Capital Principal Finance alongside the existing holders.",
+  "sourceUrls": [
+   "https://www.tierpoint.com/",
+   "https://www.tierpoint.com/data-centers/",
+   "https://www.tierpoint.com/about-us/",
+   "https://www.tierpoint.com/news/tierpoint-raises-320-million-from-consortium-of-investors/",
+   "https://redbirdcap.com/management-investor-group-announce-acquisition-of-tierpoint/"
+  ]
+ },
+ {
+  "key": "stt",
+  "displayName": "ST Telemedia Global Data Centres",
+  "domain": "sttelemediagdc.com",
+  "hqCountry": "SG",
+  "kind": "colocation",
+  "parent": "ST Telemedia",
+  "logoCandidates": [
+   "https://www.sttelemediagdc.com/themes/custom/stt_theme/favicon.ico"
+  ],
+  "officialLocationList": "none found",
+  "publishedFacilities": "100+ — the \"Global reach, local expertise\" panel on https://www.sttelemediagdc.com/ publishes \"Major business markets 20+ / Data centres worldwide >100 / IT load (GW) 2.7\", with a per-country breakdown: India 34, UK 17, Germany 13, Indonesia 9, Philippines 9, Singapore 6, Thailand 3, Malaysia 3, Japan 2, Vietnam 2, South Korea 1, Italy 1.",
+  "publishedCountries": "12 — Singapore, United Kingdom, Germany, Italy, India, Thailand, South Korea, Indonesia, Japan, Philippines, Malaysia, Vietnam",
+  "profile": "ST Telemedia Global Data Centres is a Singapore-headquartered carrier-neutral colocation operator, founded in 2014 by ST Telemedia, part of the Temasek group. It reports more than 100 data centres and 2.7 GW of IT load across 12 markets in Asia and Europe, its UK arm trading as VIRTUS Data Centres. In February 2026 KKR and Singtel agreed to buy out ST Telemedia, taking 75% and 25%.",
+  "notes": "Only one square icon exists on this domain: the Drupal theme favicon at /themes/custom/stt_theme/favicon.ico, declared in the homepage head. Verified 200 image/vnd.microsoft.icon, 110,329 bytes; I parsed the ICO directory and it contains six square frames (256, 128, 64, 48, 32, 16), so it is a good download target. There is NO apple-touch-icon and NO og:image on this site — https://www.sttelemediagdc.com/favicon.ico and /apple-touch-icon.png both 404. /themes/custom/stt_theme/logo.svg exists (200, 10,754 bytes) but is a horizontal wordmark, not square, so it is excluded. officialLocationList is \"none found\" because there is no single global index: https://www.sttelemediagdc.com/locations is a 404, and the sitemap contains only three country pages at the global root (/locations/united-kingdom, /locations/germany, /locations/Italy — note the capital I in Italy). Asian markets live on separate regional sites with their own indexes, e.g. https://www.sttelemediagdc.com/in-en/locations and https://www.sttelemediagdc.com/id-en/locations. The homepage panel is the closest thing to a consolidated list. Ownership caveat: the February 2026 KKR/Singtel deal for ST Telemedia's remaining 82% was signed, not closed — reporting put completion in H2 2026 subject to regulatory approval, and I found no confirmation it has completed as of today, so the parent field still reads ST Telemedia. Also note the company's own 2.7 GW figure differs from the ~2.3 GW design capacity quoted in the deal coverage.",
+  "sourceUrls": [
+   "https://www.sttelemediagdc.com/",
+   "https://www.sttelemediagdc.com/about-us/the-company",
+   "https://www.sttelemediagdc.com/locations/united-kingdom",
+   "https://www.sttelemediagdc.com/sitemap.xml",
+   "https://www.sttelemediagdc.com/newsroom/kkr-led-consortium-to-fully-acquire-stt-gdc-13.8-billion-enterprise-value",
+   "https://www.datacenterdynamics.com/en/news/kkr-and-singtel-fully-acquire-data-center-firm-stt-gdc/"
+  ]
+ },
+ {
+  "key": "cologix",
+  "displayName": "Cologix",
+  "domain": "cologix.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "Stonepeak",
+  "logoCandidates": [
+   "https://cologix.com/wp-content/uploads/2021/12/cologix-favicon.webp",
+   "https://eys7r23sk2c.exactdn.com/wp-content/uploads/2021/12/cologix-favicon.webp?strip=all&resize=32%2C32"
+  ],
+  "officialLocationList": "https://cologix.com/data-centers/",
+  "publishedFacilities": "\"45+ data centers\" and \"seven hyperscale capacity facilities\", stated on https://cologix.com/about-us/",
+  "publishedCountries": "13 North American markets (United States and Canada), per cologix.com/about-us",
+  "profile": "Cologix runs carrier-neutral colocation and interconnection sites in the United States and Canada, plus a larger-format line it markets as Scalelogix. The infrastructure investor Stonepeak has held a majority stake since 2017. The company is headquartered in Denver and reports about 2,000 customers served from more than 45 facilities in 13 markets across the two countries.",
+  "notes": "Logo assets in the page HTML point at the third-party ExactDN CDN (eys7r23sk2c.exactdn.com), not at cologix.com. I found the origin file on-domain and verified it: cologix.com/wp-content/uploads/2021/12/cologix-favicon.webp returns 200, image/webp, 898 bytes, 48x48 canvas. Listed first for that reason. The ExactDN fallback returns 200 as a 32x32 PNG but ONLY with its exact query string — the bare CDN path without ?strip=all&resize= returns 403, so do not strip the query. Note cologix.com/favicon.ico and /apple-touch-icon.png both return HTTP 200 but with a zero-byte body, so they are useless despite the 200 — excluded deliberately. og:image is a 1500x1042 hero photo, not a logo.",
+  "sourceUrls": [
+   "https://cologix.com/",
+   "https://cologix.com/about-us/",
+   "https://cologix.com/data-centers/"
+  ]
+ },
+ {
+  "key": "centersquare",
+  "displayName": "Csquare",
+  "domain": "csquare.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "Brookfield Infrastructure",
+  "logoCandidates": [
+   "https://www.csquare.com/favicon.ico",
+   "https://centersquaredc.com/hubfs/Centersquare%20website/images/logos/favicon.svg"
+  ],
+  "officialLocationList": "https://www.csquare.com/data-centers",
+  "publishedFacilities": "\"80 advanced colocation data centers\", plus 500+ MW, 3.5M sq ft and 2,000+ customers, all stated on the csquare.com homepage",
+  "publishedCountries": "16 North American markets plus London (United States, Canada, United Kingdom), per the market list on csquare.com/data-centers",
+  "profile": "Csquare is a North American colocation operator controlled by Brookfield Infrastructure. It was assembled in 2024 when Brookfield's Evoque business took over Cyxtera through that company's Chapter 11 process; the combination traded as Centersquare before shortening its name to Csquare in 2025. Its own site counts 80 data centres, 3.5 million square feet and over 500 MW across 16 North American markets plus London.",
+  "notes": "The name in the registry is out of date twice over. Evoque + Cyxtera became Centersquare in April 2024, and Centersquare became Csquare in late 2025. The live domain is csquare.com; I confirmed centersquaredc.com now 301s to https://www.csquare.com/. I set displayName to the current brand — change it back if the registry needs the old label. Logo: the homepage <link rel=\"shortcut icon\"> actually points off-domain to the legacy centersquaredc.com HubSpot path, but csquare.com/favicon.ico serves the identical asset (byte-for-byte, 488 bytes, image/svg+xml) so I listed the primary domain first. It is a 27x26 viewBox SVG with fill #101010, so it will disappear on a dark background unless recoloured. csquare.com/apple-touch-icon.png is 404. No og:image on the homepage.",
+  "sourceUrls": [
+   "https://www.csquare.com/",
+   "https://www.csquare.com/data-centers",
+   "https://centersquaredc.com/",
+   "https://www.datacenterfrontier.com/colocation/article/55016615/brookfield-infrastructures-evoque-cyxtera-data-center-collaboration-emerges-as-centersquare"
+  ]
+ },
+ {
+  "key": "qts",
+  "displayName": "QTS Data Centers",
+  "domain": "q.com",
+  "hqCountry": "US",
+  "kind": "wholesale",
+  "parent": "Blackstone",
+  "logoCandidates": [
+   "https://q.com/wp-content/uploads/2025/06/QTS-Favicon_new.svg"
+  ],
+  "officialLocationList": "https://q.com/data-centers/",
+  "publishedFacilities": "\"Across 30+ facilities\", stated in the \"By the numbers\" block on the q.com homepage; the /data-centers/ finder itself lists more (paginated)",
+  "publishedCountries": "United States and Europe. The location filter on q.com/data-centers/ names Finland, Italy, Netherlands, Spain and the United Kingdom alongside roughly a dozen US states",
+  "profile": "QTS is a data centre operator founded in 2003 that develops large campuses in North America and Europe, with hyperscale, enterprise and US federal customers. It traded as the REIT QTS Realty Trust until Blackstone funds bought it for $10 billion in a deal completed in 2021, and it has been privately held since. Its site counts more than 30 facilities and now uses the domain q.com.",
+  "notes": "Domain is counter-intuitive: qtsdatacenters.com 301s to q.com, which is now the canonical site (<title> \"Home - QTS Data Centers\", footer reads \"Q.com(TM)\"). Do not use qtsdatacenters.com as the registry domain. Logo verified at 200, image/svg+xml, 4760 bytes; the same SVG is declared as rel=icon at both 32x32 and 192x192 and as apple-touch-icon. Excluded q.com/favicon.ico: it returns 200 with content-type image/x-icon but a zero-byte body. og:image is a 2000x1334 photograph, not a logo. The /data-centers/ index is a genuine facility finder with per-site pages, acreage and MW.",
+  "sourceUrls": [
+   "https://q.com/",
+   "https://q.com/data-centers/",
+   "https://q.com/who-we-are/",
+   "https://www.blackstone.com/news/press/blackstone-funds-complete-acquisition-of-qts-realty-trust/"
+  ]
+ },
+ {
+  "key": "iron mountain",
+  "displayName": "Iron Mountain Data Centers",
+  "domain": "ironmountain.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "Iron Mountain Incorporated (NYSE: IRM)",
+  "logoCandidates": [
+   "https://datacenter.ironmountain.com/hubfs/favicon-32x32.png",
+   "https://www.ironmountain.com/static-assets/favicon.png"
+  ],
+  "officialLocationList": "https://www.ironmountain.com/data-centers/locations",
+  "publishedFacilities": "\"30+ Locations. 3 Continents. 5M+ Gross SF.\" as the headline on ironmountain.com/data-centers/locations; the same section elsewhere cites a 1.4 GW portfolio. The locations page renders 24 distinct facility links",
+  "publishedCountries": "United States, India, Netherlands, Germany, United Kingdom, Spain and Singapore, per the city list on the locations page (Amsterdam, Frankfurt, London, Madrid, Singapore, and six Indian metros)",
+  "profile": "Iron Mountain Data Centers is the colocation business of Iron Mountain Incorporated, the New York-listed storage and records-management REIT, and runs as a segment of the parent rather than as a separate company. Its locations page advertises more than 30 sites across three continents, over five million gross square feet and a 1.4 GW portfolio, with clusters in the United States, India, Europe and Singapore.",
+  "notes": "Ordering caveat, please read before caching. The icon actually declared in the page head is https://www.ironmountain.com/static-assets/favicon.png (PNG, 842 bytes, 33x33) — but www.ironmountain.com sits behind a WAF that returns HTTP 429 to curl and every non-browser user agent I tried, on the HTML and on static assets alike. I could only verify that file by fetching it from inside a real browser session on the same origin. If your downloader is a plain HTTP client it will very likely get a 429 HTML body instead of the image. So I listed the HubSpot-hosted https://datacenter.ironmountain.com/hubfs/favicon-32x32.png FIRST: it is on an ironmountain.com subdomain, it is the data-centre business's own marketing site, and it fetches cleanly with plain curl (200, image/png, 661 bytes). ironmountain.com/favicon.ico and /apple-touch-icon.png are both 404. The og:image is hosted off-domain on edge.sitecorecloud.io and is a 1200x696 banner, not square, so I left it out. Note the WAF will also block any later scrape of the locations page by a non-browser client, even though the URL is correct.",
+  "sourceUrls": [
+   "https://www.ironmountain.com/data-centers",
+   "https://www.ironmountain.com/data-centers/locations",
+   "https://datacenter.ironmountain.com/global-data-center-portfolio"
+  ]
+ },
+ {
+  "key": "vantage",
+  "displayName": "Vantage Data Centers",
+  "domain": "vantage-dc.com",
+  "hqCountry": "US",
+  "kind": "wholesale",
+  "parent": "DigitalBridge (control) with Silver Lake",
+  "logoCandidates": [
+   "https://vantage-dc.com/wp-content/uploads/2020/09/cropped-vantage-favicon-noBG-192x192.png",
+   "https://vantage-dc.com/wp-content/uploads/2020/09/cropped-vantage-favicon-noBG-180x180.png",
+   "https://vantage-dc.com/wp-content/uploads/2020/09/cropped-vantage-favicon-noBG-270x270.png"
+  ],
+  "officialLocationList": "https://vantage-dc.com/data-center-locations/",
+  "publishedFacilities": "41 campuses — the header of vantage-dc.com/data-center-locations/ reads \"5 continents. 41 campuses.\" Regional sub-pages name 12 North America, 15 EMEA and 9 APAC campuses.",
+  "publishedCountries": "United States, Canada, Germany, United Kingdom, Ireland, Italy, Poland, Switzerland, South Africa, Australia, Hong Kong, Malaysia, Japan, Taiwan (from the campus list on vantage-dc.com/data-center-locations/)",
+  "profile": "Wholesale data centre developer and operator founded in 2010 around a Santa Clara campus. DigitalBridge holds control alongside Silver Lake following a $9.2 billion equity round completed in June 2024; AustralianSuper, GIC and ADIA hold further stakes. Builds large campuses leased mainly to hyperscale tenants. Its locations page counts 41 campuses across five continents.",
+  "notes": "Logo assets taken from the <link rel=\"icon\"> and apple-touch-icon tags in the homepage HTML; the 192x192 candidate was downloaded and confirmed as a 192x192 RGBA PNG. Ranked first for that reason. The 270x270 URL returns HTTP 200 but the payload is WebP data despite the .png extension, so it is ranked last. IMPORTANT: https://vantage-dc.com/favicon.ico returns HTTP 200 with a zero-byte body — deliberately excluded, it would cache as an empty file. Company /company/about-us/ is a 404; the timeline lives at /company/.",
+  "sourceUrls": [
+   "https://vantage-dc.com/",
+   "https://vantage-dc.com/data-center-locations/",
+   "https://vantage-dc.com/company/",
+   "https://vantage-dc.com/news/vantage-data-centers-completes-9-2-billion-equity-investment-led-by-digitalbridge-and-silver-lake/",
+   "https://www.digitalbridge.com/news/2024-06-13-vantage-data-centers-completes-92-billion-equity-investment-led-by-digitalbridge-and-silver-lake"
+  ]
+ },
+ {
+  "key": "stack",
+  "displayName": "STACK Infrastructure",
+  "domain": "stackinfra.com",
+  "hqCountry": "US",
+  "kind": "wholesale",
+  "parent": "IPI Partners, acquired by Blue Owl Capital",
+  "logoCandidates": [
+   "https://www.stackinfra.com/wp-content/uploads/2024/10/favicon.gif",
+   "https://www.stackinfra.com/favicon.ico",
+   "https://www.stackinfra.com/wp-content/uploads/2025/04/LogoMark2ColorRGB.png"
+  ],
+  "officialLocationList": "https://www.stackinfra.com/locations/",
+  "publishedFacilities": "No facility count published. stackinfra.com/locations/ names 22 markets (10 Americas, 5 Asia Pacific, 7 EMEA) and cites \"8.5+ GW Built & Under Development\" plus \"7.5+ GW Planned & Potential Development\".",
+  "publishedCountries": "United States, Canada, Malaysia, Australia, Japan, Denmark, Germany, Switzerland, Italy, Norway, Sweden (inferred from the market names on stackinfra.com/locations/)",
+  "profile": "Hyperscale and wholesale data centre developer operating in the Americas, EMEA and Asia Pacific. It is a portfolio company of IPI Partners, the data centre investment platform Blue Owl Capital agreed to acquire in 2024. In April 2025 Apollo-managed funds bought STACK's seven-site European colocation business, which drops the STACK name. Its locations page cites 8.5 GW built and under development.",
+  "notes": "Logo is the weak point here. The declared apple-touch-icon (LogoMark2ColorRGB.png) downloads fine at HTTP 200 but is 1390x1048 — NOT square — so it is ranked last; use it only if you can centre-crop. The only genuinely square assets on the domain are 16x16: the declared rel=icon favicon.gif (16x16 GIF) and /favicon.ico (16x16 ICO, 32bpp). Both verified non-empty. No larger square icon and no webmanifest found. The homepage og:image is a wide photo, not a logo. Note also that curl gets HTTP 403 on subpages (bot filtering) while the homepage serves 200; /locations/ was confirmed via a rendering fetch, not curl. Ownership caveat: the EMEA colocation carve-out to Apollo was announced April 2025 and will be rebranded, but stackinfra.com/locations/ still listed Stockholm, Oslo, Copenhagen, Milan and Geneva when fetched — that list may be stale.",
+  "sourceUrls": [
+   "https://www.stackinfra.com/",
+   "https://www.stackinfra.com/locations/",
+   "https://www.stackinfra.com/about/",
+   "https://www.blueowl.com/news/blue-owl-capital-acquire-ipi-partners-and-partner-iconiq-future-growth",
+   "https://ir.apollo.com/news-events/press-releases/detail/551/apollo-funds-to-acquire-pan-european-highly-interconnected",
+   "https://www.datacenterdynamics.com/en/news/stack-infrastructure-sells-european-colo-business-to-apollo/"
+  ]
+ },
+ {
+  "key": "coreweave",
+  "displayName": "CoreWeave",
+  "domain": "coreweave.com",
+  "hqCountry": "US",
+  "kind": "ai-cloud",
+  "parent": "",
+  "logoCandidates": [
+   "https://cdn.prod.website-files.com/62ba1fb86485b6d5029975c4/676dd39272d1e888a56c48ad_logo_coreweave_solo_256x256.png",
+   "https://cdn.prod.website-files.com/62ba1fb86485b6d5029975c4/676dd5669fb4341cd25ca792_logo_coreweave_solo_32x32.png"
+  ],
+  "officialLocationList": "none found",
+  "publishedFacilities": "49 — coreweave.com/ai-data-centers states \"49 state-of-the-art AI data centers\" across North America and Europe, with 1 GW+ active power and 3.5 GW+ contracted. The page gives no per-site list.",
+  "publishedCountries": "Not published per-country. The page says only \"North America and Europe\"; press releases confirm United States, United Kingdom, Norway, Sweden and Spain.",
+  "profile": "Cloud provider specialising in GPU compute for AI and other accelerated workloads, founded in 2017 and based in Livingston, New Jersey. It listed on Nasdaq as CRWV in March 2025 and has no corporate parent. Capacity comes from a mix of leased third-party halls and self-developed sites; the company cites 49 data centres in North America and Europe, over 1 GW active.",
+  "notes": "Two caveats. First, https://www.coreweave.com/favicon.ico returns HTTP 404 — do not use it. Second, the site is built on Webflow and BOTH declared icons are hosted on cdn.prod.website-files.com, not on coreweave.com, so strictly they are off-domain; they are still the company's own declared icons, referenced from coreweave.com's <head>, and the 256x256 candidate was downloaded and confirmed as a 256x256 RGBA PNG. No square asset exists on the bare coreweave.com host. Also no official facility list: /data-centers, /locations and /company/data-centers all 404; /ai-data-centers carries the totals but no site-by-site listing, so officialLocationList is \"none found\" rather than a guess.",
+  "sourceUrls": [
+   "https://www.coreweave.com/",
+   "https://www.coreweave.com/ai-data-centers",
+   "https://www.coreweave.com/news/coreweave-announces-pricing-of-initial-public-offering",
+   "https://investors.coreweave.com/news/news-details/2025/CoreWeave-Announces-Pricing-of-Initial-Public-Offering/default.aspx"
+  ]
+ },
+ {
+  "key": "switch",
+  "displayName": "Switch",
+  "domain": "switch.com",
+  "hqCountry": "US",
+  "kind": "colocation",
+  "parent": "DigitalBridge and IFM Investors",
+  "logoCandidates": [
+   "https://www.switch.com/wp-content/uploads/2022/11/cropped-cropped-Karma_Square-sm-270x270.png",
+   "https://www.switch.com/wp-content/uploads/2022/11/cropped-cropped-Karma_Square-sm-192x192.png",
+   "https://www.switch.com/wp-content/uploads/2022/11/cropped-cropped-Karma_Square-sm-180x180.png"
+  ],
+  "officialLocationList": "https://www.switch.com/locations/",
+  "publishedFacilities": "5 campuses (\"PRIMES\") listed on switch.com/locations/: The Citadel (Tahoe Reno), The Pyramid Campus (Grand Rapids), The Core Campus (Las Vegas), The Keep Campus (Atlanta), The Rock Campus (Austin). The page gives acreage (3,058 US West, 2,418 US East) but no building count or MW figure.",
+  "publishedCountries": "United States only, per switch.com/locations/ (Nevada, Michigan, Georgia, Texas)",
+  "profile": "Colocation operator based in Las Vegas, founded by Rob Roy, known for large campuses it calls PRIMES and for its own Tier 5 facility rating. DigitalBridge and IFM Investors took the company private in December 2022 in a transaction valued near $11 billion, ending its NYSE listing. Its locations page lists five campuses in Nevada, Michigan, Georgia and Texas.",
+  "notes": "Logo assets are the WordPress-generated square crops declared in the homepage <head>; the 270x270 candidate was downloaded and confirmed as a 270x270 PNG, so it leads. IMPORTANT: https://www.switch.com/favicon.ico returns HTTP 200 but a zero-byte body — excluded deliberately, it would cache as an empty file. The homepage og:image is a wide social card, not square, so it was left out. Ownership split at the 2022 close was reported as DigitalBridge 55.8%, IFM funds 37.2%, management 7.0%. As with stackinfra.com, curl gets HTTP 403 on subpages while the homepage serves 200; /locations/ was confirmed via a rendering fetch.",
+  "sourceUrls": [
+   "https://www.switch.com/",
+   "https://www.switch.com/locations/",
+   "https://www.digitalbridge.com/news/2022-12-06-digitalbridge-and-ifm-investors-complete-11-billion-take-private-of-switch",
+   "https://ir.digitalbridge.com/news-releases/news-release-details/digitalbridge-and-ifm-investors-complete-11-billion-take-private",
+   "https://www.datacenterdynamics.com/en/news/digitalbridge-ifm-complete-switch-inc-acquisition/"
+  ]
+ },
+ {
+  "key": "global switch",
+  "displayName": "Global Switch",
+  "domain": "globalswitch.com",
+  "kind": "colocation",
+  "officialLocationList": "https://www.globalswitch.com/data-centres/",
+  "logoCandidates": [
+   "https://gswitch-cdn.com/wp-content/uploads/2026/02/06115607/favicon.png"
+  ],
+  "publishedFacilities": "Seven operating cities and two announced - listed at globalswitch.com/data-centres/ (Amsterdam, Frankfurt, Hong Kong, London, Madrid, Paris, Singapore; Johor and Bangkok Coming Soon).",
+  "profile": "Carrier- and cloud-neutral colocation operator running one campus in each of seven cities: Amsterdam, Frankfurt, Hong Kong, London, Madrid, Paris and Singapore, with Johor and Bangkok announced. Its sites sit inside metropolitan connectivity hubs rather than on out-of-town land; the London campus is in Docklands. The company cites over three decades of operation and does not publish its ownership.",
+  "sourceUrls": [
+   "https://www.globalswitch.com/",
+   "https://www.globalswitch.com/data-centres/",
+   "https://www.globalswitch.com/about/"
+  ],
+  "notes": "Ownership deliberately omitted: neither /about/ nor /corporate-announcements/ states an owner, and it is not going in the profile from memory."
+ },
+ {
+  "key": "nlighten",
+  "displayName": "nLighten",
+  "domain": "nlighten.com",
+  "kind": "colocation",
+  "hqCountry": "NL",
+  "officialLocationList": "https://www.nlighten.com/en/edge-location/",
+  "logoCandidates": [
+   "https://www.nlighten.com/wp-content/uploads/2024/04/653fdce94407e9cf1e7387fe_nlighten-logo-short.svg",
+   "https://www.nlighten.com/wp-content/uploads/2024/04/nLighten-logo.svg",
+   "https://www.nlighten.com/wp-content/uploads/2024/04/favicon-32x32-1.png"
+  ],
+  "publishedFacilities": "33 edge locations - listed at nlighten.com/en/edge-location/ across Belgium, France, Germany, the Netherlands, Spain, Switzerland and the UK.",
+  "profile": "European edge colocation operator assembled from regional data centre businesses, registered as nLighten HQ BV in Schiphol-Rijk, the Netherlands. It runs small facilities close to users rather than a few large campuses, across Belgium, France, Germany, the Netherlands, Spain, Switzerland and the United Kingdom, and sells colocation, connectivity and on-site services. It does not publish its ownership.",
+  "sourceUrls": [
+   "https://www.nlighten.com/en/",
+   "https://www.nlighten.com/en/edge-location/"
+  ],
+  "notes": "Ownership not stated on their site; omitted rather than written from memory."
+ },
+ {
+  "key": "virtus",
+  "displayName": "VIRTUS Data Centres",
+  "domain": "virtusdatacentres.com",
+  "kind": "wholesale",
+  "hqCountry": "GB",
+  "parent": "ST Telemedia Global Data Centres",
+  "officialLocationList": "https://virtusdatacentres.com/locations/uk",
+  "logoCandidates": [
+   "https://virtusdatacentres.com/media/templates/site/virtus/images/virtus-favicon.svg",
+   "https://virtusdatacentres.com/media/templates/site/virtus/images/virtus-favicon.ico",
+   "https://virtusdatacentres.com/templates/virtus/favicon.ico"
+  ],
+  "publishedFacilities": "20 location pages - listed at virtusdatacentres.com/locations/, covering London campuses at Slough, Stockley Park, Hayes, Enfield and Saunderton, Berlin at Marienpark and Wustermark, and Milan.",
+  "profile": "Carrier-neutral wholesale and colocation operator, part of ST Telemedia Global Data Centres. Its estate is concentrated on interconnected London campuses - Slough, Stockley Park, Hayes, Enfield and Saunderton - with more recent expansion into Berlin and Milan. Facilities are built to Tier III standard, and the campus model is sold on site diversity within one metro.",
+  "sourceUrls": [
+   "https://virtusdatacentres.com/",
+   "https://virtusdatacentres.com/about-virtus/global-data-centres"
+  ],
+  "notes": "The '100+ data centres / 2GW' figure on their about page is STT GDC's global platform total, not VIRTUS's own estate, so it is deliberately not quoted here."
+ },
+ {
+  "key": "eunetworks",
+  "displayName": "euNetworks",
+  "domain": "eunetworks.com",
+  "logoCandidates": [
+   "https://images.ctfassets.net/3vdl90908uqs/MX80GGHPXf8BJoV7zkYZf/4641b2a3db1dc7e9be02736c8fc0f4d2/mobile-logo.svg",
+   "https://www.eunetworks.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "sify",
+  "displayName": "Sify Technologies",
+  "domain": "sifytechnologies.com",
+  "logoCandidates": [
+   "http://www.sifytechnologies.com/us/wp-content/uploads/2023/06/favicon.jpg",
+   "https://www.sifytechnologies.com/favicon.ico"
+  ],
+  "officialLocationList": "http://www.sifytechnologies.com/us/data-center/"
+ },
+ {
+  "key": "coresite",
+  "displayName": "CoreSite",
+  "domain": "coresite.com",
+  "logoCandidates": [
+   "https://www.coresite.com/hubfs/5da05d3b675e830de0ab2e66_Favicon.png",
+   "https://www.coresite.com/hs-fs/hubfs/CoreSite_AMT_Logo_Web.png?width=534&height=127&name=CoreSite_AMT_Logo_Web.png",
+   "https://www.coresite.com/hs-fs/hubfs/-website-images/logos/Gartner_logo_RGB.png?width=100&height=23&name=Gartner_logo_RGB.png",
+   "https://23381819.fs1.hubspotusercontent-na1.net/hubfs/23381819/-website-images/logos/homepage%20customer%20logos/amw_log_amway_4c_hp.svg",
+   "https://23381819.fs1.hubspotusercontent-na1.net/hubfs/23381819/-website-images/logos/homepage%20customer%20logos/at-t-logo-hp.svg",
+   "https://www.coresite.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.coresite.com/data-center-design/data-center-operations"
+ },
+ {
+  "key": "globalconnect",
+  "displayName": "GlobalConnect",
+  "domain": "globalconnect.dk",
+  "logoCandidates": [
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/cropped-gc-logo-symbol-blue-150x150-1-32x32.png",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/cropped-gc-logo-symbol-blue-150x150-1-192x192.png",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/cropped-gc-logo-symbol-blue-150x150-1-180x180.png",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/gc_logo.svg",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/gc-logo-symbol-blue-150x150-1.png",
+   "https://www.globalconnect.dk/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "northc",
+  "displayName": "NorthC",
+  "domain": "northc.eu",
+  "logoCandidates": [
+   "https://www.northcdatacenters.com/wp-content/uploads/2020/02/cropped-favicon-1-175x175.webp",
+   "https://www.northcdatacenters.com/wp-content/uploads/2020/02/cropped-favicon-1-250x250.webp",
+   "https://www.northc.eu/favicon.ico"
+  ],
+  "officialLocationList": "https://www.northc.eu/#tab-onze-datacenters"
+ },
+ {
+  "key": "nextdc",
+  "displayName": "NextDC",
+  "domain": "nextdc.com",
+  "logoCandidates": [
+   "https://www.nextdc.com/hubfs/nextDCLogo.svg",
+   "https://www.nextdc.com/hubfs/favicon.ico",
+   "https://www.nextdc.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.nextdc.com/news/nextdc-goes-live-with-kl1-kuala-lumpur-launching-strategic-ai-ready-data-centre-in-southeast-asia"
+ },
+ {
+  "key": "365",
+  "displayName": "365 Data Centers",
+  "domain": "365datacenters.com",
+  "logoCandidates": [
+   "https://365datacenters.com/wp-content/uploads/2022/05/cropped-Favicon_365-32x32.png",
+   "https://365datacenters.com/wp-content/uploads/2022/05/cropped-Favicon_365-192x192.png",
+   "https://365datacenters.com/wp-content/uploads/2022/05/cropped-Favicon_365-180x180.png",
+   "https://365datacenters.com/wp-content/uploads/2023/05/365_Logo_FINAL.png",
+   "https://www.365datacenters.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.365datacenters.com/colocation-services/"
+ },
+ {
+  "key": "crown castle",
+  "displayName": "Crown Castle",
+  "domain": "crowncastle.com",
+  "logoCandidates": [
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-57x57.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-114x114.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-72x72.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-144x144.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-60x60.png",
+   "https://www.crowncastle.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "vocus",
+  "displayName": "Vocus",
+  "domain": "vocus.com.au",
+  "logoCandidates": [
+   "https://www.vocus.com.au/Vocus/Static/assets/favicon/apple-touch-icon.png?v=2607281306",
+   "https://www.vocus.com.au/Vocus/Static/assets/favicon/favicon-32x32.png?v=2607281306",
+   "https://www.vocus.com.au/Vocus/Static/assets/favicon/favicon-16x16.png?v=2607281306",
+   "https://www.vocus.com.au/favicon.ico"
+  ],
+  "officialLocationList": "https://www.vocus.com.au/enterprise/colocation-hybrid-cloud"
+ },
+ {
+  "key": "united",
+  "displayName": "Datacenter United",
+  "domain": "datacenterunited.com",
+  "logoCandidates": [
+   "https://datacenterunited.com/wp-content/uploads/2025/11/cropped-Scherm­afbeelding-2025-11-05-om-15.32.22-32x32.png",
+   "https://datacenterunited.com/wp-content/uploads/2025/11/cropped-Scherm­afbeelding-2025-11-05-om-15.32.22-192x192.png",
+   "https://datacenterunited.com/wp-content/uploads/2025/11/cropped-Scherm­afbeelding-2025-11-05-om-15.32.22-180x180.png",
+   "https://www.datacenterunited.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "nxtra data",
+  "displayName": "Nxtra Data",
+  "domain": "nxtra.in",
+  "logoCandidates": [
+   "https://assets.airtel.in/nxtra/icons/nxtra-logo.svg",
+   "https://www.nxtra.in/wp-content/uploads/2025/06/favicon.png",
+   "https://www.nxtra.in/favicon.ico"
+  ],
+  "officialLocationList": "https://www.nxtra.in/solutions-colocation"
+ },
+ {
+  "key": "templus",
+  "displayName": "TEMPLUS DATACENTERS",
+  "domain": "templus.com",
+  "logoCandidates": [
+   "https://templus.com/wp-content/uploads/2026/03/Logo-Templus.svg",
+   "https://templus.com/wp-content/uploads/2026/03/templus-favicon-150x150.png",
+   "https://templus.com/wp-content/uploads/2026/03/templus-favicon-300x300.png",
+   "https://www.templus.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.templus.com/data-centers/barcelona-bcn01"
+ },
+ {
+  "key": "ctrls",
+  "displayName": "CtrlS Datacenters",
+  "domain": "ctrls.in",
+  "logoCandidates": [
+   "https://www.ctrls.com/wp-content/uploads/2023/12/ctrls-logo-white-1.png",
+   "https://ctrls.com/wp-content/uploads/2023/12/ctrls-logo-black.png",
+   "https://www.ctrls.com/wp-content/uploads/2024/02/ctrls-logo-300x56.png",
+   "https://www.ctrls.com/wp-content/uploads/2024/02/favicon.ico",
+   "https://www.ctrls.in/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "digital edge",
+  "displayName": "Digital Edge DC",
+  "domain": "digitaledgedc.com",
+  "logoCandidates": [
+   "https://www.digitaledgedc.com/wp-content/uploads/2024/06/navbar-logo.png",
+   "https://www.digitaledgedc.com/wp-content/uploads/2024/11/logo-footer.png",
+   "https://www.digitaledgedc.com/wp-content/uploads/2024/06/favicon-32x32-1.png",
+   "https://www.digitaledgedc.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.digitaledgedc.com/products-services/data-centers/"
+ },
+ {
+  "key": "estruxture",
+  "displayName": "eStruxture Data Centers",
+  "domain": "estruxture.ca",
+  "logoCandidates": [
+   "https://www.estruxture.com/hubfs/estruxture-2023/ai-wp/logo-estruxture.svg",
+   "https://www.estruxture.com/hubfs/estruxture-2023/ai-wp/favicon-estruxture.svg",
+   "https://www.estruxture.ca/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "pulsant",
+  "displayName": "Pulsant",
+  "domain": "pulsant.co.uk",
+  "logoCandidates": [
+   "https://www.pulsant.com/hubfs/raw_assets/public/olympia/images/Brand/pulsant-logo.svg",
+   "https://www.pulsant.com/hs-fs/hubfs/ies-logo-dark-1.png?width=150&height=150&name=ies-logo-dark-1.png",
+   "https://www.pulsant.com/hubfs/favicon.ico",
+   "https://pulsant.co.uk/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "america",
+  "displayName": "Colocation America",
+  "domain": "colocationamerica.com",
+  "logoCandidates": [
+   "https://www.colocationamerica.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.colocationamerica.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.colocationamerica.com%2F"
+ },
+ {
+  "key": "dartpoints",
+  "displayName": "DartPoints",
+  "domain": "dartpoints.com",
+  "logoCandidates": [
+   "https://www.dartpoints.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ }
+]

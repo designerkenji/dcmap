@@ -1,0 +1,2593 @@
+[
+ {
+  "id": "sub-adams",
+  "name": "Adams",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1681"
+  ],
+  "counties": [
+   "Niagara"
+  ],
+  "named_by": 1,
+  "lat": 43.080495,
+  "lon": -79.042425,
+  "osm": "way/178196881",
+  "osm_name": "Buffalo Avenue Substation",
+  "located": true,
+  "operator": "National Grid",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-adirondack",
+  "name": "Adirondack",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [
+   "Adirondack transmission",
+   "Adirondak"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1446",
+   "1728",
+   "1729",
+   "1730",
+   "1731",
+   "1745"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 6,
+  "lat": 43.92201,
+  "lon": -75.319903,
+  "osm": "way/162784585",
+  "osm_name": "Adirondack Substation",
+  "osm_county": "Lewis County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Lewis County, but the filing places it in St Lawrence",
+  "operator": "New York Power Authority",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-albany-bethlehem",
+  "name": "Albany?Bethlehem",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1754"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-broad-street-34-5-kv",
+  "name": "Broad Street 34.5 kV",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1761"
+  ],
+  "counties": [
+   "Horseheads"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-buchanan",
+  "name": "Buchanan",
+  "kv": 138,
+  "kvs": [
+   138
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1717"
+  ],
+  "counties": [
+   "Westchester"
+  ],
+  "named_by": 1,
+  "lat": 41.264366,
+  "lon": -73.947266,
+  "osm": "way/86300404",
+  "osm_name": "Buchanan Substation",
+  "osm_county": "Westchester County",
+  "located": true,
+  "operator": "Consolidated Edison"
+ },
+ {
+  "id": "sub-clay",
+  "name": "Clay",
+  "kv": 345,
+  "kvs": [
+   345,
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1536",
+   "1627",
+   "1736",
+   "1746"
+  ],
+  "counties": [
+   "Onondaga"
+  ],
+  "named_by": 4,
+  "lat": 43.197664,
+  "lon": -76.171444,
+  "osm": "way/107706683",
+  "osm_name": "Clay Station",
+  "osm_county": "Onondaga County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-coopers-corner",
+  "name": "Coopers Corner",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0311"
+  ],
+  "counties": [
+   "Sullivan"
+  ],
+  "named_by": 1,
+  "lat": 41.669543,
+  "lon": -74.76126,
+  "osm": "way/175648229",
+  "osm_name": "Coopers Corners Substation",
+  "osm_county": "Sullivan County",
+  "located": true,
+  "operator": "NYSEG"
+ },
+ {
+  "id": "sub-cricket-valley",
+  "name": "Cricket Valley",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1522"
+  ],
+  "counties": [
+   "Dutchess"
+  ],
+  "named_by": 1,
+  "lat": 41.676601,
+  "lon": -73.578745,
+  "osm": "way/1075629718",
+  "osm_name": "Cricket Valley Substation",
+  "osm_county": "Dutchess County",
+  "located": true,
+  "operator": "NYSEG"
+ },
+ {
+  "id": "sub-dennison",
+  "name": "Dennison",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0909",
+   "1213",
+   "1719"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 3,
+  "lat": 44.954671,
+  "lon": -74.861998,
+  "osm": "way/81128961",
+  "osm_name": "Dennison Station",
+  "osm_county": "Saint Lawrence County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-east-fishkill",
+  "name": "East Fishkill",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1738"
+  ],
+  "counties": [
+   "Dutchess"
+  ],
+  "named_by": 1,
+  "lat": 41.568255,
+  "lon": -73.834757,
+  "osm": "way/86220650",
+  "osm_name": "East Fishkill Substation",
+  "osm_county": "Dutchess County",
+  "located": true,
+  "operator": "NYSEG"
+ },
+ {
+  "id": "sub-general-electric-r-d-national-grid",
+  "name": "General Electric R&D National Grid",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1758"
+  ],
+  "counties": [
+   "Schenectady"
+  ],
+  "named_by": 1,
+  "lat": 42.807829,
+  "lon": -73.965351,
+  "osm": "way/189151692",
+  "osm_name": "General Electric Substation",
+  "osm_county": "Schenectady County",
+  "located": true
+ },
+ {
+  "id": "sub-greenidge",
+  "name": "Greenidge",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0776",
+   "1725"
+  ],
+  "counties": [
+   "Yates"
+  ],
+  "named_by": 2,
+  "lat": 42.679554,
+  "lon": -76.951003,
+  "osm": "way/114751052",
+  "osm_name": "(no name tag; power=substation, substation=generation, voltage=115000)",
+  "located": true,
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-harings-corner",
+  "name": "Harings Corner",
+  "kv": 138,
+  "kvs": [
+   138
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1715"
+  ],
+  "counties": [
+   "Rockland"
+  ],
+  "named_by": 1,
+  "lat": 41.022957,
+  "lon": -73.968093,
+  "osm": "way/95197289",
+  "osm_name": "Harings Corner Substation",
+  "located": true,
+  "operator": "Orange & Rockland",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-haverstock",
+  "name": "Haverstock",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1446",
+   "1724",
+   "1728",
+   "1729",
+   "1730",
+   "1731",
+   "1745"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 7,
+  "lat": 44.975963,
+  "lon": -74.796595,
+  "osm": "way/1344542590",
+  "osm_name": "Haverstock Substation",
+  "located": true,
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-holbrook",
+  "name": "Holbrook",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1721"
+  ],
+  "counties": [
+   "Suffolk"
+  ],
+  "named_by": 1,
+  "lat": 40.820629,
+  "lon": -73.072641,
+  "osm": "way/83173917",
+  "osm_name": "Holbrook Substation",
+  "osm_county": "Suffolk County",
+  "located": true,
+  "operator": "Long Island Power Authority"
+ },
+ {
+  "id": "sub-homer-hill",
+  "name": "Homer Hill",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1723"
+  ],
+  "counties": [
+   "Cattaraugus"
+  ],
+  "named_by": 1,
+  "lat": 42.089385,
+  "lon": -78.457422,
+  "osm": "way/148611138",
+  "osm_name": "Homer Hill Switch Structure",
+  "osm_county": "Cattaraugus County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-huntley",
+  "name": "Huntley",
+  "kv": 230,
+  "kvs": [
+   230
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1726"
+  ],
+  "counties": [
+   "Erie"
+  ],
+  "named_by": 1,
+  "lat": 42.972501,
+  "lon": -78.933939,
+  "osm": "way/94483111",
+  "osm_name": "Huntley Substation",
+  "osm_county": "Erie County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-ilion-municipal",
+  "name": "Ilion Municipal",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1735"
+  ],
+  "counties": [
+   "Herkimer"
+  ],
+  "named_by": 1,
+  "lat": 43.019924,
+  "lon": -75.041474,
+  "osm": "way/1318905044",
+  "osm_name": "(no name tag; operator=Village of Ilion)",
+  "located": true,
+  "operator": "Village of Ilion",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-johnson-rd",
+  "name": "Johnson Rd",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0290A"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 1,
+  "lat": 42.764723,
+  "lon": -73.743312,
+  "osm": "way/139791029",
+  "osm_name": "Johnson Road Station",
+  "located": true,
+  "operator": "National Grid",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-kintigh",
+  "name": "Kintigh",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [
+   "Kintigh/Niagara"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0359",
+   "0580",
+   "1670",
+   "1732",
+   "849"
+  ],
+  "counties": [
+   "Genesee",
+   "Niagara"
+  ],
+  "named_by": 5,
+  "lat": 43.352373,
+  "lon": -78.6087,
+  "osm": "way/115339578",
+  "osm_name": "Somerset Substation",
+  "located": true,
+  "operator": "NYSEG",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-knickerbocker",
+  "name": "Knickerbocker",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1646"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 1,
+  "lat": 42.494364,
+  "lon": -73.737385,
+  "osm": "way/1221667976",
+  "osm_name": "Knickerbocker Substation",
+  "osm_county": "Rensselaer County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Rensselaer County, but the filing places it in Albany",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-leeds",
+  "name": "Leeds",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1757"
+  ],
+  "counties": [
+   "Greene"
+  ],
+  "named_by": 1,
+  "lat": 42.264758,
+  "lon": -73.84697,
+  "osm": "way/139903895",
+  "osm_name": "Leeds Substation",
+  "osm_county": "Greene County",
+  "located": true,
+  "operator": "Consolidated Edison"
+ },
+ {
+  "id": "sub-maplewood",
+  "name": "Maplewood",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0290A"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 1,
+  "lat": 42.745407,
+  "lon": -73.708461,
+  "osm": "way/139791683",
+  "osm_name": "Maplewood Substation",
+  "osm_county": "Albany County",
+  "located": true
+ },
+ {
+  "id": "sub-mcknownville",
+  "name": "McKnownville",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1755",
+   "1756"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 2,
+  "lat": 42.683979,
+  "lon": -73.842914,
+  "osm": "way/86356092",
+  "osm_name": "McKownville Substation",
+  "located": true,
+  "operator": "National Grid",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-menands",
+  "name": "Menands",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [
+   "Maplewood Menands"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1750",
+   "1753"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 2,
+  "lat": 42.685446,
+  "lon": -73.730935,
+  "osm": "way/105014766",
+  "osm_name": "Menands Substation",
+  "osm_county": "Albany County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-milliken",
+  "name": "Milliken",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0850",
+   "1683",
+   "1733"
+  ],
+  "counties": [
+   "Cayuga",
+   "Tompkins"
+  ],
+  "named_by": 3,
+  "lat": 42.602532,
+  "lon": -76.632835,
+  "osm": "way/571688108",
+  "osm_name": "(no name tag)",
+  "located": true,
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-moses",
+  "name": "Moses",
+  "kv": 230,
+  "kvs": [
+   115,
+   230
+  ],
+  "aka": [
+   "Moses Massena"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1315",
+   "1743"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 2,
+  "lat": 45.00401,
+  "lon": -74.804729,
+  "osm": "way/79293030",
+  "osm_name": "Moses Switching Station",
+  "osm_county": "Saint Lawrence County",
+  "located": true,
+  "operator": "New York Power Authority"
+ },
+ {
+  "id": "sub-oak-street",
+  "name": "Oak Street",
+  "kv": 138,
+  "kvs": [
+   138,
+   38
+  ],
+  "aka": [
+   "Oak St"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1713",
+   "1716"
+  ],
+  "counties": [
+   "Orange",
+   "Rockland"
+  ],
+  "named_by": 2,
+  "located": false
+ },
+ {
+  "id": "sub-packard",
+  "name": "Packard",
+  "kv": 230,
+  "kvs": [
+   115,
+   230
+  ],
+  "aka": [
+   "Beck Packard",
+   "Niagara Packard"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1681",
+   "1726",
+   "1747",
+   "1748",
+   "1749"
+  ],
+  "counties": [
+   "Erie",
+   "Niagara",
+   "Niagara Falls"
+  ],
+  "named_by": 5,
+  "lat": 43.098801,
+  "lon": -79.007501,
+  "osm": "way/147381638",
+  "osm_name": "Packard Substation",
+  "osm_county": "Niagara County",
+  "located": true
+ },
+ {
+  "id": "sub-patroon-creek",
+  "name": "Patroon Creek",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1755",
+   "1756"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 2,
+  "lat": 42.688935,
+  "lon": -73.808872,
+  "osm": "way/107460526",
+  "osm_name": "Patroon Substation",
+  "osm_county": "Albany County",
+  "located": true
+ },
+ {
+  "id": "sub-pleasant-valley",
+  "name": "Pleasant Valley",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1522"
+  ],
+  "counties": [
+   "Dutchess"
+  ],
+  "named_by": 1,
+  "lat": 41.739643,
+  "lon": -73.834166,
+  "osm": "way/86251100",
+  "osm_name": "Pleasant Valley Substation",
+  "osm_county": "Dutchess County",
+  "located": true,
+  "operator": "Consolidated Edison"
+ },
+ {
+  "id": "sub-ramapo",
+  "name": "Ramapo",
+  "kv": 138,
+  "kvs": [
+   138
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1682"
+  ],
+  "counties": [
+   "Rockland"
+  ],
+  "named_by": 1,
+  "lat": 41.149658,
+  "lon": -74.155056,
+  "osm": "way/95825721",
+  "osm_name": "Ramapo Substation",
+  "osm_county": "Rockland County",
+  "located": true,
+  "kv_note": "filing says 138 kV, OSM says 500 kV",
+  "operator": "Con Edison"
+ },
+ {
+  "id": "sub-reynolds",
+  "name": "Reynolds",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0979",
+   "1315"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 2,
+  "lat": 44.980006,
+  "lon": -74.751661,
+  "osm": "way/396623554",
+  "osm_name": "(no name tag; substation=generation, 115000)",
+  "osm_county": "Rensselaer County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Rensselaer County, but the filing places it in St Lawrence",
+  "operator": "National Grid",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-rock-hill",
+  "name": "Rock Hill",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0311"
+  ],
+  "counties": [
+   "Sullivan"
+  ],
+  "named_by": 1,
+  "lat": 41.623748,
+  "lon": -74.598549,
+  "osm": "way/320090965",
+  "osm_name": "Rock Hill Substation",
+  "osm_county": "Sullivan County",
+  "located": true,
+  "operator": "NYSEG"
+ },
+ {
+  "id": "sub-rome",
+  "name": "Rome",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1737"
+  ],
+  "counties": [
+   "Oneida"
+  ],
+  "named_by": 1,
+  "lat": 43.204877,
+  "lon": -75.453118,
+  "osm": "way/736777627",
+  "osm_name": "Rome Station",
+  "osm_county": "Oneida County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-rosa-road",
+  "name": "Rosa Road",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1758"
+  ],
+  "counties": [
+   "Schenectady"
+  ],
+  "named_by": 1,
+  "lat": 42.831264,
+  "lon": -73.901891,
+  "osm": "relation/7214880",
+  "osm_name": "Rosa Road Station",
+  "osm_county": "Schenectady County",
+  "located": true
+ },
+ {
+  "id": "sub-rotterdam",
+  "name": "Rotterdam",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1521"
+  ],
+  "counties": [
+   "Schoharie"
+  ],
+  "named_by": 1,
+  "lat": 42.828887,
+  "lon": -73.997846,
+  "osm": "way/139587105",
+  "osm_name": "Rotterdam Substation",
+  "osm_county": "Schenectady County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Schenectady County, but the filing places it in Schoharie",
+  "operator": "National Grid",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-round-lake",
+  "name": "Round Lake",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "205"
+  ],
+  "counties": [
+   "Saratoga"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-sills-rd",
+  "name": "Sills Rd",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1721"
+  ],
+  "counties": [
+   "Suffolk"
+  ],
+  "named_by": 1,
+  "lat": 40.819437,
+  "lon": -72.938705,
+  "osm": "way/1485150706",
+  "osm_name": "(no name tag)",
+  "located": true,
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-somerset",
+  "name": "Somerset",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "0359"
+  ],
+  "counties": [
+   "Niagara"
+  ],
+  "named_by": 1,
+  "lat": 43.352373,
+  "lon": -78.6087,
+  "osm": "way/115339578",
+  "osm_name": "Somerset Substation",
+  "osm_county": "Niagara County",
+  "located": true,
+  "operator": "NYSEG"
+ },
+ {
+  "id": "sub-stamp",
+  "name": "STAMP",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1484"
+  ],
+  "counties": [
+   "Genesee"
+  ],
+  "named_by": 1,
+  "lat": 43.096963,
+  "lon": -78.411078,
+  "osm": "way/1442727125",
+  "osm_name": "Future Yellowtail Energy Substation",
+  "located": true,
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-state-campus",
+  "name": "State Campus",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [
+   "State Campus feeder"
+  ],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1753"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 1,
+  "lat": 42.686218,
+  "lon": -73.807873,
+  "osm": "way/1077007213",
+  "osm_name": "State Campus Substation",
+  "osm_county": "Albany County",
+  "located": true
+ },
+ {
+  "id": "sub-tallman",
+  "name": "Tallman",
+  "kv": 138,
+  "kvs": [
+   138
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1682",
+   "1714"
+  ],
+  "counties": [
+   "Rockland"
+  ],
+  "named_by": 2,
+  "lat": 41.115199,
+  "lon": -74.114292,
+  "osm": "way/95807537",
+  "osm_name": "Tallman Substation",
+  "osm_county": "Rockland County",
+  "located": true,
+  "operator": "Orange & Rockland"
+ },
+ {
+  "id": "sub-teall-ln",
+  "name": "Teall LN",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1746"
+  ],
+  "counties": [
+   "Onondaga"
+  ],
+  "named_by": 1,
+  "lat": 43.08885,
+  "lon": -76.123007,
+  "osm": "way/220947888",
+  "osm_name": "Teall Avenue Station",
+  "located": true,
+  "operator": "National Grid",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-va-acadian",
+  "name": "Acadian",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0047"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-alto",
+  "name": "Alto",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2023-0056",
+   "DOM-2024-0008"
+  ],
+  "counties": [
+   "Stafford"
+  ],
+  "named_by": 2,
+  "located": false
+ },
+ {
+  "id": "sub-va-amethyst",
+  "name": "Amethyst",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0005"
+  ],
+  "counties": [
+   "Chesterfield"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-antique",
+  "name": "Antique",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0045"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-aphrodite",
+  "name": "Aphrodite",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0061"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-artemis",
+  "name": "Artemis",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0050"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-atlas",
+  "name": "Atlas",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2023-0011"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-auto-world",
+  "name": "Auto World",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2023-0031"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-baritone",
+  "name": "Baritone",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0008"
+  ],
+  "counties": [
+   "Stafford"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-barrister",
+  "name": "Barrister",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0078"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-bermuda-hundred",
+  "name": "Bermuda Hundred",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-bunker",
+  "name": "Bunker",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0040"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-burrell",
+  "name": "Burrell",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2022-0046"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-caesar",
+  "name": "Caesar",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0068"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-carmel-church",
+  "name": "Carmel Church",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2023-0055"
+  ],
+  "counties": [
+   "Caroline"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-celtic",
+  "name": "Celtic",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0066"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-chandler",
+  "name": "Chandler",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0083"
+  ],
+  "counties": [
+   "Culpeper"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-chickahominy",
+  "name": "Chickahominy",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021",
+   "DOM-2024-0018"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 2,
+  "lat": 37.437002,
+  "lon": -77.158692,
+  "osm": "way/81595538",
+  "osm_name": "Chickahominy Substation",
+  "osm_county": "Charles City County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Charles City County, but the filing places it in Henrico",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-va-cirrus",
+  "name": "Cirrus",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0085"
+  ],
+  "counties": [
+   "Culpeper"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-cosner",
+  "name": "Cosner",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0083"
+  ],
+  "counties": [
+   "Spotsylvania"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-dahlgren-west",
+  "name": "Dahlgren West",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0052"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-deimos",
+  "name": "Deimos",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0062"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-demeter",
+  "name": "Demeter",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0062"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-diamond-hill",
+  "name": "Diamond Hill",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0043"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-elm-farm",
+  "name": "Elm Farm",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0031"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "lat": 38.660189,
+  "lon": -77.327042,
+  "osm": "way/855003534",
+  "osm_name": "Elm Farm Substation",
+  "osm_county": "Prince William County",
+  "located": true
+ },
+ {
+  "id": "sub-va-emy",
+  "name": "Emy",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0051"
+  ],
+  "counties": [
+   "Spotsylvania"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-enon",
+  "name": "Enon",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "lat": 37.339625,
+  "lon": -77.323312,
+  "osm": "way/868888651",
+  "osm_name": "Enon Substation",
+  "located": true,
+  "operator": "Virginia Electric and Power Company",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-va-enon-shand-creek",
+  "name": "Enon Shand Creek",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-firehouse",
+  "name": "Firehouse",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0016"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-flamingo",
+  "name": "Flamingo",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0058"
+  ],
+  "counties": [
+   "Hanover"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-foxbrook-lane",
+  "name": "Foxbrook Lane",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0072"
+  ],
+  "counties": [
+   "Louisa"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-fractus",
+  "name": "Fractus",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0064"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-frances",
+  "name": "Frances",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0071"
+  ],
+  "counties": [
+   "Louisa"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-garnet",
+  "name": "Garnet",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0006"
+  ],
+  "counties": [
+   "Chesterfield"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-gemini",
+  "name": "Gemini",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2023-0011"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-gordonsville",
+  "name": "Gordonsville",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0072"
+  ],
+  "counties": [
+   "Louisa"
+  ],
+  "named_by": 1,
+  "lat": 38.126615,
+  "lon": -78.221508,
+  "osm": "way/97721028",
+  "osm_name": "Gordonsville Substation",
+  "osm_county": "Albemarle County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Albemarle County, but the filing places it in Louisa",
+  "operator": "Virginia Electric and Power Company",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-va-gray-bark",
+  "name": "Gray Bark",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0019"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-harlem",
+  "name": "Harlem",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0067"
+  ],
+  "counties": [
+   "Hanover"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-helm",
+  "name": "Helm",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2018-0018"
+  ],
+  "counties": [
+   "Fauquier"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-hera",
+  "name": "Hera",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0055"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-hopewell",
+  "name": "Hopewell",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "lat": 37.289856,
+  "lon": -77.282698,
+  "osm": "way/80915399",
+  "osm_name": "Hopewell Substation",
+  "located": true,
+  "operator": "Virginia Electric and Power Company"
+ },
+ {
+  "id": "sub-va-james-hill",
+  "name": "James Hill",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0036"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-james-hill-jamestown-drive",
+  "name": "James Hill Jamestown Drive",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0036"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-javelin",
+  "name": "Javelin",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0044"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-kettler-crossroads",
+  "name": "Kettler Crossroads",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0053"
+  ],
+  "counties": [
+   "Spotsylvania"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-lenticular",
+  "name": "Lenticular",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0063"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-lucky-hill-helm",
+  "name": "Lucky Hill Helm",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2018-0018"
+  ],
+  "counties": [
+   "Fauquier"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-mcdevitt",
+  "name": "McDevitt",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0084"
+  ],
+  "counties": [
+   "Culpeper"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-meadowville",
+  "name": "Meadowville",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-mint-springs-burrell",
+  "name": "Mint Springs Burrell",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2022-0046"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-mountain-run",
+  "name": "Mountain Run",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2022-0034"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "lat": 38.462895,
+  "lon": -77.974006,
+  "osm": "way/450077970",
+  "osm_name": "Mountain Run Substation",
+  "located": true,
+  "operator": "Virginia Electric and Power Company"
+ },
+ {
+  "id": "sub-va-mudd-tavern",
+  "name": "Mudd Tavern",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0032"
+  ],
+  "counties": [
+   "Caroline"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-mudel",
+  "name": "Mudel",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2026-0025"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-nero",
+  "name": "Nero",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0057"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-new-post",
+  "name": "New Post",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2023-0016",
+   "DOM-2025-0051"
+  ],
+  "counties": [
+   "Spotsylvania"
+  ],
+  "named_by": 2,
+  "located": false
+ },
+ {
+  "id": "sub-va-palomino",
+  "name": "Palomino",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0082"
+  ],
+  "counties": [
+   "Culpeper"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-phobos",
+  "name": "Phobos",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0061"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-poe",
+  "name": "Poe",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0036"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "lat": 37.200009,
+  "lon": -77.359122,
+  "osm": "way/81539967",
+  "osm_name": "Poe Substation",
+  "located": true,
+  "operator": "Virginia Electric and Power Company"
+ },
+ {
+  "id": "sub-va-powell-creek",
+  "name": "Powell Creek",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0059"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-radar",
+  "name": "Radar",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0065"
+  ],
+  "counties": [
+   "Loudoun"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-ruther-glen",
+  "name": "Ruther Glen",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0012"
+  ],
+  "counties": [
+   "Caroline"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-saltwood",
+  "name": "Saltwood",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0019",
+   "DOM-2024-0020",
+   "DOM-2024-0040"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 3,
+  "located": false
+ },
+ {
+  "id": "sub-va-shand-creek",
+  "name": "Shand Creek",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2019-0021"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-shaw",
+  "name": "Shaw",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0070"
+  ],
+  "counties": [
+   "Culpeper"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-simms",
+  "name": "Simms",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2026-0015"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-sky-lark",
+  "name": "Sky Lark",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0042"
+  ],
+  "counties": [
+   "Prince William"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-slayden-creek",
+  "name": "Slayden Creek",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0004"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-southall",
+  "name": "Southall",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0071"
+  ],
+  "counties": [
+   "Louisa"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-stockholm",
+  "name": "Stockholm",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0049"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-sunset-hill",
+  "name": "Sunset Hill",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0030"
+  ],
+  "counties": [],
+  "named_by": 1,
+  "lat": 38.948145,
+  "lon": -77.328395,
+  "osm": "way/692003687",
+  "osm_name": "Subset Hills Substation",
+  "located": true,
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-va-surveyors",
+  "name": "Surveyors",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0049"
+  ],
+  "counties": [
+   "Stafford"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-thicket",
+  "name": "Thicket",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0018",
+   "DOM-2024-0020",
+   "DOM-2024-0040",
+   "DOM-2024-0049"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 4,
+  "located": false
+ },
+ {
+  "id": "sub-va-topaz",
+  "name": "Topaz",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0007"
+  ],
+  "counties": [
+   "Chesterfield"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-trigon",
+  "name": "Trigon",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0044"
+  ],
+  "counties": [
+   "Chesterfield"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-tropical",
+  "name": "Tropical",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2022-0062"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-wesbey-drive",
+  "name": "Wesbey Drive",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2025-0072"
+  ],
+  "counties": [
+   "Louisa"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-va-white-oak",
+  "name": "White Oak",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "VA",
+  "sources": [
+   "DOM-2024-0018"
+  ],
+  "counties": [
+   "Henrico"
+  ],
+  "named_by": 1,
+  "lat": 37.48611,
+  "lon": -77.247119,
+  "osm": "way/578427832",
+  "osm_name": "White Oak Substation",
+  "located": true,
+  "operator": "Dominion Energy",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-walck-rd",
+  "name": "Walck Rd",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1465"
+  ],
+  "counties": [
+   "Niagara"
+  ],
+  "named_by": 1,
+  "located": false
+ },
+ {
+  "id": "sub-willis",
+  "name": "Willis",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1724"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 1,
+  "lat": 44.889114,
+  "lon": -74.118643,
+  "osm": "way/175766583",
+  "osm_name": "Willis Substation",
+  "osm_county": "Franklin County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Franklin County, but the filing places it in St Lawrence",
+  "operator": "New York Power Authority",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-wood-street",
+  "name": "Wood Street",
+  "kv": 345,
+  "kvs": [
+   345
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1738"
+  ],
+  "counties": [
+   "Dutchess"
+  ],
+  "named_by": 1,
+  "lat": 41.35313,
+  "lon": -73.793788,
+  "osm": "way/86249380",
+  "osm_name": "Wood Street Substation",
+  "osm_county": "Putnam County",
+  "located": true,
+  "geo_rejected": "the name matched a substation in Putnam County, but the filing places it in Dutchess",
+  "operator": "NYSEG",
+  "placed_by": "alias"
+ },
+ {
+  "id": "sub-woodard-ln",
+  "name": "Woodard LN",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1746"
+  ],
+  "counties": [
+   "Onondaga"
+  ],
+  "named_by": 1,
+  "lat": 43.127292,
+  "lon": -76.19397,
+  "osm": "way/938615787",
+  "osm_name": "Woodard Station",
+  "osm_county": "Onondaga County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-woodlawn",
+  "name": "Woodlawn",
+  "kv": 115,
+  "kvs": [
+   115
+  ],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1753"
+  ],
+  "counties": [
+   "Albany"
+  ],
+  "named_by": 1,
+  "lat": 42.749176,
+  "lon": -73.872865,
+  "osm": "relation/19672402",
+  "osm_name": "Woodlawn Substation",
+  "osm_county": "Albany County",
+  "located": true,
+  "operator": "National Grid"
+ },
+ {
+  "id": "sub-zinco",
+  "name": "ZINCO",
+  "kv": null,
+  "kvs": [],
+  "aka": [],
+  "country": "US",
+  "region": "NY",
+  "sources": [
+   "1764"
+  ],
+  "counties": [
+   "St Lawrence"
+  ],
+  "named_by": 1,
+  "located": false
+ }
+]

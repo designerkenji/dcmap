@@ -1,0 +1,464 @@
+[
+ {
+  "region": "NY",
+  "county": "Albany",
+  "lat": 42.59869,
+  "lon": -73.9844,
+  "bbox": [
+   -74.264633,
+   42.407203,
+   -73.676942,
+   42.822542
+  ],
+  "osm": "r1428091",
+  "display": "Albany County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Cattaraugus",
+  "lat": 42.223482,
+  "lon": -78.64771,
+  "bbox": [
+   -79.061274,
+   41.997464,
+   -78.308135,
+   42.543333
+  ],
+  "osm": "r78971",
+  "display": "Cattaraugus County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Cayuga",
+  "lat": 42.809341,
+  "lon": -76.570078,
+  "bbox": [
+   -76.746962,
+   42.618541,
+   -76.265537,
+   43.823959
+  ],
+  "osm": "r3379365",
+  "display": "Cayuga County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Dutchess",
+  "lat": 41.71943,
+  "lon": -73.751621,
+  "bbox": [
+   -74.001345,
+   41.439006,
+   -73.487339,
+   42.081069
+  ],
+  "osm": "r1427979",
+  "display": "Dutchess County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Erie",
+  "lat": 42.716426,
+  "lon": -78.762033,
+  "bbox": [
+   -79.297969,
+   42.437996,
+   -78.461739,
+   43.098701
+  ],
+  "osm": "r36074",
+  "display": "Erie County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Genesee",
+  "lat": 43.010273,
+  "lon": -78.17802,
+  "bbox": [
+   -78.465428,
+   42.862765,
+   -77.904184,
+   43.133041
+  ],
+  "osm": "r78970",
+  "display": "Genesee County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Greene",
+  "lat": 42.281121,
+  "lon": -74.131169,
+  "bbox": [
+   -74.537513,
+   42.097723,
+   -73.773667,
+   42.464258
+  ],
+  "osm": "r1838018",
+  "display": "Greene County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Herkimer",
+  "lat": 43.491133,
+  "lon": -74.948125,
+  "bbox": [
+   -75.21894,
+   42.825086,
+   -74.695985,
+   44.097068
+  ],
+  "osm": "r1835283",
+  "display": "Herkimer County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Niagara",
+  "lat": 43.204244,
+  "lon": -78.767602,
+  "bbox": [
+   -79.200667,
+   43.018945,
+   -78.46046,
+   43.632788
+  ],
+  "osm": "r36267",
+  "display": "Niagara County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Oneida",
+  "lat": 43.214405,
+  "lon": -75.403915,
+  "bbox": [
+   -75.886836,
+   42.86325,
+   -75.068993,
+   43.61508
+  ],
+  "osm": "r1838104",
+  "display": "Oneida County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Onondaga",
+  "lat": 43.015598,
+  "lon": -76.225713,
+  "bbox": [
+   -76.499568,
+   42.771287,
+   -75.895824,
+   43.271593
+  ],
+  "osm": "r1838019",
+  "display": "Onondaga County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Orange",
+  "lat": 41.387331,
+  "lon": -74.250729,
+  "bbox": [
+   -74.762017,
+   41.14303,
+   -73.947609,
+   41.630044
+  ],
+  "osm": "r1835362",
+  "display": "Orange County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Rockland",
+  "lat": 41.151932,
+  "lon": -74.035727,
+  "bbox": [
+   -74.234354,
+   40.997165,
+   -73.886652,
+   41.324932
+  ],
+  "osm": "r1835363",
+  "display": "Rockland County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Saratoga",
+  "lat": 43.083323,
+  "lon": -73.871216,
+  "bbox": [
+   -74.160111,
+   42.775293,
+   -73.573321,
+   43.397703
+  ],
+  "osm": "r1428790",
+  "display": "Saratoga County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Schenectady",
+  "lat": 42.832177,
+  "lon": -74.044345,
+  "bbox": [
+   -74.30658,
+   42.710675,
+   -73.809561,
+   42.95567
+  ],
+  "osm": "r1428121",
+  "display": "Schenectady County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Schoharie",
+  "lat": 42.575722,
+  "lon": -74.439028,
+  "bbox": [
+   -74.711627,
+   42.355103,
+   -74.164703,
+   42.82959
+  ],
+  "osm": "r1838138",
+  "display": "Schoharie County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "St Lawrence",
+  "lat": 44.497359,
+  "lon": -75.065704,
+  "bbox": [
+   -75.86012,
+   44.050366,
+   -74.525188,
+   45.015861
+  ],
+  "osm": "r87775",
+  "display": "Saint Lawrence County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Suffolk",
+  "lat": 40.883232,
+  "lon": -72.857803,
+  "bbox": [
+   -73.497017,
+   40.556615,
+   -71.790972,
+   41.310549
+  ],
+  "osm": "r404243",
+  "display": "Suffolk County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Sullivan",
+  "lat": 41.715631,
+  "lon": -74.780432,
+  "bbox": [
+   -75.145439,
+   41.421462,
+   -74.364334,
+   42.016657
+  ],
+  "osm": "r1838023",
+  "display": "Sullivan County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Tompkins",
+  "lat": 42.461006,
+  "lon": -76.478805,
+  "bbox": [
+   -76.696544,
+   42.262745,
+   -76.237662,
+   42.627414
+  ],
+  "osm": "r1838025",
+  "display": "Tompkins County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Westchester",
+  "lat": 41.176314,
+  "lon": -73.790755,
+  "bbox": [
+   -73.98337,
+   40.871825,
+   -73.481924,
+   41.366708
+  ],
+  "osm": "r1838027",
+  "display": "Westchester County, New York, United States"
+ },
+ {
+  "region": "NY",
+  "county": "Yates",
+  "lat": 42.644444,
+  "lon": -77.112177,
+  "bbox": [
+   -77.367161,
+   42.459137,
+   -76.889515,
+   42.764411
+  ],
+  "osm": "r1837998",
+  "display": "Yates County, New York, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Caroline",
+  "lat": 38.03203,
+  "lon": -77.362363,
+  "bbox": [
+   -77.643579,
+   37.776168,
+   -77.068711,
+   38.252686
+  ],
+  "osm": "r2534169",
+  "display": "Caroline County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Chesterfield",
+  "lat": 37.385998,
+  "lon": -77.578509,
+  "bbox": [
+   -77.878482,
+   37.216994,
+   -77.244167,
+   37.562425
+  ],
+  "osm": "r2534172",
+  "display": "Chesterfield County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Culpeper",
+  "lat": 38.503043,
+  "lon": -78.000068,
+  "bbox": [
+   -78.231803,
+   38.308389,
+   -77.618258,
+   38.699018
+  ],
+  "osm": "r2534173",
+  "display": "Culpeper County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Fauquier",
+  "lat": 38.751371,
+  "lon": -77.814122,
+  "bbox": [
+   -78.131266,
+   38.409142,
+   -77.531321,
+   39.013771
+  ],
+  "osm": "r1633326",
+  "display": "Fauquier County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Hanover",
+  "lat": 37.744783,
+  "lon": -77.446416,
+  "bbox": [
+   -77.797307,
+   37.538073,
+   -77.108126,
+   38.008158
+  ],
+  "osm": "r2534182",
+  "display": "Hanover County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Henrico",
+  "lat": 37.513119,
+  "lon": -77.346508,
+  "bbox": [
+   -77.654888,
+   37.353343,
+   -77.176982,
+   37.710394
+  ],
+  "osm": "r3070728",
+  "display": "Henrico County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Loudoun",
+  "lat": 39.098459,
+  "lon": -77.670501,
+  "bbox": [
+   -77.962164,
+   38.846251,
+   -77.328275,
+   39.324437
+  ],
+  "osm": "r944948",
+  "display": "Loudoun County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Louisa",
+  "lat": 37.985444,
+  "lon": -77.948631,
+  "bbox": [
+   -78.306672,
+   37.729358,
+   -77.687377,
+   38.152571
+  ],
+  "osm": "r1633329",
+  "display": "Louisa County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Prince William",
+  "lat": 38.738985,
+  "lon": -77.553674,
+  "bbox": [
+   -77.71574,
+   38.500808,
+   -77.220227,
+   38.942791
+  ],
+  "osm": "r1149984",
+  "display": "Prince William County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Spotsylvania",
+  "lat": 38.188094,
+  "lon": -77.674175,
+  "bbox": [
+   -77.953552,
+   37.990688,
+   -77.37034,
+   38.37833
+  ],
+  "osm": "r1633331",
+  "display": "Spotsylvania County, Virginia, United States"
+ },
+ {
+  "region": "VA",
+  "county": "Stafford",
+  "lat": 38.416727,
+  "lon": -77.457978,
+  "bbox": [
+   -77.635231,
+   38.242124,
+   -77.286213,
+   38.592577
+  ],
+  "osm": "r1149987",
+  "display": "Stafford County, Virginia, United States"
+ }
+]

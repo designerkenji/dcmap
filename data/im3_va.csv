@@ -1,0 +1,320 @@
+name,operator,county,state,type,ref,sqft,lon,lat
+Meta Henrico Data Center,Meta,Henrico County,VA,campus,,4671056.0,-77.236455,37.482763
+Microsoft Data Center 1,Microsoft,Prince William County,VA,building,1,248706.0,-77.582379,38.802411
+,,Prince William County,VA,building,,52906.0,-77.510577,38.803415
+Amazon IAD11,Amazon Web Services,Prince William County,VA,building,Amazon IAD11,122474.0,-77.541111,38.7905
+Amazon IAD24,Amazon Web Services,Prince William County,VA,building,IAD24,31388.0,-77.540006,38.79035
+Amazon IAD7,Amazon Web Services,Prince William County,VA,building,Amazon IAD-7,109423.0,-77.538277,38.791204
+VA 4,Digital Realty,Prince William County,VA,building,,263538.0,-77.594876,38.778111
+Amazon IAD10,Amazon Web Services,Loudoun County,VA,building,IAD10,112726.0,-77.432876,39.021646
+Amazon IAD32,Amazon Web Services,Loudoun County,VA,building,IAD32,35700.0,-77.434794,39.021569
+Centersquare IAD1-B,Centersquare,Loudoun County,VA,building,IAD1-B,79070.0,-77.41519,39.023907
+Centersquare IAD1-A,Centersquare,Loudoun County,VA,building,IAD1-A,89830.0,-77.413201,39.023321
+Centersquare IAD1-C,Centersquare,Loudoun County,VA,building,IAD1-C,135383.0,-77.412204,39.024756
+STACK NVA01A - Northern Virginia,Stack Infrastructure,Loudoun County,VA,building,NVA01A,179330.0,-77.441764,39.004699
+VA3,Digital Realty,Fairfax County,VA,building,VA3,96241.0,-77.327295,38.948464
+IAD1,Evocative,Fairfax County,VA,building,IAD1,19325.0,-77.32941,38.948816
+CoreSite Reston Campus VA1,CoreSite,Fairfax County,VA,building,,138035.0,-77.364548,38.950586
+CoreSite Reston VA3,CoreSite,Fairfax County,VA,building,,249707.0,-77.37237,38.948468
+,,Fairfax County,VA,building,,19578.0,-77.225838,38.913702
+Equinix DC97,,Fairfax County,VA,building,,43991.0,-77.377423,38.961571
+Amazon IAD-55,Amazon Web Services,Prince William County,VA,building,IAD55,228140.0,-77.648764,38.815062
+COPT Data Center,,Prince William County,VA,building,,127955.0,-77.531845,38.747281
+OVH US East Vint Hill,,Fauquier County,VA,building,,85783.0,-77.674454,38.747445
+Equinix Ashburn DC2,Equinix,Loudoun County,VA,building,DC2,175215.0,-77.459006,39.016471
+H5 Data Centers Ashburn,H5,Loudoun County,VA,building,Ashburn,83656.0,-77.45172,39.013675
+Lumen McLean,Lumen Technologies,Fairfax County,VA,building,,42056.0,-77.211619,38.920021
+DataBank McLean IAD2,DataBank,Fairfax County,VA,building,IAD2,22957.0,-77.213585,38.919905
+Digital Realty,Digital Realty,Fairfax County,VA,building,,72337.0,-77.47258,38.910133
+Flexential - Richmond,Flexential,Henrico County,VA,building,,39778.0,-77.438695,37.64689
+Amazon IAD-9,Amazon Web Services,Fairfax County,VA,building,IAD-9,85855.0,-77.45344,38.899652
+Amazon IAD22,,Fairfax County,VA,building,,30140.0,-77.455102,38.897902
+Amazon IAD-1,Amazon Web Services,Fairfax County,VA,building,IAD-1,93882.0,-77.454075,38.897859
+,,Fairfax County,VA,building,,43330.0,-77.472245,38.909245
+,,Fairfax County,VA,building,,32222.0,-77.473466,38.909798
+,,Fairfax County,VA,building,,56049.0,-77.196273,38.750817
+Centersquare IAD3,Centersquare,Loudoun County,VA,building,IAD3,130748.0,-77.444247,38.980925
+Centersquare IAD2-A,Centersquare,Loudoun County,VA,building,IAD2-A,48153.0,-77.423817,38.984418
+,CyrusOne,Loudoun County,VA,building,CyrusOne Northern Virginia Sterling IV,127744.0,-77.425649,38.984887
+Centersquare IAD2-B,Centersquare,Loudoun County,VA,building,IAD2-B,71819.0,-77.424105,38.983604
+Digital Realty ACC4,Digital Realty,Loudoun County,VA,building,ACC4,294156.0,-77.462549,39.017902
+Equinix Ashburn DC1,Equinix,Loudoun County,VA,building,DC1,59757.0,-77.460327,39.01556
+Equinix Ashburn DC5,Equinix,Loudoun County,VA,building,DC5,94665.0,-77.461248,39.015987
+Equinix Ashburn DC11,Equinix,Loudoun County,VA,building,DC11,132897.0,-77.458804,39.014931
+Equinix Ashburn DC3,Equinix,Loudoun County,VA,building,DC3,186227.0,-77.460287,39.021948
+Digital Realty ACC3,Digital Realty,Loudoun County,VA,building,ACC3,151562.0,-77.459842,39.019936
+Amazon IAD76,Amazon Web Services,Loudoun County,VA,building,IAD76,138071.0,-77.450509,38.993785
+Amazon IAD12,Amazon Web Services,Loudoun County,VA,building,Amazon IAD12,149598.0,-77.447671,38.988723
+,QTS Data Centers,Loudoun County,VA,building,QTS Moran (The Vault),10175.0,-77.447902,38.994637
+Digital Realty ACC5,Digital Realty,Loudoun County,VA,building,ACC5,298859.0,-77.463071,39.020113
+Digital Realty ACC6,Digital Realty,Loudoun County,VA,building,ACC6,226152.0,-77.46359,39.021068
+Level 3 Ashburn,Lumen Technologies,Loudoun County,VA,building,,49022.0,-77.457595,39.022173
+Centersquare IAD4-B,Centersquare,Loudoun County,VA,building,IAD4-B,90029.0,-77.45361,39.02214
+NTT Ashburn VA1 Data Center,NTT,Loudoun County,VA,building,VA1,138507.0,-77.454869,39.022764
+Equinix DC13,Equinix,Loudoun County,VA,building,DC13,125613.0,-77.475393,39.012537
+Digital Realty Northern Virginia IAD14,Digital Realty,Loudoun County,VA,building,IAD14,134503.0,-77.487093,39.003336
+Amazon Web Services Building C,Amazon Web Services,Loudoun County,VA,building,,116698.0,-77.485449,39.002752
+Digital Realty Northern Virginia IAD12,Digital Realty,Loudoun County,VA,building,IAD12,180269.0,-77.483345,39.002022
+Digital Realty Building A,Digital Realty,Loudoun County,VA,building,,133113.0,-77.481954,39.002755
+Digital Realty Northern Virginia IAD24,Digital Realty,Loudoun County,VA,building,IAD24,114428.0,-77.484355,39.004292
+Databank Ashburn IAD1,Databank,Loudoun County,VA,building,IAD1,144740.0,-77.482138,39.015549
+Golds Gym Ashburn,,Loudoun County,VA,building,,54700.0,-77.483271,39.015601
+Equinix DC7,Equinix,Fairfax County,VA,building,DC7,79709.0,-77.220557,38.909139
+Element Critical VA1,,Fairfax County,VA,building,,20483.0,-77.219744,38.908368
+VISA Data Center,,Loudoun County,VA,building,,349987.0,-77.445416,39.048728
+"CyrusOne NVA1, NVA2 & NVA3",CyrusOne,Loudoun County,VA,building,NVA1;NVA2;NVA3,265601.0,-77.414523,39.025947
+CyrusOne NVA5,CyrusOne,Loudoun County,VA,building,NVA5,506948.0,-77.434034,39.024327
+Equinix CU2,Equinix,Culpeper County,VA,campus,,1299936.0,-77.978187,38.454937
+Equinix Ashburn DC10,Equinix,Loudoun County,VA,building,DC10,152397.0,-77.451513,39.021014
+Amazon Web Services Datacenter Complex,Amazon Web Services,Loudoun County,VA,campus,,1088049.0,-77.451065,39.026575
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,campus,,1022344.0,-77.458662,39.02887
+Amazon IAD-61,Amazon Web Services,Loudoun County,VA,building,Amazon IAD-61,152289.0,-77.491987,38.915805
+,,Loudoun County,VA,campus,,709715.0,-77.442196,38.986502
+Amazon IAD51,Amazon Web Services,Loudoun County,VA,building,Amazon IAD51,64127.0,-77.436507,38.991414
+Amazon IAD56,Amazon Web Services,Loudoun County,VA,building,Amazon IAD56,78441.0,-77.437062,38.990568
+Amazon IAD16,Amazon Web Services,Loudoun County,VA,building,Amazon IAD16,75817.0,-77.448825,38.990699
+Amazon IAD15,Amazon Web Services,Loudoun County,VA,building,Amazon IAD15,103452.0,-77.44858,38.991693
+Amazon IAD14,Amazon Web Services,Prince William County,VA,building,IAD14,118192.0,-77.548217,38.789932
+Amazon IAD59,Amazon Web Services,Prince William County,VA,building,IAD59,127281.0,-77.54845,38.792226
+Amazon IAD52,Amazon Web Services,Prince William County,VA,building,IAD52,126699.0,-77.548372,38.791069
+,,Loudoun County,VA,building,,35740.0,-77.448189,38.994227
+Centersquare IAD4-A,Centersquare,Loudoun County,VA,building,IAD4-A,77749.0,-77.452747,39.021734
+AWS Building E,Amazon Web Services,Loudoun County,VA,building,,153355.0,-77.485612,39.005052
+Amazon IAD78,Amazon Web Services,Loudoun County,VA,building,IAD78,147979.0,-77.44952,39.026368
+Amazon IAD79,Amazon Web Services,Loudoun County,VA,building,IAD79,148678.0,-77.45087,39.026357
+Amazon IAD87,Amazon Web Services,Loudoun County,VA,building,IAD87,147390.0,-77.441168,38.991814
+Amazon IAD88,Amazon Web Services,Loudoun County,VA,building,IAD88,147468.0,-77.44187,38.990964
+Amazon IAD73,Amazon Web Services,Prince William County,VA,building,IAD73,146162.0,-77.559099,38.777979
+Amazon IAD74,Amazon Web Services,Prince William County,VA,building,IAD74,147480.0,-77.557891,38.777437
+Amazon IAD63,Amazon Web Services,Loudoun County,VA,building,IAD63,143980.0,-77.493251,38.916885
+Amazon IAD62,Amazon Web Services,Loudoun County,VA,building,IAD62,149941.0,-77.519875,38.949322
+Amazon IAD71,Amazon Web Services,Loudoun County,VA,building,IAD71,121176.0,-77.457503,39.027908
+Amazon IAD50,Amazon Web Services,Loudoun County,VA,building,IAD50,202194.0,-77.459683,39.02957
+Amazon IAD60,Amazon Web Services,Loudoun County,VA,building,IAD60,110965.0,-77.458246,39.028774
+Amazon IAD80,Amazon Web Services,Loudoun County,VA,building,IAD80,150443.0,-77.452829,39.027109
+Equinix Ashburn DC12,Equinix,Loudoun County,VA,building,DC12,96380.0,-77.449758,39.023007
+Digital Realty Northern Virginia IAD36,Digital Realty,Loudoun County,VA,building,IAD36,112516.0,-77.479344,39.001552
+Digital Realty Northern Virginia IAD35,Digital Realty,Loudoun County,VA,building,IAD35,206225.0,-77.480595,39.000511
+Digital Realty Northern Virginia IAD37,Digital Realty,Loudoun County,VA,building,IAD37,144298.0,-77.47807,39.00001
+Digital Realty Northern Virginia IAD38,Digital Realty,Loudoun County,VA,building,IAD38,114543.0,-77.477184,39.00111
+NTT Ashburn VA2 Data Center,NTT,Loudoun County,VA,building,VA2,74197.0,-77.457639,39.02501
+Digital Realty ACC7,Digital Realty,Loudoun County,VA,building,ACC7,409481.0,-77.465643,39.017532
+NTT Ashburn Campus,,Loudoun County,VA,campus,,2116133.0,-77.471981,39.01773
+NTT Ashburn VA3 Data Center,NTT,Loudoun County,VA,building,VA3,231924.0,-77.470376,39.017182
+Digital Realty ACC9,Digital Realty,Loudoun County,VA,building,ACC9,329257.0,-77.467319,39.015466
+Amazon Web Services,Amazon IAD85,Prince William County,VA,building,IAD85,149064.0,-77.541725,38.779382
+Microsoft Boydton Data Center,Microsoft,Mecklenburg County,VA,campus,,11273954.0,-78.376553,36.685373
+Bank of America Data Center,,Henrico County,VA,campus,,2209960.0,-77.238286,37.495809
+Amazon IAD68,Amazon Web Services,Loudoun County,VA,building,IAD68,181794.0,-77.520952,38.948687
+Amazon IAD81,Amazon Web Services,Loudoun County,VA,building,IAD81,184907.0,-77.521831,38.948386
+Google,Google,Loudoun County,VA,building,ARA1,215928.0,-77.524369,38.943154
+Amazon IAD120,Amazon Web Services,Loudoun County,VA,building,IAD120,188334.0,-77.498061,38.957922
+Amazon IAD121,Amazon Web Services,Loudoun County,VA,building,IAD121,154814.0,-77.497787,38.956783
+,,Loudoun County,VA,building,,48591.0,-77.471561,39.012027
+,,Loudoun County,VA,campus,,402308.0,-77.449876,38.999459
+,,Prince William County,VA,campus,,989045.0,-77.548317,38.790982
+Amazon IAD58,Amazon Web Services,Loudoun County,VA,building,IAD58,136770.0,-77.441842,38.986279
+Amazon IAD57,Amazon Web Services,Loudoun County,VA,building,IAD57,116533.0,-77.442638,38.986997
+Amazon IAD64,Amazon Web Services,Prince William County,VA,building,IAD64,147547.0,-77.652919,38.815132
+,Amazon,Prince William County,VA,campus,,1278242.0,-77.652696,38.815816
+QTS Ashburn 1,Quality Technology Services,Loudoun County,VA,building,,164144.0,-77.450171,38.999515
+Digital Realty Northern Virginia IAD40,Digital Realty,Loudoun County,VA,building,IAD40,244372.0,-77.467254,39.006454
+Digital Realty Northern Virginia IAD39,Digital Realty,Loudoun County,VA,building,IAD39,549223.0,-77.467623,39.007718
+Digital Realty ACC10,Digital Realty,Loudoun County,VA,building,ACC10,289043.0,-77.465536,39.012707
+,GI Partners,Loudoun County,VA,building,,224621.0,-77.43982,39.000655
+Vantage VA11,Vantage Data Centers,Loudoun County,VA,building,VA11,127578.0,-77.437661,39.002395
+Amazon IAD90,Amazon Web Services,Loudoun County,VA,building,IAD90,147749.0,-77.411652,38.988603
+Amazon IAD91,Amazon Web Services,Loudoun County,VA,building,IAD91,149486.0,-77.411119,38.987847
+Amazon IAD92,Amazon Web Services,Loudoun County,VA,building,IAD92,149857.0,-77.410475,38.986943
+Amazon IAD144,Amazon Web Services,Loudoun County,VA,building,IAD144,150384.0,-77.427422,38.981643
+CyrusOne NVA8,CyrusOne,Loudoun County,VA,building,NVA8,154011.0,-77.41322,39.021167
+Amazon IAD98,Amazon Web Services,Loudoun County,VA,building,IAD98,150826.0,-77.433886,39.020225
+Amazon IAD99,Amazon Web Services,Loudoun County,VA,building,IAD99,150804.0,-77.43403,39.019169
+Amazon IAD114,Amazon Web Services,Loudoun County,VA,building,IAD114,148005.0,-77.450699,39.035494
+Amazon IAD115,Amazon Web Services,Loudoun County,VA,building,IAD115,146333.0,-77.449795,39.036294
+Amazon IAD65,Amazon Web Services,Loudoun County,VA,building,IAD65,151356.0,-77.494366,38.917011
+Amazon IAD150,Amazon Web Services,Loudoun County,VA,building,IAD150,213595.0,-77.477251,38.916076
+Stonewall Creek Business Park,Google,Loudoun County,VA,campus,,1291753.0,-77.5394,39.051432
+QTS Richmond Data Center,Quality Technology Services,Henrico County,VA,campus,,3801096.0,-77.245886,37.489001
+,,Loudoun County,VA,building,,144382.0,-77.478273,39.015417
+Google Data Center,Google,Loudoun County,VA,building,,140634.0,-77.539577,39.052641
+Google Data Center,Google,Loudoun County,VA,campus,,2143143.0,-77.52625,38.942771
+Amazon Fadeley III,,Loudoun County,VA,campus,,1654964.0,-77.521599,38.948332
+Amazon IAD145,Amazon Web Services,Loudoun County,VA,building,IAD145,103663.0,-77.424625,38.982552
+Amazon Web Services IAD117,Amazon Web Services,Loudoun County,VA,building,IAD117,102452.0,-77.419095,39.023698
+Amazon Web Services IAD116,Amazon Web Services,Loudoun County,VA,building,IAD116,102629.0,-77.420439,39.024346
+Meta Henrico Data Center,Meta,Henrico County,VA,building,,588189.0,-77.237311,37.483928
+Digital Realty IAD41 (Building P),Digital Realty,Loudoun County,VA,building,IAD41,396985.0,-77.458221,39.008677
+Amazon IAD118,Amazon Web Services,Loudoun County,VA,building,IAD118,105629.0,-77.438839,39.018507
+Aligned Ashburn,Aligned,Loudoun County,VA,building,,140140.0,-77.470578,39.01362
+Equinix Ashburn DC15,Equinix,Loudoun County,VA,building,DC15,76665.0,-77.450256,39.0225
+Sabey Intergate.Ashburn (Building A),Sabey Data Centers,Loudoun County,VA,building,,131966.0,-77.479988,39.014498
+NTT Ashburn VA5 Data Center,NTT,Loudoun County,VA,building,VA5,124046.0,-77.472614,39.018296
+NTT Ashburn VA4 Data Center,NTT,Loudoun County,VA,building,VA4,160282.0,-77.472595,39.019869
+CloudHQ LC1,CloudHQ,Loudoun County,VA,building,LC1,499194.0,-77.462785,39.010157
+CloudHQ LC2,CloudHQ,Loudoun County,VA,building,LC2,252770.0,-77.462457,39.011764
+Amazon IAD146,Amazon Web Services,Loudoun County,VA,building,IAD146,103076.0,-77.435598,38.996725
+Equinix Ashburn DC21,Equinix,Loudoun County,VA,building,DC21,78961.0,-77.454558,39.011823
+Amazon IAD140,Amazon Web Services,Loudoun County,VA,building,IAD140,215095.0,-77.41755,38.981455
+Amazon IAD141,Amazon Web Services,Loudoun County,VA,building,IAD141,216850.0,-77.416786,38.982388
+Amazon IAD84,Amazon Web Services,Prince William County,VA,building,IAD84,152692.0,-77.652499,38.816103
+Middletown Data Center,,Frederick County,VA,campus,,273198.0,-78.29096,39.017644
+,,Loudoun County,VA,building,,140157.0,-77.540026,39.050608
+Amazon IAD119,Amazon Web Services,Loudoun County,VA,building,IAD119,127104.0,-77.439387,39.01693
+DBT Data - Harrisonburg Center,,Harrisonburg city,VA,campus,,505755.0,-78.856797,38.462545
+CloudHQ MCC1,CloudHQ,Prince William County,VA,building,MCC1,399915.0,-77.499897,38.717028
+Amazon IAD128,Amazon Web Services,Loudoun County,VA,building,IAD128,105735.0,-77.438384,39.016082
+Microsoft,Microsoft,Loudoun County,VA,building,,155317.0,-77.564129,39.074787
+Arcola Tech Park,,Loudoun County,VA,campus,,1735467.0,-77.555356,38.949282
+Amazon IAD125,Amazon Web Services,Loudoun County,VA,building,IAD125,104431.0,-77.560545,38.94809
+Amazon IAD124,Amazon Web Services,Loudoun County,VA,building,IAD124,104434.0,-77.560452,38.949895
+42310 THUNDERBALL DR,True North Data Solutions,Loudoun County,VA,building,,78907.0,-77.539674,39.044099
+Amazon IAD163,Amazon Web Services,Loudoun County,VA,building,IAD163,131936.0,-77.429702,39.032305
+Amazon IAD175,Amazon Web Services,Loudoun County,VA,building,IAD175,86503.0,-77.42548,38.979868
+Amazon IAD147,Amazon Web Services,Loudoun County,VA,building,IAD147,102767.0,-77.435359,38.995012
+CyrusOne NVA7,CyrusOne,Loudoun County,VA,building,NVA7,60930.0,-77.434028,39.026301
+Amazon IAD174,Amazon Web Services,Loudoun County,VA,building,IAD174,132388.0,-77.427473,39.028916
+Amazon IAD164,Amazon Web Services,Loudoun County,VA,building,IAD164,132374.0,-77.428942,39.030473
+Vantage VA12,Vantage Data Centers,Loudoun County,VA,building,VA12,115613.0,-77.438071,39.001779
+Microsoft,Microsoft,Loudoun County,VA,building,,97581.0,-77.563035,39.075508
+Amazon IAD152,Amazon Web Services,Loudoun County,VA,building,IAD152,156644.0,-77.479742,38.916576
+Amazon IAD151,Amazon Web Services,Loudoun County,VA,building,IAD151,155542.0,-77.478705,38.916151
+Amazon IAD83,Amazon Web Services,Loudoun County,VA,building,IAD83,156166.0,-77.523108,38.947946
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,IAD93,16739.0,-77.522188,38.946539
+Amazon IAD122,Amazon Web Services,Loudoun County,VA,building,IAD122,153273.0,-77.49718,38.955863
+CyrusOne Sterling IX,CyrusOne,Loudoun County,VA,building,,266078.0,-77.50575,38.958308
+Iron Mountain VA-2,,Prince William County,VA,building,VA-2,158664.0,-77.545965,38.777249
+Iron Mountain VA-1,,Prince William County,VA,building,VA-1,163790.0,-77.547073,38.777917
+Amazon Web Services,Amazon IAD96,Prince William County,VA,building,IAD96,149064.0,-77.539884,38.780151
+Amazon Web Services,Amazon IAD95,Prince William County,VA,building,IAD95,214748.0,-77.539427,38.778451
+Amazon Web Services,Amazon IAD75,Prince William County,VA,building,IAD75,214662.0,-77.542896,38.779343
+Amazon IAD102,Amazon Web Services,Prince William County,VA,building,IAD102,214338.0,-77.504901,38.73597
+Amazon IAD101,Amazon Web Services,Prince William County,VA,building,IAD101,214330.0,-77.505695,38.73544
+Amazon IAD100,Amazon Web Services,Prince William County,VA,building,IAD100,214611.0,-77.506642,38.734598
+CloudHQ MCC2,CloudHQ,Prince William County,VA,building,MCC2,351091.0,-77.499009,38.723182
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,112502.0,-77.533384,38.743053
+QTS Ashburn-Shellhorn DC1,Quality Technology Services,Loudoun County,VA,building,,156810.0,-77.475571,38.998079
+Amazon IAD601,Amazon Web Services,Prince William County,VA,building,IAD601,14469.0,-77.557115,38.778857
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,IAD162,131476.0,-77.471291,38.995848
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,IAD161,131482.0,-77.473262,38.996608
+Digital Loudoun Plaza,,Loudoun County,VA,campus,,686547.0,-77.48498,39.004679
+Digital Loudoun Plaza,,Loudoun County,VA,campus,,2859895.0,-77.481595,39.001698
+AWS,,Loudoun County,VA,campus,,1789925.0,-77.417795,38.981034
+AWS,,Loudoun County,VA,campus,,1069380.0,-77.411109,38.98783
+AWS,,Loudoun County,VA,campus,,1128056.0,-77.426058,38.981619
+,,Loudoun County,VA,campus,,384105.0,-77.425784,38.984732
+Digital Realty IAD42,Digital Realty,Loudoun County,VA,building,IAD42,218174.0,-77.449449,39.005719
+Meta Henrico Data Center,Meta,Henrico County,VA,building,,327920.0,-77.233805,37.481963
+Amazon IAD601,Amazon Web Services,Loudoun County,VA,building,IAD601,14384.0,-77.43777,39.015263
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,111697.0,-77.533322,38.744286
+,,Prince William County,VA,building,,257960.0,-77.537509,38.745959
+COPT Innovation Park Data Center,Amazon Web Services,Prince William County,VA,building,IAD132,149206.0,-77.530625,38.743886
+COPT Data Center Bldg 2,Amazon Web Services,Prince William County,VA,building,IAD133,104114.0,-77.529196,38.744055
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,96372.0,-77.452001,39.016744
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,96367.0,-77.453145,39.015886
+Aligned IAD02,Aligned,Loudoun County,VA,building,,208188.0,-77.475189,39.010411
+QTS Manassas DC5,Quality Technology Services,Prince William County,VA,building,,153531.0,-77.517447,38.754693
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,IAD143,132491.0,-77.41749,38.979557
+Equinix Ashburn DC16,Equinix,Loudoun County,VA,building,DC16,87843.0,-77.452327,39.024257
+Microsoft IAD11,Microsoft,Loudoun County,VA,building,,242344.0,-77.555911,38.948258
+,,Loudoun County,VA,building,,242639.0,-77.560771,39.069647
+,,Loudoun County,VA,building,,247061.0,-77.559433,39.069654
+Meta Henrico Data Center,Meta,Henrico County,VA,building,,604696.0,-77.226455,37.477845
+CoreSite Reston Campus VA2,CoreSite,Fairfax County,VA,building,,40517.0,-77.364004,38.951451
+AWS IAD105,Amazon Web Services,Prince William County,VA,building,IAD105,214270.0,-77.519475,38.747596
+AWS IAD104,Amazon Web Services,Prince William County,VA,building,IAD104,214258.0,-77.520705,38.748374
+QTS Manassas DC1,Quality Technology Services,Prince William County,VA,building,,123471.0,-77.513111,38.752517
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,IAD142,129566.0,-77.419905,38.979147
+,,Loudoun County,VA,campus,,1524370.0,-77.497593,38.957335
+Google: Arcola 2,Google,Loudoun County,VA,building,ARA2,289889.0,-77.527429,38.941821
+Amazon IAD603,Amazon Web Services,Loudoun County,VA,building,IAD603,14733.0,-77.419357,38.981546
+Amazon IAD86,Amazon Web Services,Loudoun County,VA,building,IAD86,150112.0,-77.495674,38.917256
+Amazon IAD130,Amazon Web Services,Prince William County,VA,building,IAD130,103128.0,-77.519302,38.760361
+Amazon IAD131,Amazon Web Services,Prince William County,VA,building,IAD131,104697.0,-77.518221,38.761105
+QTS Ashburn-Shellhorn DC2,Quality Technology Services,Loudoun County,VA,building,,152471.0,-77.474264,38.998772
+QTS Ashburn Lockridge,Quality Technology Services,Loudoun County,VA,building,,153253.0,-77.455183,38.995355
+QTS Ashburn Lockridge,Quality Technology Services,Loudoun County,VA,building,,135570.0,-77.456888,38.995199
+Amazon IAD192,Amazon Web Services,Loudoun County,VA,building,IAD192,132942.0,-77.434801,38.989554
+,,Loudoun County,VA,building,,91264.0,-77.473267,39.017102
+NTT Ashburn VA8 Data Centre,NTT,Loudoun County,VA,building,VA8,111241.0,-77.475531,39.02019
+DataBank Ashburn IAD3,Databank,Loudoun County,VA,building,IAD3,146234.0,-77.481828,39.017878
+PowerHouse ABX-1,PowerHouse,Loudoun County,VA,building,ABX-1,131309.0,-77.450465,39.019578
+,,Loudoun County,VA,building,,158127.0,-77.459474,39.017948
+AWS IAD106,Amazon Web Services,Prince William County,VA,building,IAD106,205206.0,-77.518528,38.746975
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,IAD609,14235.0,-77.52358,38.949135
+Equinix DC14,Equinix,Prince William County,VA,campus,DC14,222846.0,-77.510616,38.803345
+Amazon IAD103,Amazon Web Services,Prince William County,VA,building,IAD103,141914.0,-77.504075,38.736984
+CloudHQ MCC3,CloudHQ,Prince William County,VA,building,MCC3,122891.0,-77.495128,38.71497
+Vantage VA13,Vantage Data Centers,Loudoun County,VA,building,VA13,261859.0,-77.439851,39.003108
+Amazon Web Services,Amazon Web Services,Fairfax County,VA,building,,120946.0,-77.452473,38.904346
+Amazon Web Services,Amazon Web Services,Fairfax County,VA,building,,118988.0,-77.45476,38.904837
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,87645.0,-77.490552,38.915905
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,13879.0,-77.490976,38.91499
+Google,Google,Prince William County,VA,building,,289731.0,-77.582524,38.776123
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,212702.0,-77.517215,38.746146
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,133944.0,-77.4858,38.921314
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,14683.0,-77.471072,38.995094
+,,Manassas city,VA,building,,95987.0,-77.503984,38.740436
+Amazon IAD214,Amazon Web Services,Loudoun County,VA,building,IAD214,113421.0,-77.435176,38.986526
+Aligned IAD03,Aligned,Loudoun County,VA,building,IAD03,79844.0,-77.440752,38.988621
+Digital Realty IAD55,Digital Realty,Loudoun County,VA,building,IAD55,85319.0,-77.433932,38.992269
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,13569.0,-77.520226,38.947361
+Amazon Web Services,Amazon Web Services,Loudoun County,VA,building,,14079.0,-77.417527,38.983575
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,129225.0,-77.622127,38.802897
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,14507.0,-77.533094,38.74512
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,14389.0,-77.654331,38.814598
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,149332.0,-77.652159,38.816968
+Iron Mountain VA-3,,Prince William County,VA,building,VA-3,181174.0,-77.5452,38.775507
+Google,Google,Prince William County,VA,building,,289621.0,-77.585627,38.774417
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,127010.0,-77.62121,38.801857
+Amazon Web Services,Amazon Web Services,Prince William County,VA,building,,130170.0,-77.620481,38.801257
+Iron Mountain VA-4,,Prince William County,VA,building,,89044.0,-77.542221,38.774423
+Iron Mountain VA-5,,Prince William County,VA,building,,106629.0,-77.541169,38.773043
+QTS Manassas DC2,Quality Technology Services,Prince William County,VA,building,,137971.0,-77.510797,38.753195
+,,Prince William County,VA,building,,139592.0,-77.516652,38.758875
+42311 THUNDERBALL DR,True North Data Solutions,Loudoun County,VA,building,,40683.0,-77.5383,39.042553
+42255 THUNDERBALL DR,True North Data Solutions,Loudoun County,VA,building,,60458.0,-77.539224,39.041623
+42254 THUNDERBALL DR,True North Data Solutions,Loudoun County,VA,building,,77498.0,-77.540874,39.043502
+,,Loudoun County,VA,building,,130181.0,-77.558987,38.948017
+,,Loudoun County,VA,building,,130174.0,-77.55887,38.950065
+Iron Mountain VA-6,,Prince William County,VA,building,,181918.0,-77.538648,38.768143
+Equinix Ashburn DC6,Equinix,Loudoun County,VA,building,DC6,70526.0,-77.459538,39.015198
+Equinix Ashburn DC4,Equinix,Loudoun County,VA,building,DC4,101052.0,-77.461887,39.016408
+Digital Realty Northern Virginia IAD44,Digital Realty,Loudoun County,VA,building,IAD44,399540.0,-77.491432,38.960856
+,,Loudoun County,VA,building,,172204.0,-77.549509,38.949862
+,,Loudoun County,VA,building,,200169.0,-77.549757,39.058427
+,,Loudoun County,VA,building,,153155.0,-77.558569,39.066015
+,,Fairfax County,VA,building,,135479.0,-77.427871,38.922773
+,,Fairfax County,VA,building,,130413.0,-77.426554,38.921125
+,,Fairfax County,VA,building,,132753.0,-77.426307,38.922692
+QTS Ashburn-Shellhorn,,Loudoun County,VA,campus,,829536.0,-77.474942,38.998537
+CloudHQ Ashburn Campus,,Loudoun County,VA,campus,,1553192.0,-77.462113,39.010718
+,,Loudoun County,VA,building,,128835.0,-77.460774,39.000446
+,,Loudoun County,VA,building,,130571.0,-77.460867,38.999113
+Vantage VA2,,Loudoun County,VA,building,,187488.0,-77.430254,38.997959
+,,Fauquier County,VA,building,,59703.0,-77.826249,38.737213
+,,Fauquier County,VA,building,,107125.0,-77.825806,38.738222
+,CloudHQ,Loudoun County,VA,building,LC4,460596.0,-77.471993,39.002358
+True North Data Centers,True North Data Solutions,Loudoun County,VA,campus,,4583218.0,-77.537412,39.043726
+TikTok Data Center,True North Data Solutions,Loudoun County,VA,building,,169768.0,-77.537998,39.044247
+,,Fairfax County,VA,building,,113584.0,-77.424979,38.923101
+,,Fairfax County,VA,building,,131768.0,-77.424691,38.936479
+CloudHQ LC3,,Loudoun County,VA,building,,241208.0,-77.460405,39.011212
+,,Loudoun County,VA,building,,149008.0,-77.547338,39.055994
+,,Loudoun County,VA,building,,106352.0,-77.546733,39.057819
+,,Loudoun County,VA,building,,200733.0,-77.565112,39.082191
+Microsoft Data Center 2,Microsoft,Prince William County,VA,building,2,247070.0,-77.58338,38.799956
+,,Loudoun County,VA,building,,139936.0,-77.544822,39.055262
+,,Loudoun County,VA,building,,116829.0,-77.545995,39.054122
+,,Loudoun County,VA,building,,303500.0,-77.534749,39.051021
+Google,Google,Prince William County,VA,building,,289592.0,-77.58634,38.779293
+QTS Manassas DC1,Quality Technology Services,Prince William County,VA,building,,128120.0,-77.512523,38.752551
+Microsoft Data Center,Microsoft,Loudoun County,VA,campus,,1575278.0,-77.559485,38.949312
+Centersquare Ashburn IAD4 Data Center,Centersquare,Loudoun County,VA,campus,IAD4,287687.0,-77.453194,39.021948
+Lumos Networks,,Lynchburg city,VA,point,,0.0,-79.142706,37.415688
+8100 Boone Boulevard,Digital Realty,Fairfax County,VA,point,,0.0,-77.225882,38.913724
+Amazon Web Services IAD69,Amazon Web Services,Loudoun County,VA,point,IAD69,0.0,-77.4147,39.025485
+Lumen McLean,Lumen Technologies,Fairfax County,VA,point,,0.0,-77.211571,38.920854
+Equinix,Equinix,Loudoun County,VA,point,DC22,0.0,-77.453798,39.013792
+NTT Ashburn VA7 Data Center,NTT,Loudoun County,VA,point,VA7,0.0,-77.471954,39.016014
+NTT VA11 Data Center,NTT,Prince William County,VA,point,VA11,0.0,-77.609964,38.799973

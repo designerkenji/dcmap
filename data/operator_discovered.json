@@ -1,0 +1,326 @@
+[
+ {
+  "key": "chorus new zealand",
+  "displayName": "Chorus New Zealand",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "cámara argentina de internet cabase",
+  "displayName": "Cámara Argentina de Internet (CABASE)",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "eunetworks",
+  "displayName": "euNetworks",
+  "domain": "eunetworks.com",
+  "evidence": "title: euNetworks",
+  "logoCandidates": [
+   "https://images.ctfassets.net/3vdl90908uqs/MX80GGHPXf8BJoV7zkYZf/4641b2a3db1dc7e9be02736c8fc0f4d2/mobile-logo.svg",
+   "https://www.eunetworks.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "bouygues télécom",
+  "displayName": "Bouygues Télécom",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "national internet exchange of india",
+  "displayName": "National Internet Exchange of India",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "pt telekomunikasi indonesia int",
+  "displayName": "PT Telekomunikasi Indonesia Int",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "sify",
+  "displayName": "Sify Technologies",
+  "domain": "sifytechnologies.com",
+  "evidence": "title: Sify Technologies- ICT Service Provider Cloud, Digital, Data Centers, ",
+  "logoCandidates": [
+   "http://www.sifytechnologies.com/us/wp-content/uploads/2023/06/favicon.jpg",
+   "https://www.sifytechnologies.com/favicon.ico"
+  ],
+  "officialLocationList": "http://www.sifytechnologies.com/us/data-center/"
+ },
+ {
+  "key": "br digital",
+  "displayName": "BR.Digital",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "coresite",
+  "displayName": "CoreSite",
+  "domain": "coresite.com",
+  "evidence": "title: CoreSite | Secure, High-Performance Data Centers",
+  "logoCandidates": [
+   "https://www.coresite.com/hubfs/5da05d3b675e830de0ab2e66_Favicon.png",
+   "https://www.coresite.com/hs-fs/hubfs/CoreSite_AMT_Logo_Web.png?width=534&height=127&name=CoreSite_AMT_Logo_Web.png",
+   "https://www.coresite.com/hs-fs/hubfs/-website-images/logos/Gartner_logo_RGB.png?width=100&height=23&name=Gartner_logo_RGB.png",
+   "https://23381819.fs1.hubspotusercontent-na1.net/hubfs/23381819/-website-images/logos/homepage%20customer%20logos/amw_log_amway_4c_hp.svg",
+   "https://23381819.fs1.hubspotusercontent-na1.net/hubfs/23381819/-website-images/logos/homepage%20customer%20logos/at-t-logo-hp.svg",
+   "https://www.coresite.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.coresite.com/data-center-design/data-center-operations"
+ },
+ {
+  "key": "globalconnect",
+  "displayName": "GlobalConnect",
+  "domain": "globalconnect.dk",
+  "evidence": "title: Home - GlobalConnect Danmark",
+  "logoCandidates": [
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/cropped-gc-logo-symbol-blue-150x150-1-32x32.png",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/cropped-gc-logo-symbol-blue-150x150-1-192x192.png",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/cropped-gc-logo-symbol-blue-150x150-1-180x180.png",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/gc_logo.svg",
+   "https://globalconnect.dk/app/uploads/sites/5/2025/11/gc-logo-symbol-blue-150x150-1.png",
+   "https://www.globalconnect.dk/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "ishan netsol pvt",
+  "displayName": "Ishan Netsol Pvt",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "northc",
+  "displayName": "NorthC",
+  "domain": "northc.eu",
+  "evidence": "title: Datacenter- en colocatieoplossingen | NorthC Datacenters",
+  "logoCandidates": [
+   "https://www.northcdatacenters.com/wp-content/uploads/2020/02/cropped-favicon-1-175x175.webp",
+   "https://www.northcdatacenters.com/wp-content/uploads/2020/02/cropped-favicon-1-250x250.webp",
+   "https://www.northc.eu/favicon.ico"
+  ],
+  "officialLocationList": "https://www.northc.eu/#tab-onze-datacenters"
+ },
+ {
+  "key": "cirion",
+  "displayName": "Cirion",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "verizon",
+  "displayName": "Verizon",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "kio",
+  "displayName": "KIO",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "nextdc",
+  "displayName": "NextDC",
+  "domain": "nextdc.com",
+  "evidence": "title: AI Data Centres - Colocation Solutions - Hybrid Cloud | NEXTDC",
+  "logoCandidates": [
+   "https://www.nextdc.com/hubfs/nextDCLogo.svg",
+   "https://www.nextdc.com/hubfs/favicon.ico",
+   "https://www.nextdc.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.nextdc.com/news/nextdc-goes-live-with-kl1-kuala-lumpur-launching-strategic-ai-ready-data-centre-in-southeast-asia"
+ },
+ {
+  "key": "365",
+  "displayName": "365 Data Centers",
+  "domain": "365datacenters.com",
+  "evidence": "title: Data Center Colocation & Network Service | 365 Data Centers",
+  "logoCandidates": [
+   "https://365datacenters.com/wp-content/uploads/2022/05/cropped-Favicon_365-32x32.png",
+   "https://365datacenters.com/wp-content/uploads/2022/05/cropped-Favicon_365-192x192.png",
+   "https://365datacenters.com/wp-content/uploads/2022/05/cropped-Favicon_365-180x180.png",
+   "https://365datacenters.com/wp-content/uploads/2023/05/365_Logo_FINAL.png",
+   "https://www.365datacenters.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.365datacenters.com/colocation-services/"
+ },
+ {
+  "key": "ark",
+  "displayName": "ark data centers",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "crown castle",
+  "displayName": "Crown Castle",
+  "domain": "crowncastle.com",
+  "evidence": "title: Crown Castle | Communications Infrastructure Solutions",
+  "logoCandidates": [
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-57x57.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-114x114.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-72x72.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-144x144.png",
+   "https://www.crowncastle.com/images/favicons/apple-touch-icon-60x60.png",
+   "https://www.crowncastle.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "sfr",
+  "displayName": "SFR",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "vocus",
+  "displayName": "Vocus",
+  "domain": "vocus.com.au",
+  "evidence": "title: Vocus - Fibre and Network Solutions Provider | Vocus",
+  "logoCandidates": [
+   "https://www.vocus.com.au/Vocus/Static/assets/favicon/apple-touch-icon.png?v=2607281306",
+   "https://www.vocus.com.au/Vocus/Static/assets/favicon/favicon-32x32.png?v=2607281306",
+   "https://www.vocus.com.au/Vocus/Static/assets/favicon/favicon-16x16.png?v=2607281306",
+   "https://www.vocus.com.au/favicon.ico"
+  ],
+  "officialLocationList": "https://www.vocus.com.au/enterprise/colocation-hybrid-cloud"
+ },
+ {
+  "key": "asosiasi penyelenggara jasa internet indonesia",
+  "displayName": "Asosiasi Penyelenggara Jasa Internet Indonesia",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "atc fibra mexico",
+  "displayName": "ATC HOLDING FIBRA MEXICO",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "united",
+  "displayName": "Datacenter United",
+  "domain": "datacenterunited.com",
+  "evidence": "title: Datacenters in België | Datacenter United",
+  "logoCandidates": [
+   "https://datacenterunited.com/wp-content/uploads/2025/11/cropped-Scherm­afbeelding-2025-11-05-om-15.32.22-32x32.png",
+   "https://datacenterunited.com/wp-content/uploads/2025/11/cropped-Scherm­afbeelding-2025-11-05-om-15.32.22-192x192.png",
+   "https://datacenterunited.com/wp-content/uploads/2025/11/cropped-Scherm­afbeelding-2025-11-05-om-15.32.22-180x180.png",
+   "https://www.datacenterunited.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "nxtra data",
+  "displayName": "Nxtra Data",
+  "domain": "nxtra.in",
+  "evidence": "title: Leading Data Center Company in India | Nxtra",
+  "logoCandidates": [
+   "https://assets.airtel.in/nxtra/icons/nxtra-logo.svg",
+   "https://www.nxtra.in/wp-content/uploads/2025/06/favicon.png",
+   "https://www.nxtra.in/favicon.ico"
+  ],
+  "officialLocationList": "https://www.nxtra.in/solutions-colocation"
+ },
+ {
+  "key": "templus",
+  "displayName": "TEMPLUS DATACENTERS",
+  "domain": "templus.com",
+  "evidence": "title: Plataforma de Data Centers en Europa | Modelo Templus",
+  "logoCandidates": [
+   "https://templus.com/wp-content/uploads/2026/03/Logo-Templus.svg",
+   "https://templus.com/wp-content/uploads/2026/03/templus-favicon-150x150.png",
+   "https://templus.com/wp-content/uploads/2026/03/templus-favicon-300x300.png",
+   "https://www.templus.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.templus.com/data-centers/barcelona-bcn01"
+ },
+ {
+  "key": "ctrls",
+  "displayName": "CtrlS Datacenters",
+  "domain": "ctrls.in",
+  "evidence": "title: Asia's Largest Rated-4 Data Center Network | CtrlS",
+  "logoCandidates": [
+   "https://www.ctrls.com/wp-content/uploads/2023/12/ctrls-logo-white-1.png",
+   "https://ctrls.com/wp-content/uploads/2023/12/ctrls-logo-black.png",
+   "https://www.ctrls.com/wp-content/uploads/2024/02/ctrls-logo-300x56.png",
+   "https://www.ctrls.com/wp-content/uploads/2024/02/favicon.ico",
+   "https://www.ctrls.in/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "digital edge",
+  "displayName": "Digital Edge DC",
+  "domain": "digitaledgedc.com",
+  "evidence": "og:site_name: Digital Edge DC",
+  "logoCandidates": [
+   "https://www.digitaledgedc.com/wp-content/uploads/2024/06/navbar-logo.png",
+   "https://www.digitaledgedc.com/wp-content/uploads/2024/11/logo-footer.png",
+   "https://www.digitaledgedc.com/wp-content/uploads/2024/06/favicon-32x32-1.png",
+   "https://www.digitaledgedc.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.digitaledgedc.com/products-services/data-centers/"
+ },
+ {
+  "key": "estruxture",
+  "displayName": "eStruxture Data Centers",
+  "domain": "estruxture.ca",
+  "evidence": "title: Largest Canadian Data Center Colocation Platform | eStruxture",
+  "logoCandidates": [
+   "https://www.estruxture.com/hubfs/estruxture-2023/ai-wp/logo-estruxture.svg",
+   "https://www.estruxture.com/hubfs/estruxture-2023/ai-wp/favicon-estruxture.svg",
+   "https://www.estruxture.ca/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "nordavind sites",
+  "displayName": "Nordavind DC Sites",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "penta c v",
+  "displayName": "Penta C.V.",
+  "domain": "",
+  "evidence": ""
+ },
+ {
+  "key": "pulsant",
+  "displayName": "Pulsant",
+  "domain": "pulsant.co.uk",
+  "evidence": "title: Pulsant: The UK’s Edge Platform",
+  "logoCandidates": [
+   "https://www.pulsant.com/hubfs/raw_assets/public/olympia/images/Brand/pulsant-logo.svg",
+   "https://www.pulsant.com/hs-fs/hubfs/ies-logo-dark-1.png?width=150&height=150&name=ies-logo-dark-1.png",
+   "https://www.pulsant.com/hubfs/favicon.ico",
+   "https://pulsant.co.uk/favicon.ico"
+  ],
+  "officialLocationList": ""
+ },
+ {
+  "key": "america",
+  "displayName": "Colocation America",
+  "domain": "colocationamerica.com",
+  "evidence": "title: Dedicated Servers and Colocation Services | Colocation America",
+  "logoCandidates": [
+   "https://www.colocationamerica.com/favicon.ico"
+  ],
+  "officialLocationList": "https://www.colocationamerica.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.colocationamerica.com%2F"
+ },
+ {
+  "key": "dartpoints",
+  "displayName": "DartPoints",
+  "domain": "dartpoints.com",
+  "evidence": "title: DartPoints - Enterprise Data Centers, Colocation & Cloud Services",
+  "logoCandidates": [
+   "https://www.dartpoints.com/favicon.ico"
+  ],
+  "officialLocationList": ""
+ }
+]

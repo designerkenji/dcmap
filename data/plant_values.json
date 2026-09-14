@@ -1,0 +1,1146 @@
+[
+ {
+  "id": "gL100000601028",
+  "n": "Motuo hydroelectric plant",
+  "inv": 167800,
+  "note": "CNY 1.2tn (~US$167.8bn at ~7.15 CNY/USD) announced at Jul 19 2025 groundbreaking; covers the full 5-cascade 60 GW Yarlung Zangbo/Medog downstream project (developer: China Yajiang Group). Dec 2024 approval reports cited ~CNY 1tn (US$137bn). (as of 2025-07)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Medog_Hydropower_Station",
+   "https://www.powermag.com/china-breaks-ground-for-worlds-largest-hydropower-station/",
+   "https://thediplomat.com/2026/02/whats-driving-chinas-mega-medog-hydropower-project/"
+  ]
+ },
+ {
+  "id": "gL100001000544",
+  "n": "Western Green Energy Hub solar farm",
+  "inv": 74700,
+  "note": "A$100bn (US$74.7bn at Jul 2021 FX) announced Jul 2021 for the full Western Green Energy Hub (wind+solar+H2/ammonia; 50 GW then, 70 GW since 2024); figure unchanged as of 2024-25 EPA filings and carried only on this record, covering wind and solar. (as of 2021-07)",
+  "src": [
+   "https://www.pv-magazine.com/2021/07/13/the-hydrogen-stream-plans-for-75bn-50-gw-green-energy-hub-in-western-australia/",
+   "https://en.wikipedia.org/wiki/Western_Green_Energy_Hub",
+   "https://renewablesnow.com/news/approval-sought-for-upsized-70-gw-renewables-hub-in-western-australia-874080/"
+  ]
+ },
+ {
+  "id": "gL100001016589",
+  "n": "Hyrasia One wind farm",
+  "inv": 50000,
+  "note": "Up to US$50bn investment agreement with Kazakh gov't (Oct 2022) covers entire Hyrasia One (~40 GW wind+solar, 20 GW electrolysis, ~2 Mt H2/yr) — whole-project figure on this sole Hyrasia record in batch; est. US$40-50bn, FID due 2026. (as of 2022-10)",
+  "src": [
+   "https://www.pv-magazine.com/2022/10/28/the-hydrogen-stream-svevind-to-invest-in-20-gw-of-electrolysis-capacity-in-kazakhstan/",
+   "https://english.alarabiya.net/News/world/2022/10/27/Kazakhstan-signs-deal-to-make-hydrogen-at-a-50-billion-plant",
+   "https://interfax.com/newsroom/top-stories/96241/"
+  ]
+ },
+ {
+  "id": "gL100000500339",
+  "n": "Sinop nuclear power plant",
+  "inv": 44000,
+  "note": "2018 revised estimate ¥5tn (~$44bn; Wikipedia cites >$46bn Apr 2018) for the 4x ATMEA1 Sinop plan, doubled from $22bn at the 2013 Japan/Mitsubishi deal; Japan abandoned it Dec 2018. No cost announced for revived plan (KEPCO framework 2025).",
+  "src": [
+   "https://asia.nikkei.com/Economy/Japan-to-scrap-Turkey-nuclear-project",
+   "https://en.wikipedia.org/wiki/Sinop_Nuclear_Power_Plant",
+   "https://world-nuclear.org/information-library/country-profiles/countries-t-z/turkey"
+  ]
+ },
+ {
+  "id": "gL100001016797",
+  "n": "AMAN Green Hydrogen wind farm",
+  "inv": 40000,
+  "note": "US$40bn (USD-native) for the whole 30 GW AMAN project (18 GW wind + 12 GW solar + electrolysis/ammonia); framework agreement signed with Mauritania gov't 24 May 2022, per CWP Global. Covers the AMAN solar record too. (as of 2022-06)",
+  "src": [
+   "https://cwp.global/terra/mauritania-and-cwp-sign-a-framework-agreement-for-the-us-40-billion-aman-green-hydrogen-project/",
+   "https://www.pv-magazine.com/2022/06/03/the-hydrogen-stream-hydrogen-system-for-marine-vessels/"
+  ]
+ },
+ {
+  "id": "gL100000906073",
+  "n": "Asian Renewable Energy Hub wind farm",
+  "inv": 36000,
+  "note": "A$55bn (~US$36bn) for full 26 GW Asian Renewable Energy Hub wind+solar+hydrogen (RenewEconomy Oct 2024; widely cited since BP's 2022 entry). Covers whole hub incl. solar record. BP exited 2025; InterContinental Energy sole owner as of Feb 2026. (as of 2024-10)",
+  "src": [
+   "https://reneweconomy.com.au/start-date-for-australias-biggest-renewable-energy-hub-pushed-out-to-end-of-decade/",
+   "https://www.pv-magazine-australia.com/2026/02/04/developer-lands-federal-backing-for-26-gw-green-hydrogen-hub-in-was-pilbara/",
+   "https://www.dailysabah.com/business/energy/fuel-giant-bp-buys-into-36b-australian-renewables-project"
+  ]
+ },
+ {
+  "id": "gL100001005236",
+  "n": "VindØ Energy Island Offshore wind farm",
+  "inv": 34000,
+  "note": "Danish state Feb 2021 estimate DKK 210bn (~US$34bn then) for the North Sea energy island: island (~DKK 10bn), grid links, and full 10 GW offshore wind buildout. Program-level, not VindO-consortium-specific; postponed to ~2036 (Aug 2024). (as of 2021-02)",
+  "src": [
+   "https://www.cnbc.com/2021/02/05/denmark-wants-to-build-a-renewable-energy-island-in-the-north-sea.html",
+   "https://en.wikipedia.org/wiki/Energy_islands_of_Denmark",
+   "https://www.windpowermonthly.com/article/1885854/denmarks-north-sea-energy-island-facing-delays-amid-high-costs"
+  ]
+ },
+ {
+  "id": "gL100000922000",
+  "n": "Conjuncta and Infinity hybrid wind farm",
+  "inv": 34000,
+  "note": "US$34bn MoU signed 8 Mar 2023 by Conjuncta (DE), Infinity Power (EG/AE Masdar JV) & Mauritania; covers the entire green-H2 project (wind + solar + up to 10 GW electrolysis, ~8 Mt/yr H2 products), incl. the sibling solar record. USD-denominated. (as of 2023-03)",
+  "src": [
+   "https://www.gem.wiki/Conjuncta_and_Infinity_hybrid_wind_farm",
+   "https://oilprice.com/Latest-Energy-News/World-News/German-UAE-Egypt-Consortium-Signs-34-Billion-Hydrogen-Deal-With-Mauritania.html",
+   "https://www.globalhydrogenreview.com/hydrogen/09032023/infinity-power-and-conjuncta-sign-mou-with-government-of-mauritania/"
+  ]
+ },
+ {
+  "id": "gL100000600594",
+  "n": "Baihetan hydroelectric plant",
+  "inv": 34000,
+  "note": "Total project investment CNY220bn (~US$34.07bn at Jun-2021 rates), Baihetan station only (16 GW), announced at first-unit startup Jun 2021 (Xinhua/People's Daily; SCMP via Wikipedia). (as of 2021-06)",
+  "src": [
+   "http://en.people.cn/n3/2021/0628/c90000-9865936.html",
+   "https://en.wikipedia.org/wiki/Baihetan_Dam"
+  ]
+ },
+ {
+  "id": "gL100001063531",
+  "n": "Morocco-Germany wind farm",
+  "inv": 30000,
+  "note": "US$30bn is the whole Sila Atlantik Morocco-Germany project (2 HVDC subsea cables ~4,800 km + up to 15 GW solar and wind in Morocco), developer figure via Reuters Jul 2026; earlier estimates up to EUR 40bn (Sep 2025). Whole-project figure placed on this sole record. (as of 2026-07",
+  "src": [
+   "https://www.moroccoworldnews.com/2026/07/330907/morocco-germany-30-billion-power-cable-stalls-over-governance-disputes/",
+   "https://cleantechnica.com/2025/09/25/morocco-to-send-solar-power-to-germany-via-4800-km-undersea-cable/",
+   "https://www.ecofinagency.com/news-industry/2307-57669-morocco-seeks-a-bigger-role-in-europes-energy-future-with-30-billion-power-link"
+  ]
+ },
+ {
+  "id": "gL100000922180",
+  "n": "Oman Green Energy wind farm",
+  "inv": 30000,
+  "note": "US$30bn for the full ~25 GW Green Energy Oman wind+solar+H2/ammonia complex in Al Wusta; announced 2021, confirmed at Shell's 35% entry Jan 2023. Whole-complex figure parked on this wind record; sibling GEO solar record carries no figure (no double count).",
+  "src": [
+   "https://breakbulk.com/articles/shell-takes-stake-in-omani-hydrogen-project",
+   "https://www.gem.wiki/Oman_Green_Energy_wind_farm"
+  ]
+ },
+ {
+  "id": "gL100000500092",
+  "n": "El Dabaa nuclear power plant",
+  "inv": 28750,
+  "note": "Total project cost US$28.75bn for the 4x1200MW VVER-1200 El Dabaa plant; $25bn Russian state loan (2016, 3%, 22yr) covers 85%, Egypt 15%. Construction began Jul 2022. (as of 2017-05)",
+  "src": [
+   "https://en.wikipedia.org/wiki/El_Dabaa_Nuclear_Power_Plant",
+   "https://world-nuclear.org/information-library/country-profiles/countries-a-f/egypt",
+   "https://sis.gov.eg/en/projects-initiatives/projects/el-dabaa-nuclear-energy-plant-project/"
+  ]
+ },
+ {
+  "id": "gL100001016310",
+  "n": "Iran-Hormoz nuclear power plant",
+  "inv": 25000,
+  "note": "US$25bn Iran Hormoz Co-Rosatom (REP) executive agreement, Sep 2025, covering four ~1,250 MW Gen-III PWR units (~5,000 MW) at Sirik, Hormozgan (Iran-Hormoz NPP); earlier ~US$15bn estimate at Feb 2024 civil-works start. Site-specific, USD-denominated. (as of 2025-09)",
+  "src": [
+   "https://www.aljazeera.com/news/2025/9/26/iran-and-russia-sign-25bn-nuclear-plant-deal",
+   "https://www.nucnet.org/news/iran-signs-usd25-billion-deal-with-russia-for-four-new-nuclear-units-reports-say-9-1-2025",
+   "https://www.globalsecurity.org/wmd/library/news/iran/2024/iran-240202-presstv02.htm"
+  ]
+ },
+ {
+  "id": "gL100000500093",
+  "n": "Akkuyu nuclear power plant",
+  "inv": 24500,
+  "note": "Rosatom CEO Likhachev (Jun 2024): Akkuyu NPP costs $24-25bn to build at current prices (midpoint used). Covers full 4x1200 MW site; up from $20bn at 2010 IGA and $22-25bn 2012 estimates. Russia fully finances. USD-native figure. (as of 2023)",
+  "src": [
+   "https://interfax.com/newsroom/top-stories/103324/",
+   "https://world-nuclear.org/information-library/country-profiles/countries-t-z/turkey"
+  ]
+ },
+ {
+  "id": "gL100000500011",
+  "n": "Barakah nuclear power plant",
+  "inv": 24400,
+  "note": "US$24.4bn total project financing at Oct 2016 financial close (Barakah One PJSC: ~$19.6bn loans incl. $16.2bn Abu Dhabi finance dept + $4.7bn ENEC/KEPCO equity), covering all four Barakah units; 2009 KEPCO EPC contract ~$20.4bn; unofficial 2020 estimates ~$32bn. (as of 2016-10)",
+  "src": [
+   "https://world-nuclear.org/information-library/country-profiles/countries-t-z/united-arab-emirates",
+   "https://www.enec.gov.ae/news/latest-news/enec-and-kepco-announce-financial-close-for-barakah-nuclear-energy-plant/",
+   "https://www.nucnet.org/news/enec-announces-formal-closing-of-24-4bn-financial-package-for-barakah"
+  ]
+ },
+ {
+  "id": "gL100000922059",
+  "n": "Cần Giờ offshore wind farm",
+  "inv": 22500,
+  "note": "Preliminary total investment VND 587.73tn (~US$22.5bn) for the full 6,000MW Can Gio (2) offshore wind project per HCMC feasibility-study review, Aug 20 2026; up from VND 313.37tn (~$13.3bn) in the June 2023 Asiapetro-Tokyo Gas-Shizen proposal. (as of 2026-08)",
+  "src": [
+   "https://en.sggp.org.vn/ho-chi-minh-city-pushes-forward-6000-mw-offshore-wind-power-project-post129050.html",
+   "https://ocean-energyresources.com/2026/08/21/ho-chi-minh-city-advances-can-gio-2-owpp/",
+   "https://theinvestor.vn/hcmc-aims-to-add-6000mw-offshore-wind-farm-to-national-power-plan-d5405.html"
+  ]
+ },
+ {
+  "id": "gL100000922308",
+  "n": "Evergreen Complex wind farm",
+  "inv": 20000,
+  "note": "A$30bn (~US$20bn, May 2023 FX) for CIP's full Evergreen hub, Eyre Peninsula SA: 10 GW onshore wind + ~4 GW solar + 7 GW electrolysis at Whyalla. Pre-FID plan; whole-hub figure carried on this wind record (no sibling record duplicates it). (as of 2023-05)",
+  "src": [
+   "https://reneweconomy.com.au/danish-giant-adds-massive-green-hydrogen-hub-to-30gw-australia-pipeline/",
+   "https://renewablesnow.com/news/cip-to-embark-on-usd-20bn-green-hydrogen-project-in-australia-823801/",
+   "https://www.pv-magazine.com/2023/05/22/the-hydrogen-stream-cip-plans-7-gw-of-electrolysis-hub-in-australia/"
+  ]
+ },
+ {
+  "id": "gL100000500353",
+  "n": "Xudapu nuclear power plant",
+  "inv": 19400,
+  "note": "RMB 140bn (1400亿元) total for full 6-unit ~7.6 GW Xudapu plant, per CAEA (Jun 2026) and Liaoning govt (Feb 2026); ~7.2 CNY/USD => ~$19.4bn. Units 1-2 are a subset of this figure. (as of 2026-06)",
+  "src": [
+   "https://www.caea.gov.cn/n6760338/n6760342/c10752442/content.html",
+   "https://www.ln.gov.cn/web/ywdt/zymtkln/2026021212570324328/index.shtml",
+   "https://www.ln.gov.cn/web/ywdt/jrln/wzxx2018/2024102208383380029/index.shtml"
+  ]
+ },
+ {
+  "id": "gL100000500341",
+  "n": "Lianjiang nuclear power plant",
+  "inv": 18600,
+  "note": "~RMB 130bn total for planned 6-unit 8.62 GW CAP-series plant per Sep 2022 approval reports; phase 1 (units 1-2) approved 13 Sep 2022 at RMB 38.9bn. Converted at ~7.0 CNY/USD; Yicai independently reported $18.1bn. (as of 2022-09)",
+  "src": [
+   "https://epaper.oeeee.com/ipaper/A/html/2022-09/22/content_21656.htm",
+   "https://www.yicaiglobal.com/news/chinas-state-power-investment-starts-building-first-reactor-unit-of-lianjiang-nuclear-power-plant",
+   "https://zh.wikipedia.org/wiki/%E5%BB%89%E6%B1%9F%E6%A0%B8%E7%94%B5%E7%AB%99"
+  ]
+ },
+ {
+  "id": "gL100000500355",
+  "n": "Lufeng nuclear power plant",
+  "inv": 17200,
+  "note": "RMB 125.2bn total for the planned 6-unit Lufeng site (units 5&6 approx RMB 40bn; units 1&2 approved 8/2024); widely reported in Chinese media at unit 1 construction start, Feb 2025. (as of 2025-02)",
+  "src": [
+   "https://baike.baidu.com/item/%E9%99%86%E4%B8%B0%E6%A0%B8%E7%94%B5%E7%AB%99",
+   "https://zh.wikipedia.org/wiki/%E9%99%86%E4%B8%B0%E6%A0%B8%E7%94%B5%E7%AB%99",
+   "https://www.sohu.com"
+  ]
+ },
+ {
+  "id": "gL100000500410",
+  "n": "Zhuanghe nuclear power plant",
+  "inv": 17200,
+  "note": "Planned total investment ~RMB 125bn (总投资约1250亿元, ~US$17.2bn) for 6 Hualong One units, per project planning/EIA reporting; CNNC-Datang JV. Phase 1 (2 units) state-approved Jul 2026. (as of 2025-01)",
+  "src": [
+   "https://zh.wikipedia.org/wiki/%E5%BA%84%E6%B2%B3%E6%A0%B8%E7%94%B5%E7%AB%99",
+   "https://www.thepaper.cn/newsDetail_forward_33691572"
+  ]
+ },
+ {
+  "id": "gL100000601240",
+  "n": "Wudongde hydroelectric plant",
+  "inv": 17000,
+  "note": "Total investment ~CNY120bn (~US$17bn at Jun-2020 rates), reported by Reuters at first-unit startup Jun 2020; Baidu Baike concurs (工程总投资约1200亿元). (as of 2020-06)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Wudongde_Dam",
+   "https://baike.baidu.com/item/%E4%B9%8C%E4%B8%9C%E5%BE%B7%E6%B0%B4%E7%94%B5%E7%AB%99"
+  ]
+ },
+ {
+  "id": "gL100000500348",
+  "n": "Bailong nuclear power plant",
+  "inv": 16970,
+  "note": "Total ~RMB 120bn (1200亿元) for full 6-unit 8.62 GW plant (2 CAP1000 + 4 CAP1400); Phase 1 (2 units) ~RMB 40bn. Reported at Unit 1 first concrete, Dec 2025. ~7.07 CNY/USD. (as of 2025-12)",
+  "src": [
+   "https://baike.baidu.com/item/%E5%B9%BF%E8%A5%BF%E7%99%BD%E9%BE%99%E6%A0%B8%E7%94%B5%E9%A1%B9%E7%9B%AE",
+   "https://www.gem.wiki/Bailong_nuclear_power_plant"
+  ]
+ },
+ {
+  "id": "gL100000500408",
+  "n": "Zhaoyuan nuclear power plant",
+  "inv": 16900,
+  "note": "Planned total investment ~RMB 120bn (约1200亿元, ~US$16.9bn) for 6 planned Hualong One units (7.2 GW); reported around Unit 1 construction start Nov 18, 2025. Phase 1 (2x1,214 MW) approved Aug 2024. (as of 2025-11)",
+  "src": [
+   "https://zh.wikipedia.org/wiki/%E6%8B%9B%E8%BF%9C%E6%A0%B8%E7%94%B5%E7%AB%99",
+   "https://news.qq.com/rain/a/20251119A025GB00"
+  ]
+ },
+ {
+  "id": "gL100000500352",
+  "n": "Cangnan San'ao nuclear power plant",
+  "inv": 16800,
+  "note": "Planned total ~RMB 120bn for the 6-unit Hualong One San'ao site (phase 1 units 1&2 ~RMB 39.3bn per Baidu Baike); RMB 120bn figure restated in Chinese media around unit 1 COD, 2026. (as of 2026-03)",
+  "src": [
+   "https://baike.baidu.com/item/%E6%B5%99%E6%B1%9F%E4%B8%89%E6%BE%B3%E6%A0%B8%E7%94%B5%E7%AB%99",
+   "https://www.sohu.com"
+  ]
+ },
+ {
+  "id": "gL100000500329",
+  "n": "Haixing nuclear power plant",
+  "inv": 16700,
+  "note": "~RMB 120bn for planned 6-unit ~7.2 GW AP1000 plant per Haixing county government (2024) and investor Jiantou Energy (2023); project still pre-approval. Converted at ~7.2 CNY/USD. (as of 2024-03)",
+  "src": [
+   "https://www.haixing.gov.cn/haixing/c101041/202403/497702c3656b416b9781bb81a5b1d349.shtml",
+   "https://www.sohu.com/a/677548634_121123852",
+   "https://www.cinie.net/article/26716.html"
+  ]
+ },
+ {
+  "id": "gL100000500357",
+  "n": "Taipingling nuclear power plant",
+  "inv": 16700,
+  "note": "Total investment >RMB 120bn (超1200亿元, ~US$16.7bn at ~7.18 CNY/USD) for all 6 Hualong One units in 3 phases, per Nandu/Tencent/Toutiao reports at Unit 3 construction start, Jun 2025. (as of 2025-06)",
+  "src": [
+   "https://www.toutiao.com/article/7514894648742085183/",
+   "https://news.qq.com/rain/a/20250612A03T4G00",
+   "https://m.mp.oeeee.com/a/BAAFRD00002025061010937118.html"
+  ]
+ },
+ {
+  "id": "gL100000916535",
+  "n": "H2 Magallanes wind farm",
+  "inv": 16000,
+  "note": "US$16bn total for the H2 Magallanes green hydrogen/ammonia complex incl. the wind farm (operator site; permitting/SEA reports May-Jul 2025). Early 2022 reports cited ~US$15bn. (as of 2025-05)",
+  "src": [
+   "https://www.h2magallanes.cl/",
+   "https://www.gem.wiki/H2_Magallanes_wind_farm"
+  ]
+ },
+ {
+  "id": "gL100001063346",
+  "n": "Renergy Sinia solar farm",
+  "inv": 15000,
+  "note": "~US$15bn est. for Renergy Green Valley El-Tor integrated green H2 project incl. storage (project sponsor site, Jun 2026; phase 1 ~US$7bn); no solar-only figure. (as of 2026-06)",
+  "src": [
+   "https://greentech-egypt.com/major-general-dr-ismail-kamal-governor-of-south-sinai-received-mr-robert-valk-chairman-of-renergy-group-partners-and-the-accompanying-delegation-to-discuss-the-latest-developments-of-the-green-v/"
+  ]
+ },
+ {
+  "id": "gL100000500012",
+  "n": "Shin-Hanul nuclear power plant",
+  "inv": 15000,
+  "note": "Units 1-2: KRW 7tn est (2012, ~$6.2bn; +KRW 2.3tn overrun rptd 2022). Units 3-4: KRW 11.7tn approved at Sep 2024 construction start (~$8.8bn). Sum of announced costs for the 4-unit site. (as of 2024-09)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Hanul_Nuclear_Power_Plant",
+   "https://news.google.com/rss/search?q=%EC%8B%A0%ED%95%9C%EC%9A%B8%203%C2%B74%ED%98%B8%EA%B8%B0%2011%EC%A1%B0&hl=ko&gl=KR&ceid=KR:ko"
+  ]
+ },
+ {
+  "id": "gL100000604276",
+  "n": "Manseriche hydroelectric plant",
+  "inv": 14500,
+  "note": "US$14,500m construction-cost estimate (2007 studies) cited by CIP-Lima Jul 2025; 7,550 MW project only announced (national-interest decree 2011), no developer or financing.",
+  "src": [
+   "https://ciplima.org.pe/el-pongo-de-manseriche-proyecto-global/",
+   "https://www.gem.wiki/Manseriche_hydroelectric_plant"
+  ]
+ },
+ {
+  "id": "gL100000602038",
+  "n": "Siang Upper hydroelectric plant",
+  "inv": 14500,
+  "note": "Pre-feasibility estimate Rs 1.13 trillion (~US$14.5bn at Jun 2022 rates) for the Upper Siang multipurpose project (Mint, Jun 2022); Wikipedia infobox cites US$13bn. (as of 2022-06)",
+  "src": [
+   "https://www.livemint.com/politics/news/arunachal-dam-project-may-cost-india-1-13-tn-11655746016904.html",
+   "https://en.wikipedia.org/wiki/Siang_Upper_Multipurpose_Project",
+   "https://www.gem.wiki/Siang_Upper_hydroelectric_plant"
+  ]
+ },
+ {
+  "id": "gL100001048127",
+  "n": "Balkhash nuclear power plant",
+  "inv": 14400,
+  "note": "Estimated cost $14.4bn for Rosatom-led first Kazakh NPP (2x VVER-1200) at Ulken/Lake Balkhash, plus $2bn more for physical security and social infrastructure (Kazinform, May 2026). (as of 2026-05)",
+  "src": [
+   "https://world-nuclear.org/information-library/country-profiles/countries-g-n/kazakhstan"
+  ]
+ },
+ {
+  "id": "gL100000603013",
+  "n": "Diamer Basha hydroelectric plant",
+  "inv": 14000,
+  "note": "WAPDA-cited construction cost US$14bn (2013 est.) for dam + 4,500 MW power. Dam-part PC-1 revised Rs479bn to Rs1.05trn (~US$3.8bn) Jan 2025; no updated full-project total published.",
+  "src": [
+   "https://en.wikipedia.org/wiki/Diamer-Bhasha_Dam",
+   "https://enggpost.com",
+   "https://www.brecorder.com/news"
+  ]
+ },
+ {
+  "id": "gL100000805654",
+  "n": "Australia-Asia Power Link solar farm",
+  "inv": 13500,
+  "note": "Whole AAPowerLink (solar+battery+800km OHTL+4,300km subsea HVDC to Singapore), not solar-only. A$20bn (US$13.5bn) widely reported at Aug 2024 EPBC approval; SunCable has published no official capex; later unofficial estimates run A$35-40bn. (as of 2024-08)",
+  "src": [
+   "https://www.scmp.com/news/asia/australasia/article/3275258/australia-approves-us135-billion-solar-project-power-singapore-undersea-cable",
+   "https://www.pv-magazine-australia.com/2024/08/21/suncable-gets-environmental-approval-for-aapowerlink-project/",
+   "https://www.gem.wiki/Australia-Asia_Power_Link_solar_farm"
+  ]
+ },
+ {
+  "id": "gL100000407706",
+  "n": "Jizan IGCC power plant",
+  "inv": 12000,
+  "note": "US$12bn Jazan ASU/gasification/power JV (3.8GW IGCC): asset transfer and financial close Oct 2021 by Air Products/ACWA Power/Aramco/Qudra ($7.2bn debt). USD-native announced figure. (as of 2021-10)",
+  "src": [
+   "https://www.enerdata.net/publications/daily-energy-news/us12bn-jazan-igcc-project-saudi-arabia-reaches-financial-close.html",
+   "https://www.nsenergybusiness.com/projects/jizan-integrated-gasification-combined-cycle-power-project/"
+  ]
+ },
+ {
+  "id": "gL100000900062",
+  "n": "ACWA wind farm",
+  "inv": 11500,
+  "note": "Cumulative announced: ~US$10bn for 10 GW West Sohag wind (media-cited; first 2 GW signed at $2.3bn, Feb 2025) + US$1.5bn for 1.1 GW Suez wind agreement (2022). No single official total from ACWA. (as of 2025-02)",
+  "src": [
+   "https://acwapower.com/en/media-center/latest-news/acwa-power-granted-land-for-10-gw-wind-project-in-egypt/",
+   "https://africa-energy-portal.org/news/acwa-power-inks-23b-deal-egypts-largest-2-gw-wind-farm",
+   "https://www.gem.wiki/ACWA_wind_farm"
+  ]
+ },
+ {
+  "id": "gL100000826980",
+  "n": "Inner Mongolia Kubuqi Desert (North) wind and solar megabase",
+  "inv": 11500,
+  "note": "Planned total inv >RMB 80bn (~USD 11.5bn at 6.96) for the ENTIRE 16GW Kubuqi Ordos mid-north base (8GW PV + 4GW wind + 4GW coal upgrade), per Xinhua/Three Gorges at Dec 2022 groundbreaking; not solar-only. (as of 2022-12)",
+  "src": [
+   "http://www.news.cn/fortune/2022-12/28/c_1129239500.htm"
+  ]
+ },
+ {
+  "id": "gL100001019366",
+  "n": "Horizonte de Verano solar farm",
+  "inv": 11200,
+  "note": "Horizonte de Verano integrated green H2/ammonia complex (5.85 GWp PV, desalination, port) in Arequipa; PRODUCE approved EIA Mar 2025 citing investment of over US$11,200 million. (as of 2025-03)",
+  "src": [
+   "https://www.gob.pe/institucion/regionarequipa/noticias/1121986-megaproyecto-de-hidrogeno-verde-en-arequipa",
+   "https://www.pv-magazine-latam.com/2025/03/06/aprueban-en-peru-megaproyecto-de-hidrogeno-verde-por-mas-de-us-11200-millones/"
+  ]
+ },
+ {
+  "id": "gL100000916611",
+  "n": "Globeleq Green Hydrogen wind farm",
+  "inv": 11000,
+  "note": "US$11bn covers Globeleq's whole SCZone (Ain Sokhna) green hydrogen complex: 3.6 GW electrolysers + up to 9 GW wind/solar incl. this 4.5 GW wind. Reported Aug 2022; COP27 framework Nov 2022. (as of 2022-08)",
+  "src": [
+   "https://globeleq.com/globeleq-signs-green-hydrogen-framework-agreement-with-government-of-egypt-at-cop27/",
+   "https://www.africabusinessplus.com/en",
+   "https://www.power-to-x.com"
+  ]
+ },
+ {
+  "id": "gL100000500085",
+  "n": "Astravets nuclear power plant",
+  "inv": 11000,
+  "note": "Belarusian (Astravets) NPP 2x VVER-1200: cost estimated up to US$11bn incl. grid works and workers' town; ~90% financed by up-to-US$10bn Russian state export credit (2011). No exact official total published. (as of 2020)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Astravets_Nuclear_Power_Plant",
+   "https://world-nuclear.org/information-library/country-profiles/countries-a-f/belarus",
+   "https://www.gem.wiki/Astravets_nuclear_power_plant"
+  ]
+ },
+ {
+  "id": "e66923",
+  "n": "SunZia Wind South",
+  "inv": 11000,
+  "note": "US$11bn financing closed Dec 2023 covers the entire SunZia project: 3,515 MW SunZia Wind (incl this 2,561 MW South portion) + 550-mile HVDC line; no wind-only figure published. (as of 2023-12)",
+  "src": [
+   "https://patternenergy.com/pattern-energy-closes-11-billion-financing-of-largest-clean-energy-infrastructure-project-in-u-s-history/",
+   "https://patternenergy.com/projects/sunzia/"
+  ]
+ },
+ {
+  "id": "gL100000824606",
+  "n": "HyDeal España solar farm",
+  "inv": 10800,
+  "note": "Estimated EUR 10,000m (2023 figures, reported Jun 2025) for full HyDeal Espana hub: 9.5 GW PV + 7.4 GW electrolysers, 330 kt/yr H2. No solar-only figure. ~1.08 USD/EUR.",
+  "src": [
+   "https://petroleoenergia.com/industrias/una-infraestructura-verde-para-el-futuro-energetico-de-europa/",
+   "https://www.hydeal.com",
+   "https://www.gem.wiki/HyDeal_Espa%C3%B1a_solar_farm"
+  ]
+ },
+ {
+  "id": "gL100000600941",
+  "n": "Lianghekou hydroelectric plant",
+  "inv": 10800,
+  "note": "Approved investment CNY 66.457bn (NDRC 2014, ~US$10.8bn then) for the 3,000MW station; reiterated through 2021 commissioning. Excludes the planned 1,200MW pumped-storage add-on.",
+  "src": [
+   "http://www.sasac.gov.cn/n2588025/n2588139/c11749289/content.html",
+   "http://baijiahao.baidu.com/s?id=1712208217726670691"
+  ]
+ },
+ {
+  "id": "gL100000922003",
+  "n": "AMUN wind farm",
+  "inv": 10600,
+  "note": "About US$10.6bn covers CWP Global's entire AMUN green hydrogen project (up to 17 GW wind+solar plus H2/ammonia plant), Engineering News project sheet Apr 2024; no operator-published figure. Whole-project figure placed here. (as of 2024-04)",
+  "src": [
+   "https://www.engineeringnews.co.za/article/amun-green-hydrogen-project-morocco-2024-04-12",
+   "https://cwp.global/terra/projects/",
+   "https://hydrogenious.net/cwp-global-and-hydrogenious-lohc-technologies-explore-green-hydrogen-transport-chain-from-morocco-to-europe-in-feasibility-study/"
+  ]
+ },
+ {
+  "id": "gL100000800331",
+  "n": "Total Eren-Guelmim-Oued Noun Solar",
+  "inv": 10600,
+  "note": "MAD 100bn (~US$10.6bn) for Total Eren's full 10 GW wind+solar green H2/ammonia complex in Guelmim-Oued Noun (this record is the 5 GW solar share); approved Nov 2021, re-reported 2023 at ~$10.69bn. (as of 2022-02)",
+  "src": [
+   "https://www.moroccoworldnews.com/2022/02/50279/total-eren-to-launch-green-hydrogen-megaproject-in-morocco/",
+   "https://news.google.com/rss/search?q=%22Total%20Eren%22%20Guelmim%20milliards%20hydrog%C3%A8ne&hl=fr&gl=FR&ceid=FR:fr"
+  ]
+ },
+ {
+  "id": "gL100001063408",
+  "n": "Qinghai Hainan Clean Energy Transmission Base solar farm",
+  "inv": 10300,
+  "note": "RMB ~73bn (近730亿元) for the full 19.44 GW base: 9.6 GW PV (this record) + 6 GW wind + 2.64 GW coal + 1.2 GW storage; start Nov 2025, UHV to Guangdong. Converted at ~7.08 CNY/USD. (as of 2025-11)",
+  "src": [
+   "https://news.bjx.com.cn/html/20251127/1472013.shtml",
+   "https://baike.baidu.com/item/%E9%9D%92%E6%B5%B7%E6%B5%B7%E5%8D%97%E6%B8%85%E6%B4%81%E8%83%BD%E6%BA%90%E5%A4%96%E9%80%81%E5%9F%BA%E5%9C%B0%E7%94%B5%E6%BA%90%E9%A1%B9%E7%9B%AE"
+  ]
+ },
+ {
+  "id": "gL100001047874",
+  "n": "Jiangsu Xuwei nuclear power plant",
+  "inv": 10100,
+  "note": "Phase 1 only (2x1,200MW Hualong One + 600MW HTGR): total investment estimate RMB 71.96bn; State Council approval Aug 2024, figure per Lianyungang development commission update, ~7.1 CNY/USD. (as of 2026-01)",
+  "src": [
+   "https://www.sohu.com/a/976097609_121106832",
+   "http://fgw.lyg.gov.cn/lygsfzhggwyh/fggz/content/b277a97a-f934-40dd-983d-5f758daaa86e.html"
+  ]
+ },
+ {
+  "id": "gL100001020707",
+  "n": "Xinjiang - Sichuan Power Export solar farms",
+  "inv": 10100,
+  "note": "Dynamic total RMB 71.848bn (CTG Renewables filing, Oct 2024) for full Ruoqiang base: 8.5 GW PV (this record) + 4 GW wind + 3.96 GW coal + ~2.5 GW storage; export to Sichuan/Chongqing. ~7.12 CNY/USD. (as of 2024-10)",
+  "src": [
+   "https://guangfu.bjx.com.cn/news/20241031/1408030.shtml",
+   "https://eps.ctg.com.cn/cms/channel/2ywgg1/22402.htm",
+   "https://www.gem.wiki/Xinjiang_-_Sichuan_Power_Export_solar_farms"
+  ]
+ },
+ {
+  "id": "gL100001045294",
+  "n": "China Electric solar farm",
+  "inv": 10000,
+  "note": "Expected cost ~US$10bn per Egyptian Ministry of Electricity statement reported Jul 2024; MOU with NREA/EEHC and CET (State Grid) signed Jan 2024 for 10 GW PV. No firmer figure since. (as of 2024-07)",
+  "src": [
+   "https://africaoilgasreport.com/2024/07/energy-transition/china-furthers-discussion-on-installing-a10gw-solar-power-plant-in-egypt/",
+   "https://www.enerdata.net/publications/daily-energy-news/chinese-and-egyptian-companies-sign-deal-develop-10-gw-solar-project-egypt.html",
+   "https://www.gem.wiki/China_Electric_solar_farm"
+  ]
+ },
+ {
+  "id": "gL100000921991",
+  "n": "Masdar -Infinity wind farm",
+  "inv": 10000,
+  "note": "Masdar/Infinity Power/Hassan Allam 10 GW West Sohag onshore wind: 'project value exceeding US$10 billion' per Masdar land-access agreement press release, May 15 2024. (as of 2024-05)",
+  "src": [
+   "https://masdar.ae/en/news/newsroom/10gw-wind-farm-in-egypt",
+   "https://www.gem.wiki/Masdar_-Infinity_wind_farm"
+  ]
+ },
+ {
+  "id": "gL100000601479",
+  "n": "Inga III hydroelectric plant",
+  "inv": 10000,
+  "note": "Current 4,800 MW Inga 3 design 'projected to cost over $10bn' (2025 World Bank re-engagement coverage; WB approved $250m first phase). Earlier estimates: $7bn (2009, 4.3 GW) to $14bn (2018, 11 GW variant). (as of 2025-06)",
+  "src": [
+   "https://www.renewableenergyworld.com/hydro-power/world-bank-approves-financing-for-drcs-controversial-inga-3-hydro-project/",
+   "https://en.wikipedia.org/wiki/Inga_3"
+  ]
+ },
+ {
+  "id": "e3122",
+  "n": "Homer City Generating Station",
+  "inv": 10000,
+  "note": "HCR/Kiewit Apr 2, 2025 release: initial capital investment projected to exceed US$10bn for power infrastructure (4.5 GW gas, 7 GE Vernova 7HA.02 turbines) and site readiness; data center capex additional. (as of 2025-04)",
+  "src": [
+   "https://www.homercityredevelopment.com/project-overview",
+   "https://constructionreviewonline.com"
+  ]
+ },
+ {
+  "id": "gL100000603009",
+  "n": "Bunji hydroelectric plant",
+  "inv": 8100,
+  "note": "US$8.1bn construction cost under the 2009 Pakistan Ministry of Water and Power - China Three Gorges MoU (The Nation, Aug 2009); project stalled since, no updated official cost. (as of 2009-08)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Bunji_Dam"
+  ]
+ },
+ {
+  "id": "gL100001047349",
+  "n": "Haiphong LNG power station",
+  "inv": 6740,
+  "note": "US$6.74bn for the 4,800 MW Hai Phong (Tan Trao IP) LNG plant at Sep 2025 groundbreaking (VietnamNet; VnEconomy ~$6.7bn); theinvestor.vn cited $7.7bn. Mar 2026: Vingroup proposed pivoting project to renewables. (as of 2025-09)",
+  "src": [
+   "https://vietnamnet.vn/en/vietnam-s-largest-lng-power-plant-begins-construction-in-hai-phong-2446570.html",
+   "https://www.reuters.com/sustainability/climate-energy/vingroup-proposes-scrapping-lng-powered-plant-plan-renewables-amid-iran-war-2026-03-31/"
+  ]
+ },
+ {
+  "id": "gL100000500351",
+  "n": "Xiapu nuclear power plant",
+  "inv": 6255,
+  "note": "Phase 1 (units 1-2, 2x HPR-1000) approved by State Council Apr 2025, total investment ~RMB 45.6bn (~$6.3bn). Aggregators cite ~RMB 100bn for full 5-unit site but no official full-site figure. (as of 2025-04)",
+  "src": [
+   "https://baike.baidu.com/item/%E9%9C%9E%E6%B5%A6%E6%A0%B8%E7%94%B5%E7%AB%99/65630885",
+   "https://news.tianyancha.com/ll_y1dpktk5f6.html"
+  ]
+ },
+ {
+  "id": "gL100000500397",
+  "n": "Jinqimen nuclear power plant",
+  "inv": 6200,
+  "note": "Phase 1 (units 1&2, ~2.4GW) RMB 44.57bn per Zhejiang provincial DRC at Feb 2024 start. Site plans 6 units/7.2GW; phase 2 approved 7/2026 only within a joint ~RMB 170bn 4-project batch. (as of 2024-02)",
+  "src": [
+   "https://zh.wikipedia.org/wiki/%E9%87%91%E4%B8%83%E9%97%A8%E6%A0%B8%E7%94%B5%E7%AB%99",
+   "https://k.sina.com.cn",
+   "https://www.jiemian.com"
+  ]
+ },
+ {
+  "id": "gL100000603012",
+  "n": "Dasu hydroelectric plant",
+  "inv": 6200,
+  "note": "Revised PC-1 of Rs1.74tn (~US$6.2bn) for Stage I (2,160MW) approved by ECNEC May 2025; original 2014 approval $4.28bn. Stage II of the 4,320MW plan not yet costed. (as of 2025-05)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Dasu_Dam",
+   "https://news.google.com/rss/search?q=Dasu%20hydropower%20revised%20cost%20ECNEC%20trillion"
+  ]
+ },
+ {
+  "id": "gL100001063627",
+  "n": "Masdar-Abu Dhabi solar farm",
+  "inv": 6000,
+  "note": "US$6bn for Masdar/EWEC 5.2 GW PV + 19 GWh BESS round-the-clock project in Abu Dhabi, announced at ADSW Jan 2025; construction began Oct 2025, operations from 2027. (as of 2025-01)",
+  "src": [
+   "https://www.pv-magazine.com/2025/01/14/masdar-ewec-announce-5-gw-19-gwh-solar-plus-storage-project-in-abu-dhabi/",
+   "https://www.pv-magazine.com/2025/10/24/masdar-ewec-break-ground-on-1-gw-baseload-solar-plus-storage-project/"
+  ]
+ },
+ {
+  "id": "gL100000918320",
+  "n": "Inner Mongolia Baotou New energy hydrogen production wind farm",
+  "inv": 5790,
+  "note": "RMB 40bn (~US$5.8bn) total for Shuimu Mingtuo integrated hydrogen-metallurgy demo project incl. 5 GW wind + green H2/ammonia/DRI plants (construction start Apr-May 2023); phase 1 RMB 12bn. No wind-only figure. (as of 2023-05)",
+  "src": [
+   "https://h2.in-en.com/html/h2-2424656.shtml",
+   "https://www.sohu.com/a/670007054_120142535",
+   "https://pv.snec.org.cn/article/0dcb4f0e-913f-4fe6-9ee4-47d36856d2f7"
+  ]
+ },
+ {
+  "id": "gL100000604092",
+  "n": "Pancheshwar hydroelectric plant",
+  "inv": 5465,
+  "note": "Govt of India preliminary estimate Rs 34,971.94 crore at Feb 2015 prices (PIB, Aug 2015), ~64 INR/USD. DPR not finalised; later press cites ~Rs 33,108 crore, so cost remains unsettled. (as of 2015-08)",
+  "src": [
+   "https://pib.gov.in/newsite/PrintRelease.aspx?relid=124154"
+  ]
+ },
+ {
+  "id": "gL100000921992",
+  "n": "West Sohag wind farm",
+  "inv": 5000,
+  "note": "US$5bn for Scatec's 5 GW West Sohag onshore wind farm; agreement between Egypt's electricity ministry and Scatec, reported 5 Jul 2023 (PM Madbouli / Sky News Arabia; also cited by GEM). (as of 2023-07)",
+  "src": [
+   "https://www.skynewsarabia.com/business/1634686-%D9%85%D8%B5%D8%B1-%D8%AA%D9%88%D9%82%D8%B9-%D8%A7%D8%AA%D9%81%D8%A7%D9%82%D8%A7-%D8%B3%D9%83%D8%A7%D8%AA%D9%83-%D8%A7%D9%84%D9%86%D8%B1%D9%88%D9%8A%D8%AC%D9%8A%D8%A9-%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9-%D8%A8%D9%80-5-%D9%85%D9%84%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA-%D8%AF%D9%88%D9%84%D8%A7%D8%B1",
+   "https://www.gem.wiki/West_Sohag_wind_farm"
+  ]
+ },
+ {
+  "id": "gL100000601596",
+  "n": "Grand Ethiopian Renaissance hydroelectric plant",
+  "inv": 5000,
+  "note": "Widely cited ~US$5bn total (ENR at Sep-2025 inauguration; 2011 Salini/Webuild contract US$4.8bn); some outlets cite ~$4bn; self-funded, ~ETB233bn spent per local media. (as of 2025-09)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Grand_Ethiopian_Renaissance_Dam",
+   "https://news.google.com/rss/search?q=%22Grand%20Ethiopian%20Renaissance%20Dam%22%20cost%20billion%20inauguration"
+  ]
+ },
+ {
+  "id": "gL100000103457",
+  "n": "Anin power station",
+  "inv": 5000,
+  "note": "Gangneung Anin 2x1,040MW: total project cost KRW 5.6tn (~US$5.0bn) with KRW 4.7tn debt from 34 institutions - Korea's largest PF at close (Kim & Chang); NS Energy also states $5bn. (as of 2019-01)",
+  "src": [
+   "https://www.nsenergybusiness.com/projects/gangneung-anin-coal-fired-power-plant/",
+   "https://www.gem.wiki/Anin_power_station"
+  ]
+ },
+ {
+  "id": "gL100000811681",
+  "n": "TuNur solar farm",
+  "inv": 5000,
+  "note": "Developer (TuNur COO) said the 4.5 GW Tunisia-Europe solar export project would stimulate >US$5bn of investment in Tunisia (SolarPACES Q&A, Sep 2017); no updated total announced. (as of 2017-09)",
+  "src": [
+   "https://www.solarpaces.org/tur-nur-revives-sahara-europe-csp-export-idea/",
+   "https://www.gem.wiki/TuNur_solar_farm"
+  ]
+ },
+ {
+  "id": "gL100001016696",
+  "n": "Aral wind farm",
+  "inv": 4850,
+  "note": "US$4.85bn (SAR 18.2bn) Aral 5 GW Wind IPP, Karakalpakstan, announced at PPA signing with Uzbekistan National Electric Grid, May 2024 (ACWA Power release; BOOT, 5 phases). (as of 2024-05)",
+  "src": [
+   "https://www.power-technology.com/news/acwa-power-seals-4-85bn-uzbek-wind-project-deal/",
+   "https://www.acwapower.com/en/media-center/latest-news/"
+  ]
+ },
+ {
+  "id": "gL100000103484",
+  "n": "Goseong Green power station",
+  "inv": 4540,
+  "note": "KRW 5.2tn total construction cost (~US$4.5bn, Feb 2017) per Korea Herald/The Investor at SK E&C EPC signing (EPC KRW 3.7tn; PF debt KRW 4.3tn). Power-Technology lists lower KRW 3.9tn - conflicting. (as of 2017-02)",
+  "src": [
+   "https://www.gem.wiki/Goseong_Green_power_station",
+   "https://www.power-technology.com/projects/goseong-hai-power-plant-south-gyeongsang-province/"
+  ]
+ },
+ {
+  "id": "gL100000604155",
+  "n": "Yebatan Pumped Storage hydroelectric plant",
+  "inv": 4450,
+  "note": "Total investment RMB 32.305bn (~US$4.45bn) for the 4,500 MW Yebatan hybrid pumped storage (Huadian Jinsha River, Sichuan/Tibet), per Baidu Baike as of Jul 2024. (as of 2024-07)",
+  "src": [
+   "https://baike.baidu.com/item/%E5%8F%B6%E5%B7%B4%E6%BB%A9%E6%B7%B7%E5%90%88%E5%BC%8F%E6%8A%BD%E6%B0%B4%E8%93%84%E8%83%BD%E7%94%B5%E7%AB%99",
+   "https://www.gem.wiki/Yebatan_Pumped_Storage_hydroelectric_plant"
+  ]
+ },
+ {
+  "id": "gL100000917373",
+  "n": "Gansu - Shandong Power Export Huanxian (Huaneng) Wind/Solar Demonstration Project wind farm",
+  "inv": 4185,
+  "note": "Covers combined Huaneng Qingyang (Huanxian) wind+solar demo project (4.5GW wind + 1.5GW PV): 'over RMB 30bn' (超300亿元) per completion report Jun 2026; ~7.17 CNY/USD. Wind-only share not broken out. (as of 2026-06)",
+  "src": [
+   "https://news.qq.com/rain/a/20260611A03QFS00",
+   "https://view.inews.qq.com/a/20250611A03QFS00"
+  ]
+ },
+ {
+  "id": "gL100000102608",
+  "n": "Yadadri power station",
+  "inv": 4110,
+  "note": "Revised project cost Rs 34,543 crore (~US$4.1bn) for the 5x800MW YTPS, up from initial Rs 25,099 crore and interim Rs 29,966 crore (The Hindu, May & Oct 2024). (as of 2024-10)",
+  "src": [
+   "https://www.thehindu.com/news/national/telangana/telangana-energy-dept-to-raise-additional-loan-of-7037-cr-for-yadadri-thermal-power-station/article68806120.ece",
+   "https://www.thehindu.com/news/national/telangana/boiler-light-up-of-two-yadadri-thermal-power-station-units-sets-in-motion-its-phased-commissioning/article68175693.ece",
+   "https://en.wikipedia.org/wiki/Yadadri_Thermal_Power_Plant"
+  ]
+ },
+ {
+  "id": "gL100000104328",
+  "n": "Quang Trach Power Center",
+  "inv": 3800,
+  "note": "Sum of EVN component costs: Quang Trach 1 VND41.13tn (~US$1.8bn, Dec 2021) + Quang Trach 2 LNG 1,500 MW VND52.49tn (~US$2.0bn, 2025). Covers ~2.9 GW of the 4.4 GW center; no center-wide figure.",
+  "src": [
+   "https://www.gem.wiki/Quang_Trach_Power_Center",
+   "https://vir.com.vn",
+   "https://vietnamenergy.vn"
+  ]
+ },
+ {
+  "id": "gL100000103461",
+  "n": "Samcheok Blue power station",
+  "inv": 3750,
+  "note": "KRW 4.9tn total project cost for 2,100MW Samcheok Blue Power (~US$3.75bn at 2023 rates); figure from May 2023 credit-rating report cited by GEM and ICSC reporting. (as of 2023-05)",
+  "src": [
+   "https://www.gem.wiki/Samcheok_Blue_power_station",
+   "https://www.sustainable-carbon.org/koreas-final-coal-power-project-faces-renewed-scrutiny/"
+  ]
+ },
+ {
+  "id": "gL100000103749",
+  "n": "Hassyan Clean-Coal Power Project",
+  "inv": 3330,
+  "note": "Hassyan 2,400 MW (built as clean coal, converted to gas 2022): total project cost US$3,330m per ACWA Power project page; ~US$3.4bn cited at 2016 financial close (DEWA 51% / ACWA-Harbin-Silk Road 49%).",
+  "src": [
+   "https://www.acwapower.com/en/what-we-do/projects/hassyan-ipp",
+   "https://www.gem.wiki/Hassyan_Clean-Coal_Power_Project"
+  ]
+ },
+ {
+  "id": "gL100001020396",
+  "n": "Bogunda wind farm",
+  "inv": 3300,
+  "note": "A$5bn total cost stated for the proposed 5 GW Bogunda wind farm near Hughenden, QLD (REP, Aug 2024) ~US$3.3bn at ~0.66 AUD/USD; project recast Jun 2026 as 1.85 GW wind/solar/BESS hybrid. (as of 2024-08)",
+  "src": [
+   "https://www.abc.net.au/news/2024-08-13/proposed-wind-farm-could-power-outback-qld-renewable-energy/104217168",
+   "https://reneweconomy.com.au/plans-unveiled-for-five-gigawatt-wind-project-the-biggest-on-australias-main-grid/"
+  ]
+ },
+ {
+  "id": "gL100000601003",
+  "n": "Maerdang hydroelectric plant",
+  "inv": 3150,
+  "note": "Maerdang 2,320 MW hydro (Yellow River, Qinghai): total investment ~RMB 23.0bn per state-media reports at Dec 2024 full commissioning; ~US$3.15bn at ~7.3 CNY/USD. CHN Energy's own releases give no figure. (as of 2024-12)",
+  "src": [
+   "https://finance.sina.com.cn/jjxw/2024-12-31/doc-ineckerv1888295.shtml",
+   "https://www.chnenergy.com.cn/gjnyjtww/chnjtyw/202412/0c681ec18d92434bbdc8c1b43215ea56.shtml"
+  ]
+ },
+ {
+  "id": "gL100000603560",
+  "n": "Julius Nyerere hydroelectric plant",
+  "inv": 2900,
+  "note": "US$2.9bn (TZS 6.558tn) EPC signed Dec 2018 with Arab Contractors/Elsewedy; govt-financed, ~TZS 7.45tn cited at Aug 2026 commissioning, still ~US$2.9bn. (as of 2026-08)",
+  "src": [
+   "https://en.wikipedia.org/wiki/Julius_Nyerere_Hydropower_Station"
+  ]
+ },
+ {
+  "id": "gL100000100318",
+  "n": "Guazhou Changle power station",
+  "inv": 2890,
+  "note": "Full 6x1,000MW Changle plant incl. Phase II: total investment CNY20.5bn (~US$2.89bn at 2023 rates) per Baidu Baike; Phase II (units 5-6) alone CNY7.52bn (2023, GEM ref).",
+  "src": [
+   "https://baike.baidu.com/item/%E5%B8%B8%E4%B9%90%E7%94%B5%E5%8E%82",
+   "https://www.gem.wiki/Guazhou_Changle_power_station"
+  ]
+ },
+ {
+  "id": "gL100001054508",
+  "n": "Shanxi Datong Mined-Out Areas Megabase solar farms",
+  "inv": 2880,
+  "note": "RMB 21bn (~US$2.9bn) total investment for the 5 GW Jinbei PV project (Datong govt notice, Apr 2025); part of the RMB 55bn, 10 GW Jinbei mined-out-area wind-solar-coal-storage base begun Jan 2024. (as of 2025-04)",
+  "src": [
+   "https://www.dt.gov.cn/dtszf/zsxm/202504/be312a9b44424c3eb6447a95925b2b6b.shtml",
+   "https://news.qq.com/rain/a/20260314A05SKL00"
+  ]
+ },
+ {
+  "id": "gL100000828990",
+  "n": "Xinjiang Shihezi - Manas 5 GW solar complex",
+  "inv": 2610,
+  "note": "Shima-Bingdi Fusion 5GW PV base (Zhongxinjian+Guohua+Shanghai Electric): total investment RMB 18.9bn announced at Apr 2024 launch per Xinjiang Daily; ~USD 2.61bn at 7.24 CNY/USD. Covers whole 5GW complex. (as of 2024-04)",
+  "src": [
+   "https://www.ts.cn/xwzx/jjxw/202404/t20240423_20571538.shtml"
+  ]
+ },
+ {
+  "id": "gL100000600737",
+  "n": "Fengning hydroelectric plant",
+  "inv": 2600,
+  "note": "Total construction cost CNY 19.24bn (~US$2.6bn) for the 3,600MW/12-unit plant, both phases; widely reported and cited at full commissioning Dec 31, 2024. (as of 2025-01)",
+  "src": [
+   "https://www.ess-news.com/2025/01/09/worlds-largest-pumped-storage-power-plant-fully-operational-in-china/",
+   "https://en.wikipedia.org/wiki/Fengning_Pumped_Storage_Power_Station"
+  ]
+ },
+ {
+  "id": "gL100000918423",
+  "n": "Inner Mongolia Hinggan League (China Guangdong Nuclear) wind power base",
+  "inv": 2580,
+  "note": "Total investment CNY 18.4bn for CGN's 3GW/701-turbine Xing'an League wind base (Keyouqian 1GW + Keyouzhong 2GW), per CGN at full-capacity grid connection Dec 10, 2023. (as of 2023-12)",
+  "src": [
+   "https://www.cgnpc.com.cn/cgn/c100949/2023-12/11/content_fccb3a18506141b8a2b4d3991165a540.shtml",
+   "https://baike.baidu.com/item/%E4%B8%AD%E5%B9%BF%E6%A0%B8%E5%86%85%E8%92%99%E5%8F%A4%E5%85%B4%E5%AE%89%E7%9B%9F300%E4%B8%87%E5%8D%83%E7%93%A6%E9%A3%8E%E7%94%B5%E5%A4%A7%E5%9F%BA%E5%9C%B0"
+  ]
+ },
+ {
+  "id": "gL100000406932",
+  "n": "New Rumaila power station",
+  "inv": 2500,
+  "note": "US$2.5bn for the full 3,000 MW Rumaila CCGT (12 gas + 6 steam turbines), built by Iran's MAPNA with Jordan-based (Shamara) private investors; reported May 2017 via EGFI risk-cover deal. (as of 2017-05)",
+  "src": [
+   "https://www.iraq-businessnews.com/2017/05/09/egfi-agrees-political-risk-insurance-for-rumaila-power-plant/",
+   "https://www.gem.wiki/New_Rumaila_power_station"
+  ]
+ },
+ {
+  "id": "gL100000809136",
+  "n": "Shuaibah 2 solar farm",
+  "inv": 2370,
+  "note": "US$2.37bn total investment at financial close (Aug 2023) covers Al Shuaibah 2 (2,060MW) plus sister Al Shuaibah 1 (600MW) combined; ACWA Power/Badeel/Aramco SAPCO consortium. Sibling plant not in this dataset batch. (as of 2023-08)",
+  "src": [
+   "https://www.acwapower.com/en/media-center/latest-news/consortium-of-acwa-power-pif-subsidiary-badeel-and-aramco-subsidiary-sapco-reach-financial-close-for-al-shuaibah-1-and-al-shuaibah-2-solar-pv-projects/",
+   "https://www.nsenergybusiness.com/company-news/acwa-power-led-consortium-reaches-2-4bn-financial-close-on-al-shuaibah-solar-projects/"
+  ]
+ },
+ {
+  "id": "gL100000827099",
+  "n": "Ningxia - Hunan Power Export Tengger Desert solar farm",
+  "inv": 2190,
+  "note": "Total investment CNY 15.25bn for the 3GW Tengger Desert PV complex ('Ningxia-Hunan' UHV feeder), announced at Sep 2022 groundbreaking; phase 1 (1GW) CNY 5.114bn. (as of 2022-09)",
+  "src": [
+   "https://m.jiemian.com/article/8058171.html",
+   "https://hn.rednet.cn/content/2022/09/11/11817945.html",
+   "https://www.seetao.com/details/181310.html"
+  ]
+ },
+ {
+  "id": "gL100000828998",
+  "n": "Xinjiang Ruoqiang (China Green Power) solar farm",
+  "inv": 2140,
+  "note": "RMB 15.588bn (总投资155.88亿元) for China Green Power's 4GW Ruoqiang PV project, reported by People's Daily China Energy News at grid connection Dec 2024; ~7.28 CNY/USD. (as of 2024-12)",
+  "src": [
+   "https://paper.people.com.cn/zgnyd/pad/content/202412/23/content_30048824.html",
+   "https://paper.people.com.cn/zgnyb/pad/content/202412/23/content_30048824.html"
+  ]
+ },
+ {
+  "id": "gL100000829019",
+  "n": "Xinjiang  Ürümqi Midong District (China Green Energy) solar farm",
+  "inv": 2120,
+  "note": "Planned investment CNY 15.45bn for China Green Development's 3.5GW Midong PV project (per Urumqi Evening News/China Power, Sep 2023); grid-connected May 2024. (as of 2023-09)",
+  "src": [
+   "https://www.ts.cn/tssp/tswyc/202308/t20230831_15636288.shtml",
+   "http://www.sasac.gov.cn/n2588025/n2588124/c30898088/content.html"
+  ]
+ },
+ {
+  "id": "gL100000828997",
+  "n": "Xinjiang Nilka (China Green Power) wind and solar farm",
+  "inv": 2060,
+  "note": "RMB 14.944bn (149.44亿元) total for the 4 GW Nilka wind-solar base (3.2 GW PV + 0.8 GW wind), per Yili prefecture & Nilka county govt; ~US$2.06bn at Apr 2024 FX. Fully grid-connected 2025. (as of 2024-04)",
+  "src": [
+   "https://www.xjyl.gov.cn/xjylz",
+   "https://www.xjnlk.gov.cn/xjnlk"
+  ]
+ },
+ {
+  "id": "gL100000104944",
+  "n": "Hami-Chongqing UHV Transmission Line power station",
+  "inv": 2042,
+  "note": "RMB 14.5bn (总投资约145亿元) for the 4x1000MW ultra-supercritical coal plant at Santanghu, Barkol supporting the Hami-Chongqing UHV line, per Chongqing municipal govt at Sep 2022 start; ~7.1 CNY/USD. (as of 2022-09)",
+  "src": [
+   "http://www.cq.gov.cn/ywdt/jrcq/202209/t20220929_11154543.html",
+   "https://www.gem.wiki/Hami-Chongqing_UHV_Transmission_Line_power_station"
+  ]
+ },
+ {
+  "id": "gL100001016803",
+  "n": "White Dunes wind farm",
+  "inv": 2000,
+  "note": "US$2bn total reported Nov 2023 (Falcon Capital Dakhla / HDF Energy) for the whole White Dunes green H2 project - 10 GW wind + 7 GW PV + 8 GW electrolysis; GEM lists wind and solar separately, the figure covers both. (as of 2023-11)",
+  "src": [
+   "https://www.hdf-energy.com/",
+   "https://fuelcellsworks.com/news/falcon-capital-dakhla-and-hdf-energy-partner-on-white-dunes-green-hydrogen-project"
+  ]
+ },
+ {
+  "id": "gL100000104344",
+  "n": "Cong Thanh power station",
+  "inv": 2000,
+  "note": "VND ~47tn (~US$2bn) for the 1,500 MW LNG conversion (Thanh Hoa approval 2023; Doosan-PECC2 AiP Aug 2025). No figure published for the 4,500 MW capacity listed in this record. (as of 2025-08)",
+  "src": [
+   "https://www.gem.wiki/Cong_Thanh_power_station",
+   "https://pecosoperating.com/deal-signed-for-vietnams-cong-thanh-lng-power-plant",
+   "https://www.dnse.com.vn"
+  ]
+ },
+ {
+  "id": "gL100000405416",
+  "n": "Rayong Gulf PD power station",
+  "inv": 2000,
+  "note": "~US$2.0bn at Nov 2019 financial close: US$1.7bn long-term debt from 14 lenders (incl ADB US$180m, JBIC US$208m) + US$297.6m Gulf/Mitsui equity, for the 2,500 MW Gulf PD IPP at Rayong. (as of 2019-11)",
+  "src": [
+   "https://www.gem.wiki/Rayong_Gulf_PD_power_station"
+  ]
+ },
+ {
+  "id": "gL100000810656",
+  "n": "Inner Mongolia Kubuqi 2000 MW Desert Control solar power plant",
+  "inv": 1875,
+  "note": "SASAC: total investment nearly RMB 12bn (总投资近120亿元) for the Kubuqi 2GW PV desert-control project in Hanggin Banner (Yili Jieneng + CTG Renewables), stated at 2022 construction start; ~USD 1.88bn at ~6.4.",
+  "src": [
+   "http://www.sasac.gov.cn/n2588025/n2588139/c21429823/content.html"
+  ]
+ },
+ {
+  "id": "gL100000100201",
+  "n": "Anhui Huainan Panji power station",
+  "inv": 1740,
+  "note": "Phase I 2x660MW RMB 5.95bn (2020, ~$0.91bn) + Phase II 2x660MW RMB 5.74bn (2023, ~$0.83bn); cumulative for 4 units, all operating by Jul 2025. (as of 2023-02)",
+  "src": [
+   "https://www.sohu.com/a/402769686_726018",
+   "https://zrzyj.huainan.gov.cn/xwzx/ywlb/551661064.html",
+   "https://www.sohu.com/a/788368068_121123745"
+  ]
+ },
+ {
+  "id": "e62949",
+  "n": "Guernsey Power Station",
+  "inv": 1700,
+  "note": "1,875MW CCGT: Caithness Energy closed $1.6bn construction financing Aug 2019; total construction cost widely reported at ~$1.7bn. (Talen's 2025 acquisition price excluded - not construction cost.) (as of 2019-08)",
+  "src": [
+   "https://caithnessenergy.com",
+   "https://en.wikipedia.org/wiki/Guernsey_Power_Station"
+  ]
+ },
+ {
+  "id": "gL100000828453",
+  "n": "Inner Mongolia - Shandong Power Export Ordos Mined-Out Area (China Energy Investment) solar farm",
+  "inv": 1660,
+  "note": "CNY ~12bn (约120亿元) for CHN Energy's 3GW Lanhai (Mengxi Ordos subsidence-area) PV plant at grid connection Nov-Dec 2024 (Xinhua/CPNN); initial Jan 2023 filing was CNY 15.625bn. (as of 2024-11)",
+  "src": [
+   "http://www.nmg.xinhuanet.com/20241106/3ed135991c1843d6848345691c813ee1/c.html",
+   "https://www.cpnn.com.cn/qiye/fadianPD2023/202501/t20250107_1764972_wap.html"
+  ]
+ },
+ {
+  "id": "gL100001045884",
+  "n": "Inner Mongolia Jungar (Hunan Energy) Renewables complex solar farm",
+  "inv": 1655,
+  "note": "Phase 1 of Xiangtou's Jungar Banner 6.5GW wind-solar complex: RMB 12bn (~US$1.66bn) per Mar 2025 signing reports (2GW PV + 300MW wind + storage/microgrid). No total-complex figure published. (as of 2025-03)",
+  "src": [
+   "https://news.bjx.com.cn/html/20250319/1432804.shtml",
+   "https://www.gem.wiki/Inner_Mongolia_Jungar_(Hunan_Energy)_Renewables_complex_solar_farm"
+  ]
+ },
+ {
+  "id": "gL100000600646",
+  "n": "Changlongshan hydroelectric plant",
+  "inv": 1590,
+  "note": "Total investment RMB 10.683bn (~US$1.59bn at Jun 2022 rate) per Chinese state media at full commissioning; NS Energy independently lists $1.56bn. CTG developer. (as of 2022-06)",
+  "src": [
+   "https://www.nsenergybusiness.com/projects/changlongshan-pumped-storage-power-station/",
+   "https://baike.baidu.com/item/长龙山抽水蓄能电站"
+  ]
+ },
+ {
+  "id": "gL100000405372",
+  "n": "Chonburi Ng Project power station",
+  "inv": 1550,
+  "note": "Total project cost US$1.55bn for Gulf SRC IPP (4x625 MW, Chonburi/Sriracha): US$1.15bn loans from 12 institutions (ADB US$228m, JBIC US$227m) + US$395m Gulf/Mitsui equity; per ADB/IJGlobal. (as of 2018)",
+  "src": [
+   "https://www.gem.wiki/Chonburi_Ng_Project_power_station"
+  ]
+ },
+ {
+  "id": "gL100000100898",
+  "n": "Huineng Changtan power station",
+  "inv": 1515,
+  "note": "Phase I 2x660MW RMB 5.1bn (2018, ~$0.80bn) + Phase II (Changchuan) 2x660MW RMB 5.226bn (operator, Oct 2023, ~$0.72bn); cumulative for all 4 units of the record. (as of 2023-10)",
+  "src": [
+   "http://news.bjx.com.cn/html/20180519/898858.shtml",
+   "http://www.huinenggroup.com/web/html/news/202310/2AUGQ3VO4H.html",
+   "https://www.gem.wiki/Huineng_Changtan_power_station"
+  ]
+ },
+ {
+  "id": "gL100000405295",
+  "n": "Alor Gajah (Melaka) power station",
+  "inv": 1500,
+  "note": "Edra Melaka 2,242MW CCGT: NS Energy states estimated investment $1.5bn; Hyundai EPC ~$1.28bn (2017); part-financed by RM5.085bn sukuk (2018). No official total from Edra found.",
+  "src": [
+   "https://www.nsenergybusiness.com/projects/melaka-combined-cycle-power-project/",
+   "https://www.gem.wiki/Alor_Gajah_(Melaka)_power_station"
+  ]
+ },
+ {
+  "id": "gL100001045171",
+  "n": "Ningxia Shapotou (Ningxia Power Investment) solar base",
+  "inv": 1450,
+  "note": "Planned total investment CNY 10.3bn for the Ningxia Power Investment Yongli (Zhongwei) 3GW PV project (NEA/gov.cn, 2025). A 3.6GWp EPC scope was separately reported at CNY 11.66bn. (as of 2025-10)",
+  "src": [
+   "https://www.nea.gov.cn/20251031/2399165981c442998e450cde2d4c3f75/c.html",
+   "https://www.gov.cn/yaowen/tupian/202507/content_7032972.htm"
+  ]
+ },
+ {
+  "id": "gL100001003841",
+  "n": "Inner Mongolia Tengger Mega-Base solar farm",
+  "inv": 1290,
+  "note": "Huadian Tengger base 2GW PV (phases I+II, built 2024): total investment RMB 9.3bn (~USD 1.29bn at 7.2). Base plans 12.2GW total; figure covers the 2GW PV only. Single trade-press report. (as of 2024-12)",
+  "src": [
+   "https://guangfu.bjx.com.cn/news/20241218/1417637.shtml"
+  ]
+ },
+ {
+  "id": "gL100000100785",
+  "n": "Shenhua Yongzhou power station",
+  "inv": 1174,
+  "note": "Phase I (2x1,000MW USC, the operating units) total investment RMB 7.48bn (~US$1.17bn at Dec 2021 rate) per China Shenhua announcement at full COD. Reserved 2x1,000MW Phase II has no announced cost. (as of 2021-12)",
+  "src": [
+   "https://baike.baidu.com/item/国能永州电厂"
+  ]
+ },
+ {
+  "id": "gL100000601327",
+  "n": "Yangjiang hydroelectric plant",
+  "inv": 1150,
+  "note": "Yangjiang pumped storage, full 2,400 MW (6x400 MW, two phases): total investment RMB 7.627bn, announced 2017 and reiterated at 2021-22 commissioning; ~US$1.15bn at ~6.6 CNY/USD (2017). (as of 2017-10)",
+  "src": [
+   "https://www.sohu.com/a/201485356_817898",
+   "http://www.yangjiang.gov.cn/zwgk/ywdt/yjyw/content/post_553994.html",
+   "https://baike.baidu.com/item/%E9%98%B3%E6%B1%9F%E6%8A%BD%E6%B0%B4%E8%93%84%E8%83%BD%E7%94%B5%E7%AB%99/9964391"
+  ]
+ },
+ {
+  "id": "gL100000405578",
+  "n": "Fujairah F3 Integrated Water and power plant",
+  "inv": 1140,
+  "note": "Fujairah F3 2,400 MW CCGT IPP: project cost AED 4.2bn (~US$1.14bn) announced by TAQA at July 2020 financial close (TAQA/Mubadala 60% via holding, Marubeni 40%); COD 2025. (as of 2020-07)",
+  "src": [
+   "https://constructionreviewonline.com/financial-closure-on-2-4gw-gas-fired-fujairah-f3-power-project-in-uae-reached/"
+  ]
+ },
+ {
+  "id": "gL100001019362",
+  "n": "Xinjiang Mori 2500 MW wind farm complex",
+  "inv": 1130,
+  "note": "Mulei (Mori) 2,500 MW wind project incl. 250MW/500MWh storage: total investment RMB 8.2bn announced at June 2024 construction start (grid-connected end-2024); ~US$1.13bn at ~7.25 CNY/USD. (as of 2024-06)",
+  "src": [
+   "https://www.cj.gov.cn/p1/cjyw/20240617/263807.html",
+   "http://xj.news.cn/zt/2024-06/19/c_1130164833.htm",
+   "https://www.mlx.gov.cn/p212/tzfw/20240624/317542.html"
+  ]
+ },
+ {
+  "id": "gL100001016546",
+  "n": "Inner Mongolia Northeast Wulanbuhe Desert Megabase solar farm",
+  "inv": 1077,
+  "note": "2GW pilot of Ulan Buh NE base: planned inv RMB 3.807bn (Ph1 1GW) + RMB 3.947bn (Ph2 1GW) = RMB 7.754bn per Bayannur city govt, Mar 2024 (~USD 1.08bn at 7.2). Excludes planned 6.5GW expansion. (as of 2024-03)",
+  "src": [
+   "https://www.bynr.gov.cn/xxgk/zdxmjs/202403/t20240328_589515.html"
+  ]
+ },
+ {
+  "id": "gL100000804030",
+  "n": "Al Dhafra solar farm",
+  "inv": 1000,
+  "note": "Approx USD 1bn project-financing transaction at Dec 2020 financial close (TAQA 40/Masdar/EDF/Jinko); no separate total-capex figure published. Debt refinanced via USD 870.75m (AED 3.2bn) green bond, Jan 2026. (as of 2020-12)",
+  "src": [
+   "https://cleantechnica.com/2020/12/28/worlds-largest-solar-project-2-gigawatt-solar-project-in-abu-dhabi-moves-forward/",
+   "https://www.pv-magazine.com/2026/01/16/green-bonds-totaling-870-million-issued-for-2-gw-solar-project-in-uae/"
+  ]
+ },
+ {
+  "id": "gL100000828459",
+  "n": "Inner Mongolia Urad Front Banner Suji Desert Control solar farm",
+  "inv": 856,
+  "note": "Huaneng/North United Power Suji sandy-land 2GW PV desert-control base, Urad Front Banner: total investment RMB 6.149bn per Inner Mongolia Daily (via Sina), Jun 2025; ~USD 856m at 7.18. (as of 2025-06)",
+  "src": [
+   "https://finance.sina.com.cn/roll/2025-06-05/doc-ineyzssz8167812.shtml"
+  ]
+ },
+ {
+  "id": "gL100000405650",
+  "n": "Dongguan Ningzhou Gas power station",
+  "inv": 830,
+  "note": "Ningzhou Shajiao-replacement project, 3x GE 9HA.02 CCGT (~2.48 GW): total investment RMB 5.9bn per Dongguan Binhaiwan govt (2024) and Baidu Baike; ~US$830m at ~7.1 CNY/USD. First unit 2024. (as of 2024-08)",
+  "src": [
+   "http://bhwxq.dg.gov.cn/jjxq/xqdt/content/post_4240977.html",
+   "https://baike.baidu.com/item/%E4%B8%9C%E8%8E%9E%E5%AE%81%E6%B4%B2%E5%8E%82%E5%9D%80%E6%9B%BF%E4%BB%A3%E7%94%B5%E6%BA%90%E9%A1%B9%E7%9B%AE/65006116",
+   "https://dgdp.dg.gov.cn/gkmlpt/content/3/3850/post_3850041.html"
+  ]
+ },
+ {
+  "id": "gL100001020216",
+  "n": "Xinjiang Hoboksar (Shenergy) solar farm",
+  "inv": 815,
+  "note": "Hoboksar county govt media, Oct 2025: planned total inv RMB 5.8bn incl 200MW/400MWh storage (~USD 815m at 7.12). Earlier Sep 2024 reports cited ~RMB 7.3bn at groundbreaking; latest figure used. (as of 2025-10)",
+  "src": [
+   "http://www.altxw.com/yw/202510/t20251012_31036294.html"
+  ]
+ },
+ {
+  "id": "gL100001018527",
+  "n": "Inner Mongolia Xilingol 2500 MW Guaranteed Offtake wind farms",
+  "inv": 530,
+  "note": "RMB 3.8bn (38亿元) covers only the 1.5 GW Erenhot/Erenhot Port phases (Mengneng Yida; full COD May 2025); no published figure found for the 1 GW Sonid Right Banner phase of the 2.5 GW complex. (as of 2025-05)",
+  "src": [
+   "https://news.bjx.com.cn/html/20250528/1443683.shtml",
+   "https://www.ne21.com/news",
+   "https://www.gem.wiki/Inner_Mongolia_Xilingol_2500_MW_Guaranteed_Offtake_wind_farms"
+  ]
+ }
+]
