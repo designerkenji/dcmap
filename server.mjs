@@ -3,7 +3,7 @@
 //   /                the 2D/3D map app
 //   /site/<site_id>  server-rendered detail page (the shareable URL)
 //   /data/*.json     datasets, held in memory from startup
-//   /vendor/*        maplibre-gl and globe.gl straight from node_modules
+//   /vendor/*        maplibre-gl, globe.gl, pmtiles and h3-js straight from node_modules
 //
 // No framework: four routes and a static file map don't justify one, and the
 // data is loaded once so requests never touch disk except for static assets.
@@ -13,7 +13,7 @@ import { pipeline } from 'node:stream';
 import http from 'node:http';
 import path from 'node:path';
 import zlib from 'node:zlib';
-import { loadAll, paths } from './lib/data.mjs';
+import { loadAll, paths, applyParcelAddresses } from './lib/data.mjs';
 import { renderSitePage } from './lib/sitepage.mjs';
 import { renderOperatorPage } from './lib/operatorpage.mjs';
 import { renderFabsPage } from './lib/fabspage.mjs';
@@ -72,6 +72,11 @@ const VENDOR = {
   // 20 kB. Teaches MapLibre to read tiles out of a single addressable
   // archive over range requests - see the labels block in app.js.
   '/vendor/pmtiles.js': path.join(NM, 'pmtiles', 'dist', 'pmtiles.js'),
+  // 216 kB. Uber's H3 grid, for the hexagon heatmap. Already in the tree as
+  // globe.gl's own dependency - three-globe bins its hex layer with it - so
+  // declaring it directly pins the version rather than adding a download,
+  // and the 2D map and the globe bin sites into IDENTICAL cells.
+  '/vendor/h3-js.umd.js': path.join(NM, 'h3-js', 'dist', 'h3-js.umd.js'),
 };
 
 // Reassigned when a hand correction is saved. The derived payloads - map
@@ -127,6 +132,7 @@ function serialiseRoutes() {
     // never reads it, and notes written for the ledger should not ship to
     // every visitor. Same policy as mapSites, which is a slim projection.
     '/data/plants.json': JSON.stringify(data.plants.map(({ edited, ...p }) => p)),
+    '/data/plants_meta.json': JSON.stringify(data.plantsMeta),
     '/data/fabs.json': JSON.stringify(data.fabs.map(({ edited, ...f }) => f)),
     // Small enough to ship whole, unlike the footprints: a couple thousand
     // parcels at most, and the layer wants them all at once for comparison.
@@ -877,6 +883,8 @@ async function handle(req, res) {
       if (out.parcel && !out.cached) {
         data[vendor] = JSON.parse(fs.readFileSync(
           path.join(paths.data, 'raw', `parcels_${vendor}.geojson`), 'utf8'));
+        // The new parcel may be the first street address this site has.
+        if (vendor === 'regrid') applyParcelAddresses(data.regrid, data.siteById, data.rowsBySite);
         serialiseRoutes();
       }
       // Formatting lives here rather than in the browser: one table of field
@@ -1004,7 +1012,7 @@ async function handle(req, res) {
     return send(res, 200, renderFabsPage(data.fabs, data.operatorsPayload.regions, data.outlined), MIME['.html']);
   }
   if (p === '/plants' || p === '/plants/') {
-    return send(res, 200, renderPlantsPage(data.plants, data.operatorsPayload.regions, data.outlined), MIME['.html']);
+    return send(res, 200, renderPlantsPage(data.plants, data.operatorsPayload.regions, data.outlined, data.plantsMeta), MIME['.html']);
   }
   // The name-conflict queue. Read from disk per request rather than held in
   // `data`, because src/site_names.py rewrites it and a reviewer should see
@@ -1453,7 +1461,7 @@ async function handle(req, res) {
     const plant = data.plantById.get(pl[1]);
     if (!plant) return send(res, 404, 'unknown plant', 'text/plain');
     return send(res, 200, renderPlantPage({
-      plant, sites: data.mapSites, fabs: data.fabs,
+      plant, sites: data.mapSites, fabs: data.fabs, meta: data.plantsMeta,
       linked: data.sitesByPlant.get(plant.id) || [],
       linkedAnn: data.annByPlant.get(plant.id) || [],
       linkedFabs: data.fabsByPlant.get(plant.id) || [],

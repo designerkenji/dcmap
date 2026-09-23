@@ -540,6 +540,9 @@ body.timeline-open .tchart { max-height:calc(100vh - 310px) }
    the same lift the map controls take. */
 body.timeline-open .heatbar { bottom:150px }
 .hb-pick { position:relative }
+/* Two more controls share the strip now, and a label breaking onto a second
+   line ("Site / count") reads as two things. */
+.hb-pick .tb-btn { white-space:nowrap }
 .hb-end { font-size:12px; color:var(--ink-2); min-width:4ch; text-align:center }
 /* The same five stops the paint expression interpolates, so the strip is the
    legend rather than a decoration that resembles one. A button now: it opens
@@ -550,6 +553,21 @@ body.timeline-open .heatbar { bottom:150px }
 /* A hand-narrowed scale must not look like the automatic one - the readouts at
    its ends are no longer the extremes of the data, and the ring says so. */
 .hb-ramp.hb-narrowed { box-shadow:0 0 0 2px var(--accent) }
+/* The hexagon form paints AREAS, and a green-to-red ramp over areas reads as
+   a verdict - a green Europe looks fine, not sparse. One hue, light to dark
+   (OKLCH hue 45, L 0.88 to 0.41), so a cell only ever says "more" or "less";
+   warm because it has to hold up over satellite imagery, where a teal ramp
+   loses its low end to vegetation. The same five stops HEX_STOPS.day
+   interpolates in app.js, so this strip stays the legend rather than a
+   decoration. */
+.hb-ramp.is-hex { background:linear-gradient(to right, #FFCAB3, #FF9462, #E36927, #B44901, #7B3002) }
+/* Anchored to the surface: dark to light over the night map, so the sparsest
+   cell is still the one nearest the ground colour. */
+html[data-theme=night] .hb-ramp.is-hex { background:linear-gradient(to right, #A24102, #CF5604, #F27636, #FFA47A, #FED4C1) }
+.hb-hex { display:inline-flex; align-items:center; gap:5px; white-space:nowrap }
+.hb-hex svg { width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:1.8;
+  stroke-linejoin:round }
+.hb-hex[aria-pressed=true] svg { fill:currentColor; fill-opacity:.35 }
 
 /* ---- distribution panel ---- */
 .hb-dist { position:absolute; bottom:calc(100% + 8px); left:50%;
@@ -605,6 +623,7 @@ body.timeline-open .heatbar { bottom:150px }
   background:none; color:var(--ink) }
 .hb-menu button:hover { background:var(--accent-soft) }
 .hb-menu button .tick { width:13px; color:var(--accent) }
+
 
 /* ---- wayback-lite (dot pages: fabs and plants) ---- */
 .wbl { position:relative }

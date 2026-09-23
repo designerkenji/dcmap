@@ -1,8 +1,8 @@
 {
- "checked": "2026-09-13",
- "anchored_points": 119,
- "anchored_within_tolerance": 117,
- "anchored_median_error_pct": 0.0429,
+ "checked": "2026-09-23",
+ "anchored_points": 125,
+ "anchored_within_tolerance": 123,
+ "anchored_median_error_pct": 0.035,
  "contradictions": [
   {
    "site": "CoreWeave Denton TX",
@@ -19,32 +19,8 @@
  ],
  "stale_inventory": [
   {
-   "site": "Meta Prometheus",
-   "date": "2026-01-18",
-   "stated": 410270.2981303689,
-   "from_chips": 91874.68418393127,
-   "error_pct": -77.60630379469077,
-   "anchored": false,
-   "future": false,
-   "chips": {
-    "B200": 36364
-   }
-  },
-  {
-   "site": "Meta Prometheus",
-   "date": "2026-03-12",
-   "stated": 410270.2981303689,
-   "from_chips": 91874.68418393127,
-   "error_pct": -77.60630379469077,
-   "anchored": false,
-   "future": false,
-   "chips": {
-    "B200": 36364
-   }
-  },
-  {
    "site": "Google Pryor (North)",
-   "date": "2026-08-24",
+   "date": "2026-09-06",
    "stated": 636685.1945426983,
    "from_chips": 26352.191005558365,
    "error_pct": -95.86103285714286,
@@ -56,17 +32,27 @@
    }
   },
   {
-   "site": "Google New Albany",
-   "date": "2026-08-16",
-   "stated": 550783.2238504295,
-   "from_chips": 329667.15310763015,
-   "error_pct": -40.14575266055046,
+   "site": "Meta Prometheus",
+   "date": "2026-01-18",
+   "stated": 444862.4456796362,
+   "from_chips": 91874.68418393127,
+   "error_pct": -79.34761967970341,
    "anchored": false,
    "future": false,
    "chips": {
-    "TPU v5e": 251592,
-    "TPU v5p": 67838,
-    "TPU v6e": 267571
+    "B200": 36364
+   }
+  },
+  {
+   "site": "Meta Prometheus",
+   "date": "2026-05-18",
+   "stated": 599845.17433047,
+   "from_chips": 444863.56745831226,
+   "error_pct": -25.836934846586672,
+   "anchored": false,
+   "future": false,
+   "chips": {
+    "B200": 176077
    }
   },
   {

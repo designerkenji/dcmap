@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "globe.gl": "^2.45.0",
+    "h3-js": "^4.5.0",
     "maplibre-gl": "^5.0.0",
     "pmtiles": "^4.5.0"
   }

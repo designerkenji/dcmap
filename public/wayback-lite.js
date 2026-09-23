@@ -141,6 +141,11 @@
       // too; without this the map would frame somebody else's campus.
       sites: f.properties.sites || [],
       m2: f.properties.m2 || 0,
+      // A parcel's own facts, when the shape is one: the assessor's id and
+      // acreage, and whether it is the lot under the dot or a same-owner lot
+      // grown from it (a weaker claim, and the label says so).
+      ref: f.properties.ref || '', acres: f.properties.acres || '',
+      expanded: !!f.properties.expanded,
     })).filter(f => f.rings.length);
     // fpBtn only existed on the archive bar, which no longer has one. loadFp
     // still runs because syncShp() feeds the LIVE map's shapes from `fps`.
@@ -174,7 +179,11 @@
       path.appendChild(document.createElementNS(SVGNS, 'title'))
         .textContent = (f.name ? f.name + ' — ' : '')
           + (f.kind === 'campus' ? 'campus boundary' : 'building footprint')
-          + ' (' + f.src + ')';
+          + ' (' + f.src + ')'
+          + (f.src === 'parcel' ? [f.ref ? ' · parcel ' + f.ref : '',
+                                   f.acres ? ' · ' + f.acres + ' ac' : '',
+                                   f.expanded ? ' · same-owner lot grown from the seed, not necessarily the campus' : '']
+                                    .join('') : '');
       svg.appendChild(path);
     }
   }
@@ -354,7 +363,10 @@
     info.className = 'grow';
     info.textContent = (f.name || (f.kind === 'campus' ? 'campus boundary' : 'building'))
       + ' · ' + f.kind + ' · ' + f.src
-      + (f.m2 ? ' · ' + Math.round(f.m2).toLocaleString() + ' m²' : '');
+      + (f.ref ? ' · parcel ' + f.ref : '')
+      + (f.acres ? ' · ' + f.acres + ' ac' : '')
+      + (f.m2 ? ' · ' + Math.round(f.m2).toLocaleString() + ' m²' : '')
+      + (f.expanded ? ' · grown from the seed lot (same owner, touching)' : '');
     selBar.appendChild(info);
     selBar.appendChild(btn('Edit shape', () => {
       const pts = (f.rings[0] || []).map(c => ({ lon: c[0], lat: c[1] }));
@@ -807,7 +819,13 @@
     const info = document.createElement('span');
     info.className = 'grow';
     info.textContent = (f.name ? f.name + ' · ' : '') + f.id + ' · ' + f.kind + ' · ' + f.src
-      + (f.m2 ? ' · ' + Math.round(f.m2).toLocaleString() + ' m²' : '');
+      + (f.ref ? ' · parcel ' + f.ref : '')
+      + (f.acres ? ' · ' + f.acres + ' ac' : '')
+      + (f.m2 ? ' · ' + Math.round(f.m2).toLocaleString() + ' m²' : '')
+      // A lot grown from the seed - same owner, touching - is the holding,
+      // not necessarily the campus, and the bar says so before anyone edits
+      // it as if it were.
+      + (f.expanded ? ' · grown from the seed lot (same owner, touching)' : '');
     lvSel.appendChild(info);
     // Select mode stops here: the bar reads, it does not offer to change.
     // And it only offers for the layer that is armed: a campus pencil must not

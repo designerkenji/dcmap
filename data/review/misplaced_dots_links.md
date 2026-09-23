@@ -1,0 +1,54 @@
+# The 50 moved sites — links
+
+Site page first, then the map framed on the new dot at 2.5 km across. AI campuses in bold. Restart the server on 8787 to load the new footprints.
+
+- **Meta Jeffersonville** · moved 12.0 km · http://localhost:8787/maps/site/site-f54144f9e9 · map http://localhost:8787/maps/@38.369420,-85.664520,2500m
+- **CoreWeave Muskogee OK** · moved 9.8 km · http://localhost:8787/maps/site/site-37c730e006 · map http://localhost:8787/maps/@35.693500,-95.386600,2500m
+- ARE-ON Hope · moved 6.2 km · http://localhost:8787/maps/site/site-1a531a56cb · map http://localhost:8787/maps/@33.707892,-93.558629,2500m
+- Ethoplex Edge DC - Green Bay · moved 4.5 km · http://localhost:8787/maps/site/site-086d0e78c1 · map http://localhost:8787/maps/@44.408788,-88.000990,2500m
+- **CoreWeave Denton TX** · moved 3.3 km · http://localhost:8787/maps/site/site-560b0d10da · map http://localhost:8787/maps/@33.217370,-97.210060,2500m
+- **Google Omaha** · moved 2.7 km · http://localhost:8787/maps/site/site-ef3905a031 · map http://localhost:8787/maps/@41.339139,-96.084657,2500m
+- ACT Buffalo · moved 2.5 km · http://localhost:8787/maps/site/site-91e0ba29bf · map http://localhost:8787/maps/@44.354630,-106.664870,2500m
+- NP Belle Plaine · moved 1.6 km · http://localhost:8787/maps/site/site-c2fb283cc1 · map http://localhost:8787/maps/@44.623741,-93.758225,2500m
+- **ZeroC Massena Data Center** · moved 1.2 km · http://localhost:8787/maps/site/site-eb4a572344 · map http://localhost:8787/maps/@44.956670,-74.851000,2500m
+- **Meta Temple** · moved 1.2 km · http://localhost:8787/maps/site/site-7d72682aeb · map http://localhost:8787/maps/@31.131350,-97.370570,2500m
+- 1706 Richardson · moved 1.1 km · http://localhost:8787/maps/site/site-2a08cd1b49 · map http://localhost:8787/maps/@64.044280,-145.735870,2500m
+- **WNY STAMP Data Center** · moved 1.0 km · http://localhost:8787/maps/site/site-dcb5e135f7 · map http://localhost:8787/maps/@43.092700,-78.406100,2500m
+- Equinix DE1 - Denver · moved 1.0 km · http://localhost:8787/maps/site/site-5db43b808e · map http://localhost:8787/maps/@39.587372,-104.876575,2500m
+- ACT Gillette · moved 1.0 km · http://localhost:8787/maps/site/site-022f5e2468 · map http://localhost:8787/maps/@44.248528,-105.492514,2500m
+- QTS Jersey City · moved 0.7 km · http://localhost:8787/maps/site/site-554e4c6fe5 · map http://localhost:8787/maps/@40.718823,-74.042122,2500m
+- **Google Cedar Rapids** · moved 0.6 km · http://localhost:8787/maps/site/site-57b27affa4 · map http://localhost:8787/maps/@41.918169,-91.721283,2500m
+- **Google Pryor** · moved 0.6 km · http://localhost:8787/maps/site/site-a8a83c22fe · map http://localhost:8787/maps/@36.245387,-95.325163,2500m
+- **Brookhaven Digital Infrastructure Facility** · moved 0.6 km · http://localhost:8787/maps/site/site-960ffbbfd9 · map http://localhost:8787/maps/@40.829600,-72.946050,2500m
+- **Google Lincoln** · moved 0.6 km · http://localhost:8787/maps/site/site-d2d6ce0920 · map http://localhost:8787/maps/@40.905212,-96.651905,2500m
+- **QTS Cedar Rapids** · moved 0.5 km · http://localhost:8787/maps/site/site-ecf2b9f202 · map http://localhost:8787/maps/@41.909220,-91.754360,2500m
+- Syringa Networks Boise · moved 0.3 km · http://localhost:8787/maps/site/site-36cbb35213 · map http://localhost:8787/maps/@43.568160,-116.210470,2500m
+- Flexential - Salt Lake City/Cottonwood · moved 0.3 km · http://localhost:8787/maps/site/site-e2b4570056 · map http://localhost:8787/maps/@40.634981,-111.808937,2500m
+- DataBank Austin · moved 0.2 km · http://localhost:8787/maps/site/site-4585b9e7cb · map http://localhost:8787/maps/@30.436053,-97.766072,2500m
+- DC BLOX HSV1 - DCBLOX Huntsville · moved 0.2 km · http://localhost:8787/maps/site/site-f3b2266759 · map http://localhost:8787/maps/@34.709934,-86.692915,2500m
+- ACT Sheridan · moved 0.2 km · http://localhost:8787/maps/site/site-8a2116a76e · map http://localhost:8787/maps/@44.797666,-106.958368,2500m
+- ManagedWay TYM1 · moved 0.2 km · http://localhost:8787/maps/site/site-e057adf0ca · map http://localhost:8787/maps/@42.537160,-83.099850,2500m
+- Equinix MI3 - Miami, Boca Raton · moved 0.2 km · http://localhost:8787/maps/site/site-e270ee9298 · map http://localhost:8787/maps/@26.389450,-80.109350,2500m
+- Level(3) Boise · moved 0.2 km · http://localhost:8787/maps/site/site-067ff9e4f2 · map http://localhost:8787/maps/@43.564452,-116.186200,2500m
+- Digital Realty New York JFK13 · moved 0.2 km · http://localhost:8787/maps/site/site-411a680ade · map http://localhost:8787/maps/@40.719989,-74.004577,2500m
+- Aunalytics South Bend Datacenter · moved 0.2 km · http://localhost:8787/maps/site/site-face770b89 · map http://localhost:8787/maps/@41.659862,-86.258245,2500m
+- Level(3) Herndon · moved 0.2 km · http://localhost:8787/maps/site/site-a88a4d660c · map http://localhost:8787/maps/@38.965941,-77.381596,2500m
+- Data Center Lenexa · moved 0.2 km · http://localhost:8787/maps/site/site-3d040d7fb1 · map http://localhost:8787/maps/@38.924640,-94.770280,2500m
+- CyrusOne Austin Data Center II · moved 0.2 km · http://localhost:8787/maps/site/site-0a614d8444 · map http://localhost:8787/maps/@30.205926,-97.697903,2500m
+- **Microsoft-Nebius New Jersey** · moved 0.1 km · http://localhost:8787/maps/site/site-eaefc40982 · map http://localhost:8787/maps/@39.427380,-75.017030,2500m
+- WēConnect Westerville · moved 0.1 km · http://localhost:8787/maps/site/site-277c7fde0e · map http://localhost:8787/maps/@40.123826,-82.945660,2500m
+- Equinix DC8 - Ashburn, Vienna · moved 0.1 km · http://localhost:8787/maps/site/site-e84ecf938d · map http://localhost:8787/maps/@38.932610,-77.239450,2500m
+- ACT Douglas · moved 0.1 km · http://localhost:8787/maps/site/site-6c217a1231 · map http://localhost:8787/maps/@42.733076,-105.338447,2500m
+- BNY Mellon Somerset · moved 0.1 km · http://localhost:8787/maps/site/site-97cbd647c4 · map http://localhost:8787/maps/@40.536018,-74.553405,2500m
+- H5 Data Centers Nashville · moved 0.1 km · http://localhost:8787/maps/site/site-710151952f · map http://localhost:8787/maps/@36.162582,-86.778657,2500m
+- EdgeConneX Madison · moved 0.1 km · http://localhost:8787/maps/site/site-ecbe8352fa · map http://localhost:8787/maps/@43.048882,-89.297274,2500m
+- SD Data Center · moved 0.1 km · http://localhost:8787/maps/site/site-6e2ec21319 · map http://localhost:8787/maps/@28.259969,-80.694535,2500m
+- Telefonica KeyCenter · moved 0.1 km · http://localhost:8787/maps/site/site-d0cdc404e3 · map http://localhost:8787/maps/@25.796180,-80.379800,2500m
+- 232 20th St NW, East Grand Forks · moved 0.1 km · http://localhost:8787/maps/site/site-3472cfcdf7 · map http://localhost:8787/maps/@47.945800,-97.022051,2500m
+- DartPoints Columbus, IN - CLU1 · moved 0.0 km · http://localhost:8787/maps/site/site-42079cf9d6 · map http://localhost:8787/maps/@39.182565,-85.896807,2500m
+- 365 Data Centers Philadelphia · moved 0.0 km · http://localhost:8787/maps/site/site-b4109667bd · map http://localhost:8787/maps/@39.956852,-75.196072,2500m
+- Lumen · moved 0.0 km · http://localhost:8787/maps/site/site-f6c6b8c04d · map http://localhost:8787/maps/@33.493418,-112.070632,2500m
+- Peace Communications KNX1 · moved 0.0 km · http://localhost:8787/maps/site/site-73f6405ec8 · map http://localhost:8787/maps/@35.965903,-83.921648,2500m
+- Lumen Boston · moved 0.0 km · http://localhost:8787/maps/site/site-b386ff9b41 · map http://localhost:8787/maps/@42.367350,-71.086750,2500m
+- ark data centers - Pittsburgh, PA · moved 0.0 km · http://localhost:8787/maps/site/site-b5749fd8f6 · map http://localhost:8787/maps/@40.752483,-79.637516,2500m
+- Lake Region Technology & Communications · moved 0.0 km · http://localhost:8787/maps/site/site-7f8e341089 · map http://localhost:8787/maps/@35.931057,-95.135382,2500m

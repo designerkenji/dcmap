@@ -69,7 +69,7 @@
     published data to estimate at all.
   </p>
   <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants<a class="lyrlink" href="/plants" target="_blank" rel="noopener" title="All power plants — summary tables" aria-label="All power plants — summary tables">↗</a>
-    <span class="sublbl">100 MW and up, worldwide — hollow means the location is approximate</span></label>
+    <span class="sublbl" id="plantnote">100 MW and up, worldwide — hollow means the location is approximate</span></label>
   <!-- The two halves of the dependency graph, under the plants they hang off:
        the equipment, then the links to it. Both read the same ledger, so both
        point at /power - at its own section. -->
@@ -115,9 +115,9 @@
        licence condition, not a courtesy: do not remove it. -->
   <p class="hint pl-note" id="pl-note" hidden>
     US from <a href="https://www.eia.gov/electricity/data/eia860m/" target="_blank" rel="noopener">EIA-860M</a>,
-    June 2026 (public domain). Rest of world from
+    <span data-vintage="eia"></span> (public domain). Rest of world from
     <a href="https://globalenergymonitor.org/projects/global-integrated-power-tracker/" target="_blank" rel="noopener">Global Energy Monitor</a>,
-    Global Integrated Power Tracker, August 2026, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Global Integrated Power Tracker, <span data-vintage="gem"></span>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
     Storage is US-only — GEM tracks batteries separately.
   </p>
   <!-- The registry's own assets group first, then the shapes drawn over them,
@@ -232,6 +232,22 @@
   <div class="hb-pick">
     <button class="tb-btn" id="hb-btn" aria-expanded="false">Heatmap: <b id="hb-lbl"></b></button>
     <div class="hb-menu" id="hb-menu" hidden></div>
+  </div>
+  <!-- The same measure, aggregated: dots become H3 hexagons, each coloured by
+       the SUM of the measure over the records inside it (or by how many there
+       are). One ramp, one legend, one measure menu - hexagons are the
+       heatmap's other form, not a second heatmap. WHICH facilities a cell
+       counts is the layer pane's question, not this menu's: every facility
+       layer that is switched on goes into the same cells. Cell size follows
+       the zoom unless a size is chosen here; the picker only shows in
+       hexagon form. -->
+  <button class="tb-btn hb-hex" id="hb-hex" type="button" aria-pressed="false"
+          title="Aggregate the dots into hexagons — each cell is coloured by the total inside it">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20.2 7.25v9.5L12 21.5 3.8 16.75v-9.5L12 2.5Z"/></svg>Hexagons</button>
+  <div class="hb-pick" id="hb-size-pick" hidden>
+    <button class="tb-btn" id="hb-size" aria-expanded="false"
+            title="Hexagon size — automatic follows the zoom">Cells: <b id="hb-size-lbl"></b></button>
+    <div class="hb-menu" id="hb-size-menu" hidden></div>
   </div>
   <span class="hb-end mono" id="hb-min"></span>
   <button class="hb-ramp" id="hb-ramp" aria-expanded="false"
@@ -469,6 +485,7 @@
 <script src="/vendor/maplibre-gl.js"></script>
 <script src="/vendor/globe.gl.min.js"></script>
 <script src="/vendor/pmtiles.js"></script>
+<script src="/vendor/h3-js.umd.js"></script>
 <script src="/theme.js"></script>
 <script src="/app.js"></script>
 </body>

@@ -16,7 +16,12 @@
     // distribution chart; null means the domain is computed from the data.
     // hideMissing: drop the grey no-value dots entirely while the ramp paints
     // - a real filter through the visibility machinery, not a repaint.
-    heat: { on: false, k: 'mw', range: null, hideMissing: false },
+    // hex: the same measure aggregated into H3 hexagons - a form of the
+    // heatmap, not a layer of its own. Which facility layers go into the
+    // cells is state.layers, the same toggles that draw them as dots.
+    // res: a hand-picked H3 resolution, or null to let it follow the zoom.
+    heat: { on: false, k: 'mw', range: null, hideMissing: false,
+      hex: false, res: null },
     mode: '2d',
     fpOnly: false,
     layers: { facilities: true, footprints: true, regrid: false, precisely: false, supply: true, subs: true, trans: true, lines: false, water: false, points: true, events: true, ercot: false, pjm: false,
@@ -72,6 +77,8 @@
       // Added flat, not multiplied through the texture: a multiplicative lift
       // leaves dark pixels dark, which is the whole problem being solved.
       globeLift: 0x1d2b3a, ambient: 4.2, sun: 0.55,
+      // The hatch a hexagon with nothing to sum wears - see HEX_HATCH.
+      hatch: 'hex-hatch-day',
       fac3d: 'rgba(64,196,180,0.85)', ai3d: 'rgba(224,167,92,0.95)',
     },
     night: {
@@ -92,6 +99,7 @@
       globeTexture: '/textures/earth-topo-bathy.jpg',   // fallback only
       // Night stays night - just enough lift to keep it from going muddy.
       globeLift: 0x0a0f14, ambient: 3.0, sun: 0.9,
+      hatch: 'hex-hatch-night',
       fac3d: 'rgba(64,196,180,0.85)', ai3d: 'rgba(224,167,92,0.95)',
     },
   };
@@ -102,11 +110,15 @@
   // the viewport (see initTransmission below), with the GeoJSON as a fallback.
   // It was 1.45 MB gzipped on every load for corridors mostly out of view.
   const [sites, ercot, pjm, nyiso, countries, basemap, timeline, quakes, plants, fabs,
-         regridFC, preciselyFC, supplyLinks, fpLocators, substations, depLinks, points, events]
+         regridFC, preciselyFC, supplyLinks, fpLocators, substations, depLinks, points, events, plantsMeta]
     = await Promise.all(
     ['sites', 'ercot', 'pjm', 'nyiso', 'countries', 'basemap', 'timeline', 'quakes', 'plants',
-     'fabs', 'regrid', 'precisely', 'supply_links', 'fp_locators', 'substations', 'dep_links', 'points', 'events']
+     'fabs', 'regrid', 'precisely', 'supply_links', 'fp_locators', 'substations', 'dep_links', 'points', 'events',
+     'plants_meta']
       .map(n => fetch(`/data/${n}.json`).then(r => r.json())));
+  // The layer credit names the releases the data was built from, written by
+  // the pipeline beside the data so the note cannot lag a vintage bump.
+  for (const el of document.querySelectorAll('[data-vintage]')) el.textContent = plantsMeta[el.dataset.vintage] || '';
 
   // Footprints arrive per viewport from /api/footprints, not in one payload -
   // see the note on that route. This starts empty and is filled by
@@ -276,6 +288,10 @@
   // Every epicentre in one source; the ShakeMap of whichever event is open in
   // another. Contours for 519 events would be tens of MB and unreadable.
   const quakeFC = { type: 'FeatureCollection', features: [] };   // filled on click
+  // The hexagon heatmap's cells, rebuilt by applyHeat whenever the painted
+  // set, the measure or the resolution moves. One object for the style AND
+  // for setData, the way quakeFC is, so the source keeps its identity.
+  const hexFC = { type: 'FeatureCollection', features: [] };
   const epicentreFC = {
     type: 'FeatureCollection',
     features: quakes.map(q => ({
@@ -361,8 +377,9 @@
     const kind = p.tech === FUEL_LABEL[p.f] ? FUEL_LABEL[p.f]
       : `${FUEL_LABEL[p.f]} · ${p.tech}`;
     // US records carry a state and a balancing authority; GEM records carry a
-    // country and neither. Filtering empties keeps one line doing both jobs.
-    const where = p.src === 'gem' ? [p.cy, p.own] : [p.st, iso, p.own];
+    // province (where the tracker files one) and a country, and no BA.
+    // Filtering empties keeps one line doing both jobs.
+    const where = p.src === 'gem' ? [p.st, p.cyn || p.cy, p.own] : [p.st, iso, p.own];
     return `<div class="t">${esc(p.n)}</div>` +
       `<div class="d">${esc(kind)}</div>` +
       `<div class="d">${head}</div>` +
@@ -630,6 +647,7 @@
         nyiso: { type: 'geojson', data: nyisoFC },
         quake: { type: 'geojson', data: quakeFC },
         epicentre: { type: 'geojson', data: epicentreFC },
+        hex: { type: 'geojson', data: hexFC },
         plant: { type: 'geojson', data: plantFC },
         fab: { type: 'geojson', data: fabFC },
         sites: { type: 'geojson', data: sitesFC },
@@ -890,6 +908,29 @@
           paint: { 'line-color': c.fp, 'line-width': fpWidth(1.6),
             'line-opacity': ['case', ['==', ['get', 'src'], 'derived'], 0.6, 1],
             'line-dasharray': [3, 2] } },
+        // The hexagon form of the heatmap. Above every fill and ring that
+        // is context (zones, parcels, footprint rings, the dependency graph)
+        // and below the marker layers that stay clickable while it is on -
+        // plants, fabs, epicentres. The dot layers it replaces are hidden by
+        // applyVisibility while it is showing. Colour is set by applyHeat
+        // because it depends on the domain; the hairline is the one part
+        // that is fixed: a light seam between cells, so two neighbours of
+        // one shade still read as two cells and not one blob.
+        { id: 'hex-fill', type: 'fill', source: 'hex', layout: { visibility: 'none' },
+          filter: ['>', ['get', 'v'], 0],
+          paint: { 'fill-color': '#9AA7B2', 'fill-opacity': 0.7,
+            'fill-outline-color': 'rgba(255,255,255,0.45)' } },
+        // Cells with nothing to sum. A SEPARATE layer, and hatched rather
+        // than shaded, because "not measured" is a different kind of answer
+        // from "lowest" - the same claim the grey dots make. Shading could
+        // not carry it here: composited over the land, a grey cell and the
+        // palest step of a one-hue ramp came out at 1.04:1 against each
+        // other, one flat field to any eye and identical to a colour-blind
+        // one. A texture is categorical, it survives any ramp, and the gaps
+        // show the ground through - which is the point being made.
+        { id: 'hex-none', type: 'fill', source: 'hex', layout: { visibility: 'none' },
+          filter: ['<=', ['get', 'v'], 0],
+          paint: { 'fill-pattern': 'hex-hatch-day', 'fill-opacity': 0.85 } },
         // Under the site dots on purpose: generation is the context this app
         // reads data centres against, not the subject.
         { id: 'plant', type: 'circle', source: 'plant', layout: { visibility: 'none' },
@@ -1170,12 +1211,35 @@
   const dcKind = (d) => (d.ft === 'ai' ? 'ai' : 'traditional');
   const dcOn = (d) => !state.dcKinds || state.dcKinds.has(dcKind(d));
 
+  // The worklist filter: assets with no footprint. The flag is only ever
+  // present (fp: 1) on outlined assets, so "missing" is the absent key.
+  // Spelled twice, declared once - `unmapped` for the JS predicates and
+  // unmappedClause() below for the MapLibre layer filters, the same pairing
+  // dcOn/KIND_FILTER and fuelOn/plantClause already use. It used to be the
+  // clause alone, which is how the dot layers came to honour this filter
+  // while shown() did not: the 2D map drew 37 dots and the count underneath
+  // said 6,289, and anything else reading shown() - the globe, the heat
+  // domain, the timeline - was reading the wrong 6,289 too.
+  const unmapped = (d) => !state.fpOnly || !d.fp;
+
   // "Hide no-value dots" from the distribution panel. Active only while the
   // ramp is painting, and implemented as a FILTER through this file's normal
   // visibility machinery - shown() for the count/globe/search, a MapLibre
   // filter clause per layer for 2D - never as transparent paint, which would
   // leave invisible dots hoverable and a title count that lies.
   const hideMissingActive = () => !!(state.heat.on && state.heat.hideMissing);
+  // The heatmap in its hexagon form: the dots are binned rather than drawn.
+  // Off with the heat switch, whatever the hex toggle says - the switch is
+  // the master, the toggle picks the form.
+  const hexOn = () => !!(state.heat.on && state.heat.hex);
+  // True for a layer the cells are currently built from - one whose own
+  // markers step aside for them. Every facility layer that is on is in the
+  // cells, so this is just "hexagons, and this layer is drawn".
+  const aggregated = (kind) => {
+    if (!hexOn()) return false;
+    const K = HEX_KINDS.find(x => x.kind === kind);
+    return !!(K && state.layers[K.layer]);
+  };
   // heatHas and heatSpec are defined with the heatmap block far below; both
   // are only ever CALLED at runtime, the same arrangement pointColour uses.
   const hideMissingClause = (which) => {
@@ -1187,7 +1251,7 @@
   };
 
   const shown = () => drawable.filter(d =>
-    state.layers.facilities && dcOn(d) &&
+    state.layers.facilities && dcOn(d) && unmapped(d) &&
     matchesFilter(d) && inTime(d) && inList(d) &&
     (!hideMissingActive() || heatHas(d)));
 
@@ -1230,8 +1294,7 @@
 
   updateCount();   // paint the real number now; the style takes seconds to load
 
-  // The worklist filter: dots whose asset has no footprint. The flag is only
-  // ever present (fp: 1) on outlined assets, so "missing" is the absent key.
+  // The layer-filter spelling of `unmapped` above.
   const unmappedClause = () => (state.fpOnly ? ['!', ['has', 'fp']] : null);
 
   function applyVisibility() {
@@ -1282,6 +1345,21 @@
         if (!map.getLayer(id)) continue;
         const on = !state.dcKinds || state.dcKinds.has(kind);
         map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
+      }
+    }
+    // The aggregated layer's own dots are not drawn: at world zoom a dense
+    // cell is 17 px wide and holds a hundred 6 px dots, so the colour the
+    // cell exists to show would be buried under exactly the records it
+    // counts. Only the SUBJECT's - the other layers stay drawn on top, in
+    // their own colours, because plant rings over data-centre cells is the
+    // comparison the form is for. The records are still in the set the
+    // cells are built from; this hides the markers, not the data.
+    if (hexOn()) {
+      for (const K of HEX_KINDS) {
+        if (!state.layers[K.layer]) continue;
+        for (const id of K.dots) {
+          if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
+        }
       }
     }
     updateCount();
@@ -2192,6 +2270,12 @@
     if (!globe) return;
     try {
       globe.hexPolygonsData(globeHexes());
+      // The hexagon heatmap: globe.gl bins the points itself, with H3 at the
+      // resolution applyHeat chose, so the prisms here are the cells the 2D
+      // map draws. Set here and not in drawDots, which runs on every camera
+      // step - re-binning 6,000 sites is cheap, rebuilding 1,500 prisms is
+      // not, and neither changes with the altitude until the resolution does.
+      globe.hexBinResolution(hexRes()).hexBinPointsData(hexOn() ? hexRecords() : []);
       globe.pathsData(quakePaths());
       globe.pointsData([]);   // force pointRadius to re-evaluate against the filter
       drawDots();
@@ -2428,7 +2512,7 @@
     el.title = [p.n, `${FUEL_LABEL[p.f]} · ${mwText(p.smw)}`,
       p.inv ? usdText(p.inv) + ' announced/reported cost' : '',
       STATUS_LABEL[p.k] + (p.ry ? ` ${p.ry}` : ''),
-      (p.src === 'gem' ? p.cy : [p.st, BA_ISO[p.ba] || p.ba].filter(Boolean).join(' · ')),
+      (p.src === 'gem' ? [p.st, p.cyn || p.cy] : [p.st, BA_ISO[p.ba] || p.ba]).filter(Boolean).join(' · '),
       p.ax ? 'approximate location' : ''].filter(Boolean).join('\n');
     return el;
   }
@@ -2481,7 +2565,12 @@
   let closeAt = { lat: 0, lng: 0 };   // camera centre at the last close-set check
   function drawDots(close) {
     if (!globe) return;
-    close = close || closeSites();
+    // In hexagon form the cells stand in for the records they aggregate, DOM
+    // markers included: a marker on a roof under a 350 m prism is the dot the
+    // form exists to aggregate away. Only the SUBJECT's, exactly as 2D hides
+    // only the subject's dot layers - the other two still mark the ground
+    // the cells cover.
+    close = aggregated('site') ? [] : (close || closeSites());
     closeKey = close.map(w => w.site.id).join(',');
     const promoted = new Set(close.map(w => w.site.id));
     // Same rule the 2D layers get from circle-sort-key: while the ramp is
@@ -2495,15 +2584,16 @@
       (heatVal(a, key, hm) ?? -1) - (heatVal(b, key, hm) ?? -1);
     let pts = promoted.size ? shown().filter(d => !promoted.has(d.id)) : shown();
     if (heated) pts = [...pts].sort(byVal(hm.k));
-    globe.pointsData(pts);
+    globe.pointsData(aggregated('site') ? [] : pts);
     // shown() already applies the hide-no-value filter for sites; the plant
     // and fab wrappers apply the same rule here, so the globe and the 2D
     // filters can never disagree about which markers exist.
     const hideGrey = hideMissingActive();
-    let plantWraps = visiblePlants();
+    let plantWraps = aggregated('plant') ? [] : visiblePlants();
     if (hideGrey && hm.pk) plantWraps = plantWraps.filter(w => heatVal(w.plant, hm.pk, hm) != null);
     if (heated && hm.pk) plantWraps.sort((a, b) => byVal(hm.pk)(a.plant, b.plant));
-    let fabWraps = state.layers.fabs ? fabs.map(f => ({ lat: f.lat, lng: f.lon, fab: f })) : [];
+    let fabWraps = state.layers.fabs && !aggregated('fab')
+      ? fabs.map(f => ({ lat: f.lat, lng: f.lon, fab: f })) : [];
     if (hideGrey && hm.fk) fabWraps = fabWraps.filter(w => heatVal(w.fab, hm.fk, hm) != null);
     if (heated && hm.fk) fabWraps = fabWraps.sort((a, b) => byVal(hm.fk)(a.fab, b.fab));
     globe.htmlElementsData([
@@ -2590,7 +2680,23 @@
       .pointAltitude(pointAltitude)
       .pointRadius(pointRadius)
       .pointLabel(d => siteTip(d))
-      .onPointClick(d => openSite(d.id));
+      .onPointClick(d => openSite(d.id))
+      // The hexagon heatmap as prisms: the cell's colour is the 2D fill's,
+      // and its height is the same position on the ramp, so a tall dark
+      // cell and a red one on the flat map are one fact told twice. The
+      // accessors read the live heat state, and applyHeat re-assigns them
+      // when the domain moves so globe.gl re-evaluates. No transition: the
+      // cells re-bin on every resolution step, and a second of prisms
+      // growing out of the ground each time is motion carrying no meaning.
+      .hexBinPointLat(w => w.lat).hexBinPointLng(w => w.lon)
+      .hexBinPointWeight(hexWeight)
+      .hexBinResolution(2)
+      .hexMargin(0.12)
+      .hexTopColor(hexTopColour)
+      .hexSideColor(hexSideColour)
+      .hexAltitude(hexAltitude)
+      .hexTransitionDuration(0)
+      .hexLabel(b => hexTip(b.points, b.sumWeight, hexRes()));
     // Re-size and re-shade the dots as the camera moves. Both read globeAlt,
     // so the values have to be pushed back through globe.gl to take effect.
     //
@@ -2612,6 +2718,10 @@
           globe.pointRadius(pointRadius).pointAltitude(pointAltitude);
           setCameraNear(alt);
           drawDots();
+          // The cells follow the camera the way the 2D ones follow the
+          // zoom: a step in resolution is a new set of cells, a new domain
+          // and a new legend, and all three are applyHeat's to rebuild.
+          if (hexOn() && hexRes() !== hexResPainted) applyHeat();
         } else if (globeAlt < CLOSE_ALT) {
           // Panning at a fixed altitude changes which sites are in view but
           // not the zoom, so the altitude test above never fires.
@@ -2665,6 +2775,7 @@
     ['fp-line-campus', 'line-color', c => c.fp],
     ['fp-line-case', 'line-color', c => c.fpCase],
     ['fp-line-campus-case', 'line-color', c => c.fpCase],
+    ['hex-none', 'fill-pattern', c => c.hatch],
     // The site dots are deliberately NOT listed here - see below.
   ];
   function applyTheme() {
@@ -2717,6 +2828,11 @@
       map.resize();
       map.triggerRepaint();
     }
+    // Each renderer sizes the hexagons from its own camera, so the cells
+    // that fit one view are re-chosen for the other. (The globe's altitude
+    // is read a frame later by watchCamera, which re-bins again if the
+    // fly-in lands on a different step - this covers the switch itself.)
+    if (hexOn()) applyHeat();
   }
   modeBtn.addEventListener('click', () => setMode(state.mode === '2d' ? '3d' : '2d'));
   document.getElementById('zoomIn').addEventListener('click', () => {
@@ -2926,6 +3042,9 @@
     // 'style.load', so it is no longer buying anything.
     applyTheme();
     if (globe) styleGlobe();
+    // The hexagon ramp is anchored to the surface, so a new surface is a new
+    // ramp - and that expression is applyHeat's to build, not a paint row.
+    if (hexOn()) applyHeat();
   });
 
   // ---- search ----------------------------------------------------------------
@@ -4308,11 +4427,17 @@
       const m2 = +p.m2 || 0;
       return `<div class="t">${esc(p.name || p.op || (p.kind === 'campus' ? 'Campus' : 'Building'))}</div>` +
         `<div class="d">${esc(KIND_LABEL[p.kind] || p.kind)} · ${esc(SRC_LABEL[p.src] || p.src)}</div>` +
+        // A parcel grown from the seed lot - the same owner's touching lot -
+        // is a weaker claim than the lot under the dot, and says so.
+        (p.expanded ? '<div class="d">a touching lot of the same owner — the holding, '
+                    + 'not necessarily the campus</div>' : '') +
         // The owner is the parcel record's own answer to "whose site is this",
         // and it is a different claim from the operator on the dot: county
         // records name the title holder, usually an SPV.
         (p.op && p.op !== p.name ? `<div class="d">${esc(p.op)}${
           p.locality ? ` · ${esc(p.locality)}` : ''}</div>` : '') +
+        (p.ref || p.acres ? `<div class="d">${[p.ref ? 'parcel ' + esc(String(p.ref)) : '',
+          p.acres ? esc(String(p.acres)) + ' ac' : ''].filter(Boolean).join(' · ')}</div>` : '') +
         (m2 ? `<div class="d">${fmtInt(m2 * 10.7639)} sq ft · ${fmtInt(m2)} m²</div>` : '') +
         (p.buildings ? `<div class="d">${p.buildings} buildings · ${
           Math.round((+p.built_ratio || 0) * 100)}% built</div>` : '') +
@@ -4850,8 +4975,12 @@
   // plants and a handful above 5 GW, so on a linear ramp the top percent eats
   // the whole scale and everything else is one shade of green. Log also makes
   // the comparison a RATIO, which is what "draws more than it supplies" means.
+  //
+  // `sum` marks a measure the hexagon form can add up per cell: megawatts,
+  // dollars and square feet total; a build year or a longitude does not, and
+  // those drop out of the menu while hexagons are showing.
   const HEAT_MEASURES = [
-    { k: 'mw',  pk: 'mw',  log: true, label: 'Power (MW)', unit: 'MW' },
+    { k: 'mw',  pk: 'mw',  log: true, sum: true, label: 'Power (MW)', unit: 'MW' },
     // `fk` is the same quantity on a FAB record, the way `pk` is on a plant -
     // this measure is the first where all three layers carry the figure, so
     // fabs join the shared ramp here for the first time. US$ MILLIONS on every
@@ -4861,8 +4990,8 @@
     // the operator or the press, URL kept per record. `log` because value is
     // log-distributed exactly like capacity: a $300M solar farm and a $165bn
     // fab campus on a linear ramp is one red dot on a green planet.
-    { k: 'inv', pk: 'inv', fk: 'inv', log: true, money: true, label: 'Project value (US$)',
-      unit: 'US$' },
+    { k: 'inv', pk: 'inv', fk: 'inv', log: true, money: true, sum: true,
+      label: 'Project value (US$)', unit: 'US$' },
     // Generation ≤25 km used to be here and is a list column now. Once plants
     // joined this ramp it stopped earning a slot: the generation near a site
     // IS the plant rings, in the same colours, already on the screen. Floor
@@ -4870,15 +4999,30 @@
     // where a measure that is explicitly ABOUT nearby generation, sitting in a
     // list beside a generation layer that ignored it, only invited the
     // question of why the plants had not changed colour.
-    { k: 'ft2', log: true, label: 'Floor area (sq ft)', unit: 'sq ft' },
+    { k: 'ft2', log: true, sum: true, label: 'Floor area (sq ft)', unit: 'sq ft' },
     // Zero is a legitimate longitude and latitude but never a legitimate build
     // year or capacity, so "has a value" is not the same test for all of them.
     { k: 'by',  pk: 'y',   label: 'Year built', unit: 'year' },
     { k: 'lon', pk: 'lon', label: 'Longitude', zeroIsReal: true, unit: '°' },
     { k: 'lat', pk: 'lat', label: 'Latitude',  zeroIsReal: true, unit: '°' },
+    // Hexagons only: how many records fall in the cell. Every one counts one,
+    // so nothing is ever grey on this measure, and it is the one measure
+    // every subject can be aggregated on. `log` because the counts are as
+    // skewed as the capacities - Northern Virginia in one cell against a
+    // thousand cells holding one site - and a linear ramp would paint the
+    // planet the palest shade with one dark cell in Loudoun County. Not a
+    // property of the record, hence `count` rather than a key to read.
+    { k: 'count', count: true, log: true, sum: true, hexOnly: true, label: 'Count' },
   ];
-  const heatSpec = () => HEAT_MEASURES.find(m => m.k === state.heat.k) || HEAT_MEASURES[0];
+  const HEAT_COUNT = HEAT_MEASURES.find(m => m.count);
+  const heatSpec = () => {
+    const m = HEAT_MEASURES.find(x => x.k === state.heat.k) || HEAT_MEASURES[0];
+    // The count means nothing on a dot; if the form and the measure have
+    // come apart, the dots fall back to the first real measure.
+    return m.hexOnly && !state.heat.hex ? HEAT_MEASURES[0] : m;
+  };
   const heatVal = (d, key, m) => {
+    if (m.count) return 1;
     const v = d[key];
     if (v == null) return null;
     return (m.zeroIsReal ? Number.isFinite(+v) : +v > 0) ? +v : null;
@@ -4887,10 +5031,12 @@
   // True when the plant layer is on AND the current measure means something on
   // a plant. Both halves matter: plants off means they must not stretch the
   // domain, and a site-only measure means they must keep their fuel colours.
-  const plantsInHeat = () => !!(heatSpec().pk && state.layers.plants);
+  // Never while hexagons are showing: the cells aggregate data centres, and
+  // a plant ring coloured on the cells' scale would claim to be one of them.
+  const plantsInHeat = () => !!(heatSpec().pk && state.layers.plants && !hexOn());
   // And the same gate for fabs: on the ramp only when the fab layer is on AND
   // the measure has a fab key, for the same two reasons.
-  const fabsInHeat = () => !!(heatSpec().fk && state.layers.fabs);
+  const fabsInHeat = () => !!(heatSpec().fk && state.layers.fabs && !hexOn());
 
   const hbBtn = document.getElementById('hb-btn');
   const hbMenu = document.getElementById('hb-menu');
@@ -4900,6 +5046,11 @@
   const hbMax = document.getElementById('hb-max');
   const hbRamp = document.getElementById('hb-ramp');
   const hbDist = document.getElementById('hb-dist');
+  const hbHex = document.getElementById('hb-hex');
+  const hbSizePick = document.getElementById('hb-size-pick');
+  const hbSize = document.getElementById('hb-size');
+  const hbSizeLbl = document.getElementById('hb-size-lbl');
+  const hbSizeMenu = document.getElementById('hb-size-menu');
 
   let heatDomain = null;              // [lo, hi] over the visible set, or null
   let heatSig = '';                   // last painted heat state, for the globe
@@ -4918,9 +5069,27 @@
     return Math.max(0, Math.min(1, (v - lo) / (hi - lo)));
   }
 
+  // The hexagon form has its own ramp: one hue, because a green-to-red
+  // scale over AREAS reads as a verdict where over dots it reads as a rank.
+  // OKLCH hue 45 throughout, warm so the low end survives satellite imagery.
+  // The ramp is anchored to the SURFACE: on the day map it runs light to
+  // dark (L 0.88 -> 0.41), on the night map dark to light (L 0.50 -> 0.90),
+  // so the sparsest cell is the one nearest the ground colour in both and
+  // the densest is the one that stands furthest off it. Reversing the day
+  // ramp would not do: its darkest step is 1.85:1 against the night land,
+  // an invisible floor. The CSS gradients on .hb-ramp.is-hex are these.
+  const HEX_STOPS = {
+    day: ['#FFCAB3', '#FF9462', '#E36927', '#B44901', '#7B3002'],
+    night: ['#A24102', '#CF5604', '#F27636', '#FFA47A', '#FED4C1'],
+  };
+  const rampStops = () => (hexOn()
+    ? HEX_STOPS[document.documentElement.dataset.theme === 'night' ? 'night' : 'day']
+    : HEAT_STOPS);
+
   function heatColour(v) {
     if (!heatDomain) return HEAT_NONE;
-    return HEAT_STOPS[Math.round(heatT(v) * (HEAT_STOPS.length - 1))];
+    const st = rampStops();
+    return st[Math.round(heatT(v) * (st.length - 1))];
   }
 
   // Every value the current measure has on the currently painted set. The ONE
@@ -4928,6 +5097,11 @@
   // chart can never disagree with the ramp about what is on it.
   function heatValues() {
     const m = heatSpec();
+    // In hexagon form the population on the ramp is the CELLS, not the sites:
+    // the domain, the readouts and the distribution chart all describe what
+    // is painted, and what is painted is a sum per cell. Cells whose sites
+    // all lack the measure sum to zero and are grey, like a dot with no value.
+    if (hexOn()) return hexCells().map(c => c.v).filter(v => v > 0);
     const out = [];
     for (const d of shown()) {
       const v = heatVal(d, m.k, m);
@@ -4952,6 +5126,330 @@
     return out;
   }
 
+  // ---- hexagons --------------------------------------------------------------
+  // The heatmap's other form: every shown site is dropped into an H3 cell
+  // (Uber's hexagonal grid) and the cell is painted by the sum of the measure
+  // over what landed in it. H3 rather than a pixel grid because a cell is
+  // then a fixed piece of GROUND - ~316 km across at resolution 2, ~45 km at
+  // 4 - and "how much capacity sits within 300 km of here" is a question
+  // about the ground, not the screen. globe.gl bins its own hex layer with
+  // the same library, so at the same resolution the sphere shows the
+  // identical cells.
+  //
+  // Everything else about the heatmap is unchanged by the form: the cells
+  // are built from shown(), so the search facet, the timeline cursor, the
+  // kind chips and the hide-no-value filter all narrow them exactly as they
+  // narrow the dots; the domain is computed over the cells; the ramp, the
+  // readouts, the distribution chart and the brush all read that domain.
+  //
+  // Which resolution: the finest whose cells are still HEX_MIN_PX wide on
+  // screen, from the renderer's own metres-per-pixel. Each step of
+  // resolution is a factor of ~2.65 in width, so cells grow from 16 to ~42
+  // px as you zoom in and snap down a step when they would pass it. A
+  // hand-picked size holds the resolution fixed instead.
+  //
+  // Never coarser than resolution 2, ~316 km across. At world zoom the
+  // 16 px rule reached for resolution 1, whose ~837 km cells swallowed
+  // Ashburn and Chicago in one tile and read as a continent painted, not a
+  // place counted. Below the floor the cells shrink on screen instead - a
+  // dozen pixels at the world view - which is the honest picture.
+  //
+  // WHICH RECORDS. Every facility layer that is SWITCHED ON, together in one
+  // set of cells. The layer pane is the control for what a cell contains -
+  // turn Power Plants off and the cells stop counting plants - so the measure
+  // menu never has to ask the same question twice. Count is one measure, not
+  // three: a record is a record whichever layer it came from.
+  //
+  // A measure reads whichever key its layer carries - `k` on a site, `pk` on
+  // a plant, `fk` on a fab, the same resolution the dot ramp already does.
+  // A layer with no key for the current measure still puts its records IN the
+  // cell, contributing nothing to the sum: a fab has no published demand, so
+  // on Power it is one of the records the tip counts as being without a
+  // figure, exactly like an unmeasured data centre beside it.
+  //
+  // WHAT A MIXED SUM MEANS. On Power a cell adds a data centre's draw to a
+  // plant's nameplate, which are opposite quantities. The tip therefore
+  // always breaks the cell down by layer, so the composition of any number
+  // the map paints can be read off the cell itself.
+  const HEX_KINDS = [
+    { kind: 'site', one: 'data centre', many: 'data centres', layer: 'facilities',
+      dots: ['sites', 'sites-ai'], note: 'dotcount',
+      key: (m) => m.k, place: (d) => d.ci || d.c,
+      // shown() is the registry's own answer to "what is painted" - the
+      // search facet, the timeline, the kind chips, the worklist filter and
+      // hide-no-value are all already in it.
+      records: () => shown() },
+    { kind: 'fab', one: 'fab', many: 'fabs', layer: 'fabs', dots: ['fab'],
+      note: 'fabnote', key: (m) => m.fk,
+      // `pl` is a full civic address, and the shapes vary: "Wuxi, Jiangsu (30
+      // Xinzhou Road)", "Sinshih (Xinshi) District, Tainan", "Hsinchu Science
+      // Park (Xinzhu (Zhubei), Keji 7th Road)". Drop the parentheses, keep
+      // what is before the first comma: that is the locality in every one of
+      // the 214, where the last part is a street as often as a city - and a
+      // nested parenthesis left "Keji 7th Road)" standing in for Hsinchu.
+      place: (d) => ((d.pl || '').replace(/\([^)]*\)/g, ' ').split(',')[0]
+        .replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim() || d.cy),
+      records: (K) => (state.layers.fabs ? fabs.filter(d => hexKeeps(d, K)) : []) },
+    { kind: 'plant', one: 'power plant', many: 'power plants', layer: 'plants',
+      dots: ['plant'], note: 'plantnote', key: (m) => m.pk,
+      // A plant has no city in the payload; the province is the finest place
+      // it carries, and "Texas x34" is the right grain beside a 300 km cell.
+      place: (d) => d.st || d.cyn,
+      // The fuel chips are this layer's kind filter, the way the AI and
+      // traditional chips are the site layer's, so they narrow the cells too.
+      records: (K) => (state.layers.plants
+        ? plants.filter(d => fuelOn(d.f) && hexKeeps(d, K)) : []) },
+  ];
+  // The union, wrapped so a binned record still knows which layer it came
+  // from: the weight, the tip's breakdown and the place name all need that
+  // and the three payloads share no field that could tell them apart.
+  const hexRecords = () => {
+    const out = [];
+    for (const K of HEX_KINDS) {
+      if (!state.layers[K.layer]) continue;
+      for (const r of K.records(K)) {
+        if (r.lat != null && r.lon != null) out.push({ lat: r.lat, lon: r.lon, r, K });
+      }
+    }
+    return out;
+  };
+  // The measures the hexagons offer: count, then everything that can be
+  // added up. The list does not change with the layers - a measure no
+  // visible layer carries paints an honestly empty map rather than
+  // disappearing from the menu while you are reading it.
+  const hexMeasures = () => [HEAT_COUNT, ...HEAT_MEASURES.filter(m => !m.count && m.sum)];
+  // The two filters a layer's records must pass that its own visible set
+  // does not already apply.
+  //
+  // Hide-no-value: shown() does this for sites already; the other two layers
+  // get it here, so the button means the same thing whichever layers are on.
+  //
+  // And the footprint worklist, which sites already get from shown() - this
+  // is where the fab and plant records pick it up.
+  const hexKeeps = (d, K) => {
+    if (!unmapped(d)) return false;
+    if (!hideMissingActive()) return true;
+    const m = heatSpec(), k = K.key(m);
+    return !k || heatVal(d, k, m) != null;
+  };
+
+  // What the bar and the distribution panel call the thing being painted.
+  // One name for one measure: which layers are in it is the layer pane's
+  // statement to make, not this label's.
+  const heatLabel = () => heatSpec().label;
+  // Count has no unit of its own, so it borrows the noun of whatever is
+  // actually being counted - "sites" while only data centres are on, the
+  // neutral "assets" once a cell can hold more than one kind of thing.
+  const hexNoun = (n, kinds) => {
+    const list = kinds || HEX_KINDS.filter(K => state.layers[K.layer]);
+    const one = list.length === 1 ? list[0] : null;
+    return one ? (n === 1 ? one.one : one.many) : (n === 1 ? 'asset' : 'assets');
+  };
+  const heatUnit = () => {
+    const m = heatSpec();
+    return m.count ? hexNoun(2) : (m.unit || '');
+  };
+
+  // The hatch worn by a cell with nothing to sum, one image per theme. Drawn
+  // rather than shipped as a file: it is twenty lines of canvas against a
+  // sprite sheet and a build step, and the two strokes are picked against
+  // their own land colour so the texture reads at about the same strength in
+  // both - ~2.4:1, present but recessive, since it marks an absence.
+  const HEX_HATCH = { 'hex-hatch-day': '#8A97A3', 'hex-hatch-night': '#5A6773' };
+  // 20 px at pixelRatio 2 is a 10 px tile carrying two stripes, so even a
+  // cell at the HEX_MIN_PX floor shows the texture as a texture. The stripes
+  // run at 45 degrees on x + y = c, and c stepping by half the tile is what
+  // makes the tile seamless against its neighbours.
+  function hatchImage(colour) {
+    const N = 20, cv = document.createElement('canvas');
+    cv.width = cv.height = N;
+    const g = cv.getContext('2d');
+    if (!g) return null;
+    g.strokeStyle = colour;
+    g.lineWidth = 2.5;
+    g.lineCap = 'square';
+    g.beginPath();
+    for (let o = -N; o <= N; o += N / 2) { g.moveTo(o, N); g.lineTo(o + N, 0); }
+    g.stroke();
+    return g.getImageData(0, 0, N, N);
+  }
+  // Registered once the style is up - a style has no images before it loads,
+  // and a fill-pattern naming one that is not there draws nothing at all.
+  function addHatches() {
+    for (const [id, colour] of Object.entries(HEX_HATCH)) {
+      if (map.hasImage(id)) continue;
+      const img = hatchImage(colour);
+      if (img) map.addImage(id, img, { pixelRatio: 2 });
+    }
+  }
+  map.on('style.load', addHatches);
+  if (map.isStyleLoaded()) addHatches();
+
+  const HEX_MIN_PX = 16;
+  const HEX_MAX_RES = 9;        // 350 m cells: finer than a campus is not aggregation
+  const HEX_MIN_RES = 2;        // ~316 km cells: coarser is a continent, not a place
+  const HEX_SIZES = [2, 3, 4, 5, 6, 7];      // the hand-pickable resolutions
+  const hexWidthKm = (res) => h3.getHexagonEdgeLengthAvg(res, h3.UNITS.km) * Math.sqrt(3);
+  const hexKmText = (res) => {
+    const km = hexWidthKm(res);
+    return (km >= 10 ? Math.round(km).toLocaleString() : km.toFixed(1)) + ' km';
+  };
+  function fitRes(mPerPx) {
+    for (let r = HEX_MAX_RES; r > HEX_MIN_RES; r--) {
+      if (hexWidthKm(r) * 1000 / mPerPx >= HEX_MIN_PX) return r;
+    }
+    return HEX_MIN_RES;
+  }
+  // 2D: the web-mercator ground resolution at the equator - MapLibre's 512 px
+  // tiles put the whole equator across 512 * 2^z pixels, which is half the
+  // 256-tile GROUND figure the URL uses. A cell at 60° north draws twice as
+  // wide as the same cell on the equator, which is Mercator being honest
+  // about itself, not a reason to re-bin on every pan.
+  // 3D: globe.gl draws ~12.5 / altitude px per degree of arc (see
+  // pointRadius), and a degree is 111 km.
+  const EQUATOR_M = 40075016.686;
+  const hexRes = () => (state.heat.res != null ? Math.max(HEX_MIN_RES, state.heat.res)
+    : state.mode === '3d' ? fitRes(111000 * globeAlt / 12.5)
+    : fitRes(EQUATOR_M / (512 * Math.pow(2, map.getZoom()))));
+  let hexResPainted = null;     // the resolution the cells on screen were built at
+  // Test hook, the same one window.__map and window.__globe are: the cells
+  // are derived from four moving parts (subject, measure, zoom, filters) and
+  // nothing else on the page reports which one produced what is drawn.
+  window.__hex = { res: hexRes, cells: hexCells, fit: fitRes, kinds: HEX_KINDS,
+    tip: (c) => hexTip(c.recs, c.v, c.res) };
+
+  // The cells of the painted set at the current resolution, memoised on the
+  // measure and the resolution. Dropped by applyHeat, the one place the
+  // painted set is known to have moved; between two applyHeats the readouts,
+  // the chart and the hover tip all ask and get the same answer.
+  let hexMemo = null;
+  function hexCells() {
+    const m = heatSpec(), res = hexRes();
+    const on = HEX_KINDS.filter(K => state.layers[K.layer]).map(K => K.kind).join('+');
+    const key = `${on}|${m.k}|${res}`;
+    if (hexMemo && hexMemo.key === key) return hexMemo.cells;
+    const byId = new Map();
+    for (const w of hexRecords()) {
+      const id = h3.latLngToCell(w.lat, w.lon, res);
+      let c = byId.get(id);
+      if (!c) byId.set(id, c = { id, res, v: 0, recs: [] });
+      c.recs.push(w);
+      c.v += hexWeight(w);
+    }
+    hexMemo = { key, byId, cells: [...byId.values()] };
+    return hexMemo.cells;
+  }
+
+  // A cell's outline as a GeoJSON ring. h3 hands back raw longitudes, so a
+  // cell straddling the antimeridian arrives as 179 -> -179 and would draw
+  // as a sliver right round the world; unwrapped onto one side, MapLibre
+  // draws it across the seam on the neighbouring world copy.
+  function hexRing(id) {
+    const ring = h3.cellToBoundary(id, true);
+    let lo = Infinity, hi = -Infinity;
+    for (const p of ring) { if (p[0] < lo) lo = p[0]; if (p[0] > hi) hi = p[0]; }
+    if (hi - lo > 180) for (const p of ring) if (p[0] < 0) p[0] += 360;
+    return ring;
+  }
+
+  // What a cell holds, for the hover tip in both renderers (globe.gl hands
+  // over the binned wrappers, the 2D layer the cell they were memoised in).
+  //
+  // Always broken down by layer when it holds more than one kind, because on
+  // a mixed measure the total alone does not say what went into it: 13,694 MW
+  // over a cell holding both is some draw and some nameplate, and the split
+  // is the reader's only way to tell which. The places inside it too, because
+  // "23 assets" is half an answer and "23, 12 of them in Ashburn" is the fact.
+  function hexTip(recs, v, res) {
+    const m = heatSpec();
+    const n = recs.length;
+    let has = 0;
+    const places = new Map();
+    const kinds = new Map();
+    for (const w of recs) {
+      if (heatVal(w.r, w.K.key(m), m) != null) has++;
+      kinds.set(w.K, (kinds.get(w.K) || 0) + 1);
+      const k = w.K.place(w.r);
+      if (k) places.set(k, (places.get(k) || 0) + 1);
+    }
+    // Three names, each clipped: a handful of fabs sit in places called
+    // "West Zone of the Chengdu Hi-Tech Industrial Development Zone", and
+    // three of those is a paragraph in a tooltip.
+    const short = (k) => (k.length > 26 ? k.slice(0, 25).trimEnd() + '…' : k);
+    const top = [...places].sort((a, b) => b[1] - a[1]).slice(0, 3)
+      .map(([k, c]) => esc(short(k)) + (c > 1 ? ' ×' + c : '')).join(', ')
+      + (places.size > 3 ? ` +${places.size - 3} more` : '');
+    // In HEX_KINDS order rather than by size, so the same cell reads the same
+    // way every time you come back to it.
+    const mix = HEX_KINDS.filter(K => kinds.has(K))
+      .map(K => `${kinds.get(K).toLocaleString()} ${kinds.get(K) === 1 ? K.one : K.many}`);
+    const count = `${n.toLocaleString()} ${hexNoun(n, [...kinds.keys()])}`;
+    const head = m.count ? count
+      : v > 0 ? (m.money ? fmtHeat(v) : `${fmtHeat(v)} ${m.unit}`)
+      : `${count}, none with a figure`;
+    const parts = [];
+    // The composition, unless the head already is it - any head that counts
+    // rather than measures ("23 data centres", "23 assets, none with a
+    // figure") has already said what a single-kind cell holds.
+    if (mix.length > 1 || (!m.count && v > 0)) parts.push(mix.join(' · '));
+    if (!m.count && v > 0) {
+      parts.push(`${has === n ? 'all' : has + ' of ' + n.toLocaleString()} with a figure`);
+    }
+    if (top) parts.push(top);
+    return `<div class="t">${head}</div>` +
+      parts.filter(Boolean).map(x => `<div class="d">${x}</div>`).join('') +
+      `<div class="d">hexagon ≈ ${hexKmText(res)} across</div>`;
+  }
+
+  // globe.gl's accessors for the prisms. Declared as functions so initGlobe,
+  // which sits above this block in the file, can name them; they only ever
+  // run once the globe exists, long after everything here is defined. `b`
+  // is globe.gl's bin: { points, sumWeight, center }.
+  function hexWeight(w) {
+    const m = heatSpec();
+    return heatVal(w.r, w.K.key(m), m) || 0;
+  }
+  function hexTopColour(b) {
+    return heatDomain && b.sumWeight > 0 ? heatColour(b.sumWeight) : HEAT_NONE;
+  }
+  function hexSideColour(b) { return hexA(hexTopColour(b), 0.55); }
+  // Height is the ramp position again - the 2D colour, told a second way -
+  // with a floor so a grey cell still stands off the imagery as a cell. 0.08
+  // is ~500 km for the top of the ramp: enough to read from orbit, not so
+  // much that Ashburn's prism hides Ohio.
+  function hexAltitude(b) {
+    return heatDomain && b.sumWeight > 0 ? 0.003 + 0.08 * heatT(b.sumWeight) : 0.002;
+  }
+
+  // Each layer's sub-label says what that layer is drawing, so the one being
+  // aggregated says so there rather than in the bar: "6,289 shown" is no
+  // longer true of a layer drawing 225 hexagons, and the hollow-dot note it
+  // replaces is about markers that are not on the map. The other two layers
+  // are restored to whatever they say for themselves - captured on the first
+  // overwrite, because the fab note is written from the payload at startup
+  // and a copy written out here would go stale with it.
+  const noteBase = new Map();
+  function hexNotes(hex) {
+    // Per layer rather than once in the bar: each line counts its OWN
+    // records, which is the number that layer's entry is there to report,
+    // and together they say what went into the cells.
+    const cells = hex ? hexCells() : null;
+    for (const K of HEX_KINDS) {
+      const el = document.getElementById(K.note);
+      if (!el) continue;
+      if (!noteBase.has(K.note)) noteBase.set(K.note, el.textContent);
+      if (hex && state.layers[K.layer]) {
+        let n = 0;
+        for (const c of cells) for (const w of c.recs) if (w.K === K) n++;
+        el.textContent = `${n.toLocaleString()} shown — aggregated into the hexagons`;
+      } else if (K.kind === 'site') {
+        updateCount();          // its base text moves with every filter
+      } else {
+        el.textContent = noteBase.get(K.note);
+      }
+    }
+  }
+
   // The measure's own number format - shared by the bar's end readouts and
   // every label on the distribution chart, so the two can never disagree
   // about what $12,400 is called.
@@ -4965,8 +5463,20 @@
   // applyVisibility rather than off the switch.
   function applyHeat() {
     const m = heatSpec();
-    hbLbl.textContent = m.label;
+    hbLbl.textContent = heatLabel();
     hbSw.setAttribute('aria-checked', String(state.heat.on));
+    // The form's controls: the toggle shows the form that is actually
+    // painting (off with the switch, whatever the flag says), the ramp wears
+    // the form's own colours, and the size picker exists only for cells.
+    const hex = hexOn();
+    hexMemo = null;                  // the painted set may have moved
+    hbHex.setAttribute('aria-pressed', String(hex));
+    hbRamp.classList.toggle('is-hex', hex);
+    hbSizePick.hidden = !hex;
+    if (hex) {
+      hbSizeLbl.textContent = state.heat.res == null
+        ? `auto · ~${hexKmText(hexRes())}` : `~${hexKmText(state.heat.res)}`;
+    }
 
     heatDomain = null;
     if (state.heat.on) {
@@ -4999,19 +5509,20 @@
       const [lo, hi] = heatDomain;
       // hi === lo would make interpolate throw on non-ascending stops, so a
       // single-valued domain is painted flat.
-      if (hi === lo) return HEAT_STOPS[HEAT_STOPS.length - 1];
+      const st = rampStops();
+      if (hi === lo) return st[st.length - 1];
       const useLog = m.log && lo > 0;
       const val = ['to-number', ['get', key], lo];
-      const stops = [];
-      HEAT_STOPS.forEach((c, i) => {
-        const t = i / (HEAT_STOPS.length - 1);
-        stops.push(useLog ? Math.log10(lo * Math.pow(hi / lo, t)) : lo + (hi - lo) * t, c);
+      const ramp = [];
+      st.forEach((c, i) => {
+        const t = i / (st.length - 1);
+        ramp.push(useLog ? Math.log10(lo * Math.pow(hi / lo, t)) : lo + (hi - lo) * t, c);
       });
       // Clamped at lo before the log so a value under the domain floor cannot
       // reach log10(0). Missing values never get here - the case below catches
       // them first - but the ramp must be total anyway.
       return ['interpolate', ['linear'],
-        useLog ? ['log10', ['max', lo, val]] : val, ...stops];
+        useLog ? ['log10', ['max', lo, val]] : val, ...ramp];
     };
     const missingFor = (key) => (m.zeroIsReal
       ? ['==', ['has', key], false]
@@ -5037,6 +5548,35 @@
       map.setPaintProperty(id, 'circle-color',
         ['case', town, 'rgba(0,0,0,0)', missingFor(m.k), HEAT_NONE, rampFor(m.k)]);
     }
+
+    // The cells. Rebuilt whole on every call in hexagon form - the painted
+    // set, the measure or the resolution may each have moved, and 1,500
+    // seven-point polygons through setData is a few milliseconds. A cell
+    // whose sites all lack the measure sums to zero: grey and fainter, the
+    // dots' "not measured" said the same way.
+    if (map.getLayer('hex-fill') && map.getLayer('hex-none')) {
+      if (hex) {
+        const cells = hexCells();
+        hexFC.features = cells.map(c => ({
+          type: 'Feature',
+          geometry: { type: 'Polygon', coordinates: [hexRing(c.id)] },
+          properties: { h: c.id, v: c.v, n: c.recs.length },
+        }));
+        map.getSource('hex').setData(hexFC);
+        // Only the cells with something to sum are painted from the ramp;
+        // the rest are the hatched layer's, by the filters the two carry.
+        // With no domain at all nothing is on the ramp, so every cell falls
+        // to the hatch - "none shown" drawn rather than stated.
+        if (heatDomain) map.setPaintProperty('hex-fill', 'fill-color', rampFor('v'));
+        map.setPaintProperty('hex-none', 'fill-pattern', pal().hatch);
+      }
+      for (const id of ['hex-fill', 'hex-none']) {
+        map.setLayoutProperty(id, 'visibility', hex ? 'visible' : 'none');
+      }
+    }
+    hexNotes(hex);
+    hexResPainted = hex ? hexRes() : null;
+    if (globe) globe.hexTopColor(hexTopColour).hexSideColor(hexSideColour).hexAltitude(hexAltitude);
 
     // And the plant layer, onto the same ramp when the measure applies to it.
     if (map.getLayer('plant')) {
@@ -5080,7 +5620,11 @@
     // memo also means a colour change alone would never reach the DOM. So the
     // cache is dropped when - and only when - the heat state actually moves;
     // clearing it on every applyHeat would undo the memo entirely.
-    const sig = state.heat.on ? `${m.k}|${heatDomain ? heatDomain.join(',') : 'none'}` : 'off';
+    const sig = state.heat.on
+      ? `${m.k}|${heatDomain ? heatDomain.join(',') : 'none'}|`
+        + (hex ? `hex${hexResPainted}${HEX_KINDS.filter(K => state.layers[K.layer])
+            .map(K => K.kind).join('')}` : 'dots')
+      : 'off';
     if (sig !== heatSig) {
       heatSig = sig;
       plantWrap.clear();
@@ -5098,15 +5642,21 @@
   // hide-no-value filter armed, switching the measure or the toggle changes
   // WHICH dots exist, and that is applyVisibility's jurisdiction (the 2D
   // filters, the count, the globe), which then calls applyHeat itself.
-  const reheat = () => (state.heat.hideMissing ? refreshView() : applyHeat());
+  // The same goes for the hexagon form, which hides the dots outright.
+  const reheat = () => (state.heat.hideMissing || state.heat.hex ? refreshView() : applyHeat());
 
   hbBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     const open = hbMenu.hidden;
     if (open) {
-      hbMenu.innerHTML = HEAT_MEASURES.map(m =>
+      // One flat list of measures in either form. Hexagons add Count and
+      // drop the measures that cannot be added up; nothing here picks which
+      // layers are painted, because the layer pane already does.
+      const list = state.heat.hex
+        ? hexMeasures() : HEAT_MEASURES.filter(m => !m.hexOnly);
+      hbMenu.innerHTML = list.map(m =>
         '<button type="button" data-m="' + m.k + '"><span class="tick">'
-        + (m.k === state.heat.k ? '✓' : '') + '</span>' + esc(m.label) + '</button>').join('');
+        + (m.k === heatSpec().k ? '✓' : '') + '</span>' + esc(m.label) + '</button>').join('');
       // One popover at a time: the menu and the distribution panel share the
       // strip above the bar, and both open meant the panel painting over the
       // menu. Defined later in this block, hence the window hook.
@@ -5119,7 +5669,7 @@
     const b = e.target.closest('[data-m]');
     if (!b) return;
     // A narrowed range belongs to the measure it was drawn on - $14M-$40bn
-    // means nothing in megawatts, so switching measures resets it.
+    // means nothing in megawatts - so switching measures resets it.
     if (state.heat.k !== b.dataset.m) state.heat.range = null;
     state.heat.k = b.dataset.m;
     // Choosing a measure means you want to see it. Switching on for you is
@@ -5136,6 +5686,95 @@
     }
   });
   hbSw.addEventListener('click', () => { state.heat.on = !state.heat.on; reheat(); });
+
+  // The form toggle. Choosing hexagons switches the heat on, like choosing a
+  // measure does; and it lands on the count unless a summable measure was
+  // already painting - "how many are here" is the question hexagons answer
+  // first, and a build year cannot be added up. Back to dots, the count
+  // hands over to the first real measure. Either way the brushed range goes:
+  // a band drawn on per-site megawatts means nothing on per-cell totals.
+  function setHex(on) {
+    state.heat.hex = on;
+    const m = HEAT_MEASURES.find(x => x.k === state.heat.k) || HEAT_MEASURES[0];
+    if (on) {
+      if (!state.heat.on || !m.sum) state.heat.k = 'count';
+      state.heat.on = true;
+    } else if (m.hexOnly) {
+      state.heat.k = HEAT_MEASURES[0].k;
+    }
+    state.heat.range = null;
+    refreshView();
+  }
+  hbHex.addEventListener('click', () => setHex(!state.heat.hex));
+
+  // Cell size: automatic, or one of the H3 resolutions by its width on the
+  // ground, since "320 km cells" is what an underwriter would ask for.
+  hbSize.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = hbSizeMenu.hidden;
+    if (open) {
+      const row = (v, label) => '<button type="button" data-r="' + v + '"><span class="tick">'
+        + (String(state.heat.res ?? '') === v ? '✓' : '') + '</span>' + label + '</button>';
+      hbSizeMenu.innerHTML = row('', 'Automatic — follows the zoom')
+        + HEX_SIZES.map(r => row(String(r), `~${hexKmText(r)} across`)).join('');
+      hbMenu.hidden = true;
+      hbBtn.setAttribute('aria-expanded', 'false');
+      if (window.__closeDist) window.__closeDist();
+    }
+    hbSizeMenu.hidden = !open;
+    hbSize.setAttribute('aria-expanded', String(open));
+  });
+  hbSizeMenu.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-r]');
+    if (!b) return;
+    state.heat.res = b.dataset.r === '' ? null : +b.dataset.r;
+    hbSizeMenu.hidden = true;
+    hbSize.setAttribute('aria-expanded', 'false');
+    applyHeat();
+  });
+  document.addEventListener('click', (e) => {
+    if (!hbSizeMenu.hidden && !hbSizePick.contains(e.target)) {
+      hbSizeMenu.hidden = true;
+      hbSize.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Zooming across a resolution step is a new set of cells. Checked on every
+  // zoom frame, but the check is ten multiplications and the rebuild only
+  // happens at the crossing - the same shape as the footprint handoff.
+  map.on('zoom', () => {
+    if (hexOn() && state.heat.res == null && hexRes() !== hexResPainted) applyHeat();
+  });
+
+  // Hovering a cell. Yields to the marker layers drawn ABOVE the fill - a
+  // plant ring sitting on a cell is the thing under the cursor, and its own
+  // tip should say so. The layers under the fill (footprint rings,
+  // substations, dropped pins) keep their clicks but lose the hover to the
+  // cell: they are drawn through 70% of orange, and the picture says the
+  // cell is on top. Yielding to those too left Europe, which is carpeted in
+  // footprint rings, with no reachable cell tip at all.
+  const HEX_YIELDS = ['plant', 'fab', 'epicentre'];
+  // Both cell layers, because which of the two a cell landed in is a fact
+  // about its data and not about what the cursor is pointing at.
+  for (const id of ['hex-fill', 'hex-none']) {
+    map.on('mousemove', id, (e) => {
+      const layers = HEX_YIELDS.filter(l => map.getLayer(l));
+      if (map.queryRenderedFeatures(e.point, { layers }).length) return;
+      const c = hexMemo && hexMemo.byId.get(e.features[0].properties.h);
+      if (c) showTip(e.originalEvent.clientX, e.originalEvent.clientY, hexTip(c.recs, c.v, c.res));
+    });
+    // The two cell layers are ONE surface to the cursor, and MapLibre raises
+    // each layer's events independently: crossing from a hatched cell to a
+    // painted one fires this alongside the other layer's mousemove, in no
+    // guaranteed order, and hiding unconditionally blanked the tip while the
+    // pointer was still over a cell. Leave only when it has left both.
+    map.on('mouseleave', id, (e) => {
+      const other = id === 'hex-fill' ? 'hex-none' : 'hex-fill';
+      if (e && e.point && map.getLayer(other)
+          && map.queryRenderedFeatures(e.point, { layers: [other] }).length) return;
+      hideTip();
+    });
+  }
 
   // ---- distribution panel ----------------------------------------------------
   // The ramp compresses a shape into a gradient; this panel shows the shape.
@@ -5183,7 +5822,7 @@
     // the user never saw.
     cancelBrush();
     const m = heatSpec();
-    hbdTitle.innerHTML = '<b>' + esc(m.label) + '</b> — distribution';
+    hbdTitle.innerHTML = '<b>' + esc(heatLabel()) + '</b> — distribution';
     hbdReset.hidden = !state.heat.range;
     if (!state.heat.on || !heatDomain) {
       hbdChart.innerHTML = '';
@@ -5362,7 +6001,7 @@
         : String(Math.round(v * 100) / 100));
   function syncInputs() {
     const m = heatSpec();
-    hbdUnit.textContent = m.unit || '';
+    hbdUnit.textContent = heatUnit();
     const live = state.heat.on && heatDomain;
     hbdLo.disabled = hbdHi.disabled = !live;
     // Never overwrite a field the user is typing in - a timeline tick
