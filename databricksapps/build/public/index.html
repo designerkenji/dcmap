@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Centre Registry — Map</title>
+<link rel="stylesheet" href="/vendor/maplibre-gl.css">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="brand">Data Center Intelligence</span>
+  <button id="chip" class="chip" hidden></button>
+  <button id="fpchip" class="chip" hidden title="Click to show all dots again"><b>missing footprints only</b> <span>✕</span></button>
+  <span class="spacer"></span>
+  <button id="listBtn" class="icobtn" aria-label="All data centres as a list"
+          title="List — every site" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+  </button>
+  <button id="searchBtn" class="icobtn" aria-label="Search sites, operators, utilities, zones"
+          title="Search — ⌘K">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+  </button>
+  <button id="opsBtn" class="icobtn" aria-label="Operator directory"
+          title="Operators" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5.5A1.5 1.5 0 0 1 5.5 4h7A1.5 1.5 0 0 1 14 5.5V21M14 21V10h4.5A1.5 1.5 0 0 1 20 11.5V21M2.5 21h19M7 8h4M7 12h4M7 16h4M17 14h.01M17 17.5h.01"/></svg>
+  </button>
+  <!-- No summary-page nav here. Every layer row in the pane already carries an
+       ↗ to its own summary, and that is the better door: it sits beside the
+       thing it describes, and it grew a fourth entry for earthquakes without
+       the header having to find room. Duplicating them across the top made the
+       map's chrome a menu for pages you reach from the map anyway. The pages
+       keep their own nav, where it is sibling navigation rather than a repeat. -->
+  <button id="themeBtn" class="icobtn" aria-label="Toggle day / night view"></button>
+</header>
+
+<!-- Collapsed, the layers pane is this one button in the bottom-left corner. -->
+<button id="layersBtn" class="corner-btn layers-btn" aria-label="Layers and filters"
+        aria-expanded="false" title="Layers">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3.5 12.5 8.5 4.7 8.5-4.7"/><path d="m3.5 16.8 8.5 4.7 8.5-4.7"/></svg>
+</button>
+
+<aside class="layers panel" id="layers" aria-label="Layers" hidden>
+  <h2 class="st-h">Layers</h2>
+  <!-- The live count lives on the layer it counts, not in a title slot of its
+       own. It is still a readout of what the map is actually drawing - every
+       filter, layer toggle and timeline step moves it - but it now reads as
+       what it is, a fact about this layer, and it sits in the same grey the
+       other layers use for theirs. -->
+  <label><input type="checkbox" id="lyr-facilities" checked> <i class="sw sw-fac"></i> Data Centers<a class="lyrlink" href="/datacentres" target="_blank" rel="noopener" title="All data centres — summary tables" aria-label="All data centres — summary tables">↗</a>
+    <span class="sublbl" id="dotcount" aria-live="polite"></span></label>
+  <!-- AI and traditional are two kinds of the same thing, so they are chips on
+       one layer rather than two layers. Same control the fuel key uses, for the
+       same reason: a legend that explains the colours may as well filter by
+       them. -->
+  <div class="fuelkey" id="dckey"></div>
+  <label><input type="checkbox" id="lyr-fabs"> <i class="sw sw-fab"></i> Semiconductor Fabs<a class="lyrlink" href="/fabs" target="_blank" rel="noopener" title="All fabs — summary tables" aria-label="All fabs — summary tables">↗</a>
+    <span class="sublbl" id="fabnote">power is estimated, never measured</span></label>
+  <!-- The honesty this layer needs, stated once where it cannot be missed:
+       no fab on earth publishes its electricity demand. The counts here and in
+       the label above are filled from the payload - the layer regrows every
+       time src/fabs.py is re-run, and a written-out number had already gone
+       stale once. -->
+  <p class="hint pl-note" id="fb-note" hidden>
+    Hand-sourced per fab from company disclosures and CHIPS Act filings; each
+    record carries its source. No fab publishes its electricity demand, so MW is
+    <b>modelled</b> from wafer capacity and process node and is good to roughly a
+    factor of two — <span id="fb-est">only a minority</span> have enough
+    published data to estimate at all.
+  </p>
+  <label><input type="checkbox" id="lyr-plants"> <i class="sw sw-plant"></i> Power Plants<a class="lyrlink" href="/plants" target="_blank" rel="noopener" title="All power plants — summary tables" aria-label="All power plants — summary tables">↗</a>
+    <span class="sublbl" id="plantnote">100 MW and up, worldwide — hollow means the location is approximate</span></label>
+  <!-- The two halves of the dependency graph, under the plants they hang off:
+       the equipment, then the links to it. Both read the same ledger, so both
+       point at /power - at its own section. -->
+  <label><input type="checkbox" id="lyr-subs" checked> <i class="sw sw-power"></i> Power Substations<a class="lyrlink" href="/power#substations" target="_blank" rel="noopener" title="Shared substations — what fails together" aria-label="Shared substations — what fails together">↗</a>
+    <span class="sublbl">what fails together — substations a filing names as a load's
+      point of interconnection; a ring means more than one mega-load is behind it,
+      and only substations we have placed on the ground are drawn</span></label>
+  <label><input type="checkbox" id="lyr-trans" checked> <i class="sw sw-power"></i> Dependency Links<a class="lyrlink" href="/power#transmission" target="_blank" rel="noopener" title="Dependency links — the physical ones" aria-label="Dependency links — the physical ones">↗</a>
+    <span class="sublbl">the physical dependency drawn straight from load to substation
+      or generator — the LINK, not the route the conductors take; a contract is not
+      drawn here because it shares no equipment</span></label>
+  <!-- The routes the conductors DO take, which the layer above spends two lines
+       saying it is not. Separate layers because they are separate claims: a
+       dependency edge comes from a filing naming a point of interconnection, a
+       corridor is just where the wires run, and a corridor passing a substation
+       is not evidence that it serves anything. Off by default — it is a lot of
+       line work in service of context rather than of the registry's subject. -->
+  <label><input type="checkbox" id="lyr-lines"> <i class="sw sw-line"></i> Transmission Lines
+    <span class="sublbl">real corridors from OpenStreetMap, © OpenStreetMap contributors
+      (ODbL) — where the conductors run, which is <b>not</b> a statement about who is
+      served; only filings say that</span></label>
+  <!-- Water is the second physical dependency after power. These are the
+       service areas of the 577 community water systems that registry sites
+       sit inside - not every system in the country, only the ones a site
+       depends on - so a hover says which utility, how big it is, and how many
+       sites ride on it. Tiled, because raw they are 121 MB. -->
+  <label><input type="checkbox" id="lyr-water"> <i class="sw sw-water"></i> Water Service Areas
+    <span class="sublbl">the community water systems US sites sit inside, from EPA's
+      service-area boundaries — hover for the utility, the population it serves and
+      how many sites depend on it; a boundary is EPA's estimate where the utility
+      did not draw its own</span></label>
+  <!-- Named pairings only, never proximity: each green thread is a documented
+       arrangement (a PUCT docket, a PPA, an on-site plant) tying one campus
+       to one plant, researched with the source on both pages. -->
+  <label><input type="checkbox" id="lyr-supply" checked> <i class="sw sw-supply"></i> Supply Links<a class="lyrlink" href="/supply" target="_blank" rel="noopener" title="All supply links — the ledger as tables" aria-label="All supply links — the ledger as tables">↗</a>
+    <span class="sublbl">who sells power to whom — data centre ⇆ power plant pairings
+      someone has established, 2D only; green threads, rings mark them from world
+      zoom, click to frame the pair, and each dot's page tells the story</span></label>
+  <!-- Legend and filter in one control: it has to explain the colours anyway,
+       and the same click that asks "which one is coal" wants to see only coal. -->
+  <div class="fuelkey" id="fuelkey" hidden></div>
+  <!-- CC BY 4.0 requires credit for the GEM half of this layer. It is a
+       licence condition, not a courtesy: do not remove it. -->
+  <p class="hint pl-note" id="pl-note" hidden>
+    US from <a href="https://www.eia.gov/electricity/data/eia860m/" target="_blank" rel="noopener">EIA-860M</a>,
+    <span data-vintage="eia"></span> (public domain). Rest of world from
+    <a href="https://globalenergymonitor.org/projects/global-integrated-power-tracker/" target="_blank" rel="noopener">Global Energy Monitor</a>,
+    Global Integrated Power Tracker, <span data-vintage="gem"></span>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Storage is US-only — GEM tracks batteries separately.
+  </p>
+  <!-- The registry's own assets group first, then the shapes drawn over them,
+       then the two event layers. The note says the one thing that is visible
+       on screen and cannot be guessed: some of these outlines are inferred
+       rather than recorded, and those are the faded ones. Which source each
+       came from is on the shape itself, in its popup - that belongs there,
+       not here. -->
+  <label><input type="checkbox" id="lyr-footprints" checked> <i class="sw sw-fp"></i> Building Footprints<a class="lyrlink" href="/footprints" target="_blank" rel="noopener" title="All footprints — coverage and licences" aria-label="All footprints — coverage and licences">↗</a>
+    <span class="sublbl">OSM, cadastre, the IM3 atlas and Overture Maps, 2D only —
+      faded outlines are inferred, not recorded; pink rings mark mapped
+      footprints from world zoom, click one to dive</span></label>
+  <!-- The worklist as a filter: every dot left visible is a footprint nobody
+       has mapped, and its site page carries the drawing tools. -->
+  <button type="button" class="tb-btn lyr-sub" id="fp-unmapped" aria-pressed="false"
+    title="Filter every visible dot layer to assets with no footprint — each one can be traced from its own page">
+    Only dots missing a footprint</button>
+  <!-- A dropped pin is a claim someone is in the middle of making, so it sits
+       with the parcel layers people check claims against rather than up among
+       the layers that are already records. -->
+  <label><input type="checkbox" id="lyr-points" checked> <i class="sw sw-point"></i> Dropped Points<a class="lyrlink" href="/" title="Drag the figure in the map controls to drop one">↗</a>
+    <span class="sublbl">hand-dropped pins, hollow until they are given a kind — a claim
+      waiting to become a record</span></label>
+  <!-- Deliberately its own layer rather than more footprints: half of these
+       parcels were bought to be CHECKED against the footprints above, and a
+       source cannot be verified from inside the layer it is verifying. -->
+  <label><input type="checkbox" id="lyr-regrid"> <i class="sw sw-regrid"></i> REGRID
+    <span class="sublbl">US parcel boundaries from Regrid, 2D only — azure rings mark
+      the lots from world zoom, click one to dive; dashed boundaries under the
+      pink footprints for side-by-side verification</span></label>
+  <label><input type="checkbox" id="lyr-precisely"> <i class="sw sw-precisely"></i> PRECISELY
+    <span class="sublbl">US parcel boundaries from Precisely, 2D only — violet, same
+      rings and dashed lots, so the two vendors and the footprints can be judged
+      side by side</span></label>
+  <!-- The two event layers, adjacent because they are the same geometry
+       pointed opposite ways: below is a thing that HAPPENED and USGS says so,
+       above is a thing somebody is asking about. Sitting them together is the
+       clearest place to say which is which. -->
+  <label><input type="checkbox" id="lyr-events" checked> <i class="sw sw-event"></i> Simulated Events<a class="lyrlink" href="/power" title="What a failure here would expose">↗</a>
+    <span class="sublbl">hand-placed failures — <b>not</b> records of anything that happened;
+      the ring is the radius, and the page walks the dependency ledger inside it</span></label>
+  <label><input type="checkbox" id="lyr-quake"> <i class="sw sw-quake"></i> Earthquakes<a class="lyrlink" href="/quakes" target="_blank" rel="noopener" title="All earthquakes — summary tables" aria-label="All earthquakes — summary tables">↗</a>
+    <span class="sublbl" id="quakenote">USGS, last 90 days — click one for its ShakeMap</span></label>
+
+  <!-- The zone layers are CONTEXT, not subjects. Each one answers "which grid
+       operator's territory is this in" or "how does this country compare",
+       which is a question you arrive at after finding a site, not before. They
+       sat above Earthquakes and Power Plants purely by accident of the order
+       they were built in, pushing the layers people actually come for below
+       the fold. Folded away, and <details> rather than a scripted disclosure
+       because the browser already does this correctly, keyboard included. -->
+  <details class="morelyr">
+    <summary>More layers<span class="morecount" id="morecount"></span></summary>
+    <label><input type="checkbox" id="lyr-ercot"> <i class="sw sw-ercot"></i> ERCOT Load Zones</label>
+    <label><input type="checkbox" id="lyr-pjm"> <i class="sw sw-pjm"></i> PJM Zones</label>
+    <label><input type="checkbox" id="lyr-nyiso"> <i class="sw sw-nyiso"></i> NYISO Load Zones</label>
+    <label><input type="checkbox" id="lyr-countries"> <i class="sw sw-cty"></i> Data Centres by Country</label>
+  </details>
+
+  <!-- Imagery attribution is a licence condition, not a nicety. It moved here
+       when the basemap switch left the pane, and it must stay visible. -->
+  <p class="hint bm-note" id="bm-note" hidden></p>
+</aside>
+
+<!-- Map controls, bottom right, over the map rather than in a chrome bar.
+     Each is a single button showing the CURRENT state; clicking swaps it. -->
+<div class="mapctl" id="mapctl">
+  <!-- Drag onto the map to place a SIMULATED failure. Above the pegman
+       because it is the same gesture aimed at a different question: the pin
+       asks "what is here", the bolt asks "what is behind here". -->
+  <button id="evtBtn" class="corner-btn boltman" draggable="true"
+    title="Drag onto the map to simulate a failure here"
+    aria-label="Drag onto the map to simulate a failure here">
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+      <path d="M13.2 2 4.8 13.4h5.3L9.4 22l8.8-11.7h-5.6z"/>
+    </svg>
+  </button>
+  <!-- Drag onto the map to drop a point. Google's pegman, doing this
+       registry's job: the gesture already means "put me THERE". -->
+  <button id="pegBtn" class="corner-btn pegman" draggable="true"
+    title="Drag onto the map to drop a point" aria-label="Drag onto the map to drop a point">
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+      <circle cx="12" cy="5.5" r="3.1"/>
+      <path d="M7.4 10.2h9.2l1.1 5.6h-2.5l-.5 6.2h-5.4l-.5-6.2H6.3z"/>
+    </svg>
+  </button>
+  <button id="fpBtn" class="corner-btn" aria-label="Draw or edit footprints"
+          title="Draw / edit footprints" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 19.5 1-3.8L16.7 4.5a2 2 0 0 1 2.8 2.8L8.3 18.5l-3.8 1Z"/><path d="m14.5 6.7 2.8 2.8"/></svg>
+  </button>
+  <button id="timeBtn" class="corner-btn" aria-label="Timeline of data centre build-out"
+          title="Timeline" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.2 2"/></svg>
+  </button>
+  <div class="ctl-group ctl-zoom">
+    <button id="zoomIn" class="corner-btn" aria-label="Zoom in">+</button>
+    <button id="zoomOut" class="corner-btn" aria-label="Zoom out">&minus;</button>
+  </div>
+  <!-- The two basemap-ish switches read as one pair, so they sit as one row.
+       Not a square pill like the zoom: these carry WORDS, and the words change
+       with the state - "Map" becomes "Satellite" the moment you press it. -->
+  <div class="ctl-row">
+    <button id="modeBtn" class="corner-btn" title="Switch to 3D">2D</button>
+    <button id="bmBtn" class="corner-btn" title="Switch to Satellite">Map</button>
+  </div>
+</div>
+
+<!-- Colour the dots by a measure. Rides with the layers pane: both are
+     "what am I looking at" controls, so one button governs them - and the
+     timeline never has to share the bottom edge with it. -->
+<div class="heatbar panel" id="heatbar" hidden>
+  <div class="hb-pick">
+    <button class="tb-btn" id="hb-btn" aria-expanded="false">Heatmap: <b id="hb-lbl"></b></button>
+    <div class="hb-menu" id="hb-menu" hidden></div>
+  </div>
+  <!-- The same measure, aggregated: dots become H3 hexagons, each coloured by
+       the SUM of the measure over the records inside it (or by how many there
+       are). One ramp, one legend, one measure menu - hexagons are the
+       heatmap's other form, not a second heatmap. WHICH facilities a cell
+       counts is the layer pane's question, not this menu's: every facility
+       layer that is switched on goes into the same cells. Cell size follows
+       the zoom unless a size is chosen here; the picker only shows in
+       hexagon form. -->
+  <button class="tb-btn hb-hex" id="hb-hex" type="button" aria-pressed="false"
+          title="Aggregate the dots into hexagons — each cell is coloured by the total inside it">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20.2 7.25v9.5L12 21.5 3.8 16.75v-9.5L12 2.5Z"/></svg>Hexagons</button>
+  <div class="hb-pick" id="hb-size-pick" hidden>
+    <button class="tb-btn" id="hb-size" aria-expanded="false"
+            title="Hexagon size — automatic follows the zoom">Cells: <b id="hb-size-lbl"></b></button>
+    <div class="hb-menu" id="hb-size-menu" hidden></div>
+  </div>
+  <span class="hb-end mono" id="hb-min"></span>
+  <button class="hb-ramp" id="hb-ramp" aria-expanded="false"
+          title="Distribution — click, then drag across the chart to narrow the colour range"
+          aria-label="Show this measure's distribution and narrow the colour range"></button>
+  <span class="hb-end mono" id="hb-max"></span>
+  <button class="hb-sw" id="hb-sw" role="switch" aria-checked="false"
+          aria-label="Colour the dots by this measure"><i></i></button>
+  <!-- Distribution of the painted measure, opened from the ramp. The chart is
+       the ramp's own scale drawn as a histogram: each bar wears the colour its
+       values are painted, a drag narrows the domain to the selection, and the
+       chart re-bins over the narrowed domain so a second drag narrows further.
+       Values pushed outside the range stay on the map, clamped to the end
+       colours - the filter refines the scale, it never hides a dot. -->
+  <div class="hb-dist" id="hb-dist" hidden>
+    <div class="hbd-head">
+      <span id="hbd-title"></span>
+      <!-- Hiding the greys is a FILTER, not a repaint: it flows through the
+           same visibility machinery as every other filter, so the title count,
+           the globe and the 2D map agree about what is drawn. -->
+      <button class="tb-btn" id="hbd-hide" type="button" aria-pressed="false"
+              title="Hide the grey dots — the ones with no value for this measure">
+        Hide no-value dots</button>
+    </div>
+    <div id="hbd-chart"></div>
+    <!-- The typed twin of the brush: exact bounds, in the measure's own unit.
+         Enter or leaving the field applies; the chart and the map re-scale the
+         same way a drag would. -->
+    <div class="hbd-range">
+      <label>from <input id="hbd-lo" type="text" inputmode="decimal"
+             autocomplete="off" spellcheck="false" aria-label="Range minimum"></label>
+      <label>to <input id="hbd-hi" type="text" inputmode="decimal"
+             autocomplete="off" spellcheck="false" aria-label="Range maximum"></label>
+      <span class="hbd-unit" id="hbd-unit"></span>
+      <button class="tb-btn" id="hbd-reset" type="button" hidden>Reset range</button>
+    </div>
+    <div class="hbd-note" id="hbd-note"></div>
+  </div>
+</div>
+
+<!-- Footprint drawing and editing. Appears with the ✎ button; the second row
+     exists only while a shape is loaded, because a name field with nothing to
+     name is an invitation to type into the void. -->
+<div class="fpbar panel" id="fpbar" hidden>
+  <div class="fp-row">
+    <div class="seg" role="tablist" aria-label="Draw a new footprint">
+      <button id="fp-box" role="tab" aria-selected="false">Draw box</button>
+      <button id="fp-poly" role="tab" aria-selected="false">Draw polygon</button>
+    </div>
+    <span class="fp-msg" id="fp-msg">Click a footprint to edit it, or draw a new one.</span>
+    <span class="spacer"></span>
+    <button id="fp-close" class="tb-btn" aria-label="Close footprint editing">✕</button>
+  </div>
+  <div class="fp-row" id="fp-editrow" hidden>
+    <input id="fp-name" type="text" placeholder="Name (optional)" aria-label="Footprint name">
+    <div class="seg" role="tablist" aria-label="What the shape outlines">
+      <button id="fp-kind-building" role="tab" aria-selected="false">Building</button>
+      <button id="fp-kind-campus" role="tab" aria-selected="true">Campus</button>
+    </div>
+    <span class="fp-msg" id="fp-attach"></span>
+    <span class="spacer"></span>
+    <button id="fp-delete" class="tb-btn fp-danger" hidden>Delete</button>
+    <button id="fp-cancel" class="tb-btn">Cancel</button>
+    <button id="fp-save" class="tb-btn go">Save</button>
+  </div>
+</div>
+
+<div id="map2d" class="mapfull"></div>
+<div id="map3d" class="mapfull" hidden></div>
+<div id="tip" class="tip" hidden></div>
+<div id="tl-pop" class="tl-pop panel" role="dialog" aria-label="Data centre details" hidden></div>
+
+<section id="timebar" class="timebar panel" aria-label="Build-out timeline" hidden>
+  <div class="tb-row">
+    <div class="seg" role="tablist" aria-label="View">
+      <button id="tview-snap" role="tab" aria-selected="true">Snapshot</button>
+      <button id="tview-line" role="tab" aria-selected="false">Timeline</button>
+    </div>
+    <div class="seg" id="tmode-seg" role="tablist" aria-label="Timeline mode">
+      <button id="tmode-cum" role="tab" aria-selected="true">Built by then</button>
+      <button id="tmode-year" role="tab" aria-selected="false">Built that year</button>
+      <button id="tmode-uc" role="tab" aria-selected="false">Under construction</button>
+    </div>
+    <div class="seg" id="tscale-seg" role="tablist" aria-label="Time resolution" hidden>
+      <button id="tres-q" role="tab" aria-selected="true">Quarters</button>
+      <button id="tres-d" role="tab" aria-selected="false">Days</button>
+    </div>
+    <span id="tq-label" class="tq-label mono"></span>
+    <span class="spacer"></span>
+    <button id="tchartBtn" class="tb-btn" aria-pressed="false" title="Top 15 by compute">▤ Top 15</button>
+    <button id="timeClose" class="tb-btn" aria-label="Close timeline">✕</button>
+  </div>
+  <div class="tb-row" id="trow-play">
+    <button id="tplay" class="tb-btn tb-play" aria-label="Play">▶</button>
+    <input id="tslider" type="range" min="0" max="44" step="1" value="30" aria-label="Quarter">
+  </div>
+  <p id="tq-count" class="hint tb-note"></p>
+</section>
+
+<section id="tline" class="tline panel" aria-label="Largest AI data centre by compute" hidden>
+  <div class="tl-head">
+    <h2>The largest AI data centre by compute</h2>
+    <span class="spacer"></span>
+    <span class="tl-cby">Colour by</span>
+    <div class="seg" role="tablist" aria-label="Colour by">
+      <button id="tcolor-none" role="tab" aria-selected="true">None</button>
+      <button id="tcolor-o" role="tab" aria-selected="false">Owner</button>
+      <button id="tcolor-pu" role="tab" aria-selected="false">Primary user</button>
+    </div>
+    <span class="tl-cby">Scale</span>
+    <div class="seg" role="tablist" aria-label="Scale">
+      <button id="tscale-lin" role="tab" aria-selected="true">Linear</button>
+      <button id="tscale-log" role="tab" aria-selected="false">Logarithmic</button>
+    </div>
+  </div>
+  <p class="hint">Each step is a change at that frontier's top — hover a dot for the site, click it
+    to open that site's page. Shaded region is future plans from Epoch projections.</p>
+  <div class="tl-body">
+    <div id="tline-chart" class="tline-chart"></div>
+    <ul id="tl-legend" class="tl-legend" hidden></ul>
+  </div>
+</section>
+
+<aside id="tchart" class="tchart panel" aria-label="Top data centres by compute" hidden>
+  <h2 id="tchart-title"></h2>
+  <p class="hint">AI sites only — compute is Epoch-observed H100 equivalents.
+    Click a bar to open that site's page.</p>
+  <ol id="tchart-rows" class="tchart-rows"></ol>
+</aside>
+
+<aside id="eqpanel" class="tchart eqpanel panel" aria-label="Sites shaken by the earthquake" hidden>
+  <div class="eq-head">
+    <h2 id="eq-title"></h2>
+    <!-- The panel is transient and unlinkable; the page is neither. Same ↗ the
+         layer rows use to reach their summaries. -->
+    <a id="eq-page" class="lyrlink" href="/quakes" target="_blank" rel="noopener"
+       title="Open this earthquake's own page" aria-label="Open this earthquake's own page">↗</a>
+    <button id="eq-close" class="tb-btn" aria-label="Close">✕</button>
+  </div>
+  <p class="hint" id="eq-sub"></p>
+  <div class="eq-bands" id="eq-bands"></div>
+  <button id="eq-only" class="tb-btn" aria-pressed="false">Show only these on the map</button>
+  <ol id="eq-rows" class="tchart-rows"></ol>
+</aside>
+
+<aside id="ops" class="ops panel" aria-label="Operator directory" hidden>
+  <div class="ops-head">
+    <h2 id="ops-title">Operators</h2>
+    <button id="ops-close" class="tb-btn" aria-label="Close">✕</button>
+  </div>
+
+  <div id="ops-list-view">
+    <div class="ops-search">
+      <input id="ops-q" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Filter operators…" aria-label="Filter operators">
+    </div>
+    <div class="seg ops-seg" id="ops-region-seg" role="tablist" aria-label="Region">
+      <button data-rg="" role="tab" aria-selected="true">All</button>
+    </div>
+    <p class="hint" id="ops-sub"></p>
+    <ol id="ops-rows" class="ops-rows"></ol>
+    <p class="hint ops-more" id="ops-more" hidden></p>
+  </div>
+
+  <div id="ops-detail" hidden>
+    <button id="ops-back" class="tb-btn ops-back">← All operators</button>
+    <div class="ops-hero">
+      <span class="ops-slot" id="ops-d-logo"></span>
+      <div>
+        <h3 id="ops-d-name"></h3>
+        <p class="ops-d-meta" id="ops-d-meta"></p>
+      </div>
+    </div>
+    <p class="ops-d-profile" id="ops-d-profile" hidden></p>
+    <p class="ops-d-links" id="ops-d-links"></p>
+    <button id="ops-d-show" class="tb-btn ops-show" aria-pressed="false">Show only these on the map</button>
+    <h4 class="ops-h4">By region</h4>
+    <ul id="ops-d-regions" class="ops-regions"></ul>
+    <h4 class="ops-h4">Sites <span class="dim" id="ops-d-count"></span></h4>
+    <ol id="ops-d-sites" class="tchart-rows ops-sites"></ol>
+  </div>
+</aside>
+
+<!-- Every site, full screen. 6,262 rows are virtualised: only the slice in
+     view exists in the DOM. -->
+<section id="listview" class="listview" aria-label="All data centres" hidden>
+  <div class="lv-bar">
+    <div class="lv-pick" data-kind="cols">
+      <button class="tb-btn lv-ico" id="lv-colsbtn" aria-expanded="false"
+              aria-label="Choose which columns to show" title="Columns">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="7" height="15" rx="1.5"/><rect x="13.5" y="4.5" width="7" height="15" rx="1.5"/></svg>
+      </button>
+      <div class="lv-menu" id="lv-colsmenu" hidden></div>
+    </div>
+    <div class="lv-pick" data-kind="filter">
+      <button class="tb-btn" data-open="filter" aria-expanded="false">Filter by <b>nothing</b></button>
+      <div class="lv-menu" hidden></div>
+    </div>
+    <div class="lv-pick" data-kind="group">
+      <button class="tb-btn" data-open="group" aria-expanded="false">Group by <b>nothing</b></button>
+      <div class="lv-menu" hidden></div>
+    </div>
+    <div class="lv-pick" data-kind="sort">
+      <button class="tb-btn" data-open="sort" aria-expanded="false">Sort by <b>Name</b></button>
+      <div class="lv-menu" hidden></div>
+    </div>
+    <strong id="lv-count"></strong>
+    <button id="lv-apply" class="tb-btn go" hidden>Apply</button>
+    <input id="lv-q" class="lv-q" type="text" placeholder="Search all columns…"
+           aria-label="Search the list">
+    <span class="spacer"></span>
+    <button id="lv-close" class="tb-btn" aria-label="Close the list">✕</button>
+  </div>
+  <div class="lv-headwrap"><div class="lv-head" id="lv-head"></div></div>
+  <div class="lv-scroll" id="lv-scroll"><div class="lv-sizer" id="lv-sizer"></div>
+    <div class="lv-rows" id="lv-rows"></div></div>
+</section>
+
+<dialog id="palette" class="palette" aria-label="Search the registry">
+  <div class="pal-in">
+    <span class="pal-ico" aria-hidden="true"></span>
+    <input id="palq" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+           role="combobox" aria-expanded="true" aria-controls="palres" aria-autocomplete="list"
+           placeholder="Site, operator, utility, city, country, zone…">
+  </div>
+  <ul id="palres" class="pal-res" role="listbox" aria-label="Results"></ul>
+  <p id="palfoot" class="pal-foot">
+    <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+    <span><kbd>↵</kbd> go</span>
+    <span><kbd>⌘</kbd><kbd>↵</kbd> open site page</span>
+    <span><kbd>esc</kbd> close</span>
+  </p>
+</dialog>
+
+<script src="/vendor/maplibre-gl.js"></script>
+<script src="/vendor/globe.gl.min.js"></script>
+<script src="/vendor/pmtiles.js"></script>
+<script src="/vendor/h3-js.umd.js"></script>
+<script src="/theme.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

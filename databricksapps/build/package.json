@@ -1,0 +1,20 @@
+{
+  "name": "dcmap-databricks",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "dcmap packaged as a Databricks App: unmodified, behind a volume-aware front layer.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node boot.mjs",
+    "bundle": "node bundle.mjs"
+  },
+  "dependencies": {
+    "globe.gl": "^2.45.0",
+    "h3-js": "^4.5.0",
+    "maplibre-gl": "^5.0.0",
+    "pmtiles": "^4.5.0"
+  }
+}

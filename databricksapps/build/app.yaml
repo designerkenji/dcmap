@@ -1,0 +1,46 @@
+# How Databricks Apps starts dcmap.
+#
+# This file is copied into build/ by build.mjs, and build/ is what gets
+# deployed - dcmap's code vendored beside this folder's front layer. Nothing
+# in ../dcmap is modified to make any of it work.
+
+command: ["node", "boot.mjs"]
+
+env:
+  # ---- where the data comes from -------------------------------------------
+  # The volume boot.mjs mirrors into build/data at startup. Its contents are
+  # what dcmap/data/ holds in a checkout, minus the pipeline's own caches.
+  #
+  # Set it and the app is volume-backed; unset it and every path in this folder
+  # falls through to local files, which is what makes a local run a real test
+  # rather than a test of a different code path.
+  #
+  # The volume must ALSO be added as an app resource (+ Add resource > Unity
+  # Catalog volume, "Read volume"), or the service principal has the path and
+  # no privilege on it, and staging fails at boot with a 403.
+  - name: DCMAP_VOLUME
+    value: /Volumes/dcmap/app/data
+
+  # The Epoch AI release, which sits beside data/ rather than inside it.
+  - name: DCMAP_EPOCH_VOLUME
+    value: /Volumes/dcmap/app/epoch
+
+  # ---- what the app refuses to do ------------------------------------------
+  # Phase 0 is read-only. dcmap's eleven write routes all end in a file under
+  # data/, and here that file is a staged copy on a disk that is discarded at
+  # the next restart - so the save would appear to work and be gone by morning.
+  # Remove this when the ledger has moved to Lakebase Postgres, not before.
+  - name: DCMAP_READONLY
+    value: "1"
+
+  # ---- satellite imagery ---------------------------------------------------
+  # Optional. Without it the map falls back to Esri World Imagery, which is
+  # reachable without a key and NOT licensed for this - see the note above
+  # GOOGLE_KEY in dcmap/server.mjs, and section 12 of
+  # docs/databricks-apps-architecture.md. A deployment other people can open is
+  # the point at which that stops being a development detail.
+  #
+  # Needs a secret resource with the key `google-maps-key`. Delete both lines
+  # if you have not created one: an unresolvable valueFrom fails the start.
+  - name: GOOGLE_MAPS_API_KEY
+    valueFrom: google-maps-key

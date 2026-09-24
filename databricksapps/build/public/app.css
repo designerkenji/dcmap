@@ -1,0 +1,1760 @@
+/* Shared tokens for the map app and site pages. Day is the default;
+   night is applied via html[data-theme=night], never by OS preference,
+   because the sun/moon toggle is the single source of truth. */
+:root {
+  --bg:#F3F5F7; --panel:#FFFFFF; --line:#D8DEE4; --line-soft:#E7ECF0;
+  --ink:#161C22; --ink-2:#4A5763; --ink-3:#77848F;
+  --accent:#2C6E8F; --accent-soft:#E3EDF2;
+  /* One edge length for every ICON button that floats over the map. The two
+     word buttons are deliberately not bound by it - see .ctl-row. */
+  --ctl:36px;
+  --fac:#0E8A7C; --ai:#B5761E; --ercot:#B5761E; --pjm:#3B82C4; --nyiso:#2E9E83; --cty:#7C5FBF;
+  /* Footprints are the one layer drawn ON TOP OF PHOTOGRAPHY rather than over
+     our own basemap, so the hue is chosen against the planet, not the palette.
+     It was --fac teal, which is the colour of most of the earth from orbit:
+     over vegetation the outlines disappeared. Magenta is the one hue aerial
+     imagery never contains - it is green, brown, grey and blue - so it cannot
+     be camouflaged by whatever a site happens to be built on. */
+  --fp:#E0148C;
+  --regrid:#2563EB;
+  --precisely:#7C3AED;
+  --cadastre:#0E7490;
+  --water:#0369A1;
+  --supply:#059669; --weak:#B23A38;
+  --ocean:#DFE9F0; --land:#F6F8FA; --border:#C4CFD8;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+html[data-theme=night] {
+  --bg:#0D1117; --panel:#161D24; --line:#2A333D; --line-soft:#222A33;
+  --ink:#E7ECF1; --ink-2:#A3B0BC; --ink-3:#79868F;
+  --accent:#6FB4D6; --accent-soft:#1B2A34;
+  --fac:#40C4B4; --ai:#E0A75C; --ercot:#FFB03B; --pjm:#60A5EB; --nyiso:#4FD1AC; --cty:#A78BFA;
+  --fp:#FF63BE;
+  --regrid:#60A5FA;
+  --precisely:#A78BFA;
+  --supply:#34D399; --weak:#F0918F;
+  --ocean:#0A1016; --land:#151C24; --border:#2E3A46;
+}
+* { box-sizing:border-box }
+/* A class with its own display (flex/grid) silently beats the hidden
+   attribute; this already bit the filter chip once. End the bug class. */
+[hidden] { display:none !important }
+html, body { height:100% }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased }
+
+.topbar { position:fixed; top:0; left:0; right:0; z-index:30; height:52px;
+  display:flex; align-items:center; gap:14px; padding:0 16px;
+  background:var(--panel); border-bottom:1px solid var(--line) }
+.brand { font-weight:640; letter-spacing:-.01em; color:var(--ink); text-decoration:none }
+.spacer { flex:1 }
+.seg { display:inline-flex; border:1px solid var(--line); border-radius:7px; overflow:hidden }
+.seg button { font:inherit; font-size:13px; padding:5px 14px; border:0; cursor:pointer;
+  background:var(--panel); color:var(--ink-2) }
+.seg button[aria-selected=true] { background:var(--accent); color:var(--panel) }
+.themebtn { width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:var(--panel); cursor:pointer; font-size:16px; line-height:1 }
+.themebtn:hover { border-color:var(--accent) }
+
+/* Header icons. Stroked SVG rather than the emoji glyphs that were here: an
+   emoji is a different typeface per platform, so the row never lined up and
+   never matched weight. currentColor means they follow the theme for free. */
+.icobtn { width:36px; height:36px; padding:0; border-radius:50%; border:1px solid transparent;
+  background:none; color:var(--ink-2); cursor:pointer; display:inline-flex;
+  align-items:center; justify-content:center }
+.icobtn svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round }
+.icobtn:hover { color:var(--ink); background:var(--accent-soft) }
+.icobtn[aria-pressed=true] { color:var(--accent); border-color:var(--line);
+  background:var(--accent-soft) }
+/* The theme button keeps its sun/moon glyph, so it needs the font sizing the
+   others do not. */
+#themeBtn { font-size:17px; line-height:1 }
+a.themebtn { display:inline-flex; align-items:center; justify-content:center;
+  text-decoration:none }
+/* .themebtn is the round-button SHAPE, shared by every icon in the topbar.
+   Scope the sun/moon glyph to the theme button itself - as a class rule it
+   outranked .timebtn::before in night mode and turned the clock into a second
+   moon, and every future icon would have needed its own counter-override. */
+#themeBtn::before { content:"☀️" }
+html[data-theme=night] #themeBtn::before { content:"🌙" }
+.searchbtn::before { content:"🔍" }
+.timebtn::before { content:"🕐" }
+.timebtn[aria-pressed=true] { border-color:var(--accent); background:var(--accent-soft) }
+
+/* ---- build-out timeline ---- */
+.timebar { position:fixed; left:50%; transform:translateX(-50%); bottom:18px; z-index:26;
+  width:min(840px,calc(100vw - 24px)); padding:12px 16px 8px;
+  display:flex; flex-direction:column; gap:8px }
+/* Three modes plus the view seg overflow a narrow bar; wrap rather than
+   squeeze the segment buttons into unreadable two-line stacks. */
+.tb-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap }
+.seg button { white-space:nowrap }
+.tq-label { font-size:13px; font-weight:640; min-width:7ch }
+.tb-btn { font:inherit; font-size:12.5px; padding:4px 10px; cursor:pointer;
+  border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--ink-2) }
+.tb-btn:hover { border-color:var(--accent); color:var(--ink) }
+.tb-btn[aria-pressed=true] { background:var(--accent); border-color:var(--accent); color:var(--panel) }
+.tb-play { min-width:34px }
+#tslider { flex:1; accent-color:var(--accent) }
+/* Specificity, not just source order. This rule lives up here with the rest of
+   the timebar, and `.hint { max-width:22ch }` is 200 lines further down - same
+   one-class weight, later in the file, so it won and clamped the note to 160px
+   inside an 840px bar. Four lines of text and two thirds of the bar empty.
+   Qualifying it with the section id makes the override hold wherever it sits. */
+.timebar .tb-note { max-width:none; margin:0 }
+
+/* ---- timeline (record) chart ---- */
+.tline { position:fixed; left:50%; transform:translateX(-50%); bottom:150px; z-index:26;
+  width:min(940px,calc(100vw - 24px)); padding:14px 18px 10px;
+  display:flex; flex-direction:column; gap:4px }
+.tline h2 { margin:0; font-size:15px; font-weight:640 }
+.tline .hint { max-width:none }
+.tl-head { display:flex; align-items:center; gap:10px }
+.tl-cby { font-size:12px; color:var(--ink-3) }
+.tl-body { display:flex; gap:14px; align-items:stretch }
+.tline-chart { flex:1; min-width:0 }
+.tline-chart svg { display:block; width:100% }
+.tl-legend { list-style:none; margin:0; padding:2px 0; width:150px; flex:none;
+  overflow-y:auto; max-height:380px; display:flex; flex-direction:column; gap:5px }
+.tl-legend li { display:flex; align-items:center; gap:7px; font-size:12px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.tl-legend .sw { width:10px; height:10px; border-radius:2px }
+.tl-grid { stroke:var(--line-soft); stroke-width:1 }
+.tl-axis { fill:var(--ink-3); font-size:11px; font-family:var(--mono) }
+.tl-future { fill:var(--accent-soft); opacity:.55 }
+.tl-flabel { fill:var(--ink-3); font-size:11.5px }
+.tl-path { fill:none; stroke:var(--fac); stroke-width:1.8 }
+.tl-path-future { stroke-dasharray:4 4 }
+.tl-dot { fill:var(--fac); cursor:pointer }
+.tl-dot:hover { stroke:var(--ink); stroke-width:1.5 }
+/* Click-to-highlight: the chosen frontier stays vivid, the rest recede. */
+.tl-dim { opacity:.15 }
+.tl-hot { stroke-width:2.6 }
+.tl-legend li { cursor:pointer }
+.tl-legend li:hover { color:var(--accent) }
+.tl-legend li.sel { font-weight:640 }
+.tl-pop { position:fixed; z-index:45; max-width:300px; padding:11px 13px;
+  box-shadow:0 10px 34px rgb(0 0 0 / 24%); font-size:12.5px;
+  display:flex; flex-direction:column; gap:3px }
+.tl-pop .t { font-weight:640; font-size:13px; padding-right:20px }
+.tl-pop .d { color:var(--ink-2) }
+.tl-pop a { font-weight:600; margin-top:3px }
+.tl-pop .x { position:absolute; top:6px; right:8px; border:0; background:none;
+  color:var(--ink-3); font-size:13px; cursor:pointer; padding:2px }
+.tl-pop .x:hover { color:var(--ink) }
+@media (max-height:640px) { .tline { display:none } }
+@media (max-width:720px) {
+  .tl-head { flex-wrap:wrap }
+  .tl-body { flex-direction:column }
+  .tl-legend { width:auto; max-height:none; flex-direction:row; flex-wrap:wrap; gap:5px 14px }
+}
+
+/* ---- top-15 compute chart ---- */
+/* Steps left of the map-control column, exactly as .eqpanel does below and
+   for the same reason. The old rule kept right:12px on the argument that this
+   panel's max-height "ends above the controls" - which was simply not true:
+   top:64px + calc(100vh - 240px) puts its foot at 100vh-176px, while the
+   control stack starts around 100vh-330px, so the buttons painted over the
+   H100e column for the bottom third of the list.
+   Fixed by moving, not by raising z-index. Winning the stacking order would
+   only have swapped which thing is unreachable - the panel would then cover
+   the lightning, person, pencil and clock buttons, and a control you cannot
+   click is worse than a number you cannot read. Out of each other's way, the
+   question does not arise. 14px margin + 36px of button + a 24px gap. */
+.tchart { position:fixed; top:64px; right:74px; z-index:25; width:min(340px,calc(100vw - 86px));
+  padding:14px 16px; display:flex; flex-direction:column; gap:8px;
+  max-height:calc(100vh - 240px); overflow-y:auto }
+.tchart h2 { margin:0; font-size:14px; font-weight:640 }
+.tchart .hint { max-width:none }
+.tchart-rows { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px }
+.tchart-row { display:flex; flex-direction:column; gap:2px; cursor:pointer;
+  border-radius:6px; padding:3px 6px }
+.tchart-row:hover { background:var(--accent-soft) }
+.tcr-top { display:flex; align-items:baseline; gap:8px; font-size:12.5px }
+.tcr-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.tcr-val { font-family:var(--mono); font-size:11.5px; font-variant-numeric:tabular-nums;
+  color:var(--ink-2) }
+.tcr-bar { height:7px; border-radius:3px; background:var(--ai); opacity:.85; min-width:2px }
+/* right:74px clears the 36px ICON column, but the stack's last row carries
+   WORDS - 2D and Map - and is 101px wide, so the panel's bottom corner still
+   caught it. With the timeline open the controls ride up to make room for it,
+   which is exactly when the panel is longest, so that is the one state where
+   the two can still meet. Bound the height there rather than pushing the panel
+   another 50px off the edge for a collision that happens in one state. */
+body.timeline-open .tchart { max-height:calc(100vh - 310px) }
+
+@media (max-width:720px) { .tchart, #tchartBtn { display:none } }
+
+/* ---- earthquake exposure panel ---- */
+/* Taller than the Top-15 chart it borrows .tchart from - tall enough to run
+   down behind the map-control column at right:14px, whose higher z-index then
+   paints the buttons over the panel's km column. So it alone steps left of
+   the stack: 14px margin + ~46px of buttons + a 14px gap. The chart keeps
+   right:12px because its own max-height ends above the controls. */
+.eqpanel { max-height:calc(100vh - 96px); right:74px }
+.eq-head { display:flex; align-items:flex-start; gap:8px }
+.eq-head h2 { flex:1 }
+.eq-bands { display:flex; flex-direction:column; gap:3px; margin:2px 0 4px }
+.eq-band { display:flex; align-items:center; gap:8px; font-size:12px }
+.eq-band i { width:22px; height:10px; border-radius:2px; flex:none }
+.eq-band b { font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600 }
+.eq-band span { color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.eq-row { display:flex; align-items:center; gap:8px; cursor:pointer;
+  border-radius:6px; padding:4px 6px; font-size:12.5px }
+.eq-row:hover { background:var(--accent-soft) }
+.eq-row i { width:9px; height:9px; border-radius:50%; flex:none }
+.eq-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.eq-mmi { font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--ink-2) }
+/* A shaken solar farm and a shaken fab are different events, so the row says
+   which - and for a plant, its fuel and megawatts, which is the whole reason
+   the plant is worth listing. */
+.eq-kind { font-family:var(--mono); font-size:9.5px; font-weight:600;
+  letter-spacing:.04em; padding:1px 4px; border-radius:4px; flex:none;
+  color:var(--ink-2); background:var(--bg); border:1px solid var(--line);
+  white-space:nowrap }
+.eq-k-fab { color:#BE185D; border-color:#BE185D66 }
+.eq-k-plant { color:#7C3AED; border-color:#7C3AED66 }
+.eq-km { font-family:var(--mono); font-size:11px; color:var(--ink-3); width:6ch; text-align:right }
+
+/* Active filter, shown next to the mode switch so it is never mistaken for
+   part of the map: the dot count on screen is a subset while this is set. */
+.chip { display:inline-flex; align-items:center; gap:7px; max-width:38ch;
+  font:inherit; font-size:12.5px; padding:4px 10px; cursor:pointer;
+  border:1px solid var(--accent); border-radius:999px;
+  background:var(--accent-soft); color:var(--ink) }
+.chip b { font-weight:620 } .chip span { color:var(--ink-3) }
+.chip::after { content:"✕"; color:var(--ink-3); font-size:11px }
+.chip:hover::after { color:var(--ink) }
+
+/* ---- search palette ---- */
+.palette { width:min(660px,calc(100vw - 24px)); padding:0; margin-top:12vh; border:0;
+  border-radius:12px; background:var(--panel); color:var(--ink);
+  box-shadow:0 24px 60px rgb(0 0 0 / 28%); overflow:hidden }
+.palette::backdrop { background:rgb(10 16 22 / 38%); backdrop-filter:blur(2px) }
+.pal-in { display:flex; align-items:center; gap:10px; padding:13px 16px;
+  border-bottom:1px solid var(--line) }
+.pal-ico::before { content:"🔍"; font-size:14px; opacity:.75 }
+#palq { flex:1; font:inherit; font-size:15px; border:0; outline:0; padding:0;
+  background:transparent; color:var(--ink) }
+#palq::placeholder { color:var(--ink-3) }
+.pal-res { list-style:none; margin:0; padding:6px; max-height:min(52vh,420px); overflow-y:auto }
+.pal-row { display:flex; align-items:baseline; gap:10px; padding:7px 10px; cursor:pointer;
+  border-radius:7px; scroll-margin:6px }
+.pal-row[aria-selected=true] { background:var(--accent-soft) }
+.pal-kind { flex:none; width:66px; font-family:var(--mono); font-size:9.5px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3) }
+.k-site { color:var(--fac) } .k-ai { color:var(--ai) }
+.k-operator, .k-utility { color:var(--accent) }
+.k-country { color:var(--cty) } .k-ercot { color:var(--ercot) } .k-pjm { color:var(--pjm) }
+.k-nyiso { color:var(--nyiso) }
+.pal-label { flex:none; max-width:34ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.pal-label mark { background:transparent; color:var(--accent); font-weight:640 }
+.pal-sub { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font-size:12.5px; color:var(--ink-3) }
+.pal-num { flex:none; font-family:var(--mono); font-size:12px; font-variant-numeric:tabular-nums;
+  color:var(--ink-2) }
+.pal-empty { padding:22px 16px; text-align:center; font-size:13px; color:var(--ink-3) }
+.pal-foot { display:flex; gap:16px; flex-wrap:wrap; margin:0; padding:9px 16px;
+  border-top:1px solid var(--line); font-size:11.5px; color:var(--ink-3) }
+.pal-foot kbd { font-family:var(--mono); font-size:10.5px; border:1px solid var(--line);
+  border-radius:4px; padding:1px 4px; margin-right:2px; color:var(--ink-2) }
+@media (max-width:620px) {
+  .pal-kind { width:52px } .pal-label { max-width:20ch }
+  .pal-sub, .pal-foot span:nth-child(n+3) { display:none }
+}
+
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:9px }
+/* Sits ABOVE its own button rather than on top of it. The button is the only
+   control now - it opens and closes - so it has to stay reachable while the
+   pane is open, and 66px is its 40px height plus the 10px gap plus the 16px
+   the corner sits in. */
+.layers { position:fixed; left:14px; bottom:66px; z-index:27; padding:12px 14px;
+  display:flex; flex-direction:column; gap:8px; width:264px;
+  max-height:calc(100vh - 134px); overflow:auto }
+.layers h2 { margin:0 0 2px; font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); font-weight:600 }
+.layers label { display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px }
+.layers input { accent-color:var(--accent) }
+.sw { width:11px; height:11px; border-radius:3px; flex:none }
+.sw-fac { background:var(--fac) } .sw-ai { background:var(--ai) }
+.sw-ercot { background:var(--ercot) }
+.sw-pjm { background:var(--pjm) } .sw-nyiso { background:var(--nyiso) }
+.sw-cty { background:var(--cty) }
+.sw-quake { background:#c00000 }
+/* An outline, because the layer is one: filled swatches are for dots. */
+.sw-fp { background:transparent; border:1.5px dashed var(--fp); border-radius:2px }
+.sw-regrid { background:transparent; border:1.5px dashed var(--regrid); border-radius:2px }
+.sw-precisely { background:transparent; border:1.5px dashed var(--precisely); border-radius:2px }
+.sw-supply { background:linear-gradient(135deg, transparent 42%, var(--supply) 42%, var(--supply) 58%, transparent 58%) }
+.lyr-sub { margin:0 0 10px 26px; font-size:12px }
+.lyr-sub[aria-pressed="true"] { background:var(--fp); color:#fff; border-color:var(--fp) }
+/* A ring, because that is what the layer draws: generation is context around
+   the data centres, and a solid swatch would claim to be another dot layer. */
+.sw-plant { background:transparent; border:2.5px solid #8B5CF6; border-radius:50% }
+/* Solid with a dark rim: the third visual class, after the site disc and the
+   plant ring. Square-ish corners because a fab is a building, not a field. */
+.sw-fab { background:#BE185D; border:1px solid #4A0E28; border-radius:2px }
+
+/* Legend and filter in one. Deselected chips keep their colour at low opacity
+   rather than going grey - grey is what "other" is, and two greys in one strip
+   read as two fuels. */
+.fuelkey { display:flex; flex-wrap:wrap; gap:4px; margin:2px 0 6px 22px }
+/* All/none. Set apart from the category chips because it is not one of them -
+   it does not filter, it operates the ones that do. */
+.fk-all { margin-left:auto; font-weight:600; color:var(--accent) }
+.fk-all:hover { border-color:var(--accent) }
+/* The chips still name the colours when the layer is off; they just are not
+   deciding anything. */
+.fk-off { opacity:.45; pointer-events:none }
+.fk { display:inline-flex; align-items:center; gap:5px; padding:2px 7px 2px 5px;
+  font:inherit; font-size:11px; line-height:1.6; color:var(--ink);
+  background:var(--bg); border:1px solid var(--line); border-radius:999px;
+  cursor:pointer }
+.fk i { width:8px; height:8px; border-radius:50%; flex:none }
+.fk-n { color:var(--ink-2); font-variant-numeric:tabular-nums }
+.fk[aria-pressed="false"] { opacity:.4 }
+.fk[aria-pressed="false"] .fk-n { text-decoration:line-through }
+.fk:hover { border-color:var(--accent) }
+
+/* Plants on the globe. Ring, never a disc: the DOM markers have to stay
+   distinguishable from the data centre markers they sit among, and at these
+   sizes a hollow circle is the only difference that survives. Colours are set
+   per element from the fuel palette. */
+.plant-marker { border-radius:50%; border:2px solid #94A3B8; box-sizing:border-box;
+  pointer-events:auto }
+.plant-marker.plant-ret { border-style:dashed; opacity:.75 }
+.fab-marker { border-radius:3px; background:#BE185D; border:1.5px solid #4A0E28;
+  box-sizing:border-box; pointer-events:auto }
+.fab-marker.fab-plan { opacity:.5 }
+
+/* ---- /fabs summary ---- */
+.fabtiles { display:flex; flex-wrap:wrap; gap:10px }
+.fabtile { flex:1 1 150px; display:flex; flex-direction:column; gap:1px;
+  padding:10px 12px; border:1px solid var(--line); border-radius:9px;
+  background:var(--bg) }
+.fabtile-v { font-size:22px; font-weight:640; letter-spacing:-.02em; line-height:1.15 }
+.fabtile-s { font-size:11.5px; color:var(--ink-3) }
+.badge.b-operating { border-color:var(--fac); color:var(--fac) }
+.badge.b-construction { border-color:var(--ai); color:var(--ai) }
+.badge.b-announced { color:var(--ink-3) }
+.fabvia { font-size:11px; font-weight:400; margin-top:1px }
+.sumnav { font-size:12.5px; color:var(--ink-2); text-decoration:none; padding:5px 9px;
+  border-radius:7px }
+.sumnav:hover { color:var(--ink); background:var(--accent-soft) }
+/* Fuel key dot in the plants category table, so the colour on the map and the
+   row in the table are the same thing. */
+.fkey { display:inline-block; width:9px; height:9px; border-radius:50%;
+  margin-right:7px; vertical-align:baseline }
+/* Coverage bar. The point of this page is admitting what is not known, so the
+   bar has a visible track - a 0.8% fill with no track reads as a rendering
+   failure rather than as the answer. */
+.covbar { display:block; width:120px; height:7px; border-radius:4px;
+  background:var(--line-soft); overflow:hidden }
+.covbar i { display:block; height:100%; background:var(--accent) }
+.fabsrc { margin:6px 0 0; padding-left:18px; font-size:11.5px; line-height:1.6 }
+.fabsrc a { color:var(--accent); word-break:break-all }
+/* Epicentre on the globe, matching the 2D marker exactly. */
+.epi-marker { border-radius:50%; background:rgb(154 167 178 / 35%);
+  border:1.5px solid #9aa7b2; box-shadow:0 0 5px rgb(0 0 0 / 50%); pointer-events:auto }
+/* Red only where the shaking actually reached a registry site. */
+.epi-marker.epi-hit { background:rgb(215 38 61 / 45%); border-color:#d7263d }
+
+/* Close-range site markers on the globe. Below CLOSE_ALT the WebGL dots are
+   swapped for these: three-globe extrudes its points into cylinders with a
+   hard 0.1-unit floor on the height - 6.4 km on this globe - so from a few
+   kilometres up an off-centre dot is drawn as a streak lying across the
+   imagery instead of a disc on the roof. A DOM marker always faces the
+   camera and sits exactly on its coordinate. Hollow, so the building it
+   marks is still readable underneath. */
+/* Solid, and ringed in white. A marker has one job over satellite imagery and
+   that is to be found, which a translucent tint over a bright roof is not. The
+   white ring is what makes one colour work on both dark fields and pale
+   concrete - the dot reads against the ring, the ring reads against anything.
+   The dark drop underneath does the same for the ring itself. */
+.dc-marker { border-radius:50%; background:var(--fac); border:0;
+  box-shadow:0 0 0 2px rgb(255 255 255 / 92%), 0 1px 5px rgb(0 0 0 / 55%);
+  pointer-events:auto; cursor:pointer; box-sizing:border-box }
+.dc-marker:hover { box-shadow:0 0 0 3px #fff, 0 2px 8px rgb(0 0 0 / 65%) }
+.dc-marker.dc-ai { background:var(--ai) }
+/* Hollow still means "approximate": a town centroid, not a located building -
+   the same thing it means on the 2D dots. */
+.dc-marker.dc-town { background:transparent; border:2.5px solid var(--fac) }
+.dc-marker.dc-ai.dc-town { background:transparent; border-color:var(--ai) }
+
+/* Popups are reached from search, deep links and the operator directory, so
+   they carry their own way into the site page rather than pointing at a dot. */
+.maplibregl-popup-content .pop-open { display:inline-block; margin-top:6px;
+  font-weight:600; color:var(--accent); text-decoration:none }
+.maplibregl-popup-content .pop-open:hover { text-decoration:underline }
+
+.layers label { flex-wrap:wrap }
+.sublbl { width:100%; padding-left:19px; font-size:11px; color:var(--ink-3) }
+/* Pushed to the right of its layer row, so the three rows that have a summary
+   page advertise it in the same place rather than in three prose notes. */
+.lyrlink { margin-left:auto; display:inline-flex; align-items:center;
+           justify-content:center; width:20px; height:20px; flex:none;
+           font-size:12px; line-height:1; color:var(--ink-3); text-decoration:none;
+           border:1px solid var(--line); border-radius:5px }
+.lyrlink:hover { color:var(--accent); border-color:var(--accent) }
+/* 22ch inside a 264px panel left a column of nothing down the right-hand side
+   of every note. Hints in the layers pane fill the pane; the cap stays where
+   it is useful, on prose in the wider panels. */
+.hint { margin:4px 0 0; font-size:11.5px; color:var(--ink-3); max-width:22ch }
+.layers .hint, .layers .sublbl { max-width:none }
+
+/* "More layers" — the grid-operator zones and the country choropleth, folded
+   away because they are context for a site you have already found. The panel
+   is a flex column with its own gap, so the details block re-creates that gap
+   internally rather than letting its rows collapse together when open. */
+.morelyr { border-top:1px solid var(--line-soft); padding-top:9px }
+.morelyr > summary { cursor:pointer; list-style:none; font-size:12.5px;
+  color:var(--ink-2); display:flex; align-items:center; gap:7px; user-select:none }
+.morelyr > summary::-webkit-details-marker { display:none }
+/* The disclosure triangle is drawn rather than inherited, so it matches the
+   panel's own weight and turns with the same transition as everything else. */
+.morelyr > summary::before { content:''; width:0; height:0; flex:none;
+  border-left:5px solid currentColor; border-top:4px solid transparent;
+  border-bottom:4px solid transparent; transition:transform .12s }
+.morelyr[open] > summary::before { transform:rotate(90deg) }
+.morelyr > summary:hover { color:var(--ink) }
+/* A layer switched on and then folded away is a layer drawing on the map with
+   no visible control. The count says so on the closed summary. */
+.morecount { margin-left:auto; font-family:var(--mono); font-size:11px;
+  color:var(--panel); background:var(--accent); border-radius:20px;
+  padding:1px 7px; display:none }
+.morecount.on { display:inline-block }
+.morelyr > label { margin-top:8px }
+
+/* ---- the whole registry as a list ---- */
+/* Full screen and virtualised: only the slice in view is ever in the DOM, and
+   a sizer div carries the true height so the scrollbar tells the truth. With
+   grouping on, the display is a mix of group headers and rows - it is that
+   MIXED array that gets virtualised, not the rows, or a collapsed group would
+   still cost its contents. */
+.listview { position:fixed; inset:52px 0 0 0; z-index:34; background:var(--panel);
+  display:flex; flex-direction:column }
+.lv-bar { display:flex; align-items:center; gap:10px; padding:10px 14px;
+  border-bottom:1px solid var(--line) }
+.lv-bar strong { font-size:13.5px; white-space:nowrap }
+.lv-q { font:inherit; font-size:13px; color:var(--ink); background:var(--bg);
+  border:1px solid var(--line); border-radius:7px; padding:5px 10px; min-width:200px }
+.lv-q:focus { outline:none; border-color:var(--accent) }
+
+/* ---- the three pickers ---- */
+.lv-pick { position:relative }
+.lv-ico { display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:30px; padding:0 }
+.lv-ico svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7 }
+.lv-ico[aria-expanded=true] { border-color:var(--accent); color:var(--accent) }
+.lv-pick > button b { font-weight:640 }
+.lv-menu { position:absolute; top:calc(100% + 6px); left:0; z-index:3; width:300px;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  box-shadow:0 12px 34px rgb(0 0 0 / 20%); display:flex; flex-direction:column;
+  max-height:min(460px, 70vh) }
+.lv-body { overflow:auto; padding:10px 12px }
+.lv-foot { padding:10px 12px; border-top:1px solid var(--line-soft) }
+.lv-foot .go { width:100%; background:var(--accent); border-color:var(--accent);
+  color:#fff; font-weight:640; padding:7px }
+.lv-foot .clear { width:100%; padding:7px }
+/* The one Apply, in the bar, standing where the count usually is - so the
+   place that tells you what the list holds is the place that tells you it is
+   not what you asked for yet. */
+#lv-apply { background:var(--accent); border-color:var(--accent); color:#fff;
+  font-weight:640; padding:5px 16px }
+/* A picker holding changes nobody has applied says so. */
+.lv-pick > button.dirty { border-color:var(--accent); color:var(--accent) }
+.lv-menu hr { border:0; border-top:1px solid var(--line-soft); margin:9px 0 }
+
+/* the ordered, chosen columns at the top of the menu */
+.lv-chosen { display:flex; align-items:center; gap:8px; padding:5px 0; font-size:13px;
+  cursor:pointer; background:none; border:0; width:100%; color:var(--ink); text-align:left }
+.lv-chosen .num { color:var(--ink-3); font-family:var(--mono); font-size:11.5px; min-width:1.5em }
+.lv-chosen .grow { flex:1; font-weight:600 }
+.lv-chosen .sum { color:var(--ink-3); font-family:var(--mono); font-size:11.5px }
+.lv-chosen .agg { color:var(--accent); background:var(--accent-soft); border-radius:5px;
+  padding:1px 7px }
+.lv-grp .ga { margin-left:12px; font-weight:400; color:var(--ink-2);
+  font-family:var(--mono); font-size:11.5px }
+.lv-chosen .caret { color:var(--ink-3); font-size:10px }
+.lv-vals { padding:2px 0 10px 22px }
+.lv-vals .lv-q { width:100%; min-width:0; margin-bottom:7px }
+.lv-tools { display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:12.5px }
+.lv-tools a { color:var(--accent); cursor:pointer; text-decoration:none; font-weight:600 }
+.lv-mode { margin-left:auto; font:inherit; font-size:11.5px; font-weight:600; padding:2px 9px;
+  border-radius:20px; cursor:pointer; border:1px solid transparent }
+.lv-mode.inc { color:var(--accent); background:var(--accent-soft) }
+.lv-mode.exc { color:#a3242f; background:rgb(215 38 61 / 12%) }
+.lv-vlist { max-height:190px; overflow:auto }
+.lv-vrow { display:flex; align-items:center; gap:8px; padding:3px 0; font-size:12.5px;
+  cursor:pointer }
+.lv-vrow .grow { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.lv-vrow .n { color:var(--ink-3); font-family:var(--mono); font-size:11px }
+.lv-opt { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:13px;
+  cursor:pointer }
+.lv-opt input:disabled + span { color:var(--ink-3) }
+
+/* ---- the table ---- */
+/* One horizontal scroller for head and body, so a frozen column freezes in
+   both. Widths are fixed in pixels because the sticky offsets are computed
+   from them - a percentage column cannot tell you where the next one starts. */
+.lv-headwrap { overflow:hidden; border-bottom:1px solid var(--line) }
+.lv-head, .lv-row, .lv-grp { display:flex; align-items:center }
+.lv-head { height:38px; font-size:12px; font-weight:640; color:var(--ink-2) }
+.lv-head .cell button { font:inherit; font-weight:640; font-size:12px; color:inherit;
+  background:none; border:0; padding:0; cursor:pointer; text-align:left }
+.lv-head .cell button:hover { color:var(--accent) }
+.lv-scroll { flex:1; overflow:auto; position:relative }
+.lv-sizer { width:1px }
+.lv-rows { position:absolute; top:0; left:0 }
+.cell { flex:none; padding:0 14px; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; box-sizing:border-box }
+.cell.mono { font-family:var(--mono); font-size:11.5px; color:var(--ink-3) }
+.cell.num { text-align:right }
+/* Frozen: the grouped columns. They keep a background of their own or the rows
+   scrolling underneath would show through. */
+.cell.frz { position:sticky; z-index:1; background:var(--panel) }
+.lv-head .cell.frz { z-index:2 }
+.lv-row:hover .cell.frz { background:var(--accent-soft) }
+.lv-row { height:34px; font-size:13px; cursor:pointer; border-bottom:1px solid var(--line-soft) }
+.lv-row:hover { background:var(--accent-soft) }
+.lv-grp { height:34px; font-size:13px; font-weight:640; background:var(--bg);
+  border-bottom:1px solid var(--line-soft); cursor:pointer; position:sticky; left:0 }
+.lv-grp .tw { width:16px; height:16px; margin-right:8px; flex:none; display:inline-flex;
+  align-items:center; justify-content:center; font-family:var(--mono); font-size:12px;
+  border:1px solid var(--line); border-radius:4px; color:var(--ink-2) }
+.lv-grp .gn { margin-left:8px; font-weight:400; color:var(--ink-3);
+  font-family:var(--mono); font-size:11.5px }
+.lv-empty { padding:26px 14px; color:var(--ink-3); font-size:13px }
+
+/* ---- heatmap bar ---- */
+/* z-index 28, above the footprint bar's 27: the distribution panel is a CHILD
+   of this element and cannot escape its stacking context, and at 26 the fpbar
+   sat exactly over the strip the panel opens into. The two bars themselves
+   never overlap - different bottom offsets - so this only decides who wins
+   while the transient panel is actually open. */
+.heatbar { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:28;
+  display:flex; align-items:center; gap:13px; padding:8px 12px }
+/* Shares the bottom edge with the timeline, so it steps aside when that opens -
+   the same lift the map controls take. */
+body.timeline-open .heatbar { bottom:150px }
+.hb-pick { position:relative }
+/* Two more controls share the strip now, and a label breaking onto a second
+   line ("Site / count") reads as two things. */
+.hb-pick .tb-btn { white-space:nowrap }
+.hb-end { font-size:12px; color:var(--ink-2); min-width:4ch; text-align:center }
+/* The same five stops the paint expression interpolates, so the strip is the
+   legend rather than a decoration that resembles one. A button now: it opens
+   the distribution panel, where the scale can be narrowed by hand. */
+.hb-ramp { width:190px; height:11px; padding:0; border-radius:6px; cursor:pointer;
+  border:1px solid var(--line);
+  background:linear-gradient(to right, #2E9E6B, #8DC63F, #F2C744, #F08A24, #D7263D) }
+/* A hand-narrowed scale must not look like the automatic one - the readouts at
+   its ends are no longer the extremes of the data, and the ring says so. */
+.hb-ramp.hb-narrowed { box-shadow:0 0 0 2px var(--accent) }
+/* The hexagon form paints AREAS, and a green-to-red ramp over areas reads as
+   a verdict - a green Europe looks fine, not sparse. One hue, light to dark
+   (OKLCH hue 45, L 0.88 to 0.41), so a cell only ever says "more" or "less";
+   warm because it has to hold up over satellite imagery, where a teal ramp
+   loses its low end to vegetation. The same five stops HEX_STOPS.day
+   interpolates in app.js, so this strip stays the legend rather than a
+   decoration. */
+.hb-ramp.is-hex { background:linear-gradient(to right, #FFCAB3, #FF9462, #E36927, #B44901, #7B3002) }
+/* Anchored to the surface: dark to light over the night map, so the sparsest
+   cell is still the one nearest the ground colour. */
+html[data-theme=night] .hb-ramp.is-hex { background:linear-gradient(to right, #A24102, #CF5604, #F27636, #FFA47A, #FED4C1) }
+.hb-hex { display:inline-flex; align-items:center; gap:5px; white-space:nowrap }
+.hb-hex svg { width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:1.8;
+  stroke-linejoin:round }
+.hb-hex[aria-pressed=true] svg { fill:currentColor; fill-opacity:.35 }
+
+/* ---- distribution panel ---- */
+.hb-dist { position:absolute; bottom:calc(100% + 8px); left:50%;
+  transform:translateX(-50%); z-index:2; width:470px; padding:10px 12px 8px;
+  background:var(--panel); border:1px solid var(--line); border-radius:9px;
+  box-shadow:0 10px 30px rgb(0 0 0 / 20%) }
+.hbd-head { display:flex; align-items:center; justify-content:space-between;
+  gap:8px; font-size:12.5px; color:var(--ink); margin-bottom:6px }
+.hbd-head b { font-weight:600 }
+#hbd-reset { font-size:12px; padding:2px 9px }
+#hbd-chart svg { display:block; width:100%; height:auto; touch-action:none;
+  cursor:crosshair }
+.hbd-bar { stroke:none }
+/* Values a hand-narrowed range pushed off the scale: still on the map, clamped
+   to the end colours, and these two dim bars are where the chart admits it. */
+.hbd-out { fill:var(--ink-2); opacity:.35 }
+.hbd-brush { fill:var(--accent); opacity:.22 }
+.hbd-axis { stroke:var(--line); stroke-width:1 }
+.hbd-tick { stroke:var(--line); stroke-width:1 }
+.hbd-grid { stroke:var(--line); stroke-width:1; stroke-dasharray:3 3; opacity:.6 }
+.hbd-lbl { fill:var(--ink-2); font-size:9px;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace }
+/* The live readout riding the brush: the values under the drag's two edges.
+   Haloed in the panel colour so it stays readable over any bar it crosses. */
+.hbd-sel-lbl { fill:var(--ink); font-size:10px; font-weight:600;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+  stroke:var(--panel); stroke-width:3; paint-order:stroke }
+.hbd-range { display:flex; align-items:center; gap:10px; margin-top:7px;
+  font-size:11.5px; color:var(--ink-2) }
+.hbd-range label { display:flex; align-items:center; gap:5px }
+.hbd-range input { width:130px; font-size:12px; padding:2px 6px; color:var(--ink);
+  background:var(--line-soft); border:1px solid var(--line); border-radius:6px;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace }
+.hbd-range input:focus { outline:none; border-color:var(--accent) }
+.hbd-range input:disabled { opacity:.45 }
+.hbd-unit { margin-left:auto }
+#hbd-hide { font-size:12px; padding:2px 9px }
+/* The hover crosshair: where a drag would start, before it starts. */
+.hbd-cur { stroke:var(--ink-2); stroke-width:1; stroke-dasharray:2 3; opacity:.8 }
+.hbd-note { font-size:11px; color:var(--ink-2); margin-top:6px }
+.hb-sw { width:44px; height:25px; padding:0; border-radius:20px; cursor:pointer;
+  border:1px solid var(--line); background:var(--line-soft); position:relative;
+  transition:background .13s }
+.hb-sw i { position:absolute; top:2px; left:2px; width:19px; height:19px; border-radius:50%;
+  background:var(--panel); box-shadow:0 1px 3px rgb(0 0 0 / 35%); transition:left .13s }
+.hb-sw[aria-checked=true] { background:var(--accent); border-color:var(--accent) }
+.hb-sw[aria-checked=true] i { left:21px }
+.hb-menu { position:absolute; bottom:calc(100% + 8px); left:0; z-index:2; min-width:210px;
+  padding:7px 0; background:var(--panel); border:1px solid var(--line); border-radius:9px;
+  box-shadow:0 10px 30px rgb(0 0 0 / 20%) }
+.hb-menu button { display:flex; align-items:center; gap:9px; width:100%; font:inherit;
+  font-size:13px; text-align:left; padding:6px 13px; border:0; cursor:pointer;
+  background:none; color:var(--ink) }
+.hb-menu button:hover { background:var(--accent-soft) }
+.hb-menu button .tick { width:13px; color:var(--accent) }
+
+
+/* ---- wayback-lite (dot pages: fabs and plants) ---- */
+.wbl { position:relative }
+.wbl-frame { position:relative; overflow:hidden; height:460px; border-radius:9px;
+  background:#20242a; cursor:grab; touch-action:none; user-select:none }
+.wbl-frame:active { cursor:grabbing }
+.wbl-frame img { position:absolute; pointer-events:none }
+.wbl-frame svg.wbl-fp { position:absolute; left:0; top:0; pointer-events:none }
+.wbl-frame svg.wbl-fp path { pointer-events:auto }
+.wbl-dot { position:absolute; width:13px; height:13px; margin:-7px 0 0 -7px;
+  border-radius:50%; background:var(--fac, #0E8A7C); border:2.5px solid #fff;
+  box-shadow:0 1px 4px rgb(0 0 0 / 50%); pointer-events:none }
+/* Lower right, stacked — the same corner the main map and the Live map tab
+   use. Zoom is zoom wherever you are in this app, and switching tabs should
+   not send you hunting for it. No attribution to clear inside this frame, so
+   it sits closer to the bottom than the live map's column does. */
+.wbl-tools { position:absolute; right:8px; bottom:8px; z-index:2;
+  display:flex; flex-direction:column; gap:4px }
+/* Full screen keeps its own corner on the archive too. Same 8px inset as the
+   Live map's, so the button does not shift under the cursor when the tab
+   changes - the two views sit in the same place on the page. */
+.wbl-fscorner { position:absolute; top:8px; right:8px; z-index:3 }
+.wbl:fullscreen { background:var(--panel); padding:10px }
+.wbl:fullscreen .wbl-frame { height:calc(100vh - 70px) }
+.wbl-bar { display:flex; align-items:center; gap:12px; margin-top:9px }
+.wbl-slider { flex:1 }
+.wbl-date { font-size:12.5px; color:var(--ink-2); white-space:pre;
+  font-variant-numeric:tabular-nums }
+
+/* ---- table filter & sort (tables.js, every summary page) ---- */
+.tfilter { display:flex; align-items:center; gap:10px; margin:0 0 8px }
+.tfilter input { flex:0 1 340px; font:inherit; font-size:13px; padding:5px 10px;
+  color:var(--ink); background:var(--panel); border:1px solid var(--line);
+  border-radius:7px }
+.tfilter input:focus { outline:none; border-color:var(--accent) }
+.tcount { font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums }
+th.tsort { cursor:pointer; user-select:none; white-space:nowrap }
+th.tsort:hover { color:var(--ink) }
+th.tsort::after { content:'↕'; opacity:.28; margin-left:5px; font-size:10px }
+th.tsort.sort-asc::after { content:'▲'; opacity:.9; color:var(--accent) }
+th.tsort.sort-desc::after { content:'▼'; opacity:.9; color:var(--accent) }
+th.tsort:focus-visible { outline:2px solid var(--accent); outline-offset:-2px }
+
+/* ---- footprint edit bar ---- */
+/* Sits above the heatbar's slot so the two can be open at once. */
+.fpbar { position:fixed; left:50%; transform:translateX(-50%); bottom:64px; z-index:27;
+  display:flex; flex-direction:column; gap:8px; padding:8px 12px;
+  min-width:min(760px, 94vw); max-width:min(980px, 96vw) }
+body.timeline-open .fpbar { bottom:198px }
+.fp-row { display:flex; align-items:center; gap:10px }
+/* WHAT MAY SHRINK AND WHAT MAY NOT. Everything in this row is a flex item and
+   flex items shrink by default, so the bar solved its own crowding by taking
+   width off whatever was easiest - which was the Building/Campus control, and
+   "Campus" came out as "Camp". The controls are fixed; the two things that can
+   lose width without losing meaning are the name box and the running commentary,
+   so they are the ones that give. */
+.fp-row > .seg, .fp-row > .tb-btn { flex:none }
+.fp-msg { font-size:12.5px; color:var(--ink-2); min-width:0; flex:1 1 auto }
+.fp-msg.err { color:#D7263D }
+.fpbar input[type=text] { font:inherit; font-size:13px; padding:5px 9px;
+  flex:0 1 200px; min-width:110px;
+  color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:7px }
+/* The label is the control's whole meaning - a truncated one is a different
+   word. Nothing here is long enough for wrapping to cost a line. */
+.fp-row .seg button { white-space:nowrap }
+.fp-danger:hover { border-color:#D7263D; color:#D7263D }
+/* Editing is a 2D affordance: the globe has no draw surface. */
+.mapctl.is3d #fpBtn { display:none }
+
+/* ---- map controls, bottom right ---- */
+/* One button per control showing the state you are IN, not the one you would
+   switch to - "2D" means you are in 2D, and pressing it takes you to 3D. Two
+   buttons for two states wastes half the space saying what you can already
+   see, which matters when the controls sit over the map rather than in a bar. */
+.mapctl { position:fixed; right:14px; bottom:16px; z-index:26;
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px }
+/* Every ICON control is one square, and the size lives in --ctl rather than in
+   each rule. They used to be sized by their contents - min-width:40px with
+   12px of side padding - so the stack came out at four different widths and
+   not one of them was actually square. A control strip only reads as a strip
+   when the boxes agree, and a glyph does not get a vote on how wide its button
+   is. A WORD does, though: see .ctl-row. */
+.corner-btn { width:var(--ctl); height:var(--ctl); padding:0; flex:none;
+  font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+  color:var(--ink); background:var(--panel);
+  border:1px solid var(--line); border-radius:9px;
+  box-shadow:0 2px 10px rgb(0 0 0 / 12%); display:inline-flex;
+  align-items:center; justify-content:center }
+.corner-btn:hover { border-color:var(--accent); color:var(--accent) }
+.corner-btn svg { width:18px; height:18px; fill:none; stroke:currentColor;
+  stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round }
+/* The timeline lives here now rather than in the header, so it needs the
+   pressed state the header icons had. */
+.corner-btn[aria-pressed=true] { color:#fff; background:var(--accent);
+  border-color:var(--accent) }
+
+/* Controls that belong together share one pill with a hairline between them,
+   the way a map's zoom control always has. The GROUP owns the border, the
+   radius and the shadow; the buttons inside own nothing but their glyph. That
+   keeps a pair reading as one object while every box stays the same square,
+   and it is why the 10px gap between pills means something - grouping is
+   carried by adjacency, not by a smaller gap nobody can measure by eye. */
+.ctl-group { display:flex; flex-direction:column; background:var(--panel);
+  border:1px solid var(--line); border-radius:11px; overflow:hidden;
+  box-shadow:0 2px 10px rgb(0 0 0 / 12%) }
+.ctl-group .corner-btn { border:0; border-radius:0; box-shadow:none }
+.ctl-group .corner-btn + .corner-btn { border-top:1px solid var(--line) }
+/* Inside a group the border belongs to the pill, so it cannot carry hover.
+   The surface does it instead. */
+.ctl-group .corner-btn:hover { background:var(--accent-soft) }
+.ctl-zoom .corner-btn { font-size:18px; font-weight:400 }
+
+/* The two word buttons, side by side and sized by their words. They are the
+   one place the square rule must NOT apply: each shows the state you are IN
+   and its label changes with it - "Map" becomes "Satellite", which is twice as
+   wide and simply falls out of a 36px box. Squaring these clipped "Satellite"
+   to about four letters. A glyph fits any box; a word brings its own width. */
+.ctl-row { display:flex; gap:8px }
+.ctl-row .corner-btn { width:auto; min-width:var(--ctl); padding:0 11px }
+/* The timeline bar is centred on the bottom edge and the controls are in the
+   corner; on a narrow window they meet. Lift the stack above it while it is
+   open rather than letting them overlap. */
+body.timeline-open .mapctl { bottom:150px }
+/* MapLibre's own zoom control is replaced by ours. */
+.maplibregl-ctrl-top-right { display:none }
+
+/* z-index above the pane, because it now sits beside it rather than under it
+   and must never be the thing a stray overlap swallows. Open is shown the way
+   every other corner button shows pressed. */
+.layers-btn { position:fixed; left:14px; bottom:16px; z-index:28 }
+.layers-btn[aria-expanded=true] { color:#fff; background:var(--accent);
+  border-color:var(--accent) }
+
+.mapfull { position:fixed; inset:52px 0 0 0 }
+#map3d { background:var(--bg) }
+.tip { position:fixed; z-index:40; pointer-events:none; background:var(--panel);
+  border:1px solid var(--line); border-radius:7px; padding:7px 10px; font-size:12.5px;
+  box-shadow:0 6px 20px rgb(0 0 0 / 18%); max-width:280px }
+.tip .t { font-weight:620 }
+.tip .d { color:var(--ink-2) }
+
+/* ---- name-conflict review queue ---- */
+/* Two names side by side and a button under each, so the choice is made where
+   the evidence is rather than in a separate control. */
+.rvlist { display:flex; flex-direction:column; gap:12px }
+.rvcard { padding:14px 16px; background:var(--panel); border:1px solid var(--line);
+  border-radius:12px }
+.rvcard.rv-done { opacity:.45 }
+.rvhead { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:12.5px }
+.rvpair { display:grid; grid-template-columns:1fr 1fr; gap:12px }
+@media (max-width:640px) { .rvpair { grid-template-columns:1fr } }
+.rvside { display:flex; flex-direction:column; gap:5px; align-items:flex-start;
+  padding:11px 13px; background:var(--bg); border:1px solid var(--line-soft);
+  border-radius:9px }
+.rvside b { font-size:15px; font-weight:640; line-height:1.3 }
+.rvside .dim { font-size:12px }
+.rvside .rv-go { margin-top:5px }
+.rvfoot { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap }
+.rv-note { flex:1 1 240px; min-width:150px; font:inherit; font-size:12.5px;
+  padding:5px 9px; color:var(--ink); background:var(--bg);
+  border:1px solid var(--line); border-radius:7px }
+.rv-msg { font-size:12.5px; color:var(--ink-2) }
+/* The distance decides most of these, so it is the first thing on the card and
+   the only coloured thing on it. */
+.rv-km { font-family:var(--mono); font-size:12px; font-weight:600;
+  padding:2px 9px; border-radius:20px }
+/* The coordinates are the label and the link at once, so they can be read and
+   copied without being followed. */
+.rv-gps { font-size:12px; color:var(--ink-3); text-decoration:none;
+  padding:4px 9px; border:1px dashed var(--line); border-radius:7px }
+.rv-gps:hover { color:var(--accent); border-color:var(--accent); border-style:solid }
+.rv-same { background:#0E8A7C; color:#fff }
+.rv-mid  { background:#F2C744; color:#3a2f00 }
+.rv-far  { background:#D7263D; color:#fff }
+
+/* ---- earthquake pages ---- */
+/* The one layer with a time axis, so the one page with a chart. Colours are
+   the layers' own, because the three stacked series ARE the three layers. */
+.qchart { margin:6px 0 2px; width:100%; overflow:hidden }
+.qchart svg { width:100%; height:220px; display:block }
+.q-dc { fill:var(--fac) } .q-plant { fill:#8B5CF6 } .q-fab { fill:#BE185D }
+.q-axis { stroke:var(--line); stroke-width:1 }
+.q-tick { fill:var(--ink-3); font-size:11px; font-family:var(--mono) }
+.qlegend { display:flex; gap:16px; margin:4px 0 0; font-size:12px; color:var(--ink-2) }
+.qlegend i { display:inline-block; width:10px; height:10px; border-radius:2px;
+  margin-right:5px; vertical-align:-1px }
+.q-sw.q-dc { background:var(--fac) } .q-sw.q-plant { background:#8B5CF6 }
+.q-sw.q-fab { background:#BE185D }
+/* Magnitude is logarithmic, so the bar is scaled by energy rather than by the
+   number printed beside it - see magBar(). */
+.qbar { display:inline-block; width:52px; height:5px; margin-left:7px;
+  border-radius:3px; background:var(--line-soft); vertical-align:middle }
+.qbar i { display:block; height:100%; border-radius:3px; background:#c00000 }
+.q-band { display:inline-block; width:11px; height:11px; border-radius:3px;
+  margin-right:7px; vertical-align:-1px; border:1px solid var(--line) }
+
+/* ---- site detail pages ---- */
+.crumbs { font-size:12.5px; color:var(--ink-3); margin:0 0 10px }
+.crumbs a { color:var(--ink-3); text-decoration:none }
+.crumbs a:hover { color:var(--accent) }
+.crumbs b { color:var(--ink-3); font-weight:400 }
+.crumbs span { margin:0 6px; opacity:.6 }
+.updated { display:flex; align-items:center; gap:7px; margin:0 0 6px;
+  font-size:12.5px; color:var(--ink-2) }
+.updated i { width:9px; height:9px; border-radius:50%; background:var(--ink-3) }
+.subhead { margin:2px 0 0; font-size:14px; color:var(--ink-2) }
+/* The coordinates cluster in the site header, and its satellite-view pin. */
+.subhead .coord { font-size:13px }
+.coord-map { display:inline-block; margin-left:6px; color:var(--accent);
+  vertical-align:-3px }
+.coord-map svg { width:15px; height:15px; fill:none; stroke:currentColor;
+  stroke-width:2; stroke-linecap:round; stroke-linejoin:round }
+.coord-map:hover { color:var(--ink) }
+.lede { margin:0; font-size:15.5px; line-height:1.6; max-width:70ch }
+
+.spec-hero { display:flex; flex-direction:column; gap:5px; padding-bottom:12px;
+  border-bottom:1px solid var(--line-soft); margin-bottom:4px }
+.spec-big { font-size:30px; font-weight:660; letter-spacing:-.02em; line-height:1.1 }
+.spec-big .dim { font-size:15px; font-weight:400 }
+.spec-bar { height:7px; border-radius:4px; background:var(--line-soft); overflow:hidden }
+.spec-bar i { display:block; height:100%; background:var(--fac) }
+
+/* ---- buildout ---- */
+.bo-body { display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap }
+.bo-chart { flex:1 1 380px; min-width:300px; max-width:600px }
+.bo-grid { stroke:var(--line-soft); stroke-width:1 }
+.bo-ax { fill:var(--ink-3); font-size:10.5px; font-family:var(--mono) }
+.bo-line { fill:none; stroke:var(--fac); stroke-width:2 }
+.bo-dot { fill:var(--fac) }
+.bo-time { flex:1 1 320px; min-width:280px; list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap:14px; max-height:460px; overflow-y:auto }
+.bo-time li { display:flex; flex-direction:column; gap:3px; padding-left:16px;
+  border-left:2px solid var(--line); position:relative }
+.bo-time li::before { content:""; position:absolute; left:-5px; top:5px; width:8px; height:8px;
+  border-radius:50%; background:var(--fac) }
+.bo-date { font-size:12.5px; font-weight:640 }
+.bo-what { font-size:12.5px; color:var(--ink-2); line-height:1.5 }
+.bo-nums { font-size:11.5px; color:var(--ink-3) }
+
+/* ---- land-change imagery ---- */
+.imgstrip { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px }
+.imgshot { margin:0; flex:none; width:260px }
+.imgshot img { width:100%; height:170px; object-fit:cover; border-radius:8px;
+  border:1px solid var(--line); background:var(--line-soft) }
+.imgshot figcaption { margin-top:5px; font-family:var(--mono); font-size:11.5px;
+  color:var(--ink-3) }
+.upform { display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-size:12.5px;
+  padding-top:10px; border-top:1px solid var(--line-soft) }
+.upform label { display:flex; align-items:center; gap:6px; color:var(--ink-2) }
+.upform input { font:inherit; font-size:12.5px; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:4px 7px }
+/* ---- Wayback: the same place, every year the archive has it ---- */
+.wb { margin:0 0 14px }
+.wb-frame { position:relative; width:100%; height:340px; overflow:hidden;
+  border-radius:9px; border:1px solid var(--line); background:var(--line-soft) }
+.wb-grid { position:absolute; left:50%; top:50% }
+ /* pointer-events:none is what makes PANNING work with a real mouse: without
+   it, pressing on a tile starts the browser's native image drag, which
+   cancels the pointer stream and kills the pan. Synthetic test events never
+   trigger native drag, which is how this shipped broken. */
+.wb-frame img { position:absolute; width:256px; height:256px; display:block;
+  pointer-events:none; user-select:none; -webkit-user-drag:none }
+/* The site itself, so you can see WHICH building appeared. It lives INSIDE the
+   grid, at the grid's origin, so that panning carries it with the ground
+   rather than leaving it stuck to the middle of the frame pointing at
+   whatever happens to be there. */
+.wb-x { position:absolute; left:0; top:0; width:15px; height:15px; margin:-7.5px 0 0 -7.5px;
+  border-radius:50%; background:var(--fac); border:0;
+  box-shadow:0 0 0 2px rgb(255 255 255 / 92%), 0 1px 5px rgb(0 0 0 / 55%);
+  pointer-events:none; z-index:1 }
+
+/* The neighbours. Solid and coloured by kind, ringed in white.
+   These were hollow with a white border, which was the wrong axis to
+   distinguish them on: a data centre roof is white, and `point` is the default
+   every one of 6,249 sites starts at, so the common case was a white ring on a
+   white roof. Colour separates them from the site's own dot; the white ring
+   and the dark drop are what make any of them visible on both a bright roof
+   and black asphalt.
+   Fixed hex, not theme variables - these sit on satellite imagery, which looks
+   the same whichever theme is on. */
+.wb-nb { position:absolute; width:13px; height:13px; margin:-6.5px 0 0 -6.5px; padding:0;
+  border-radius:50%; border:0; cursor:pointer; background:#33414F;
+  box-shadow:0 0 0 2px rgb(255 255 255 / 92%), 0 1px 4px rgb(0 0 0 / 60%) }
+.wb-nb:hover { box-shadow:0 0 0 3px #fff, 0 2px 7px rgb(0 0 0 / 70%) }
+.wb-nb.k-building { background:#B5761E }
+.wb-nb.k-campus { background:#7C5FBF }
+.wb-nb.on { box-shadow:0 0 0 2px rgb(255 255 255 / 92%), 0 0 0 5px #2C6E8F,
+  0 1px 4px rgb(0 0 0 / 60%) }
+
+.wb-legend { display:inline-flex; align-items:center; gap:5px; font-size:12px;
+  color:var(--ink-3) }
+.wb-legend i { width:9px; height:9px; border-radius:50%; display:inline-block;
+  box-shadow:0 0 0 1.5px rgb(0 0 0 / 20%) }
+.wb-legend i + span { margin-right:5px }
+.lg-point { background:#33414F } .lg-building { background:#B5761E }
+.lg-campus { background:#7C5FBF }
+
+/* Footprint outlines over the archive imagery. Same magenta and the same
+   solid-building / dashed-campus grammar as the map layer, so the two read as
+   one thing seen twice rather than two overlays that happen to look alike. */
+.wb-fplayer { position:absolute; overflow:visible; pointer-events:none }
+/* The supply link inside the archive viewer: the clipped thread, its
+   arrowhead, and the pill that names the plant and opens its page. */
+.wb-suplayer { position:absolute; overflow:visible; pointer-events:none }
+.wb-supline { stroke:var(--supply); stroke-width:2.5; fill:none; opacity:.9;
+  stroke-linecap:round }
+.wb-suphead { fill:var(--supply); opacity:.95 }
+.wb-supring { fill:none; stroke:var(--supply); stroke-width:2.5; opacity:.95 }
+.wb-suplbl { position:absolute; transform:translate(-50%,-50%);
+  background:var(--supply); color:#fff; font-size:11px; line-height:1;
+  padding:4px 8px; border-radius:999px; white-space:nowrap;
+  text-decoration:none; box-shadow:0 1px 4px rgba(0,0,0,.35); z-index:4 }
+.wb-suplbl:hover { filter:brightness(1.12) }
+/* The Live map tab: MapLibre in the site page, homepage ergonomics. */
+/* Tabs, not buttons. These pick which view you are looking at, which is a
+   different act from pressing something that does a thing - so they read as
+   labels with the selected one underlined, and carry no button chrome at all.
+   The bordered pill they used to wear put them in the same visual class as
+   "Pull REGRID parcel", which performs an action and costs money. */
+.wb-head { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px;
+  margin-bottom:2px }
+.wb-tabs { display:inline-flex; gap:18px; border-bottom:1px solid var(--line);
+  margin-right:auto }
+.wb-tabs button { font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  padding:5px 1px 7px; border:0; background:none; color:var(--ink-3);
+  border-bottom:2px solid transparent; margin-bottom:-1px }
+.wb-tabs button:hover { color:var(--ink-2) }
+.wb-tabs button[aria-selected=true] { color:var(--ink); border-bottom-color:var(--accent) }
+.wb-tabs button:focus-visible { outline:2px solid var(--accent); outline-offset:2px }
+/* .wb-pull is gone from both viewers: the parcel buttons moved onto the map
+   with every other tool. Only the tabs live in .wb-head now. */
+/* Same height as .wb-frame: switching tabs must not jump the page. */
+.sm-wrap { position:relative }
+/* The pick bar overlays the map's foot: selection controls live where the
+   shapes are. Fixed light chrome on imagery, same reasoning as .wb-tool -
+   a theme-aware surface goes invisible over satellite ground. The right
+   inset leaves MapLibre's attribution ⓘ reachable. */
+/* left:52px, not 8px: the layers button owns the bottom-left corner now, and
+   a selection bar running under it would cover the one control that reveals
+   every other one. */
+.sm-wrap .wb-sel { position:absolute; left:52px; right:44px; bottom:8px; z-index:2;
+  margin-top:0; background:rgb(255 255 255 / 94%); color:#14202b;
+  border-color:rgb(0 0 0 / 18%); box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
+.sm-wrap .wb-sel .tb-btn { background:#fff; color:#14202b;
+  border-color:rgb(0 0 0 / 25%) }
+.sm-wrap .wb-sel .tb-btn:hover:not(:disabled) { border-color:var(--accent, #0E8A7C) }
+.wb-tool[aria-pressed="true"] { background:var(--accent, #0E8A7C); color:#fff;
+  border-color:var(--accent, #0E8A7C) }
+/* The plant/fab pages' Live map tab: same wrap, their own frame height -
+   each page's live map matches ITS year-by-year frame, and .wbl-frame is
+   a notch taller than the site page's. */
+#dotmap { height:460px; border-radius:10px; overflow:hidden;
+  background:var(--line-soft, #dfe5ea) }
+#wbl-live .wb-toolbar { display:flex; align-items:center; gap:10px;
+  margin-top:10px; flex-wrap:wrap }
+#wbl-live .wb-status { margin-top:0 }
+#wbl-live:fullscreen { background:var(--bg); padding:14px; display:flex;
+  flex-direction:column }
+#wbl-live:fullscreen .sm-wrap { flex:1; display:flex; flex-direction:column;
+  min-height:0 }
+#wbl-live:fullscreen #dotmap { flex:1; height:auto }
+#sitemap { height:340px; border-radius:10px; overflow:hidden; background:var(--line-soft, #dfe5ea) }
+#wb-live:fullscreen { background:var(--bg); padding:14px; display:flex; flex-direction:column }
+#wb-live:fullscreen .sm-wrap { flex:1; display:flex; flex-direction:column; min-height:0 }
+#wb-live:fullscreen #sitemap { flex:1; height:auto }
+#wb-live .wb-toolbar { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap }
+/* One home for every message in the section; fixed height so text coming
+   and going never reflows the page under the pointer. */
+.wb-status { min-height:22px; margin-top:6px }
+/* The edit pen: the one page-level action, in the header's top corner. */
+.sitehead h1 { position:relative; padding-right:52px }
+.edit-pen { position:absolute; right:0; top:50%; transform:translateY(-50%);
+  color:var(--ink-2, #47555f); border-color:var(--line, #d4dce2) }
+.edit-pen svg { width:18px; height:18px; fill:none; stroke:currentColor;
+  stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round }
+.edit-pen[aria-pressed="true"] { background:var(--accent, #0E8A7C); color:#fff;
+  border-color:var(--accent, #0E8A7C) }
+/* The footprint tracer: the in-progress ring while a person draws it. */
+.wb-drawlayer { position:absolute; overflow:visible; pointer-events:none }
+.wb-drawpath { fill:var(--fp); fill-opacity:.10; stroke:var(--fp);
+  stroke-width:2; stroke-dasharray:5 3 }
+.wb-drawpt { fill:var(--fp); stroke:#fff; stroke-width:1.2 }
+/* The reshaper: solid handles are corners (drag/select), hollow ones sit
+   mid-edge and add a corner when grabbed. */
+.wb-edlayer { position:absolute; overflow:visible; pointer-events:none }
+.wb-edpt { pointer-events:auto; cursor:grab; fill:var(--fp); stroke:#fff; stroke-width:1.4 }
+.wb-edpt.on { fill:#fff; stroke:var(--fp); stroke-width:2.2 }
+.wb-edmid { pointer-events:auto; cursor:copy; fill:#fff; fill-opacity:.75;
+  stroke:var(--fp); stroke-width:1.2 }
+.wb-fp { pointer-events:auto; cursor:pointer; fill:var(--fp); fill-opacity:.07;
+  stroke:var(--fp); stroke-width:1.6; paint-order:stroke fill;
+  /* The dark casing is one shadow rather than a second path: over a photograph
+     the outline has to survive a white roof as well as a treeline. */
+  filter:drop-shadow(0 0 1.4px rgb(0 0 0 / 75%)) }
+.wb-fp.k-campus { stroke-dasharray:6 4; fill-opacity:.04 }
+/* The outlines that belong to THIS dot are the subject; the neighbours are
+   context, and drawn thinner so a dense campus does not read as one blob. */
+.wb-fp:not(.mine) { stroke-width:1.1; stroke-opacity:.62; fill-opacity:.03 }
+.wb-fp:hover { fill-opacity:.16; stroke-width:2.4 }
+/* Vendor parcels over the imagery: each in its map colour, dashed like the
+   lots on the map, bolder than the not-mine footprints they sit among. */
+.wb-fp.v-regrid, .wb-fp.v-precisely, .wb-fp.v-cadastre { stroke-dasharray:5 3; stroke-width:2;
+  stroke-opacity:.95; fill-opacity:.05; cursor:default; pointer-events:auto }
+.wb-fp.v-regrid { stroke:var(--regrid); fill:var(--regrid) }
+.wb-fp.v-precisely { stroke:var(--precisely); fill:var(--precisely) }
+.wb-fp.v-cadastre { stroke:var(--cadastre); fill:var(--cadastre) }
+.wb-fp.on { stroke:#fff; stroke-width:2.6; fill:var(--fp); fill-opacity:.2;
+  filter:drop-shadow(0 0 2px rgb(0 0 0 / 85%)) }
+
+/* "from the footprint: <name>" under the Name box in the correction form. */
+.fpsuggest { display:flex; flex-wrap:wrap; align-items:center; gap:6px;
+  margin-top:5px; font-size:11.5px; color:var(--ink-3) }
+.fpsug { font:inherit; font-size:11.5px; padding:2px 8px; cursor:pointer;
+  color:var(--fp); background:none; border:1px dashed var(--fp); border-radius:20px }
+.fpsug:hover { background:var(--fp); border-style:solid; color:var(--panel) }
+
+.wb-frame { cursor:grab }
+.wb-frame.wb-drag { cursor:grabbing }
+/* Lower right, stacked, like the main map's control column — one place to
+   look for zoom on every map in this app. Lifted clear of the bottom edge so
+   MapLibre's attribution ⓘ stays reachable underneath it. */
+.wb-tools { position:absolute; right:8px; bottom:34px; z-index:2;
+  display:flex; flex-direction:column; gap:4px }
+/* The archive frame carries no MapLibre attribution, so its column does not
+   need the 34px the live map's leaves for the ⓘ. */
+.wb-frame .wb-tools { bottom:10px }
+.wb-frame .wbl-fscorner { position:absolute; top:8px; right:8px; z-index:3 }
+/* Fixed dark on fixed white, NOT var(--ink): these chips sit on satellite
+   imagery, which looks the same in both themes, so a theme-aware ink turns
+   the labels invisible on the white chip the moment night mode is on. */
+.wb-tool { width:28px; height:28px; padding:0; font:inherit; font-size:15px; line-height:1;
+  cursor:pointer; color:#14202b; background:rgb(255 255 255 / 92%);
+  border:1px solid rgb(0 0 0 / 18%); border-radius:6px;
+  box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
+.wb-tool:hover { background:#fff; border-color:var(--accent) }
+/* Move-the-dot mode: crosshair says "your click means something now", and the
+   ghost is the proposal - same mark as the dot, drained of its certainty. */
+.wb-frame.wb-moving, .wb-frame.wb-moving:active { cursor:crosshair }
+.wb-x.wb-ghost { opacity:.65; filter:hue-rotate(150deg) saturate(1.6) }
+
+/* Full screen is where the wheel earns its keep: the frame becomes the window
+   and the imagery finally has room to be zoomed into. */
+.wb:fullscreen { background:var(--bg); padding:14px; display:flex; flex-direction:column }
+.wb:fullscreen .wb-frame { flex:1; height:auto }
+.wb-bar { display:flex; align-items:center; gap:12px; margin-top:9px }
+.wb-track { position:relative; flex:1 }
+.wb-track input[type=range] { display:block; width:100%; margin:0 }
+
+/* The thumb is sized explicitly because the tick strip below has to line up
+   with it, and a range thumb's default width is a browser's business, not a
+   number you can rely on. Fixing it at 16 makes the arithmetic in buildScale()
+   true rather than approximately true. */
+.wb-track input[type=range] { -webkit-appearance:none; appearance:none;
+  height:16px; background:transparent; cursor:pointer }
+.wb-track input[type=range]::-webkit-slider-runnable-track { height:5px; border-radius:3px;
+  background:linear-gradient(to right, var(--accent) calc(var(--wbp,0) * 1%),
+                                       var(--line) calc(var(--wbp,0) * 1%)) }
+.wb-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;
+  width:16px; height:16px; margin-top:-5.5px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--panel); box-sizing:border-box;
+  box-shadow:0 1px 3px rgb(0 0 0 / 35%) }
+.wb-track input[type=range]::-moz-range-track { height:5px; border-radius:3px;
+  background:var(--line) }
+.wb-track input[type=range]::-moz-range-progress { height:5px; border-radius:3px;
+  background:var(--accent) }
+.wb-track input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--panel); box-sizing:border-box }
+
+/* One tick per capture, and the year written under the first capture of each
+   year - so the shape of the archive is visible at a glance: where captures
+   cluster, where they thin out, and roughly when you are. */
+.wb-scale { position:relative; height:22px; margin-top:3px }
+.wb-tick { position:absolute; top:0; width:1px; height:5px; background:var(--line);
+  margin-left:-0.5px }
+.wb-tick.on { background:var(--accent); width:2px; height:8px; margin-left:-1px }
+.wb-year { position:absolute; top:7px; transform:translateX(-50%); padding:0 2px;
+  font:inherit; font-family:var(--mono); font-size:10.5px; line-height:1.3;
+  color:var(--ink-3); background:none; border:0; cursor:pointer; white-space:nowrap }
+.wb-year:hover { color:var(--accent) }
+.wb-year.on { color:var(--ink); font-weight:640 }
+.wb-date { font-family:var(--mono); font-size:13px; font-weight:640; min-width:9ch }
+.wb-of { font-size:12px; color:var(--ink-3); white-space:nowrap }
+.wb-btn { font:inherit; font-size:12.5px; color:var(--ink); cursor:pointer;
+  background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:3px 9px }
+.wb-btn:hover { border-color:var(--accent) }
+.wb-loading { padding:14px 0; font-size:12.5px; color:var(--ink-3) }
+
+/* ---- what a dot is, and what it belongs to ---- */
+.wb-kind { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-top:10px;
+  font-size:12.5px; color:var(--ink-2) }
+.wb-kind .seg { display:flex; gap:0 }
+.wb-kind .seg button { font:inherit; font-size:12.5px; cursor:pointer; padding:4px 11px;
+  color:var(--ink-2); background:var(--panel); border:1px solid var(--line);
+  border-radius:0 }
+.wb-kind .seg button:first-child { border-radius:6px 0 0 6px }
+.wb-kind .seg button:last-child { border-radius:0 6px 6px 0 }
+.wb-kind .seg button + button { border-left:0 }
+.wb-kind .seg button[aria-pressed=true] { color:#fff; background:var(--accent);
+  border-color:var(--accent) }
+.wb-sel { margin-top:9px; padding:9px 11px; border:1px solid var(--line);
+  border-radius:8px; background:var(--accent-soft); font-size:12.5px;
+  display:flex; align-items:center; flex-wrap:wrap; gap:9px }
+.wb-sel .grow { flex:1; min-width:180px }
+.wb-sel b { font-weight:640 }
+/* ---- linking a plant to a site ---- */
+.pl-pick { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-top:10px }
+.pl-lbl { display:inline-flex; align-items:center; gap:8px; font-size:12.5px;
+  margin:10px 0 2px }
+.pl-lbl select { font:inherit; font-size:12.5px; padding:3px 7px;
+  border:1px solid var(--line); border-radius:6px; background:var(--panel);
+  color:var(--ink) }
+.pl-list { list-style:none; margin:6px 0 0; padding:0; max-height:280px;
+  overflow-y:auto; border:1px solid var(--line); border-radius:8px }
+.pl-list li + li { border-top:1px solid var(--line-soft) }
+.pl-row { display:flex; flex-direction:column; gap:2px; width:100%; text-align:left;
+  padding:7px 10px; background:none; border:0; font:inherit; cursor:pointer;
+  color:var(--ink) }
+.pl-row:hover { background:var(--accent-soft) }
+.pl-n { font-size:13px; font-weight:600 }
+/* Distance sits in the dim row on purpose. It is context for finding the
+   plant, not evidence that it supplies anything. */
+.pl-d { font-size:11.5px; color:var(--ink-3) }
+.kinbadge { font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.04em; padding:1px 6px; border-radius:4px; border:1px solid var(--line);
+  color:var(--ink-3) }
+.kinbadge.k-campus { color:var(--cty); border-color:var(--cty) }
+.kinbadge.k-building { color:var(--ai); border-color:var(--ai) }
+.tree { margin:9px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:4px }
+.tree a { text-decoration:none }
+
+/* ---- correcting a site by hand ---- */
+.card-head { display:flex; align-items:baseline; gap:12px }
+.card-head h2 { flex:1 }
+/* Not a warning colour: a hand correction is better evidence than a scraped
+   one, not worse. It just has to be legible as a different KIND of fact. */
+.edited-note { border-top:1px solid var(--line-soft); padding-top:9px; margin-top:11px;
+  max-width:none }
+.editform { border-top:1px solid var(--line-soft); padding-top:11px; margin-top:11px;
+  display:flex; flex-direction:column; gap:11px }
+.editform .note { max-width:none }
+.editgrid { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+  gap:9px 14px }
+.editgrid label, .editnote { display:flex; flex-direction:column; gap:3px; font-size:12px;
+  color:var(--ink-3) }
+.editgrid input, .editgrid select, .editnote input { font:inherit; font-size:13px;
+  color:var(--ink); background:var(--panel); border:1px solid var(--line);
+  border-radius:6px; padding:5px 8px; width:100% }
+.editgrid input:focus, .editgrid select:focus, .editnote input:focus {
+  outline:none; border-color:var(--accent) }
+.editbar { display:flex; align-items:center; gap:10px }
+
+.srclist { margin:0; padding-left:20px; display:flex; flex-direction:column; gap:5px;
+  font-size:13px }
+
+.wrap { max-width:1080px; margin:0 auto; padding:76px 20px 64px;
+  display:flex; flex-direction:column; gap:18px }
+.sitehead h1 { margin:0 0 6px; font-size:24px; letter-spacing:-.02em; font-weight:650 }
+.badges { display:flex; gap:8px; flex-wrap:wrap }
+.badge { font-family:var(--mono); font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; padding:3px 9px; border-radius:999px;
+  border:1px solid var(--line); color:var(--ink-2) }
+.b-ai { border-color:var(--ai); color:var(--ai) }
+.b-trad { border-color:var(--fac); color:var(--fac) }
+.b-status { border-color:var(--accent); color:var(--accent) }
+.card { padding:16px 18px; display:flex; flex-direction:column; gap:10px }
+.card h2 { margin:0; font-size:15px; font-weight:620 }
+.facts { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px 22px }
+.fact { display:flex; flex-direction:column; gap:1px }
+/* Scoped, and resetting the box explicitly. `.fk` is also the map's filter
+   chip up at line ~287, and a bare `.fk` here only overrode that rule's font
+   and colour - so every fact label on every dot page inherited the chip's
+   border, background and padding and rendered as an empty pill above its
+   value. Same class name, two unrelated components; the fix is to make this
+   one specific and to undo what it is not asking for. */
+.fact .fk, .place-form .fk, .co-chips .fk { display:block; padding:0; border:0; background:none;
+  border-radius:0; cursor:auto;
+  font-family:var(--mono); font-size:10px; letter-spacing:.08em; line-height:1.5;
+  text-transform:uppercase; color:var(--ink-3) }
+.fv { font-size:13.5px }
+.note { font-size:12.5px; color:var(--ink-3); margin:0; max-width:80ch }
+/* A licence credit, not commentary: quieter than a note, and sitting hard
+   under the map it credits rather than floating in the section's prose. */
+.imagery-credit { font-size:11px; margin-top:8px }
+.stale-age { color:#B45309; font-weight:600 }
+/* The scale bar shares the bottom-left corner with the layers button, so it
+   steps aside by exactly that button's width plus a gap. Styled to the app's
+   own palette rather than MapLibre's default white-on-nothing, which is
+   invisible over satellite imagery. */
+.maplibregl-ctrl-bottom-left .maplibregl-ctrl-scale {
+  margin:0 0 14px 56px; background:var(--panel); color:var(--ink-2);
+  border:1px solid var(--line); border-top:none; border-radius:0 0 3px 3px;
+  font:600 10px/1.5 var(--mono); letter-spacing:.02em; padding:1px 5px;
+  box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+.dim { color:var(--ink-3) }
+.mono { font-family:var(--mono); font-variant-numeric:tabular-nums }
+.tablewrap { overflow-x:auto }
+table { border-collapse:collapse; width:100%; min-width:640px }
+th { text-align:left; font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-3); padding:7px 8px; border-bottom:1px solid var(--line) }
+td { padding:6px 8px; border-bottom:1px solid var(--line-soft); vertical-align:top }
+.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap }
+.obs { font-size:12px; color:var(--ink-2); max-width:46ch }
+a { color:var(--accent) }
+
+/* ---- operator directory ---- */
+.opsbtn::before { content:"🏢" }
+.opsbtn[aria-pressed=true] { border-color:var(--accent); background:var(--accent-soft) }
+
+.ops { position:fixed; top:64px; right:12px; z-index:27;
+  width:min(390px,calc(100vw - 24px)); max-height:calc(100vh - 84px);
+  padding:12px 14px; display:flex; flex-direction:column; gap:9px; overflow-y:auto }
+.ops-head { display:flex; align-items:center; gap:10px }
+.ops-head h2 { margin:0; font-size:14px; font-weight:640; flex:1 }
+.ops .hint { max-width:none; margin:0 }
+.ops-search input { width:100%; box-sizing:border-box; font:inherit; font-size:13px;
+  padding:7px 10px; border:1px solid var(--line); border-radius:7px;
+  background:var(--bg); color:var(--ink) }
+.ops-search input:focus { outline:none; border-color:var(--accent) }
+/* Continents overflow one line at this width; wrapping keeps every region
+   reachable instead of clipping the last few. */
+.ops-seg { flex-wrap:wrap; border:0; gap:5px }
+.ops-seg button { border:1px solid var(--line); border-radius:6px; font-size:11.5px;
+  padding:3px 8px }
+
+.ops-rows { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px }
+.ops-row { display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;
+  text-align:left; font:inherit; padding:6px 7px; border:1px solid transparent;
+  border-radius:8px; background:none; color:var(--ink) }
+.ops-row:hover { background:var(--accent-soft); border-color:var(--line-soft) }
+
+/* Logos are supplied by the companies in every conceivable aspect ratio and
+   usually as dark-on-transparent. A fixed white tile with the mark contained
+   inside is the only treatment that survives all of them, and it stays white
+   in night mode on purpose - inverting a trademark is worse than a bright
+   square. */
+.ops-logo { flex:none; width:34px; height:34px; border-radius:7px;
+  border:1px solid var(--line); background:#fff; overflow:hidden;
+  display:inline-flex; align-items:center; justify-content:center }
+.ops-logo img { max-width:82%; max-height:82%; object-fit:contain }
+.ops-logo-lg { width:52px; height:52px; border-radius:9px }
+.ops-mono { background:hsl(var(--h) 42% 42%); color:#fff; border-color:transparent;
+  font-size:12.5px; font-weight:680; letter-spacing:.02em }
+.ops-logo-lg.ops-mono { font-size:18px }
+.ops-slot { display:contents }
+
+/* Name and badge share a line; the region caption sits under them. The badge
+   must live inside the <b>, not beside it - as a direct flex child it stretched
+   to the full row width and read as a progress bar. */
+.ops-name { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px;
+  font-size:13px; overflow:hidden }
+.ops-name b { font-weight:600; display:flex; align-items:center; gap:6px;
+  min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.ops-name em { font-style:normal; font-size:11.5px; font-weight:400; color:var(--ink-3);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.ops-ai { flex:none; font-style:normal; font-size:9.5px; font-weight:700;
+  letter-spacing:.04em; padding:1px 5px; border-radius:4px; background:var(--ai);
+  color:#fff }
+.ops-n { font-family:var(--mono); font-size:12.5px; color:var(--ink-2) }
+.ops-chev { color:var(--ink-3); font-size:15px }
+.ops-more { font-size:11.5px; color:var(--ink-3) }
+
+.ops-back { align-self:flex-start }
+.ops-hero { display:flex; align-items:center; gap:12px }
+.ops-hero h3 { margin:0; font-size:16px; font-weight:660 }
+.ops-d-meta { margin:2px 0 0; font-size:12px; color:var(--ink-3) }
+.ops-d-profile { margin:0; font-size:13px; line-height:1.5; color:var(--ink-2) }
+.ops-d-links { margin:0; font-size:12px }
+.ops-show { align-self:flex-start }
+.ops-h4 { margin:4px 0 0; font-size:11px; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--ink-3) }
+.ops-regions { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px }
+.ops-region { display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;
+  text-align:left; font:inherit; font-size:12.5px; padding:5px 7px; border:1px solid transparent;
+  border-radius:7px; background:none; color:var(--ink) }
+.ops-region:hover { background:var(--accent-soft); border-color:var(--line-soft) }
+.ops-region-n { font-family:var(--mono); min-width:3.5ch; text-align:right; color:var(--ink-2) }
+.ops-region span { display:flex; flex-direction:column; min-width:0 }
+.ops-region em { font-style:normal; font-size:11px; color:var(--ink-3);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.ops-sites { gap:2px }
+.ops-site { align-items:flex-start }
+.ops-site-n { font-size:12.5px; font-weight:560 }
+.ops-site-w { font-size:11px; color:var(--ink-3) }
+
+@media (max-width:720px) {
+  .ops { top:auto; bottom:0; right:0; left:0; width:auto; max-height:62vh;
+    border-radius:12px 12px 0 0 }
+}
+
+/* ---- operator's own page for this site ---- */
+.oplink { display:flex; align-items:center; gap:14px }
+.oplink > div { min-width:0 }
+.oplink h2 { margin:0 0 4px }
+.oplink p { margin:0 }
+.oplink-a { font-size:14px; font-weight:620 }
+.oplink-why { font-size:11.5px; margin-top:3px !important }
+
+/* ---- operator page ---- */
+.ops-logo-xl { width:64px; height:64px; border-radius:11px }
+.ops-logo-xl.ops-mono { font-size:22px }
+.opx-hero { display:flex; align-items:center; gap:16px; margin:6px 0 10px }
+.opx-hero h1 { margin:0 }
+.opx-meta { margin:3px 0 0; font-size:13px; color:var(--ink-3) }
+.opx-links { margin:5px 0 0; font-size:13px }
+.opx-nav { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 4px }
+.opx-chip { font-size:12px; padding:4px 10px; border:1px solid var(--line);
+  border-radius:20px; text-decoration:none; color:var(--ink-2); background:var(--panel) }
+.opx-chip:hover { border-color:var(--accent); color:var(--ink) }
+.opx-chip b { color:var(--ink-3); font-weight:640 }
+.opx-country { margin:14px 0 5px; font-size:12px; font-weight:700; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-3) }
+.opx-country:first-of-type { margin-top:4px }
+.opx-sites { list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:2px 18px }
+.opx-sites li { display:flex; align-items:baseline; gap:7px; padding:4px 0;
+  border-bottom:1px solid var(--line-soft); min-width:0 }
+.opx-name { font-size:13.5px; font-weight:560; text-decoration:none; color:var(--ink);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.opx-name:hover { color:var(--accent); text-decoration:underline }
+.opx-where { font-size:11.5px; color:var(--ink-3); flex:1; white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis }
+/* The outbound arrow is only rendered when a link was actually proven, so its
+   presence is meaningful - it must not look like decoration on every row. */
+.opx-out { flex:none; font-size:13px; text-decoration:none; color:var(--accent);
+  padding:0 3px; border-radius:4px }
+.opx-out:hover { background:var(--accent-soft) }
+
+/* Projections must never read as measurements. */
+.bo-line-future { stroke-dasharray:5 4; opacity:.75 }
+.bo-future { opacity:.72 }
+.bo-date i { font-style:normal; font-size:9.5px; font-weight:700; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--ink-3) }
+.spec-proj { margin:8px 0 0; font-size:12.5px; color:var(--ink-3) }
+
+/* ---- co-located facilities (carrier hotels) ---- */
+.mates { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px }
+.mates li { display:flex; align-items:baseline; gap:9px; padding:4px 0;
+  border-bottom:1px solid var(--line-soft) }
+.mates a { font-size:13.5px; font-weight:560 }
+.mates .dim { font-size:11.5px }
+
+/* ---- lifecycle status ---- */
+.st-h { margin:14px 0 6px !important }
+.st-row { display:flex; flex-direction:column; gap:4px }
+.st-chip { display:flex; align-items:center; gap:8px; width:100%; cursor:pointer;
+  font:inherit; font-size:12.5px; text-align:left; padding:5px 8px;
+  border:1px solid var(--line); border-radius:7px; background:var(--panel);
+  color:var(--ink) }
+.st-chip:hover { border-color:var(--accent) }
+.st-chip[aria-pressed=true] { background:var(--accent); border-color:var(--accent);
+  color:var(--panel) }
+.st-chip[aria-pressed=true] .st-n { color:var(--panel) }
+.st-dot { width:9px; height:9px; border-radius:50%; flex:none }
+.st-op { background:#2E9E6B }
+.st-uc { background:#3B82C4 }
+.st-un { background:transparent; border:1.5px solid var(--ink-3) }
+.st-lab { flex:1 }
+.st-n { font-family:var(--mono); font-size:12px; color:var(--ink-3) }
+.st-note { font-size:11px; margin-top:6px !important }
+
+/* ---- basemap switch ---- */
+.bm-seg { flex-wrap:wrap; border:0; gap:5px; margin-bottom:2px }
+.bm-seg button { border:1px solid var(--line); border-radius:6px; font-size:11.5px;
+  padding:3px 9px }
+.bm-note { font-size:10.5px; margin:6px 0 0 !important; line-height:1.45 }
+/* Source credit for the plant layer. Wider than .hint's 22ch because it is
+   prose with links in it, not a one-line nudge, and CC BY means it has to be
+   readable rather than technically present. */
+.pl-note { font-size:10.5px; line-height:1.45; max-width:100%;
+  margin:2px 0 6px 22px !important }
+.pl-note a { color:var(--accent) }
+
+/* Confidence bands on the power-dependency page. A word, not a decimal:
+   "0.85" reads as a measurement and this is a class default, so the number
+   stays on the title attribute where a curious reader can still find it. */
+/* Matched to .chain-state: one chip idiom on the page, not two. The pill
+   shape and the proportional face were a second dialect saying the same kind
+   of thing as the chain's squared mono chips. */
+.conf { display:inline-block; font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.09em; padding:2px 8px; border-radius:3px; border:1px solid;
+  white-space:nowrap; text-transform:uppercase }
+/* Coloured from the app's own tokens, so they follow the sun/moon toggle
+   like everything else. These were written against prefers-color-scheme -
+   the standalone chain page's idiom - which meant a dark OS put dark-variant
+   chips on a light card, because this app never sets data-theme="light". */
+.conf-high { color:var(--fac); border-color:var(--fac);
+  background:color-mix(in srgb, var(--fac) 11%, transparent) }
+.conf-good { color:var(--accent); border-color:var(--accent);
+  background:color-mix(in srgb, var(--accent) 12%, transparent) }
+.conf-fair { color:var(--ai); border-color:var(--ai);
+  background:color-mix(in srgb, var(--ai) 13%, transparent) }
+.conf-weak { color:var(--weak); border-color:var(--weak);
+  background:color-mix(in srgb, var(--weak) 12%, transparent) }
+
+/* Power-dependency layer: amber, so it reads as grid equipment rather than
+   as another asset dot, and distinct from the supply layer's green. */
+.sw-power { background:#D97706; border-radius:2px }
+
+/* The pegman. Amber like the dependency layer would be wrong - this is not
+   grid equipment - so it takes the accent, and grabs rather than points. */
+/* Yellow, because a yellow figure you drag onto a map is a gesture people have
+   already learned somewhere else - borrowing the colour borrows the
+   affordance. Deliberately not --ai amber, which on this map means an AI data
+   centre: a control must not wear a data layer's colour. */
+.pegman { cursor:grab; color:#DFA000 }
+html[data-theme=night] .pegman { color:#FFCB3D }
+.pegman:active { cursor:grabbing }
+.pegman svg { fill:currentColor; display:block; margin:0 auto }
+body.pegging #map2d { cursor:crosshair }
+/* Drop target hint: the map edge lights up while a point is being carried. */
+body.pegging .mapfull { outline:2px dashed var(--accent); outline-offset:-6px }
+.sw-point { background:transparent; border:2px solid #7c3aed; border-radius:50% }
+
+/* The bolt: a simulated failure, so it borrows the map's warning register
+   rather than a subject colour - nothing on this map that is red is a record
+   of something real. */
+.boltman { cursor:grab; color:#B91C1C }
+.boltman:active { cursor:grabbing }
+.boltman svg { fill:currentColor; display:block; margin:0 auto }
+/* This guard used to read :root:not([data-theme="light"]) plus
+   :root[data-theme="dark"], which is a light/dark convention this app does not
+   use - the themes here are day and night. So the second selector never
+   matched anything, and the first matched ALWAYS (day is not light), which
+   meant the bolt wore its dark-theme pink in broad daylight and the #B91C1C
+   above had never once been drawn. */
+html[data-theme=night] .boltman { color:#F0918F }
+.sw-event { background:transparent; border:2px dashed #B91C1C; border-radius:50% }
+
+/* ---- the accumulation chain ------------------------------------------------
+   Ported from the standalone chain page, expressed in this app's tokens so it
+   reads as part of the registry rather than as a visiting document. The number
+   sits in its own column BESIDE the question, not above it: the sequence is
+   real information - each link has to hold before the next one means anything -
+   and a number stacked on its own line reads as a bullet instead of a step. */
+/* Framing on the container, separators between siblings. NOT :first-of-type
+   / :last-of-type: those match per ELEMENT TYPE, and this list is a mix of
+   <details> (links with a table) and <div> (links without), so link 2 was the
+   last details and link 3 the first div - each drew a line and the gap
+   between them got two. Adjacency cannot make that mistake. */
+.chain-list { border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
+.chainlink + .chainlink { border-top:1px solid var(--line-soft) }
+/* The whole summary is the row and the whole row is the click target: number
+   and question on the first line, the answer on the second. The answer stays
+   visible closed - a collapsed link that hides its finding is just a heading. */
+.chain-sum { display:grid; grid-template-columns:46px 1fr; column-gap:14px;
+  row-gap:5px; padding:16px 0; align-items:baseline; list-style:none }
+.chainlink > summary.chain-sum { cursor:pointer }
+.chain-sum::-webkit-details-marker { display:none }
+.chainlink > summary:hover .chain-q { color:var(--accent) }
+.chainlink > summary:focus-visible { outline:2px solid var(--accent);
+  outline-offset:2px; border-radius:4px }
+.chain-n { grid-column:1; grid-row:1; font-family:var(--mono); font-size:12px;
+  letter-spacing:.08em; color:var(--ink-3); font-variant-numeric:tabular-nums }
+/* Only the expandable links get a caret; a static row must not advertise a
+   disclosure it does not have. */
+.chainlink > summary .chain-n::before { content:"\25B8"; display:inline-block;
+  width:11px; margin-right:5px; transition:transform .12s ease; color:var(--ink-3) }
+.chainlink[open] > summary .chain-n::before { transform:rotate(90deg) }
+@media (prefers-reduced-motion: reduce) {
+  .chainlink > summary .chain-n::before { transition:none }
+}
+.chainlink-static .chain-n { padding-left:16px }
+.chain-h { grid-column:2; grid-row:1; display:flex; align-items:baseline;
+  gap:10px; flex-wrap:wrap }
+.chain-q { font-size:16.5px; font-weight:640; letter-spacing:-.01em; color:var(--ink) }
+.chain-lede { grid-column:2; grid-row:2 }
+.chain-lede > p { margin:0 }
+.chain-lede > p + p { margin-top:7px }
+/* The revealed part lines up under the question, not under the number. */
+.chain-b { padding:0 0 16px 60px }
+.chain-b .tablewrap { margin-top:2px }
+.chainlink.chain-gap { border-left:3px solid var(--ai); padding-left:11px;
+  margin-left:-14px; background:linear-gradient(90deg,
+    color-mix(in srgb, var(--ai) 8%, transparent), transparent 55%) }
+.chain-head { display:flex; align-items:center; justify-content:space-between;
+  gap:14px; flex-wrap:wrap; margin-bottom:8px }
+.chain-head h2 { margin:0 }
+.chain-state { font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; padding:2px 8px;
+  border-radius:3px; border:1px solid; white-space:nowrap }
+.cs-held { color:var(--fac); border-color:var(--fac);
+  background:color-mix(in srgb, var(--fac) 11%, transparent) }
+.cs-gap { color:var(--ai); border-color:var(--ai);
+  background:color-mix(in srgb, var(--ai) 13%, transparent) }
+.cs-empty { color:var(--ink-3); border-color:var(--ink-3);
+  background:color-mix(in srgb, var(--ink-3) 12%, transparent) }
+.cs-none { color:var(--ink-3); border-color:var(--line) }
+
+/* The event header: an accent rail and a mono eyebrow, the two devices that
+   carried the standalone page's identity and survive a change of typeface. */
+.evhead { border-left:3px solid var(--fp); padding-left:16px }
+.eyebrow { display:block; font-family:var(--mono); font-size:11px;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--fp);
+  margin-bottom:10px }
+.evsim { font-weight:640; color:var(--ink) }
+
+/* ---- impact list -----------------------------------------------------------
+   The three biggest things a page is about, stated before any table. Lifted
+   from the standalone chain page, where seeing the load names immediately
+   under the totals was what made the totals mean anything: "1,376 MW" is a
+   number, "Micron 1,056 · Ranalli 270 · OOWWTP 50" is an answer. Everything
+   else stays below for a reader who wants it. */
+.impact { margin-top:16px; padding-top:14px; border-top:1px solid var(--line-soft);
+  display:flex; flex-direction:column; gap:9px }
+.impact-row { display:flex; justify-content:space-between; align-items:baseline;
+  gap:14px; flex-wrap:wrap }
+.impact-nm { font-weight:640 }
+.impact-meta { font-size:12.5px; color:var(--ink-3); font-weight:400 }
+.impact-v { font-family:var(--mono); font-size:14px; white-space:nowrap;
+  font-variant-numeric:tabular-nums; color:var(--ink-2) }
+.impact-more { font-size:12.5px; color:var(--ink-3); margin-top:3px }
+
+/* Placing an unlocated substation. The form is a commitment, not a control
+   strip: it sits under the map rather than in the transient selection bar,
+   because the note is the part that makes the coordinate worth holding and a
+   bar that disappears is the wrong place to ask for one. */
+.co-chips { display:flex; flex-wrap:wrap; align-items:center; gap:8px }
+.co-chip[disabled] { opacity:.5; cursor:not-allowed }
+.co-chip[disabled]:hover { border-color:var(--line); color:var(--ink-2) }
+.place-form { display:flex; flex-direction:column; gap:10px; padding:14px;
+  border:1px solid var(--line); border-radius:9px; background:var(--bg) }
+.pf-row { display:flex; flex-direction:column; gap:3px }
+.pf-row > select, .pf-row > input {
+  font:inherit; font-size:13px; padding:6px 8px; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line); border-radius:7px }
+.pf-row > select:focus-visible, .pf-row > input:focus-visible {
+  outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent) }
+.pf-act { flex-direction:row; align-items:center; gap:8px }
+.pf-act .wb-status { margin-top:0 }
+/* Disabled until the note exists — the rule the server enforces, shown rather
+   than sprung on the placer after they have written a coordinate. */
+.place-form .tb-btn[disabled] { opacity:.5; cursor:not-allowed }
+.place-form .tb-btn[disabled]:hover { border-color:var(--line); color:var(--ink-2) }
+
+/* Remove, offered beside the link in a dropped point's popup. Quiet, and
+   deliberately not styled as a danger button: undoing a pin you just placed by
+   accident is the ordinary case, not a destructive one. */
+.maplibregl-popup-content .pop-undo { display:inline-block; margin:6px 0 0 10px;
+  font:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
+  padding:2px 8px; color:var(--ink-2); background:var(--bg);
+  border:1px solid var(--line); border-radius:6px }
+.maplibregl-popup-content .pop-undo:hover { border-color:var(--accent); color:var(--ink) }
+.maplibregl-popup-content .pop-undo[disabled] { opacity:.6; cursor:default }
+
+/* ---- /data : the registry's own change log ------------------------------ */
+/* A change is a heading (when, why, who) over a list of files. The files are a
+   bare table rather than the page's usual bordered one: they are the detail of
+   the heading above them, not a table you read on its own. */
+.chg { border:1px solid var(--line-soft); border-radius:9px; padding:10px 12px;
+  background:var(--bg) }
+.chg + .chg { margin-top:8px }
+.chg-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px }
+.chg-when { font-size:11px; color:var(--ink-3); flex:none }
+.chg-subject { font-weight:600; font-size:13.5px; flex:1 1 12ch; min-width:0 }
+.chg-meta { font-size:11px; flex:none }
+.chg-files { width:100%; min-width:0; border-collapse:collapse; margin-top:6px }
+.chg-files td { padding:2px 0; font-size:12.5px; border:0; vertical-align:top }
+.chg-files td.num { text-align:right; white-space:nowrap; padding-left:12px }
+.chg-files td.mono { font-family:var(--mono); font-size:11.5px }
+.add { color:var(--supply) }
+.del { color:var(--weak) }
+/* The range switch reuses .seg, whose buttons are <a> here. */
+.seg .tb-btn { border:0; border-radius:0; box-shadow:none }
+.seg .tb-btn.on { background:var(--accent); color:var(--panel) }
+.run-grp { margin:14px 0 0; font-size:12px; font-family:var(--mono);
+  letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3) }
+.run-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px }
+/* Money is called out on the button itself, not only in a confirm dialog that
+   arrives after the decision to click has been made. */
+.cost { font-size:10px; font-family:var(--mono); letter-spacing:.04em;
+  text-transform:uppercase; color:var(--weak); margin-left:5px }
+.run-status { padding:8px 10px; border:1px solid var(--line); border-radius:8px;
+  background:var(--bg); font-size:13px }
+.run-log { max-height:280px; overflow:auto; padding:10px 12px; margin:0;
+  border:1px solid var(--line); border-radius:8px; background:var(--bg);
+  font-family:var(--mono); font-size:11.5px; line-height:1.5;
+  white-space:pre-wrap; word-break:break-word; color:var(--ink-2) }
+/* Transmission corridors: grey, because they are context rather than a claim.
+   Every other line on this map asserts a relationship somebody sourced; this
+   one only says where the wires are.
+   Drawn as a BAR, not a rounded square: .sw is a 3px-radius block built for
+   dot and area layers, and a line layer wearing it announced itself with the
+   same swatch shape as Data Centers. */
+.sw-line { background:#6B7A88; height:3px; border-radius:1px; align-self:center }
+/* An area, filled: the swatch language says a translucent block is a region
+   you stand inside, which is what a service area is. */
+.sw-water { background:color-mix(in srgb, var(--water) 22%, transparent);
+  border:1.5px solid var(--water); border-radius:2px }
+
+/* Vendor parcel popup: a definition list, because that is what county data is
+   — a label and the value the assessor recorded against it. */
+.maplibregl-popup-content .pf-g { margin:8px 0 3px; font-family:var(--mono);
+  font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3) }
+.maplibregl-popup-content .pf { display:grid; grid-template-columns:minmax(0,auto) 1fr;
+  gap:2px 10px; margin:0 }
+.maplibregl-popup-content .pf dt { font-size:11.5px; color:var(--ink-3); white-space:nowrap }
+.maplibregl-popup-content .pf dd { font-size:11.5px; margin:0; color:var(--ink);
+  overflow-wrap:anywhere }
+/* The parcel list can run long; keep the popup a readable panel, not a column
+   taller than the map it is drawn over. */
+.maplibregl-popup-content { max-height:340px; overflow-y:auto }
+
+/* Tools ON the map, not beside it. Only the map element goes fullscreen, so a
+   control living outside it disappears exactly when there is finally room to
+   work — which is when somebody is editing.
+   Fixed light chrome, the same reasoning as .wb-tool and .wb-sel: a
+   theme-aware surface goes invisible over satellite ground. The right inset
+   clears the zoom column; the bottom is left free for the selection bar. */
+/* pointer-events:none on the BAR, auto on its children. The bar is a wide
+   absolutely-positioned box and most of it is empty air over the map; without
+   this it swallows every click that lands in the gaps — which is exactly what
+   it did to the zoom, home and pen buttons, whose column its box overlaps.
+   Full screen escaped only because it sits outside the bar's right edge. */
+/* right:46px reserves the top-right corner for full screen. pointer-events
+   would stop the BAR blocking it, but a wrapped button landing there would
+   still cover it. */
+.sm-wrap .map-tools, .sm-wrap .map-layers {
+  position:absolute; left:8px; top:8px; right:46px; z-index:3;
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0;
+  pointer-events:none }
+.sm-wrap .map-tools > *, .sm-wrap .map-layers > * { pointer-events:auto }
+
+/* The layer panel, scoped to one asset. Same shape as the homepage's rows —
+   checkbox, swatch, name — on the fixed light chrome every control over
+   imagery uses. */
+.sm-wrap .map-layers { flex-direction:column; align-items:stretch; gap:0;
+  width:min(252px, calc(100% - 60px)); padding:8px 10px; border-radius:9px;
+  background:rgb(255 255 255 / 94%); color:#14202b;
+  box-shadow:0 1px 5px rgb(0 0 0 / 28%) }
+.sm-wrap .map-layers label { display:flex; align-items:center; gap:8px;
+  font-size:12.5px; cursor:pointer; padding:3px 0; min-height:26px }
+.sm-wrap .map-layers input { accent-color:var(--accent, #0E8A7C); margin:0 }
+/* The pencil takes the slot .lyrlink uses on the homepage: hard right, same
+   20px square, so the row reads the same way in both places. */
+.lyr-edit { margin-left:auto; flex:none; width:22px; height:22px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; cursor:pointer;
+  color:#47555f; background:#fff; border:1px solid rgb(0 0 0 / 22%);
+  border-radius:5px }
+.lyr-edit svg { fill:none; stroke:currentColor; stroke-width:1.9;
+  stroke-linecap:round; stroke-linejoin:round }
+.lyr-edit:hover { border-color:var(--accent, #0E8A7C); color:#14202b }
+/* Armed: this is the layer the map is about to change. */
+.lyr-edit[aria-pressed=true] { background:var(--accent, #0E8A7C); color:#fff;
+  border-color:var(--accent, #0E8A7C) }
+/* The armed layer's tools, under the rows they belong to. */
+.sm-wrap .lyr-tools { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px }
+.sm-wrap .lyr-tools:empty { display:none }
+.sm-wrap .lyr-tools .tb-btn { background:#fff; color:#14202b;
+  border-color:rgb(0 0 0 / 22%); font-size:12px }
+.sm-wrap .lyr-tools .tb-btn:hover:not(:disabled) { border-color:var(--accent, #0E8A7C) }
+.sm-wrap .lyr-tools .tb-btn[aria-pressed=true] { background:var(--accent, #0E8A7C);
+  color:#fff; border-color:var(--accent, #0E8A7C) }
+/* Swatches, following the shape language the homepage panel already uses:
+   a filled block is a DOT layer, an outline is an AREA layer, and a ring is
+   CONTEXT — something on the map that is not this page's subject.
+   So: the asset's own coordinate is a filled block like .sw-fac; the two
+   footprint kinds are outlines in the footprint magenta, solid for a traced
+   building and dashed for a campus boundary; and the neighbours are a ring,
+   because they belong to other assets. */
+.sw-near { background:transparent; border:2px solid #8fa3b0; border-radius:50% }
+.sw-dotcoord { background:var(--fac, #0E8A7C) }
+.sw-bldg { background:transparent; border:1.5px solid var(--fp, #E0148C); border-radius:2px }
+.sw-campus { background:transparent; border:1.5px dashed var(--fp, #E0148C); border-radius:2px }
+.sm-wrap .map-tools .tb-btn { background:rgb(255 255 255 / 94%); color:#14202b;
+  border-color:rgb(0 0 0 / 22%); box-shadow:0 1px 4px rgb(0 0 0 / 30%) }
+.sm-wrap .map-tools .tb-btn:hover:not(:disabled) { border-color:var(--accent, #0E8A7C);
+  background:#fff }
+.sm-wrap .map-tools .tb-btn[aria-pressed=true] { background:var(--accent, #0E8A7C);
+  color:#fff; border-color:var(--accent, #0E8A7C) }
+/* The status line needs its own ground too — grey text on imagery is unreadable. */
+.sm-wrap .map-tools .wb-status { min-height:0; margin:0; padding:3px 8px;
+  font-size:12px; color:#14202b; background:rgb(255 255 255 / 92%);
+  border-radius:6px; box-shadow:0 1px 4px rgb(0 0 0 / 25%) }
+.sm-wrap .map-tools .wb-status:empty { display:none }
+
+/* Full screen keeps the top-right corner it has always had; zoom and home
+   moved to the lower right with the main map's column. Separated because they
+   are different jobs: one navigates within the map, the other changes how much
+   map there is. */
+.sm-wrap .wb-fscorner { position:absolute; top:8px; right:8px; z-index:3 }
+
+/* Map notifications. Top right, tucked under the full-screen button — the
+   toolbar owns the top left and the selection bar owns the foot. Fixed light
+   chrome for the same reason as every other chip on imagery. */
+.sm-wrap .map-toast { position:absolute; top:46px; right:8px; z-index:4;
+  max-width:min(46ch, calc(100% - 60px)); margin:0; padding:5px 10px;
+  font-size:12px; line-height:1.4; text-align:right;
+  color:#14202b; background:rgb(255 255 255 / 94%); border-radius:7px;
+  box-shadow:0 1px 5px rgb(0 0 0 / 28%); pointer-events:none }
+.sm-wrap .map-toast:empty { display:none }
+/* The site page nests its message in a span, so an empty CHILD must vanish too
+   or the chip hangs around as a blank white tab. */
+.sm-wrap .map-toast:has(> .note:empty) { display:none }
+.sm-wrap .map-toast .note { color:inherit; font-size:inherit; margin:0 }
+
+/* Archive loading state. Centred on the frame's own dark ground, so it reads
+   as "the picture is coming" rather than as an error. */
+.wbl-loading { position:absolute; inset:0; z-index:1; display:flex;
+  flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  color:rgb(255 255 255 / 78%); font-size:12.5px; pointer-events:none }
+.wbl-loading[hidden] { display:none }
+.wbl-loading i { width:22px; height:22px; border-radius:50%;
+  border:2px solid rgb(255 255 255 / 25%); border-top-color:rgb(255 255 255 / 85%);
+  animation:wbl-spin 900ms linear infinite }
+@keyframes wbl-spin { to { transform:rotate(360deg) } }
+/* A failure is a finished state: stop the spinner rather than implying that
+   waiting longer will help. */
+.wbl-loading-failed i { animation:none; border-top-color:rgb(255 255 255 / 25%) }
+@media (prefers-reduced-motion: reduce) { .wbl-loading i { animation:none } }
+/* The site page's archive uses the same overlay treatment; its own class name
+   predates the dot pages' viewer. */
+.wb-frame .wb-loading { position:absolute; inset:0; z-index:1; margin:0; padding:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; color:rgb(255 255 255 / 78%); font-size:12.5px; pointer-events:none }
+.wb-frame .wb-loading[hidden] { display:none }
+.wb-frame .wb-loading i { width:22px; height:22px; border-radius:50%;
+  border:2px solid rgb(255 255 255 / 25%); border-top-color:rgb(255 255 255 / 85%);
+  animation:wbl-spin 900ms linear infinite }
+.wb-frame .wb-loading.wbl-loading-failed i { animation:none;
+  border-top-color:rgb(255 255 255 / 25%) }
+@media (prefers-reduced-motion: reduce) { .wb-frame .wb-loading i { animation:none } }
+
+/* The layers button on a dot page's live map: the homepage's control in the
+   homepage's corner — bottom left — so it is in the same place on every map in
+   this app. The pane opens UPWARD from just above it, exactly as it does
+   there. */
+.sm-wrap .map-layers-btn { position:absolute; left:8px; bottom:8px; top:auto;
+  z-index:4 }
+.sm-wrap .map-layers-btn[aria-expanded=true] { color:#fff;
+  background:var(--accent, #0E8A7C); border-color:var(--accent, #0E8A7C) }
+.sm-wrap .map-layers { top:auto; bottom:52px;
+  max-height:calc(100% - 70px); overflow-y:auto }
+.sm-wrap .map-layers[hidden] { display:none }
