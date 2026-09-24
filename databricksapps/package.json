@@ -1,0 +1,12 @@
+{
+  "name": "dcmap-databricks-src",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Packages dcmap as a Databricks App without modifying it.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node build.mjs",
+    "build:dev": "node build.mjs --dev"
+  }
+}

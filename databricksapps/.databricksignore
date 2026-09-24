@@ -1,0 +1,13 @@
+# What must not be uploaded with the app source.
+#
+# data/ is staged from the Unity Catalog volume at startup. In a --dev build it
+# is a symlink to dcmap's own 1.5 GB data directory, and one file in there is
+# 25 MB against a 10 MB per-file deployment limit - so syncing it does not fail
+# late, it fails the deploy.
+data/
+data_centers_from_EPOCH_AI/
+
+# Installed in the container from package.json, not shipped.
+node_modules/
+
+.DS_Store
